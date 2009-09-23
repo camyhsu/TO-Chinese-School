@@ -1,2 +1,5 @@
-*.log db/schema.rb db/schema.sql
+*.log
+db/schema.rb
+db/schema.sql
+chineseschool/nbproject/
 
