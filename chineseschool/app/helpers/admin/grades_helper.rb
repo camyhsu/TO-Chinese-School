@@ -1,0 +1,2 @@
+module Admin::GradesHelper
+end
