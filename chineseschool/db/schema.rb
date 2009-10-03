@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091003181712) do
+ActiveRecord::Schema.define(:version => 20091003173930) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -19,19 +19,6 @@ ActiveRecord::Schema.define(:version => 20091003181712) do
     t.string   "home_phone"
     t.string   "cell_phone"
     t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "classes", :force => true do |t|
-    t.string   "name"
-    t.string   "description"
-    t.string   "location"
-    t.integer  "max_size"
-    t.integer  "min_age"
-    t.integer  "max_age"
-    t.integer  "grade_id"
-    t.integer  "room_parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
