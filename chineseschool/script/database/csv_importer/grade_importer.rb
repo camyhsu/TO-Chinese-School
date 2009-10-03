@@ -1,20 +1,9 @@
-require 'csv'
+require File.expand_path(File.dirname(__FILE__) + '/csv_importer')
 
-class GradeImporter
+class GradeImporter < CsvImporter
 
   def initialize(csv_file)
-    @csv_file = csv_file
-  end
-
-  def import
-    open(@csv_file) do |input_file|
-      counter = 0
-      CSV::Reader.parse(input_file) do |record|
-        save_one record
-        counter += 1
-      end
-      puts "#{counter} records imported"
-    end
+    super
   end
 
   def save_one(record)
@@ -25,5 +14,9 @@ class GradeImporter
     grade.short_name = record[3]
     grade.next_grade = record[4]
     grade.save
+  end
+
+  def print_counter(counter)
+    puts "#{counter} records imported for Grade"
   end
 end

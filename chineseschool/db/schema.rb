@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090924040809) do
+ActiveRecord::Schema.define(:version => 20091003181712) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -23,11 +23,46 @@ ActiveRecord::Schema.define(:version => 20090924040809) do
     t.datetime "updated_at"
   end
 
+  create_table "classes", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "location"
+    t.integer  "max_size"
+    t.integer  "min_age"
+    t.integer  "max_age"
+    t.integer  "grade_id"
+    t.integer  "room_parent_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "grades", :force => true do |t|
     t.string   "chinese_name"
     t.string   "english_name"
     t.string   "short_name"
     t.integer  "next_grade"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "people", :force => true do |t|
+    t.string   "english_last_name"
+    t.string   "english_first_name"
+    t.string   "chinese_name"
+    t.string   "gender"
+    t.integer  "birth_year"
+    t.integer  "birth_month"
+    t.string   "native_language"
+    t.integer  "address_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "school_years", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.date     "start_date"
+    t.date     "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

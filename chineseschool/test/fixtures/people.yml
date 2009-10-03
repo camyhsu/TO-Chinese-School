@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  english_last_name: MyString
+  english_first_name: MyString
+  chinese_name: MyString
+  gender: MyString
+  birth_year: 1
+  birth_month: 1
+  native_language: MyString
+
+two:
+  english_last_name: MyString
+  english_first_name: MyString
+  chinese_name: MyString
+  gender: MyString
+  birth_year: 1
+  birth_month: 1
+  native_language: MyString
