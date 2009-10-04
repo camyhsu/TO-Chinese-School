@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091003173930) do
+ActiveRecord::Schema.define(:version => 20091004171002) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -19,6 +19,21 @@ ActiveRecord::Schema.define(:version => 20091003173930) do
     t.string   "home_phone"
     t.string   "cell_phone"
     t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "classes", :force => true do |t|
+    t.string   "english_name"
+    t.string   "chinese_name"
+    t.string   "description"
+    t.string   "location"
+    t.integer  "max_size"
+    t.integer  "min_age"
+    t.integer  "max_age"
+    t.boolean  "active",         :default => true, :null => false
+    t.integer  "grade_id"
+    t.integer  "room_parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -45,11 +60,48 @@ ActiveRecord::Schema.define(:version => 20091003173930) do
     t.datetime "updated_at"
   end
 
+  create_table "rights", :force => true do |t|
+    t.string   "name"
+    t.string   "controller"
+    t.string   "action"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "rights_roles", :id => false, :force => true do |t|
+    t.integer  "right_id"
+    t.integer  "role_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "roles", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "roles_users", :id => false, :force => true do |t|
+    t.integer  "role_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "school_years", :force => true do |t|
     t.string   "name"
     t.string   "description"
     t.date     "start_date"
     t.date     "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "username"
+    t.string   "password_hash"
+    t.string   "password_salt"
+    t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

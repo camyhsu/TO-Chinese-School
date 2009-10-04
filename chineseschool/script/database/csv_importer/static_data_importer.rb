@@ -9,6 +9,6 @@ class StaticDataImporter
 
   def import
     GradeImporter.new("#{@data_base_dir}/grades.csv").import
-    #SchoolYearImporter.new("#{@data_base_dir}/school_years.csv").import
+    SchoolYearImporter.new("#{@data_base_dir}/school_years.csv").import
   end
 end
