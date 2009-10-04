@@ -23,21 +23,6 @@ ActiveRecord::Schema.define(:version => 20091004171002) do
     t.datetime "updated_at"
   end
 
-  create_table "classes", :force => true do |t|
-    t.string   "english_name"
-    t.string   "chinese_name"
-    t.string   "description"
-    t.string   "location"
-    t.integer  "max_size"
-    t.integer  "min_age"
-    t.integer  "max_age"
-    t.boolean  "active",         :default => true, :null => false
-    t.integer  "grade_id"
-    t.integer  "room_parent_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "grades", :force => true do |t|
     t.string   "chinese_name"
     t.string   "english_name"
@@ -84,6 +69,21 @@ ActiveRecord::Schema.define(:version => 20091004171002) do
   create_table "roles_users", :id => false, :force => true do |t|
     t.integer  "role_id"
     t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "school_classes", :force => true do |t|
+    t.string   "english_name"
+    t.string   "chinese_name"
+    t.string   "description"
+    t.string   "location"
+    t.integer  "max_size"
+    t.integer  "min_age"
+    t.integer  "max_age"
+    t.boolean  "active",         :default => true, :null => false
+    t.integer  "grade_id"
+    t.integer  "room_parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
