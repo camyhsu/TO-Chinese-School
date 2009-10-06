@@ -1,5 +1,12 @@
 # Be sure to restart your server when you modify this file
 
+# 
+# The following configurations are for bluehost production only
+# Uncomment them after deployment
+# 
+#ENV['GEM_PATH'] = '/home2/tocsorg/ruby/gems:/usr/lib/ruby/gems/1.8'
+#RAILS_ENV = 'production'
+
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.4' unless defined? RAILS_GEM_VERSION
 
