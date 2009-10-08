@@ -23,7 +23,7 @@ describe User do
     password = random_string 10
     salt = random_string 6
     expected_hash = Digest::SHA256.hexdigest(password + salt)
-    User.hash_password(password, salt).should eql(expected_hash)
+    User.hash_password(password, salt).should == expected_hash
   end
 
   it 'should create a new salt when setting a new password' do
@@ -37,7 +37,7 @@ describe User do
     password = random_string 10
     @user.password = password
     expected_hash = User.hash_password(password, @user.password_salt)
-    @user.password_hash.should eql(expected_hash)
+    @user.password_hash.should == expected_hash
   end
 end
 
