@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+first_grade:
+  id: 3
+  chinese_name: 一年級
+  english_name: 1st Grade
+  short_name: 1
+  next_grade: 4
+
+second_grade:
+  id: 4
+  chinese_name: 二年級
+  english_name: 2nd Grade
+  short_name: 2
+  next_grade: 5
