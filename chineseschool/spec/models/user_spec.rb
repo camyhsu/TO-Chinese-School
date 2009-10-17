@@ -1,24 +1,46 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe User do
+  fixtures :users
+
   before(:each) do
+    @valid_user_attributes = {
+      :username => random_string(8),
+      :password => random_string(10),
+      :person => Person.new
+    }
     @user = User.new
   end
   
   it 'should be invalid without a username' do
-    @user.person = Person.new
+    @user.attributes = @valid_user_attributes.except(:username)
     @user.should_not be_valid
     @user.username = random_string 8
     @user.should be_valid
   end
+
+  it 'should be invalid without a password' do
+    @user.attributes = @valid_user_attributes.except(:password)
+    @user.should_not be_valid
+    @user.password = random_string 12
+    @user.should be_valid
+  end
   
   it 'should be invalid without a person' do
-    @user.username = random_string 8
+    @user.attributes = @valid_user_attributes.except(:person)
     @user.should_not be_valid
     @user.person = Person.new
     @user.should be_valid
   end
 
+  it 'should be invalid with a username already taken' do
+    @user.attributes = @valid_user_attributes.except(:username)
+    @user.username = users(:one).username
+    @user.should_not be_valid
+    @user.username = 'username_not_used_yet'
+    @user.should be_valid
+  end
+  
   it 'should hash password using prescribed formula' do
     password = random_string 10
     salt = random_string 6
@@ -39,6 +61,11 @@ describe User do
     expected_hash = User.hash_password(password, @user.password_salt)
     @user.password_hash.should == expected_hash
   end
+end
+
+
+describe User, 'performing authentication' do
+  it 'should raise exception if username does not exist'
 end
 
 

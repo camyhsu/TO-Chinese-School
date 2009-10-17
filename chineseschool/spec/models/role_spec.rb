@@ -7,7 +7,5 @@ describe Role do
     }
   end
 
-  it "should create a new instance given valid attributes" do
-    Role.create!(@valid_attributes)
-  end
+  it "should create a new instance given valid attributes"
 end
