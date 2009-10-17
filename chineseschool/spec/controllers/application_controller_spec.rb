@@ -4,6 +4,7 @@ describe ApplicationController, 'enforcing ssl in production mode' do
   before(:each) do
     @saved_rails_env = RAILS_ENV
     RAILS_ENV = 'production'
+    @controller = TestController.new
   end
 
   after(:each) do
@@ -17,7 +18,7 @@ describe ApplicationController, 'enforcing ssl in production mode' do
 
   it 'should redirect to url with prescribed prefix' do
     get :index
-    response.should redirect_to('https://www.to-cs.org/chineseschool/application')
+    response.should redirect_to('https://www.to-cs.org/chineseschool/test')
   end
 
   it 'should not redirect when access through ssl' do
@@ -29,6 +30,10 @@ end
 
 
 describe ApplicationController, 'not enforcing ssl when not in production mode' do
+  before(:each) do
+    @controller = TestController.new
+  end
+
   it 'should not redirect' do
     get :index
     response.should_not be_redirect
@@ -39,5 +44,12 @@ end
 describe ApplicationController, 'not exposing protected method' do
   it 'should mark ssl_required as a protected method' do
     controller.protected_methods.should include('ssl_required')
+  end
+end
+
+
+class TestController < ApplicationController
+  def index
+    render :nothing => true
   end
 end
