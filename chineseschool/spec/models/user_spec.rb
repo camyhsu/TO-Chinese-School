@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
 describe User do
   fixtures :users
@@ -65,18 +65,24 @@ end
 
 
 describe User, 'performing authentication' do
-  it 'should raise exception if username does not exist'
+  fixtures :users
+  
+  it 'should return nil if username does not exist' do
+    User.authenticate('non_existing_username', 'fake_password').should be_nil
+  end
+
+  it 'should reutrn nil if password does not match' do
+    User.authenticate(users(:one).username, 'not_matching_password').should be_nil
+  end
+
+  it 'should return correct user if authentication is successful' do
+    User.authenticate(users(:one).username, 'test').should == users(:one)
+  end
 end
 
 
 class UserTestAccessor < User
-  def create_new_salt
-    super
-  end
-
-  def self.hash_password
-    super
-  end
+  public :create_new_salt
 end
 
 describe User, 'testing private methods' do

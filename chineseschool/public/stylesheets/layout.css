@@ -141,3 +141,34 @@ h1 {
 }
 
 
+.admin-form fieldset {
+    background: #efe;
+}
+
+.admin-form legend {
+    color: #dfd;
+    background: #141;
+    font-family: sans-serif;
+    padding: 0.2em 1em;
+}
+
+.admin-form label {
+    width: 6em;
+    float: left;
+    text-align: right;
+    padding-top: 0.2em;
+    margin-right: 0.1em;
+    display: block;
+}
+
+.admin-form select, .admin-form textarea, .admin-form input {
+    margin-left: 0.5em;
+}
+
+.admin-form .submit {
+    margin-left: 4em;
+}
+
+.admin-form div {
+    margin: 0.5em 0;
+}

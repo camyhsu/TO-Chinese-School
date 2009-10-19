@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
 describe ActionController::Routing::Routes, 'by default' do
   it 'should strip leading chineseschool path component when routing' do

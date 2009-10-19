@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require 'spec_helper'
 
 describe Admin::GradesController, 'displaying index' do
   before(:each) do
@@ -27,6 +27,6 @@ describe Admin::GradesController, 'displaying index' do
   end
 
   it 'should respond to routes' do
-    params_from(:get, '/chineseschool/admin/grades').should == { :controller => 'admin/grades', :action => 'index' }
+    { :get => '/chineseschool/admin/grades' }.should route_to( :controller => 'admin/grades', :action => 'index' )
   end
 end

@@ -20,6 +20,14 @@ class User < ActiveRecord::Base
     Digest::SHA256.hexdigest(password + salt)
   end
 
+
+  def self.authenticate(username, passwd)
+    user_found = User.find_by_username(username)
+    return nil if user_found.nil?
+    return nil if self.hash_password(passwd, user_found.password_salt) != user_found.password_hash
+    user_found
+  end
+
   
   private
   
