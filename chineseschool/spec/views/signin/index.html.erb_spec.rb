@@ -10,8 +10,12 @@ describe '/signin/index.html.erb' do
     response.should have_tag('legend', 1)
     response.should have_tag('legend', 'Please Sign In')
   end
+
+  it 'should have correct form action' do
+    response.should have_tag('form[action="/chineseschool/signin"]', 1)
+  end
   
-  it 'should have 3 div sections' do
+  it 'should have 3 div sections insdie the form' do
     response.should have_tag('form div', 3)
   end
 
