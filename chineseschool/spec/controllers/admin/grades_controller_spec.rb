@@ -13,9 +13,9 @@ describe Admin::GradesController, 'displaying index' do
 
   it 'should assign grades found' do
     get :index
-    assigns[:grades].should equal(@fake_grades)
+    assigns[:grades].should == @fake_grades
   end
-
+  
   it 'should be success' do
     get :index
     response.should be_success
@@ -26,7 +26,7 @@ describe Admin::GradesController, 'displaying index' do
     response.should render_template('admin/grades/index.html.erb')
   end
 
-  it 'should respond to routes' do
+  it 'should respond to correct route' do
     { :get => '/chineseschool/admin/grades' }.should route_to( :controller => 'admin/grades', :action => 'index' )
   end
 end

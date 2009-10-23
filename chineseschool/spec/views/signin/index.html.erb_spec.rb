@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe '/signin/index.html.erb' do
+describe '/signin/index' do
 
   before(:each) do
     render '/signin/index.html.erb'

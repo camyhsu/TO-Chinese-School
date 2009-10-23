@@ -14,7 +14,7 @@
     <%= image_tag '/images/tocs_logo.png' %>
   </div>
 
-<p style="color: green"><%= flash[:notice] %></p>
+<p id="flash-notice" style="color: red"><%= flash[:notice] %></p>
 
 <%= yield  %>
 

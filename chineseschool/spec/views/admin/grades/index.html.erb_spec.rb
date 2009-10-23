@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe '/admin/grades/index.html.erb' do
+describe '/admin/grades/index' do
   fixtures :grades
   
   before(:each) do
