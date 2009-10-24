@@ -24,6 +24,9 @@ class ApplicationController < ActionController::Base
   end
 
   def check_authentication
-    redirect_to :controller => '/signin', :action => 'index' unless session[:user_id]
+    unless session[:user_id]
+      session[:original_uri] = request.request_uri
+      redirect_to :controller => '/signin', :action => 'index'
+    end
   end
 end

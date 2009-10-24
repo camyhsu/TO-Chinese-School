@@ -50,12 +50,16 @@ describe ApplicationController, 'checking authentication' do
     response.should_not be_redirect
   end
 
+  it 'should keep the request uri in session if no user exists in session' do
+    get :index
+    session[:original_uri].should == '/chineseschool/test'
+  end
+
   it 'should redirect to signin if no user exists in session' do
     get :index
     response.should be_redirect
     response.should redirect_to(:controller => '/signin', :action => 'index')
   end
-
 
 end
 

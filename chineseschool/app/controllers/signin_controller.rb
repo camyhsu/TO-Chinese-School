@@ -7,7 +7,9 @@ class SigninController < ApplicationController
       user_found = User.authenticate(params[:username], params[:password])
       if user_found
         session[:user_id] = user_found.id
-        redirect_to(:controller => 'home', :action => 'index')
+        original_uri = session[:original_uri]
+        session[:original_uri] = nil
+        redirect_to(original_uri || { :controller => 'home', :action => 'index' })
       else
         flash.now[:notice] = 'Invalid username / password combination'
       end

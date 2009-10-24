@@ -26,8 +26,6 @@ describe SigninController, 'handling post request for singin' do
   before(:each) do
     @fake_username = random_string 8
     @fake_password = random_string 10
-    @fake_user = User.new
-    @fake_user.id = rand(10000)
   end
   
   it 'should authenticate username and password' do
@@ -36,20 +34,42 @@ describe SigninController, 'handling post request for singin' do
     #response.should be_success
   end
   
-  it 'should assign user id to session if authentication is successful' do
+  it 'should respond to correct route' do
+    { :post => '/chineseschool/signin' }.should route_to( :controller => 'signin', :action => 'index' )
+  end
+end
+
+
+describe SigninController, 'upon successful authentication for singin' do
+  before(:each) do
+    @fake_username = random_string 8
+    @fake_password = random_string 10
+    @fake_uri = '/' + random_string(5) + '/' + random_string(7)
+    @fake_user = User.new
+    @fake_user.id = rand(10000)
     User.expects(:authenticate).with(@fake_username, @fake_password).once.returns(@fake_user)
+  end
+  
+  it 'should assign user id to session' do
     post :index, :username => @fake_username, :password => @fake_password
     session[:user_id].should == @fake_user.id
   end
   
-  it 'should redirect to home page if authentication is successful' do
-    User.expects(:authenticate).with(@fake_username, @fake_password).once.returns(@fake_user)
+  it 'should redirect to home page if session does not contain original uri' do
     post :index, :username => @fake_username, :password => @fake_password
     response.should redirect_to(:controller => 'home', :action => 'index')
   end
   
-  it 'should respond to correct route' do
-    { :post => '/chineseschool/signin' }.should route_to( :controller => 'signin', :action => 'index' )
+  it 'should redirect to original uri if it exists in session' do
+    session[:original_uri] = @fake_uri
+    post :index, :username => @fake_username, :password => @fake_password
+    response.should redirect_to(@fake_uri)
+  end
+  
+  it 'should clear original uri out of session if it exists in session' do
+    session[:original_uri] = @fake_uri
+    post :index, :username => @fake_username, :password => @fake_password
+    session[:original_uri].should be_nil
   end
 end
 
