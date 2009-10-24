@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   
   before_filter :ssl_required
+  before_filter :check_authentication
   
 
   # Scrub sensitive parameters from your log
@@ -20,5 +21,9 @@ class ApplicationController < ActionController::Base
         redirect_to("https://www.to-cs.org" + request.request_uri) and return false
       end
     end
+  end
+
+  def check_authentication
+    redirect_to :controller => '/signin', :action => 'index' unless session[:user_id]
   end
 end

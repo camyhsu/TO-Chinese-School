@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Admin::GradesController, 'displaying index' do
   before(:each) do
+    stub_check_authentication_in @controller
     @fake_grades = []
     Grade.stubs(:find).with(:all).returns(@fake_grades)
   end

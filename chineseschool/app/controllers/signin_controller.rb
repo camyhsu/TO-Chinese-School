@@ -1,5 +1,7 @@
 class SigninController < ApplicationController
 
+  skip_before_filter :check_authentication
+  
   def index
     if request.post?
       user_found = User.authenticate(params[:username], params[:password])
