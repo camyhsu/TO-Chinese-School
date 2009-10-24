@@ -1,11 +1,6 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
-describe Role do
-  before(:each) do
-    @valid_attributes = {
-      :name => "value for name"
-    }
-  end
+describe Role, 'performing authorization' do
 
-  it "should create a new instance given valid attributes"
+  it 'should return true if the role is super user'
 end

@@ -60,7 +60,13 @@ describe ApplicationController, 'checking authentication' do
     response.should be_redirect
     response.should redirect_to(:controller => '/signin', :action => 'index')
   end
+end
 
+
+describe ApplicationController, 'checking authorization' do
+  before(:each) do
+    @controller = TestController.new
+  end
 end
 
 
@@ -71,6 +77,10 @@ describe ApplicationController, 'not exposing protected method' do
 
   it 'should mark check_authentication as a protected method' do
     controller.protected_methods.should include('check_authentication')
+  end
+
+  it 'should mark check_authorization as a protected method' do
+    controller.protected_methods.should include('check_authorization')
   end
 end
 

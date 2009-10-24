@@ -81,6 +81,32 @@ describe User, 'performing authentication' do
 end
 
 
+describe User, 'performing authorization' do
+  before(:each) do
+    @fake_controller_path = random_string 14
+    @fake_action_name = random_string 7
+    @user = User.new
+  end
+
+  it 'should return true if one of roles is authorized for access' do
+    mock_not_authorized_role = Role.new
+    mock_not_authorized_role.expects(:authorized?).with(@fake_controller_path, @fake_action_name).once.returns(false)
+    @user.roles << mock_not_authorized_role
+    mock_authorized_role = Role.new
+    mock_authorized_role.expects(:authorized?).with(@fake_controller_path, @fake_action_name).once.returns(true)
+    @user.roles << mock_authorized_role
+    @user.authorized?(@fake_controller_path, @fake_action_name).should be_true
+  end
+
+  it 'should return false if all roles are not authorized for access' do
+    mock_not_authorized_role = Role.new
+    mock_not_authorized_role.expects(:authorized?).with(@fake_controller_path, @fake_action_name).once.returns(false)
+    @user.roles << mock_not_authorized_role
+    @user.authorized?(@fake_controller_path, @fake_action_name).should be_false
+  end
+end
+
+
 class UserTestAccessor < User
   public :create_new_salt
 end

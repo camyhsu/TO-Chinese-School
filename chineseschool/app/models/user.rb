@@ -15,11 +15,15 @@ class User < ActiveRecord::Base
     create_new_salt
     self.password_hash = User.hash_password(passwd, self.password_salt)
   end
+
+  def authorized?(controller_path, action_name)
+    self.roles.any? { |role| role.authorized?(controller_path, action_name) }
+  end
+  
   
   def self.hash_password(password, salt)
     Digest::SHA256.hexdigest(password + salt)
   end
-
 
   def self.authenticate(username, passwd)
     user_found = User.find_by_username(username)
