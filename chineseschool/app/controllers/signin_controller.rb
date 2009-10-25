@@ -1,6 +1,6 @@
 class SigninController < ApplicationController
 
-  skip_before_filter :check_authentication
+  skip_before_filter :check_authentication, :check_authorization
   
   def index
     if request.post?

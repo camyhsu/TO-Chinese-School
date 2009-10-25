@@ -5,6 +5,11 @@ describe SignoutController do
     session[:user_id] = rand 1000
   end
 
+  it 'should not check authorization' do
+    controller.expects(:check_authorization).never
+    get :index
+  end
+
   it 'should clear the user id from session' do
     get :index
     session[:user_id].should be_nil

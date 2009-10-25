@@ -8,3 +8,7 @@ def random_string(length=10)
   length.times { random_string << chars[rand(chars.size)] }
   random_string
 end
+
+def random_uri
+  '/' + random_string(5) + '/' + random_string(7)
+end

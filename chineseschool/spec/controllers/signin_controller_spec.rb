@@ -1,5 +1,18 @@
 require 'spec_helper'
 
+describe SigninController do
+  it 'should not check authentication' do
+    controller.expects(:check_authentication).never
+    get :index
+  end
+
+  it 'should not check authorization' do
+    controller.expects(:check_authorization).never
+    get :index
+  end
+end
+
+
 describe SigninController, 'handling get request for signin' do
   it 'should be success' do
     get :index
@@ -44,7 +57,7 @@ describe SigninController, 'upon successful authentication for singin' do
   before(:each) do
     @fake_username = random_string 8
     @fake_password = random_string 10
-    @fake_uri = '/' + random_string(5) + '/' + random_string(7)
+    @fake_uri = random_uri
     @fake_user = User.new
     @fake_user.id = rand(10000)
     User.expects(:authenticate).with(@fake_username, @fake_password).once.returns(@fake_user)
