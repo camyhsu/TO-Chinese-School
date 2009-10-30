@@ -4,7 +4,6 @@ describe Admin::GradesController, 'displaying index' do
   before(:each) do
     stub_check_authentication_and_authorization_in @controller
     @fake_grades = []
-    Grade.stubs(:find).with(:all).returns(@fake_grades)
   end
 
   it 'should find all grades' do
@@ -13,6 +12,7 @@ describe Admin::GradesController, 'displaying index' do
   end
 
   it 'should assign grades found' do
+    Grade.expects(:find).with(:all).once.returns(@fake_grades)
     get :index
     assigns[:grades].should == @fake_grades
   end

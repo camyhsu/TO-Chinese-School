@@ -8,6 +8,10 @@ describe '/admin/grades/index' do
     render '/admin/grades/index.html.erb'
   end
 
+  it 'should set the page title variable for layout' do
+    assigns[:title].should == 'Grades'
+  end
+
   it 'should have a title in h1' do
     response.should have_tag('h1', 1)
     response.should have_tag('h1', 'Grades')

@@ -6,6 +6,10 @@ describe '/signin/index' do
     render '/signin/index.html.erb'
   end
 
+  it 'should set the page title variable for layout' do
+    assigns[:title].should == 'Sign In'
+  end
+
   it 'should have a form legend' do
     response.should have_tag('legend', 1)
     response.should have_tag('legend', 'Please Sign In')

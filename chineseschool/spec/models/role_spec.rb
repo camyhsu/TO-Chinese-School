@@ -1,5 +1,27 @@
 require 'spec_helper'
 
+describe Role do
+  fixtures :roles
+
+  before(:each) do
+    @role = Role.new
+  end
+
+  it 'should be invalid without a name' do
+    @role.should_not be_valid
+    @role.name = random_string 8
+    @role.should be_valid
+  end
+
+  it 'should be invalid with a name already taken' do
+    @role.name = roles(:instructor).name
+    @role.should_not be_valid
+    @role.name = 'name_not_used_yet'
+    @role.should be_valid
+  end
+end
+
+
 describe Role, 'performing authorization' do
   fixtures :roles
   

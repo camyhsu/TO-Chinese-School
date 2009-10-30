@@ -3,5 +3,5 @@
 super_user:
   name: Super User
 
-two:
-  name: MyString
+instructor:
+  name: Instructor

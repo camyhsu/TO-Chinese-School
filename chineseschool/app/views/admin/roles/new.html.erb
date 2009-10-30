@@ -1,0 +1,15 @@
+<% @title = 'Create Role' %>
+
+<h1><%= @title %></h1>
+
+<% form_for :role, :url => { :action => :create } do |form| %>
+  <%= form.error_messages %>
+
+  <p>
+  <%= form.label :name %>: <%= form.text_field :name %>
+  </p>
+
+  <div>
+  <%= submit_tag "Create Role" %>
+  </div>
+<% end %>

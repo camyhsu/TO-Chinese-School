@@ -5,6 +5,7 @@ describe '/layouts/application' do
     render '/layouts/application.html.erb'
     response.should have_tag('meta[http-equiv="content-type"][content="text/html;charset=UTF-8"]', 1)
   end
+  
   it 'should set the page title' do
     fake_page_title = random_string 10
     assigns[:title] = fake_page_title
