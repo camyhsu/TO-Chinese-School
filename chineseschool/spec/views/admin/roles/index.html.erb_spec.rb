@@ -4,17 +4,16 @@ describe '/admin/roles/index' do
   fixtures :roles
 
   before(:each) do
+    @page_title = 'Roles'
     assigns[:roles] = [ roles(:super_user), roles(:instructor) ]
     render '/admin/roles/index.html.erb'
   end
 
-  it 'should set the page title variable for layout' do
-    assigns[:title].should == 'Roles'
-  end
+  it_should_behave_like 'titled page'
 
   it 'should have a title in h1' do
     response.should have_tag('h1', 1)
-    response.should have_tag('h1', 'Roles')
+    response.should have_tag('h1', @page_title)
   end
 
   it 'should have column headers in html table' do

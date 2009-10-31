@@ -3,21 +3,15 @@ require 'spec_helper'
 describe '/signin/index' do
 
   before(:each) do
+    @page_title = 'Sign In'
+    @form_legend = 'Please Sign In'
+    @form_action_url = '/chineseschool/signin'
+    @submit_button_label = 'Sign In'
     render '/signin/index.html.erb'
   end
 
-  it 'should set the page title variable for layout' do
-    assigns[:title].should == 'Sign In'
-  end
-
-  it 'should have a form legend' do
-    response.should have_tag('legend', 1)
-    response.should have_tag('legend', 'Please Sign In')
-  end
-
-  it 'should have correct form action' do
-    response.should have_tag('form[action="/chineseschool/signin"]', 1)
-  end
+  it_should_behave_like 'titled page'
+  it_should_behave_like 'input form'
   
   it 'should have 3 div sections insdie the form' do
     response.should have_tag('form div', 3)
@@ -34,12 +28,6 @@ describe '/signin/index' do
     response.should have_tag('form div') do |divs|
       with_tag(divs[1], 'label', 'Password:')
       with_tag(divs[1], 'input#password[name="password"][type="password"]', 1)
-    end
-  end
-
-  it 'should have the submit button' do
-    response.should have_tag('form div') do |divs|
-      with_tag(divs[2], 'input[value="Sign In"][type="submit"]', 1)
     end
   end
 end

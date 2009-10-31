@@ -4,17 +4,16 @@ describe '/admin/grades/index' do
   fixtures :grades
   
   before(:each) do
+    @page_title = 'Grades'
     assigns[:grades] = [ grades(:first_grade), grades(:second_grade) ]
     render '/admin/grades/index.html.erb'
   end
 
-  it 'should set the page title variable for layout' do
-    assigns[:title].should == 'Grades'
-  end
+  it_should_behave_like 'titled page'
 
   it 'should have a title in h1' do
     response.should have_tag('h1', 1)
-    response.should have_tag('h1', 'Grades')
+    response.should have_tag('h1', @page_title)
   end
 
   it 'should have column headers in html table' do
