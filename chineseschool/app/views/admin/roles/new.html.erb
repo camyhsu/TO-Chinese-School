@@ -1,15 +1,18 @@
 <% @title = 'Create Role' %>
 
-<h1><%= @title %></h1>
+<div class="admin-form">
+  <% form_for :role, :url => { :action => :create } do |form| %>
+    <%= form.error_messages %>
 
-<% form_for :role, :url => { :action => :create } do |form| %>
-  <%= form.error_messages %>
-
-  <p>
-  <%= form.label :name %>: <%= form.text_field :name %>
-  </p>
-
-  <div>
-  <%= submit_tag "Create Role" %>
-  </div>
-<% end %>
+    <fieldset>
+      <legend><%= @title %></legend>
+      <div>
+        <%= form.label :name %>:
+        <%= form.text_field :name %>
+      </div>
+      <div>
+        <%= submit_tag "Save New Role" %>
+      </div>
+    </fieldset>
+  <% end %>
+</div>
