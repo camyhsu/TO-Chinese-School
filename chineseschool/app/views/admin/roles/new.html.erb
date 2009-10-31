@@ -1,9 +1,9 @@
 <% @title = 'Create Role' %>
 
 <div class="admin-form">
-  <% form_for :role, :url => { :action => :create } do |form| %>
-    <%= form.error_messages %>
+  <%= error_messages_for :role %>
 
+  <% form_for :role, :url => { :action => :create } do |form| %>
     <fieldset>
       <legend><%= @title %></legend>
       <div>
