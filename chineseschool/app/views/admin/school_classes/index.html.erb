@@ -1,0 +1,35 @@
+<% @title = 'School Classes' %>
+
+<h1><%= @title %></h1>
+
+<table border="1px">
+  <thead>
+    <tr>
+      <th>English Name</th>
+      <th>Chinese Name</th>
+      <th>Description</th>
+      <th>Location</th>
+      <th>Maximum Size</th>
+      <th>Minimum Age</th>
+      <th>Maximum Age</th>
+      <th>Active?</th>
+      <th>Grade</th>
+      <th>Room Parent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_classes.each do |school_class| -%>
+    <tr>
+      <td><%=h school_class.english_name %></td>
+      <td><%=h school_class.chinese_name %></td>
+      <td><%=h school_class.description %></td>
+      <td><%=h school_class.location %></td>
+      <td><%=h school_class.max_size %></td>
+      <td><%=h school_class.min_age %></td>
+      <td><%=h school_class.max_age %></td>
+      <td><%= convert_to_yes_no school_class.active %></td>
+      <td><%=h school_class.grade.chinese_name unless school_class.grade.nil? %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
