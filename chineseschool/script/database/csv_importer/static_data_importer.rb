@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/grade_importer')
 require File.expand_path(File.dirname(__FILE__) + '/school_year_importer')
+require File.expand_path(File.dirname(__FILE__) + '/school_class_importer')
 
 class StaticDataImporter
 
@@ -8,7 +9,8 @@ class StaticDataImporter
   end
 
   def import
-    GradeImporter.new("#{@data_base_dir}/grades.csv").import
-    SchoolYearImporter.new("#{@data_base_dir}/school_years.csv").import
+    #GradeImporter.new("#{@data_base_dir}/grades.csv").import
+    #SchoolYearImporter.new("#{@data_base_dir}/school_years.csv").import
+    SchoolClassImporter.new("#{@data_base_dir}/school_classes.csv").import
   end
 end
