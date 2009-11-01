@@ -1,11 +1,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  name: MyString
-  controller: MyString
-  action: MyString
+list_grades:
+  name: List Grades
+  controller: /admin/grades
+  action: index
 
-two:
-  name: MyString
-  controller: MyString
-  action: MyString
+create_role:
+  name: Create Role
+  controller: /admin/roles
+  action: create

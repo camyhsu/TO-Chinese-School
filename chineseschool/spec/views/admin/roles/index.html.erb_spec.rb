@@ -29,8 +29,8 @@ describe '/admin/roles/index' do
     response.should have_tag('tbody') do
       with_tag('tr', 2)
       with_tag('tr') do |tr_elements|
-        show_that_tr_contains_tds_for_grade tr_elements[0], :super_user
-        show_that_tr_contains_tds_for_grade tr_elements[1], :instructor
+        show_that_tr_contains_tds_for_role tr_elements[0], :super_user
+        show_that_tr_contains_tds_for_role tr_elements[1], :instructor
       end
     end
   end
@@ -39,7 +39,7 @@ describe '/admin/roles/index' do
     response.should have_tag('a[href="/chineseschool/admin/roles/new"]', 'Create Role')
   end
 
-  def show_that_tr_contains_tds_for_grade(tr_element, role)
+  def show_that_tr_contains_tds_for_role(tr_element, role)
     with_tag(tr_element, 'td') do
       with_tag('td', roles(role).name)
     end

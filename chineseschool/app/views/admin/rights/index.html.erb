@@ -1,0 +1,22 @@
+<% @title = 'Rights' %>
+
+<h1><%= @title %></h1>
+
+<table border="1px">
+  <thead>
+    <tr>
+      <th>Right Name</th>
+      <th>Controller Path</th>
+      <th>Action Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @rights.each do |right| -%>
+    <tr>
+      <td><%=h right.name %></td>
+      <td><%=h right.controller %></td>
+      <td><%=h right.action %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
