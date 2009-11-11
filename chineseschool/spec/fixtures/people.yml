@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+person_one:
+  id: 1001
+  english_last_name: Person
+  english_first_name: First
+  chinese_name: 
+  gender: M
+  birth_year: 1999
+  birth_month: 1
+  native_language: 
+
+person_two:
+  id: 1002
+  english_last_name: Person
+  english_first_name: Second
+  chinese_name: 
+  gender: F
+  birth_year: 2003
+  birth_month: 3
+  native_language: 
