@@ -17,7 +17,7 @@
     <% @people.each do |person| -%>
     <tr>
       <td><%=h person.chinese_name %></td>
-      <td><%=h(person.english_first_name + ' ' + person.english_last_name) %></td>
+      <td><%=h "#{person.english_first_name} #{person.english_last_name}" %></td>
       <td><%=h person.gender %></td>
       <td><%= person.birth_year %></td>
       <td><%= person.birth_month %></td>

@@ -40,7 +40,7 @@ describe "/registration/people/index" do
   def show_that_tr_contains_tds_for_person(tr_element, person)
     with_tag(tr_element, 'td') do
       with_tag('td', people(person).chinese_name)
-      with_tag('td', people(person).english_first_name + ' ' + people(person).english_last_name)
+      with_tag('td', "#{people(person).english_first_name} #{people(person).english_last_name}")
       with_tag('td', people(person).gender)
       with_tag('td', people(person).birth_year.to_s)
       with_tag('td', people(person).birth_month.to_s)
