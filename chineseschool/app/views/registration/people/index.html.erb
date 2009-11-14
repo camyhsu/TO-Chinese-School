@@ -1,0 +1,28 @@
+<% @title = 'People' %>
+
+<h1><%= @title %></h1>
+
+<table border="1px">
+  <thead>
+    <tr>
+      <th>Chinese Name</th>
+      <th>English Name</th>
+      <th>Gender</th>
+      <th>Birth Year</th>
+      <th>Birth Month</th>
+      <th>Native Language</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @people.each do |person| -%>
+    <tr>
+      <td><%=h person.chinese_name %></td>
+      <td><%=h(person.english_first_name + ' ' + person.english_last_name) %></td>
+      <td><%=h person.gender %></td>
+      <td><%= person.birth_year %></td>
+      <td><%= person.birth_month %></td>
+      <td><%=h person.native_language %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

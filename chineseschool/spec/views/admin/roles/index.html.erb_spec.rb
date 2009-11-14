@@ -17,12 +17,9 @@ describe '/admin/roles/index' do
   end
 
   it 'should have column headers in html table' do
-    response.should have_tag('thead') do
-      with_tag('tr') do
-        with_tag('th', 1)
-        with_tag('th', 'Role Name')
-      end
-    end
+    headers = []
+    headers << 'Role Name'
+    show_that_table_headers_exist_with headers
   end
 
   it 'should list all roles in an html table' do

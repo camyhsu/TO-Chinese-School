@@ -17,14 +17,11 @@ describe '/admin/grades/index' do
   end
 
   it 'should have column headers in html table' do
-    response.should have_tag('thead') do
-      with_tag('tr') do
-        with_tag('th', 3)
-        with_tag('th', 'Chinese Name')
-        with_tag('th', 'English Name')
-        with_tag('th', 'Short Name')
-      end
-    end
+    headers = []
+    headers << 'Chinese Name'
+    headers << 'English Name'
+    headers << 'Short Name'
+    show_that_table_headers_exist_with headers
   end
 
   it 'should list all grades in an html table' do

@@ -17,14 +17,11 @@ describe "/admin/rights/index" do
   end
 
   it 'should have column headers in html table' do
-    response.should have_tag('thead') do
-      with_tag('tr') do
-        with_tag('th', 3)
-        with_tag('th', 'Right Name')
-        with_tag('th', 'Controller Path')
-        with_tag('th', 'Action Name')
-      end
-    end
+    headers = []
+    headers << 'Right Name'
+    headers << 'Controller Path'
+    headers << 'Action Name'
+    show_that_table_headers_exist_with headers
   end
 
   it 'should list all roles in an html table' do

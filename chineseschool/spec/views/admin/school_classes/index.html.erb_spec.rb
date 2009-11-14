@@ -19,21 +19,18 @@ describe "/admin/school_classes/index" do
   end
 
   it 'should have column headers in html table' do
-    response.should have_tag('thead') do
-      with_tag('tr') do
-        with_tag('th', 10)
-        with_tag('th', 'English Name')
-        with_tag('th', 'Chinese Name')
-        with_tag('th', 'Description')
-        with_tag('th', 'Location')
-        with_tag('th', 'Maximum Size')
-        with_tag('th', 'Minimum Age')
-        with_tag('th', 'Maximum Age')
-        with_tag('th', 'Active?')
-        with_tag('th', 'Grade')
-        with_tag('th', 'Room Parent')
-      end
-    end
+    headers = []
+    headers << 'English Name'
+    headers << 'Chinese Name'
+    headers << 'Description'
+    headers << 'Location'
+    headers << 'Maximum Size'
+    headers << 'Minimum Age'
+    headers << 'Maximum Age'
+    headers << 'Active?'
+    headers << 'Grade'
+    headers << 'Room Parent'
+    show_that_table_headers_exist_with headers
   end
 
   it 'should list all school classes in an html table' do

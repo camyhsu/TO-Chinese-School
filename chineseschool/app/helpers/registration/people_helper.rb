@@ -1,0 +1,2 @@
+module Registration::PeopleHelper
+end
