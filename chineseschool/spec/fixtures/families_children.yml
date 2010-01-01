@@ -1,0 +1,6 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+join_one:
+  family_id: 1
+  child_id: 1003
+

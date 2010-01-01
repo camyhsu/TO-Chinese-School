@@ -1,11 +1,13 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  parent_one_id: 
+family_one:
+  id: 1
+  parent_one_id: 1001
   parent_two_id: 
   address_id: 1
 
-two:
+family_two:
+  id: 2
   parent_one_id: 
-  parent_two_id: 
+  parent_two_id: 1002
   address_id: 1

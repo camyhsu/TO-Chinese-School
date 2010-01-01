@@ -19,3 +19,13 @@ person_two:
   birth_year: 2003
   birth_month: 3
   native_language: 
+
+person_three:
+  id: 1003
+  english_last_name: Person
+  english_first_name: Third
+  chinese_name:
+  gender: F
+  birth_year: 2005
+  birth_month: 5
+  native_language:
