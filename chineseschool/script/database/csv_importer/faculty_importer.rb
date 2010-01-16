@@ -9,8 +9,10 @@ class FacultyImporter
 
   def import
     load_files
-    verify_data_integrity
-    return nil # turn of final dump of data in console
+    @faculty_records.each do |old_faculty_id, faculty_record|
+      process_one_record old_faculty_id, faculty_record
+    end
+    return nil # turn off final dump of data in console
   end
   
 
@@ -31,6 +33,11 @@ class FacultyImporter
       puts "record for 229 => " + @faculty_records['229'].inspect
       puts "record for 236 => " + @faculty_records['236'].inspect
     end
+  end
+
+  def process_one_record(old_faculty_id, faculty_record)
+    # find match by chinese name
+    #
   end
   
   def verify_data_integrity

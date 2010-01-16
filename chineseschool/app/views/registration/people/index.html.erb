@@ -11,6 +11,7 @@
       <th>Birth Year</th>
       <th>Birth Month</th>
       <th>Native Language</th>
+      <th>Family</th>
     </tr>
   </thead>
   <tbody>
@@ -22,6 +23,7 @@
       <td><%= person.birth_year %></td>
       <td><%= person.birth_month %></td>
       <td><%=h person.native_language %></td>
+      <td><%= link_to 'Link to Family', :action => 'links_to_families', :id => person.id %></td>
     </tr>
     <% end %>
   </tbody>
