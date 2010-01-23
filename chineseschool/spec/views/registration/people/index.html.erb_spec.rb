@@ -47,7 +47,7 @@ describe "/registration/people/index" do
       with_tag('td', people(person).birth_month.to_s)
       with_tag('td', people(person).native_language)
       with_tag('td') do
-        with_tag('a[href="/chineseschool/registration/people/links_to_families/' + people(person).id.to_s + '"]', 'Link to Family')
+        with_tag('a[href="/chineseschool/registration/people/find_families_for/' + people(person).id.to_s + '"]', 'Link to Family')
       end
     end
   end

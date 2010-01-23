@@ -2,11 +2,19 @@ require 'spec_helper'
 
 describe "/registration/families/show" do
   before(:each) do
+    @page_title = 'Family'
     render 'registration/families/show'
   end
 
-  #Delete this example and add some real ones or delete this file
-  it "should tell you where to find the file" do
-    response.should have_tag('p', %r[Find me in app/views/registration/families/show])
+  it_should_behave_like 'titled page'
+
+  it 'should have a title in h1' do
+    response.should have_tag('h1', 1)
+    response.should have_tag('h1', @page_title)
   end
+
+  it 'should show family information in a html table' do
+    
+  end
+  
 end
