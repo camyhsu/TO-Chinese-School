@@ -4,3 +4,10 @@ join_one:
   family_id: 1
   child_id: 1003
 
+join_two:
+  family_id: 3
+  child_id: 1006
+
+join_three:
+  family_id: 3
+  child_id: 1234

@@ -11,3 +11,9 @@ family_two:
   parent_one_id: 
   parent_two_id: 1002
   address_id: 1
+
+family_three:
+  id: 3
+  parent_one_id: 1004
+  parent_two_id: 1005
+  address_id: 1

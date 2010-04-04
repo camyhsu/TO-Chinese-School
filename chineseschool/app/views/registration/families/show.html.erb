@@ -1,3 +1,22 @@
 <% @title = 'Family' %>
 
 <h1><%= @title %></h1>
+
+<table border="1px">
+  <thead>
+    <tr>
+      <th>Parent One</th>
+      <th>Parent Two</th>
+      <th>Children</th>
+      <th>Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= h(@family.parent_one.name) if !@family.parent_one.nil? %></td>
+      <td><%= h(@family.parent_two.name) if !@family.parent_two.nil? %></td>
+      <td><%=h @family.children_names %></td>
+      <td><%=h @family.address.street_address %></td>
+    </tr>
+  </tbody>
+</table>

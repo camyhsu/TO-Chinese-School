@@ -5,7 +5,7 @@ describe "/registration/people/index" do
 
   before(:each) do
     @page_title = 'People'
-    assigns[:people] = [ people(:person_one), people(:person_two) ]
+    assigns[:people] = [ people(:person_three), people(:person_four) ]
     render '/registration/people/index.html.erb'
   end
 
@@ -32,8 +32,8 @@ describe "/registration/people/index" do
     response.should have_tag('tbody') do
       with_tag('tr', 2)
       with_tag('tr') do |tr_elements|
-        show_that_tr_contains_tds_for_person tr_elements[0], :person_one
-        show_that_tr_contains_tds_for_person tr_elements[1], :person_two
+        show_that_tr_contains_tds_for_person tr_elements[0], :person_three
+        show_that_tr_contains_tds_for_person tr_elements[1], :person_four
       end
     end
   end

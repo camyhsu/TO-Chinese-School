@@ -60,3 +60,38 @@ describe Registration::PeopleController, 'processing find families for one famil
     get :find_families_for, { :id => @fake_id }
   end
 end
+
+describe Registration::PeopleController, 'processing find families for two or more families' do
+  before(:each) do
+    stub_check_authentication_and_authorization_in @controller
+    @fake_id = rand 100
+    @fake_person = Person.new
+    @fake_family_one = Family.new
+    @fake_family_one.id = rand 100
+    @fake_family_two = Family.new
+    @fake_family_two.id = rand 100
+    @fake_families = [ @fake_family_one, @fake_family_two ]
+  end
+
+  it 'should find all families for the person' do
+    Person.expects(:find_by_id).with(@fake_id).once.returns(@fake_person)
+    @fake_person.expects(:families).once.returns(@fake_families)
+    invoke_find_families_for
+  end
+
+  it 'should redirect to family controller to show the list of linked families' do
+    Person.expects(:find_by_id).with(@fake_id).once.returns(@fake_person)
+    @fake_person.expects(:families).once.returns(@fake_families)
+    invoke_find_families_for
+    response.should be_redirect
+    response.should redirect_to(:controller => 'registration/families', :action => 'show_list', :id => id_array_for(@fake_families))
+  end
+
+  def invoke_find_families_for
+    get :find_families_for, { :id => @fake_id }
+  end
+
+  def id_array_for(families)
+    families.collect { |family| family.id }
+  end
+end
