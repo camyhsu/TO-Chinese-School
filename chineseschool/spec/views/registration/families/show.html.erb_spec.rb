@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "/registration/families/show" do
-  fixtures :families, :people, :families_children
+  fixtures :families, :people, :families_children, :addresses
   
   before(:each) do
     @page_title = 'Family'
