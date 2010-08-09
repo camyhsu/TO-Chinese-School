@@ -1,0 +1,24 @@
+<% @title = 'Register' %>
+
+<div class="account-form">
+  <% form_tag do %>
+    <fieldset>
+      <legend>Register For An Account</legend>
+      <div>
+        <label for="username">Create Username:</label>
+        <%= text_field_tag :username, params[:username] %>
+      </div>
+      <div>
+        <label for="password">Create Password:</label>
+        <%= password_field_tag :password, params[:password] %>
+      </div>
+      <div>
+        <label for="password_confirmation">Re-type Password:</label>
+        <%= password_field_tag :password_confirmation, params[:password_confirmation] %>
+      </div>
+      <div>
+        <%= submit_tag 'Register', :class => 'submit' %>
+      </div>
+    </fieldset>
+  <% end %>
+</div>

@@ -1,20 +1,26 @@
 <% @title = 'Sign In' %>
 
-<div class="admin-form">
+<div class="account-form">
   <% form_tag do %>
     <fieldset>
       <legend>Please Sign In</legend>
-      <div>
-        <label for="username">Username:</label>
-        <%= text_field_tag :username, params[:username] %>
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <%= password_field_tag :password, params[:password] %>
-      </div>
-      <div>
-        <%= submit_tag "Sign In" %>
-      </div>
+      <span class="signin">
+        <div>
+          <label for="username">Username:</label>
+          <%= text_field_tag :username, params[:username] %>
+        </div>
+        <div>
+          <label for="password">Password:</label>
+          <%= password_field_tag :password %>
+        </div>
+        <div>
+          <%= submit_tag 'Sign In', :class => 'submit' %>
+        </div>
+      </span>
     </fieldset>
   <% end %>
 </div>
+<br/>
+<span class="register-link">
+  <%= link_to 'No account yet?  Register here', :action => 'register' %>
+</span>

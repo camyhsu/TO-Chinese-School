@@ -31,14 +31,18 @@ class ApplicationController < ActionController::Base
   end
 
   def check_authorization
-    user = User.find(session[:user_id])
-    unless user.authorized?(controller_path, action_name)
+    find_user_in_session
+    unless @user.authorized?(controller_path, action_name)
       flash[:notice] = 'You are not authorized to view the page you requested'
       if request.env['HTTP_REFERER']
-        redirect_to :back and false
+        redirect_to :back and return false
       else
-        redirect_to :controller => '/home', :action => 'index' and false
+        redirect_to :controller => '/home', :action => 'index' and return false
       end
     end
+  end
+
+  def find_user_in_session
+    @user = User.find(session[:user_id])
   end
 end

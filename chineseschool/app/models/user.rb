@@ -19,6 +19,10 @@ class User < ActiveRecord::Base
   def authorized?(controller_path, action_name)
     self.roles.any? { |role| role.authorized?(controller_path, action_name) }
   end
+
+  def password_correct?(passwd)
+    User.hash_password(passwd, self.password_salt) == self.password_hash
+  end
   
   
   def self.hash_password(password, salt)
@@ -26,7 +30,7 @@ class User < ActiveRecord::Base
   end
 
   def self.authenticate(username, passwd)
-    user_found = User.find_by_username(username)
+    user_found = self.find_by_username(username)
     return nil if user_found.nil?
     return nil if self.hash_password(passwd, user_found.password_salt) != user_found.password_hash
     user_found

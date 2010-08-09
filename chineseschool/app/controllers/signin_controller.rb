@@ -15,4 +15,8 @@ class SigninController < ApplicationController
       end
     end
   end
+
+  def register
+    
+  end
 end

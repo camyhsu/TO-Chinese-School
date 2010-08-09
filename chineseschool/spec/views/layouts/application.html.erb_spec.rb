@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe '/layouts/application' do
+  before(:each) do
+    stub_find_user_in_session_for_view
+  end
+  
   it 'should set the content type' do
     render '/layouts/application.html.erb'
     response.should have_tag('meta[http-equiv="content-type"][content="text/html;charset=UTF-8"]', 1)
@@ -30,10 +34,10 @@ describe '/layouts/application' do
     end
   end
   
-  it 'should have flash notice in red' do
+  it 'should have flash notice' do
     fake_flash_notice = random_string 15
     flash[:notice] = fake_flash_notice
     render '/layouts/application.html.erb'
-    response.should have_tag('p#flash-notice[style="color: red"]', fake_flash_notice)
+    response.should have_tag('p#flash-notice', fake_flash_notice)
   end
 end

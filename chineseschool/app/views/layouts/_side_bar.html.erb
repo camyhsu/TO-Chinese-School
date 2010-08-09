@@ -1,0 +1,14 @@
+<!-- Top Bar -->
+    <div id="side-bar">
+      <span class="welcome-text">Welcome, <br/>
+      <%= @user.person.name %></span>
+      <br/>
+      <br/>
+      <%= link_to 'Home', :controller => '/home', :action => 'index' %>
+      <br/>
+      <br/>
+      <%= link_to 'Change Password', :controller => '/home', :action => 'change_password' %>
+      <br/>
+      <br/>
+      <%= link_to 'Sign Out', :controller => '/signout', :action => 'index' %>
+    </div>

@@ -1,10 +1,44 @@
 /* Global styles */
 
 h1 {
-        font:  150% sans-serif;
-        color: #226;
-        border-bottom: 3px dotted #77d;
+    font:  150% sans-serif;
+    color: #226;
+    border-bottom: 3px dotted #77d;
 }
+
+#top-bar {
+    padding-bottom: 4ex;
+}
+
+#side-bar {
+    float: left;
+    padding-top: 1em;
+    padding-left: 1em;
+    padding-bottom: 1em;
+    width: 12em;
+    background: #141;
+}
+
+#side-bar .welcome-text {
+    color: #bfb;
+}
+
+#side-bar a {
+    color: #bfb;
+    font-size: small;
+}
+
+#main {
+    margin-left: 13em;
+    padding-left: 2em;
+    background: white;
+}
+
+#flash-notice {
+    color: red;
+    font-weight: bold;
+}
+
 
 /* Styles for products/index */
 
@@ -140,19 +174,26 @@ h1 {
   list-style: square;
 }
 
-
-.admin-form fieldset {
+.account-form fieldset {
     background: #efe;
 }
 
-.admin-form legend {
+.account-form legend {
     color: #dfd;
     background: #141;
     font-family: sans-serif;
     padding: 0.2em 1em;
 }
 
-.admin-form label {
+.account-form select, .account-form input {
+    margin-left: 0.5em;
+}
+
+.account-form div {
+    margin: 0.5em 0;
+}
+
+.signin label {
     width: 6em;
     float: left;
     text-align: right;
@@ -160,14 +201,29 @@ h1 {
     display: block;
 }
 
-.admin-form select, .admin-form textarea, .admin-form input {
-    margin-left: 0.5em;
+.signin .submit {
+    margin-left: 8em;
 }
 
-.admin-form .submit {
-    margin-left: 4em;
+.register-link a {
+    margin-left: 1em;
+    color: green;
 }
 
-.admin-form div {
-    margin: 0.5em 0;
+.register-link a:hover {
+    background: white;
+    color: red;
+}
+
+
+.change-password label {
+    width: 14em;
+    float: left;
+    text-align: right;
+    margin-right: 0.1em;
+    display: block;
+}
+
+.change-password .submit {
+    margin-left: 17em;
 }

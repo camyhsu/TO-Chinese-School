@@ -6,5 +6,4 @@ class SignoutController < ApplicationController
     session[:user_id] = nil
     redirect_to(:controller => 'signin', :action => 'index')
   end
-
 end
