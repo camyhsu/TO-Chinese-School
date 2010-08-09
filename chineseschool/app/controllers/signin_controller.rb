@@ -32,7 +32,8 @@ class SigninController < ApplicationController
         # 
         # This is a temporary guard to allow only Wanlin and Linda to register accounts
         #
-        if person_found.id != 938 or person_found.id != 477
+        puts "Person found with id => #{person_found.id}"
+        if person_found.id != 938 and person_found.id != 477
           flash.now[:notice] = 'System temporarily closed to public - please register account later' and return
         end
         
