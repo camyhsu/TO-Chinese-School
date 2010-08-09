@@ -1,21 +1,48 @@
 <% @title = 'Register' %>
 
 <div class="account-form">
+  <%= error_messages_for :user %>
+
   <% form_tag do %>
     <fieldset>
       <legend>Register For An Account</legend>
       <span class="register">
         <div>
-          <label for="username">Create Username:</label>
+          We can only accept people who are staff members on record to register new accounts.<br/>
+          Please verify your identity against existing records with Chinese School:
+        </div>
+        <div>
+          <label for="english_first_name">English First Name:</label>
+          <%= text_field_tag :english_first_name, params[:english_first_name] %>
+        </div>
+        <div>
+          <label for="english_last_name">English Last Name:</label>
+          <%= text_field_tag :english_last_name, params[:english_last_name] %>
+        </div>
+        <div>
+          <label for="email">Email Address:</label>
+          <%= text_field_tag :email, params[:email] %>
+        </div>
+        <div>
+          <label for="phone_number">Phone Number:</label>
+          <%= text_field_tag :phone_number, params[:phone_number] %>
+          home phone number or mobile phone number
+        </div>
+        <br/>
+        <div>
+          Please create your account username and password:
+        </div>
+        <div>
+          <label for="username">Username:</label>
           <%= text_field_tag :username, params[:username] %>
         </div>
         <div>
-          <label for="password">Create Password:</label>
-          <%= password_field_tag :password, params[:password] %>
+          <label for="password">Password:</label>
+          <%= password_field_tag :password %>
         </div>
         <div>
           <label for="password_confirmation">Re-type Password:</label>
-          <%= password_field_tag :password_confirmation, params[:password_confirmation] %>
+          <%= password_field_tag :password_confirmation %>
         </div>
         <div>
           <%= submit_tag 'Register', :class => 'submit' %>
@@ -24,3 +51,7 @@
     </fieldset>
   <% end %>
 </div>
+<br/>
+<span class="register-link">
+  <%= link_to 'Back to Sign In', :action => 'index' %>
+</span>
