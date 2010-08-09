@@ -12,8 +12,11 @@ class HomeController < ApplicationController
       if @user.password_correct?(params[:current_password])
         if params[:new_password] == params[:new_password_confirmation]
           @user.password = params[:new_password]
-          @user.save!
-          flash.now[:notice] = 'Password changed successfully'
+          if @user.save
+            flash.now[:notice] = 'Password changed successfully'
+          else
+
+          end
         else
           flash.now[:notice] = 'New Password does not match confirmation re-typed'
         end

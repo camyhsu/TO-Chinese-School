@@ -25,6 +25,22 @@ describe User do
     @user.password = random_string 12
     @user.should be_valid
   end
+
+  it 'should be invalid with a blank password' do
+    @user.attributes = @valid_user_attributes.except(:password)
+    @user.password = ''
+    @user.should_not be_valid
+    @user.password = random_string 12
+    @user.should be_valid
+  end
+
+  it 'should be invalid with a password shorter than 6 characters' do
+    @user.attributes = @valid_user_attributes.except(:password)
+    @user.password = random_string 5
+    @user.should_not be_valid
+    @user.password = random_string 6
+    @user.should be_valid
+  end
   
   it 'should be invalid without a person' do
     @user.attributes = @valid_user_attributes.except(:person)
