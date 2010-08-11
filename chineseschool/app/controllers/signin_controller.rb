@@ -39,6 +39,12 @@ class SigninController < ApplicationController
         
         @user = User.new(:username => params[:username], :person => person_found)
         @user.password = params[:password]
+
+        #
+        # Again temporary - give the user created the role of Registration Officer
+        #
+        @user.roles << Role.find_by_name('Registration Officer')
+
         if @user.save
           flash[:notice] = 'Account successfully registered'
           redirect_to :action => 'index'
