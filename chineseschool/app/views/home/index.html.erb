@@ -2,9 +2,14 @@
 
 <h3>Under Construction!!</h3>
 
+User has roles => <% @user.roles.each do |role| %> <%= h(role.name) %> <% end %>
+
+<br/>
 <br/>
 <%= link_to 'List all people on record', :controller => '/registration/people', :action => 'index' %>
 <br/>
+<br/>
 <%= link_to 'List all school classes', :controller => '/admin/school_classes', :action => 'index' %>
+<br/>
 <br/>
 <%= link_to 'List all grades', :controller => '/admin/grades', :action => 'index' %>
