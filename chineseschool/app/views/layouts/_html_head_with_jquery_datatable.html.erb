@@ -1,0 +1,15 @@
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<title><%= page_title %></title>
+<%= stylesheet_link_tag 'scaffold', 'layout', 'jquery_datatable' %>
+
+<%= javascript_include_tag 'jquery-1.4.2.min', 'jquery.dataTables-1.7.0.min' %>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    $('#jquery-datatable').dataTable({
+      "bProcessing": true,
+      "iDisplayLength": 25,
+      "sPaginationType": "full_numbers"
+    });
+  } );
+</script>
