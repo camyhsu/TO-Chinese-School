@@ -31,11 +31,7 @@ describe '/admin/roles/index' do
       end
     end
   end
-
-  it 'should have a create role link' do
-    response.should have_tag('a[href="/chineseschool/admin/roles/new"]', 'Create Role')
-  end
-
+  
   def show_that_tr_contains_tds_for_role(tr_element, role)
     with_tag(tr_element, 'td') do
       with_tag('td', roles(role).name)

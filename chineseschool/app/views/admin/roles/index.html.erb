@@ -12,13 +12,10 @@
     <% @roles.each do |role| -%>
     <tr>
       <td><%=h role.name %></td>
+      <td><%= link_to 'Show Details', :action => 'show', :id => role %></td>
     </tr>
     <% end %>
   </tbody>
 </table>
 
 <br/>
-
-<div>
-  <%= link_to 'Create Role', :action => 'new' %>
-</div>

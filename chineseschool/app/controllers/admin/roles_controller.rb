@@ -6,16 +6,20 @@ class Admin::RolesController < ApplicationController
     @roles = Role.find(:all)
   end
 
-  def new
-    @role = Role.new
-  end
+#  def new
+#    @role = Role.new
+#  end
+#
+#  def create
+#    @role = Role.new(params[:role])
+#    if @role.save
+#      redirect_to :action => 'index'
+#    else
+#      render :action => 'new'
+#    end
+#  end
 
-  def create
-    @role = Role.new(params[:role])
-    if @role.save
-      redirect_to :action => 'index'
-    else
-      render :action => 'new'
-    end
+  def show
+    @role = Role.find(params[:id])
   end
 end

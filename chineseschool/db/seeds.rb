@@ -25,12 +25,16 @@ create_role(ROLE_NAME_INSTRUCTOR)
 # Create rights
 #
 Right.delete_all
-list_school_classes = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
 list_grades = Right.create(:name => 'List Grades', :controller => 'admin/grades', :action => 'index')
+list_school_classes = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
+
+list_people = Right.create(:name => 'List People', :controller => 'registration/people', :action => 'index')
 
 #
 # Assign rights to Registration Officer
 #
 registration_officer = Role.find_by_name(ROLE_NAME_REGISTRATION_OFFICER)
-registration_officer.rights << list_school_classes
 registration_officer.rights << list_grades
+registration_officer.rights << list_school_classes
+
+registration_officer.rights << list_people
