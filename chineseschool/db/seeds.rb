@@ -29,6 +29,7 @@ grades_index = Right.create(:name => 'List Grades', :controller => 'admin/grades
 school_classes_index = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
 
 people_index = Right.create(:name => 'List People', :controller => 'registration/people', :action => 'index')
+people_show = Right.create(:name => 'Show Person Details', :controller => 'registration/people', :action => 'show')
 people_find_family_for = Right.create(:name => 'Find The Family For A Person', :controller => 'registration/people', :action => 'find_families_for')
 
 family_show = Right.create(:name => 'Show Family Details', :controller => 'registration/families', :action => 'show')
@@ -42,6 +43,7 @@ registration_officer.rights << grades_index
 registration_officer.rights << school_classes_index
 
 registration_officer.rights << people_index
+registration_officer.rights << people_show
 registration_officer.rights << people_find_family_for
 
 registration_officer.rights << family_show

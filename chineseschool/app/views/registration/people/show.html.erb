@@ -1,0 +1,20 @@
+<% @title = 'Person Details' %>
+
+<table class="details-table" border="1px">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Gender</th>
+      <th>Birth</th>
+      <th>Native Language</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%=h @person.name %></td>
+      <td><%=h @person.gender %></td>
+      <td><%=h @person.birth_info %></td>
+      <td><%=h @person.native_language %></td>
+    </tr>
+  </tbody>
+</table>

@@ -4,6 +4,10 @@ class Registration::PeopleController < ApplicationController
     @people = Person.find(:all)
   end
 
+  def show
+    @person = Person.find_by_id(params[:id].to_i)
+  end
+
   def find_families_for
     person = Person.find_by_id(params[:id].to_i)
     families = person.families
