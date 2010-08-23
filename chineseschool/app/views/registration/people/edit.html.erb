@@ -6,35 +6,8 @@
   <% form_for :person do |form| %>
     <fieldset>
         <legend>Edit Person</legend>
-        <span class="new-family">
-          <div>
-            <label for="english_last_name">English Last Name:</label>
-            <%= form.text_field :english_last_name, :size => 20 %>
-          </div>
-          <div>
-            <label for="english_first_name">English First Name:</label>
-            <%= form.text_field :english_first_name, :size => 20 %>
-          </div>
-          <div>
-            <label for="chinese_name">Chinese Name:</label>
-            <%= form.text_field :chinese_name, :size => 8 %>
-          </div>
-          <div>
-            <label for="gender"><span style="color:red">*&nbsp;</span>Gender:</label>
-            <%= form.select :gender, %w{M F} %>
-          </div>
-          <div>
-            <label for="birth_year"><span style="color:red">*&nbsp;</span>Birth Year:</label>
-            <%= form.text_field :birth_year, :size => 4 %>
-          </div>
-          <div>
-            <label for="birth_month"><span style="color:red">*&nbsp;</span>Birth Month:</label>
-            <%= form.select :birth_month, (1..12) %>
-          </div>
-          <div>
-            <label for="native_language">Native Language:</label>
-            <%= form.text_field :native_language, :size => 20 %>
-          </div>
+        <span class="person-edit">
+          <%= render :partial => 'person_form', :object => form %>
           <span style="color:red">*&nbsp;</span>Required Field
           <div>
             <%= submit_tag 'Save', :class => 'submit' %>

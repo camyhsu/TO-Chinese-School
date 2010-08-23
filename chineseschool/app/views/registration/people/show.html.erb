@@ -3,19 +3,12 @@
 <table class="details-table" border="1px">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Gender</th>
-      <th>Birth</th>
-      <th>Native Language</th>
-      <th></th>
+      <%= render :partial => 'person_tablehead' %>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><%=h @person.name %></td>
-      <td><%=h @person.gender %></td>
-      <td><%=h @person.birth_info %></td>
-      <td><%=h @person.native_language %></td>
+      <%= render :partial => 'person' %>
       <td><%= link_to 'Edit', :action => :edit, :id => @person.id %></td>
     </tr>
   </tbody>

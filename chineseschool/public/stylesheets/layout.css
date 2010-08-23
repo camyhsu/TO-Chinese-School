@@ -146,7 +146,7 @@ h1 {
     margin-left: 17em;
 }
 
-.new-family label {
+.person-edit label {
     width: 11em;
     float: left;
     text-align: right;
@@ -154,7 +154,7 @@ h1 {
     display: block;
 }
 
-.new-family .submit {
+.person-edit .submit {
     margin-left: 14em;
 }
 

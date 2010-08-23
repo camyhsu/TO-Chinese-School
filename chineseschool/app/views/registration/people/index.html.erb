@@ -3,24 +3,13 @@
 <table id="jquery-datatable" border="1px">
   <thead>
     <tr>
-      <th>Chinese Name</th>
-      <th>English Name</th>
-      <th>Gender</th>
-      <th>Birth Year</th>
-      <th>Birth Month</th>
-      <th>Native Language</th>
-      <th></th>
+      <%= render :partial => 'person_tablehead' %>
     </tr>
   </thead>
   <tbody>
     <% @people.each do |person| -%>
     <tr>
-      <td><%=h person.chinese_name %></td>
-      <td><%=h "#{person.english_first_name} #{person.english_last_name}" %></td>
-      <td><%=h person.gender %></td>
-      <td><%= person.birth_year %></td>
-      <td><%= person.birth_month %></td>
-      <td><%=h person.native_language %></td>
+      <%= render :partial => 'person', :object => person %>
       <td><%= link_to 'More Details', :action => :show, :id => person.id %></td>
     </tr>
     <% end %>
