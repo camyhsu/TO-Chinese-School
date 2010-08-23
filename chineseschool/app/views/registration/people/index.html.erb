@@ -21,7 +21,7 @@
       <td><%= person.birth_year %></td>
       <td><%= person.birth_month %></td>
       <td><%=h person.native_language %></td>
-      <td><%= link_to 'More Details', :action => 'show', :id => person.id %></td>
+      <td><%= link_to 'More Details', :action => :show, :id => person.id %></td>
     </tr>
     <% end %>
   </tbody>

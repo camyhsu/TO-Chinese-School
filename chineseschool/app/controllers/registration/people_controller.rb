@@ -8,6 +8,18 @@ class Registration::PeopleController < ApplicationController
     @person = Person.find_by_id(params[:id].to_i)
   end
 
+  def edit
+    if request.post?
+      @person = Person.find_by_id(params[:id].to_i)
+      if @person.update_attributes(params[:person])
+        flash[:notice] = 'Person updated successfully'
+        redirect_to :action => :show, :id => @person.id
+      end
+    else
+      @person = Person.find_by_id(params[:id].to_i)
+    end
+  end
+
   def find_families_for
     person = Person.find_by_id(params[:id].to_i)
     families = person.families

@@ -7,6 +7,7 @@
       <th>Gender</th>
       <th>Birth</th>
       <th>Native Language</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -15,6 +16,7 @@
       <td><%=h @person.gender %></td>
       <td><%=h @person.birth_info %></td>
       <td><%=h @person.native_language %></td>
+      <td><%= link_to 'Edit', :action => :edit, :id => @person.id %></td>
     </tr>
   </tbody>
 </table>
