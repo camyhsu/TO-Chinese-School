@@ -19,7 +19,7 @@ describe "/registration/people/index" do
     headers << 'Birth Year'
     headers << 'Birth Month'
     headers << 'Native Language'
-    headers << 'Family'
+    headers << ''
     show_that_table_headers_exist_with headers
   end
 
@@ -42,7 +42,7 @@ describe "/registration/people/index" do
       with_tag('td', people(person).birth_month.to_s)
       with_tag('td', people(person).native_language)
       with_tag('td') do
-        with_tag('a[href="/chineseschool/registration/people/find_families_for/' + people(person).id.to_s + '"]', 'Link to Family')
+        with_tag('a[href="/chineseschool/registration/people/show/' + people(person).id.to_s + '"]', 'More Details')
       end
     end
   end
