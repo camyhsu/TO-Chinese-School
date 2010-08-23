@@ -238,3 +238,15 @@ h1 {
 .register .submit {
     margin-left: 17em;
 }
+
+.new-family label {
+    width: 11em;
+    float: left;
+    text-align: right;
+    margin-right: 0.1em;
+    display: block;
+}
+
+.new-family .submit {
+    margin-left: 14em;
+}

@@ -13,3 +13,6 @@ User has roles => <% @user.roles.each do |role| %> <%= h(role.name) %> <% end %>
 <br/>
 <br/>
 <%= link_to 'List all grades', :controller => '/admin/grades', :action => 'index' %>
+<br/>
+<br/>
+<%= link_to 'Create a new family', :controller => '/registration/families', :action => 'new' %>

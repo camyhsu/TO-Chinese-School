@@ -1,0 +1,82 @@
+<% @title = 'Create Family' %>
+
+<div class="account-form">
+  <%= error_messages_for :address, :parent_one, :object_name => 'family' %>
+
+  <% form_for :address do |form| %>
+    <fieldset>
+      <legend>New Family</legend>
+      <span class="new-family">
+        <div>
+          Family Address:
+        </div>
+        <div>
+          <label for="street"><span style="color:red">*&nbsp;</span>Street:</label>
+          <%= form.text_field :street, :size => 60 %>
+        </div>
+        <div>
+          <label for="city"><span style="color:red">*&nbsp;</span>City:</label>
+          <%= form.text_field :city, :size => 25 %>
+        </div>
+        <div>
+          <label for="state">State:</label>
+          <%= form.select :state, %w{CA} %>
+        </div>
+        <div>
+          <label for="zipcode"><span style="color:red">*&nbsp;</span>Zipcode:</label>
+          <%= form.text_field :zipcode, :size => 5 %>
+        </div>
+        <div>
+          <label for="home_phone"><span style="color:red">*&nbsp;</span>Home Phone:</label>
+          <%= form.text_field :home_phone, :size => 15 %>
+        </div>
+        <div>
+          <label for="cell_phone">Cell Phone:</label>
+          <%= form.text_field :cell_phone, :size => 15 %>
+        </div>
+        <div>
+          <label for="email">Email:</label>
+          <%= form.text_field :email, :size => 40 %>
+        </div>
+        <br/>
+        <div>
+          Parent One of the family:
+        </div>
+        <% fields_for :parent_one do |parent_one| %>
+        <div>
+          <label for="english_last_name">English Last Name:</label>
+          <%= parent_one.text_field :english_last_name, :size => 20 %>
+        </div>
+        <div>
+          <label for="english_first_name">English First Name:</label>
+          <%= parent_one.text_field :english_first_name, :size => 20 %>
+        </div>
+        <div>
+          <label for="chinese_name">Chinese Name:</label>
+          <%= parent_one.text_field :chinese_name, :size => 8 %>
+        </div>
+        <div>
+          <label for="gender"><span style="color:red">*&nbsp;</span>Gender:</label>
+          <%= parent_one.select :gender, %w{M F} %>
+        </div>
+        <div>
+          <label for="birth_year"><span style="color:red">*&nbsp;</span>Birth Year:</label>
+          <%= parent_one.text_field :birth_year, :size => 4 %>
+        </div>
+        <div>
+          <label for="birth_month"><span style="color:red">*&nbsp;</span>Birth Month:</label>
+          <%= parent_one.select :birth_month, (1..12) %>
+        </div>
+        <div>
+          <label for="native_language">Native Language:</label>
+          <%= parent_one.text_field :native_language, :size => 20 %>
+        </div>
+        <% end %>
+        <span style="color:red">*&nbsp;</span>Required Field
+        <div>
+          <%= submit_tag 'Create', :class => 'submit' %>
+        </div>
+      </span>
+    </fieldset>
+  <% end %>
+</div>

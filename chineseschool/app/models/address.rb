@@ -1,5 +1,21 @@
 class Address < ActiveRecord::Base
 
+  validates_presence_of :street, :city, :state, :zipcode, :home_phone
+
+  validates_numericality_of :zipcode, :only_integer => true, :less_than => 100000
+  validates_numericality_of :home_phone, :only_integer => true
+  validates_numericality_of :cell_phone, :only_integer => true, :allow_blank => true
+
+
+  def home_phone=(phone)
+    write_attribute(:home_phone, clean_number(phone))
+  end
+
+  def cell_phone=(phone)
+    write_attribute(:cell_phone, clean_number(phone))
+  end
+
+
   def street_address
     "#{street}, #{city}, #{state} #{zipcode}"
   end

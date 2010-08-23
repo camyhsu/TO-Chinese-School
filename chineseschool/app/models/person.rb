@@ -2,6 +2,14 @@ class Person < ActiveRecord::Base
 
   belongs_to :address
 
+  validates_presence_of :gender, :birth_year, :birth_month
+
+  validates_numericality_of :birth_year, :only_integer => true, :greater_than => 1900, :less_than => Time.now.year
+  validates_numericality_of :birth_month, :only_integer => true, :greater_than => 0, :less_than => 13
+
+  validate :name_is_not_blank
+
+
   def name
     "#{chinese_name}(#{english_first_name} #{english_last_name})"
   end
@@ -28,5 +36,13 @@ class Person < ActiveRecord::Base
     people_found_by_name.find_all do |person|
       person.email_and_phone_number_correct? email, phone_number
     end
+  end
+
+  private
+  
+  def name_is_not_blank
+    return unless self.english_first_name.blank? or self.english_last_name.blank?
+    return unless self.chinese_name.blank?
+    errors.add_to_base('Engilsh Name or Chinese Name is required')
   end
 end

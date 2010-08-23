@@ -25,16 +25,24 @@ create_role(ROLE_NAME_INSTRUCTOR)
 # Create rights
 #
 Right.delete_all
-list_grades = Right.create(:name => 'List Grades', :controller => 'admin/grades', :action => 'index')
-list_school_classes = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
+grades_index = Right.create(:name => 'List Grades', :controller => 'admin/grades', :action => 'index')
+school_classes_index = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
 
-list_people = Right.create(:name => 'List People', :controller => 'registration/people', :action => 'index')
+people_index = Right.create(:name => 'List People', :controller => 'registration/people', :action => 'index')
+people_find_family_for = Right.create(:name => 'Find The Family For A Person', :controller => 'registration/people', :action => 'find_families_for')
+
+family_show = Right.create(:name => 'Show Family Details', :controller => 'registration/families', :action => 'show')
+family_new = Right.create(:name => 'Create New Family', :controller => 'registration/families', :action => 'new')
 
 #
 # Assign rights to Registration Officer
 #
 registration_officer = Role.find_by_name(ROLE_NAME_REGISTRATION_OFFICER)
-registration_officer.rights << list_grades
-registration_officer.rights << list_school_classes
+registration_officer.rights << grades_index
+registration_officer.rights << school_classes_index
 
-registration_officer.rights << list_people
+registration_officer.rights << people_index
+registration_officer.rights << people_find_family_for
+
+registration_officer.rights << family_show
+registration_officer.rights << family_new
