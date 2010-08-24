@@ -1,0 +1,18 @@
+<% @title = 'Add Child To Family' %>
+
+<div class="account-form">
+  <%= error_messages_for :child %>
+
+  <% form_for :child do |form| %>
+    <fieldset>
+      <legend>Add Child To Family</legend>
+      <span class="person-edit">
+        <%= render :partial => 'registration/people/person_form', :object => form %>
+        <span style="color:red">*&nbsp;</span>Required Field
+        <div>
+          <%= submit_tag 'Add', :class => 'submit' %>
+        </div>
+      </span>
+    </fieldset>
+  <% end %>
+</div>

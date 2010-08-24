@@ -35,6 +35,8 @@ people_find_family_for = Right.create(:name => 'Find The Family For A Person', :
 
 family_show = Right.create(:name => 'Show Family Details', :controller => 'registration/families', :action => 'show')
 family_new = Right.create(:name => 'Create New Family', :controller => 'registration/families', :action => 'new')
+family_add_parent = Right.create(:name => 'Add Parent To Family', :controller => 'registration/families', :action => 'add_parent')
+family_add_child = Right.create(:name => 'Add Child To Family', :controller => 'registration/families', :action => 'add_child')
 
 #
 # Assign rights to Registration Officer
@@ -50,3 +52,5 @@ registration_officer.rights << people_find_family_for
 
 registration_officer.rights << family_show
 registration_officer.rights << family_new
+registration_officer.rights << family_add_parent
+registration_officer.rights << family_add_child
