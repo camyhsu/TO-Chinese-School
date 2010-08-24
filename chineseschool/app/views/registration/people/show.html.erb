@@ -8,7 +8,7 @@
   </thead>
   <tbody>
     <tr>
-      <%= render :partial => 'person' %>
+      <%= render :partial => 'person', :object => @person %>
       <td><%= link_to 'Edit', :action => :edit, :id => @person.id %></td>
     </tr>
   </tbody>
