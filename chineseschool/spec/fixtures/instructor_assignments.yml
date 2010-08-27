@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  person_id: 
+  start_date: 
+  end_date: 
+  school_year_id: 
+  school_class_id: 
+  primary: 
+  assistant: false
+
+two:
+  person_id: 
+  start_date: 
+  end_date: 
+  school_year_id: 
+  school_class_id: 
+  primary: 
+  assistant: false
