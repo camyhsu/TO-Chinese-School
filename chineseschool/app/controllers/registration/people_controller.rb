@@ -2,6 +2,7 @@ class Registration::PeopleController < ApplicationController
 
   def index
     @people = Person.find(:all)
+    render :layout => 'jquery_datatable'
   end
 
   def show

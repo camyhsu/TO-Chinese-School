@@ -3,7 +3,20 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <%= render :partial => 'layouts/html_head_with_jquery_datatable', :locals => {:page_title => @title} %>
+    <%= render :partial => 'layouts/html_head_section', :locals => {:page_title => @title} %>
+    <%= stylesheet_link_tag 'jquery_datatable' %>
+
+    <%= javascript_include_tag 'jquery.dataTables-1.7.0.min' %>
+
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        $('#jquery-datatable').dataTable({
+          "bProcessing": true,
+          "iDisplayLength": 25,
+          "sPaginationType": "full_numbers"
+        });
+      } );
+    </script>
   </head>
   <body>
     <%= render :partial => 'layouts/top_bar' %>

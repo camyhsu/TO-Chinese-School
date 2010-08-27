@@ -1,8 +1,6 @@
 <% @title = 'School Classes' %>
 
-<h1><%= @title %></h1>
-
-<table border="1px">
+<table id="jquery-datatable" border="1px">
   <thead>
     <tr>
       <th>English Name</th>
@@ -12,9 +10,9 @@
       <th>Maximum Size</th>
       <th>Minimum Age</th>
       <th>Maximum Age</th>
-      <th>Active?</th>
       <th>Grade</th>
-      <th>Room Parent</th>
+      <th>Active?</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -27,8 +25,14 @@
       <td><%=h school_class.max_size %></td>
       <td><%=h school_class.min_age %></td>
       <td><%=h school_class.max_age %></td>
-      <td><%= convert_to_yes_no school_class.active %></td>
       <td><%=h school_class.grade.chinese_name unless school_class.grade.nil? %></td>
+      <td><%= convert_to_yes_no school_class.active? %></td>
+      <% if school_class.active? %>
+        <td>De-activate</td>
+      <% else %>
+        <td>Activate</td>
+      <% end %>
+      
     </tr>
     <% end %>
   </tbody>
