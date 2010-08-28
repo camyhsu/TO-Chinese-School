@@ -1,0 +1,18 @@
+      <td><%=h school_class.english_name %></td>
+      <td><%=h school_class.chinese_name %></td>
+      <td><%=h school_class.description %></td>
+      <td><%=h school_class.location %></td>
+      <td><%=h school_class.max_size %></td>
+      <td><%=h school_class.min_age %></td>
+      <td><%=h school_class.max_age %></td>
+      <td><%=h school_class.grade.chinese_name unless school_class.grade.nil? %></td>
+      <td><%= convert_to_yes_no school_class.active? %></td>
+      <% if school_class.active? %>
+        <td>
+          <input type="button" value="Disable" onClick="toggleActive(this, '<%= url_for :action => :disable, :id => school_class %>')"/>
+        </td>
+      <% else %>
+        <td>
+          <input type="button" value="Enable" onClick="toggleActive(this, '<%= url_for :action => :enable, :id => school_class %>')"/>
+        </td>
+      <% end %>

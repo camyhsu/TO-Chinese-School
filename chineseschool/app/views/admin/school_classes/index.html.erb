@@ -1,4 +1,5 @@
 <% @title = 'School Classes' %>
+<% @page_javascript = 'admin/school_class_active_toggle' %>
 
 <table id="jquery-datatable" border="1px">
   <thead>
@@ -18,21 +19,7 @@
   <tbody>
     <% @school_classes.each do |school_class| -%>
     <tr>
-      <td><%=h school_class.english_name %></td>
-      <td><%=h school_class.chinese_name %></td>
-      <td><%=h school_class.description %></td>
-      <td><%=h school_class.location %></td>
-      <td><%=h school_class.max_size %></td>
-      <td><%=h school_class.min_age %></td>
-      <td><%=h school_class.max_age %></td>
-      <td><%=h school_class.grade.chinese_name unless school_class.grade.nil? %></td>
-      <td><%= convert_to_yes_no school_class.active? %></td>
-      <% if school_class.active? %>
-        <td>De-activate</td>
-      <% else %>
-        <td>Activate</td>
-      <% end %>
-      
+      <%= render :partial => 'school_class', :object => school_class %>
     </tr>
     <% end %>
   </tbody>

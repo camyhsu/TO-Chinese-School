@@ -13,11 +13,6 @@ describe "/admin/school_classes/index" do
 
   it_should_behave_like 'titled page'
 
-  it 'should have a title in h1' do
-    response.should have_tag('h1', 1)
-    response.should have_tag('h1', @page_title)
-  end
-
   it 'should have column headers in html table' do
     headers = []
     headers << 'English Name'
@@ -27,9 +22,9 @@ describe "/admin/school_classes/index" do
     headers << 'Maximum Size'
     headers << 'Minimum Age'
     headers << 'Maximum Age'
-    headers << 'Active?'
     headers << 'Grade'
-    headers << 'Room Parent'
+    headers << 'Active?'
+    headers << ''
     show_that_table_headers_exist_with headers
   end
 
@@ -52,9 +47,8 @@ describe "/admin/school_classes/index" do
       with_tag('td', school_classes(school_class).max_size.to_s)
       with_tag('td', school_classes(school_class).min_age.to_s)
       with_tag('td', school_classes(school_class).max_age.to_s)
-      with_tag('td', convert_to_yes_no(school_classes(school_class).active))
       with_tag('td', grade_display_name(school_classes(school_class).grade))
-      #with_tag('td', school_classes(school_class).room_parent)
+      with_tag('td', convert_to_yes_no(school_classes(school_class).active))
     end
   end
 
