@@ -1,22 +1,6 @@
 require 'erb'
 
 class ERB
-  undef :set_eoutvar
-  def set_eoutvar(compiler, eoutvar = '_erbout')
-    compiler.put_cmd = "#{eoutvar}.safe_concat"
-    compiler.insert_cmd = "#{eoutvar}.safe_concat"
-
-    cmd = []
-    cmd.push "#{eoutvar} = ActiveSupport::SafeBuffer.new"
-
-    compiler.pre_cmd = cmd
-
-    cmd = []
-    cmd.push(eoutvar)
-
-    compiler.post_cmd = cmd
-  end
-
   module Util
     HTML_ESCAPE = { '&' => '&amp;',  '>' => '&gt;',   '<' => '&lt;', '"' => '&quot;' }
     JSON_ESCAPE = { '&' => '\u0026', '>' => '\u003E', '<' => '\u003C' }
@@ -112,7 +96,7 @@ module ActiveSupport #:nodoc:
 end
 
 class String
-  alias_method :add_without_safety, :+
+  alias safe_concat concat
 
   def as_str
     self
@@ -123,38 +107,6 @@ class String
   end
 
   def html_safe?
-    defined?(@_rails_html_safe)
+    false
   end
-
-  def html_safe!
-    ActiveSupport::Deprecation.warn("Use html_safe with your strings instead of html_safe! See http://yehudakatz.com/2010/02/01/safebuffers-and-rails-3-0/ for the full story.", caller)
-    @_rails_html_safe = true
-    self
-  end
-
-  def add_with_safety(other)
-    result = add_without_safety(other)
-    if html_safe? && also_html_safe?(other)
-      result.html_safe!
-    else
-      result
-    end
-  end
-  alias_method :+, :add_with_safety
-
-  def concat_with_safety(other_or_fixnum)
-    result = concat_without_safety(other_or_fixnum)
-    unless html_safe? && also_html_safe?(other_or_fixnum)
-      remove_instance_variable(:@_rails_html_safe) if defined?(@_rails_html_safe)
-    end
-    result
-  end
-  alias_method_chain :concat, :safety
-  undef_method :<<
-  alias_method :<<, :concat_with_safety
-
-  private
-   def also_html_safe?(other)
-     other.respond_to?(:html_safe?) && other.html_safe?
-   end
 end
