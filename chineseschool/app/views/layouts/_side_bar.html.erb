@@ -1,6 +1,6 @@
 <!-- Side Bar -->
 <span class="welcome-text">Welcome, <br/>
-<%= @user.person.name %></span>
+<%=h @user.person.name %></span>
 <br/>
 <br/>
 <%= link_to 'Home', :controller => '/home', :action => 'index' %>

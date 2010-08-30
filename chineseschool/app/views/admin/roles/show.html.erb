@@ -1,15 +1,13 @@
 <% @title = 'Role Details' %>
 
-<h1><%= @title %></h1>
-
-Role Name: <%= @role.name %>
+Role Name: <%=h @role.name %>
 <br/>
 <br/>
 
 Rights:
 <br/>
 <% @role.rights.each do |right| -%>
-<%= right.name %>
+<%=h right.name %>
 <br/>
 <% end %>
 
@@ -19,6 +17,6 @@ Rights:
 Users with this role:
 <br/>
 <% @role.users.each do |user| -%>
-<%= user.username %>
+<%=h user.username %>
 <br/>
 <% end %>
