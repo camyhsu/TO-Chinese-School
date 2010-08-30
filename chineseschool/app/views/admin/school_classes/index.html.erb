@@ -1,6 +1,11 @@
 <% @title = 'School Classes' %>
 <% @page_javascript = 'admin/school_class_active_toggle' %>
 
+<div>
+  <%= link_to 'Create New School Class', :action => :new %>
+</div>
+<br/>
+
 <table id="jquery-datatable" border="1px">
   <thead>
     <tr>

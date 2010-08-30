@@ -28,8 +28,9 @@ Right.delete_all
 grades_index = Right.create(:name => 'List Grades', :controller => 'admin/grades', :action => 'index')
 
 school_classes_index = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
-school_classes_enable = Right.create(:name => 'Enable School Classes', :controller => 'admin/school_classes', :action => 'enable')
-school_classes_disable = Right.create(:name => 'Disable School Classes', :controller => 'admin/school_classes', :action => 'disable')
+school_classes_new = Right.create(:name => 'Create New School Class', :controller => 'admin/school_classes', :action => 'new')
+school_classes_enable = Right.create(:name => 'Enable School Class', :controller => 'admin/school_classes', :action => 'enable')
+school_classes_disable = Right.create(:name => 'Disable School Class', :controller => 'admin/school_classes', :action => 'disable')
 
 people_index = Right.create(:name => 'List People', :controller => 'registration/people', :action => 'index')
 people_show = Right.create(:name => 'Show Person Details', :controller => 'registration/people', :action => 'show')
@@ -48,6 +49,7 @@ registration_officer = Role.find_by_name(ROLE_NAME_REGISTRATION_OFFICER)
 registration_officer.rights << grades_index
 
 registration_officer.rights << school_classes_index
+registration_officer.rights << school_classes_new
 registration_officer.rights << school_classes_enable
 registration_officer.rights << school_classes_disable
 

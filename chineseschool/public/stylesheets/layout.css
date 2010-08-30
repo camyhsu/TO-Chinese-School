@@ -158,6 +158,18 @@ h1 {
     margin-left: 14em;
 }
 
+.school-class-edit label {
+    width: 9em;
+    float: left;
+    text-align: right;
+    margin-right: 0.1em;
+    display: block;
+}
+
+.school-class-edit .submit {
+    margin-left: 12em;
+}
+
 .details-table td {
     text-align: center;
 }

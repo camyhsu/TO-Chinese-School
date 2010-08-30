@@ -1,8 +1,25 @@
 class Admin::SchoolClassesController < ApplicationController
 
+  verify :only => [:enable, :disable] , :method => :post, :add_flash => { :notice => 'Illegal GET' }, :redirect_to => { :action => 'index' }
+
   def index
-    @school_classes = SchoolClass.find(:all)
+    @school_classes = SchoolClass.all
     render :layout => 'jquery_datatable'
+  end
+
+  def new
+    if request.post?
+      # Remove grade from params before creating the new SchoolClass object due to type incompatibility (string v.s. integer)
+      selected_grade_id = params[:school_class].delete :grade
+      @school_class = SchoolClass.new(params[:school_class])
+      @school_class.grade_id = selected_grade_id.to_i
+      if @school_class.save
+        flash[:notice] = 'School Class added successfully'
+        redirect_to :action => :index
+      end
+    else
+      @school_class = SchoolClass.new
+    end
   end
 
   def enable

@@ -1,0 +1,49 @@
+<% @title = 'Create New School Class' %>
+
+<div class="account-form">
+  <%= error_messages_for :school_class %>
+
+  <% form_for :school_class do |form| %>
+    <fieldset>
+      <legend>Create New School Class</legend>
+      <span class="school-class-edit">
+          <div>
+            <label for="english_name"><span style="color:red">*&nbsp;</span>English Name:</label>
+            <%= form.text_field :english_name, :size => 20 %>
+          </div>
+          <div>
+            <label for="chinese_name"><span style="color:red">*&nbsp;</span>Chinese Name:</label>
+            <%= form.text_field :chinese_name, :size => 20 %>
+          </div>
+          <div>
+            <label for="description">Description:</label>
+            <%= form.text_field :description, :size => 50 %>
+          </div>
+          <div>
+            <label for="location">Location:</label>
+            <%= form.text_field :location, :size => 20 %>
+          </div>
+          <div>
+            <label for="max_size">Max Size:</label>
+            <%= form.text_field :max_size, :size => 4 %>
+          </div>
+          <div>
+            <label for="min_age">Min Age:</label>
+            <%= form.text_field :min_age, :size => 4 %>
+          </div>
+          <div>
+            <label for="max_age">Max Age:</label>
+            <%= form.text_field :max_age, :size => 4 %>
+          </div>
+          <div>
+            <label for="grade">Grade:</label>
+            <%= form.collection_select :grade, Grade.all, :id, :chinese_name, {:include_blank => true} %>
+          </div>
+        <span style="color:red">*&nbsp;</span>Required Field
+        <div>
+          <%= submit_tag 'Create', :class => 'submit' %>
+        </div>
+      </span>
+    </fieldset>
+  <% end %>
+</div>
