@@ -27,7 +27,7 @@
           <%= render :partial => 'layouts/side_bar' %>
         </td>
         <td id="main">
-          <p id="flash-notice"><%= flash[:notice] %></p>
+          <p id="flash-notice"><%=h flash[:notice] %></p>
 
           <%= yield :layout %>
         </td>

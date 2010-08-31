@@ -8,7 +8,7 @@
   <body>
     <%= render :partial => 'layouts/top_bar' %>
 
-    <p id="flash-notice"><%= flash[:notice] %></p>
+    <p id="flash-notice"><%=h flash[:notice] %></p>
 
     <%= yield :layout %>
   </body>
