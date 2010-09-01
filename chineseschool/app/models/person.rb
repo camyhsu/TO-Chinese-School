@@ -2,6 +2,8 @@ class Person < ActiveRecord::Base
 
   belongs_to :address
 
+  has_one :student_class_assignment, :foreign_key => 'student_id', :dependent => :destroy
+
   validates_presence_of :gender, :birth_year, :birth_month
 
   validates_numericality_of :birth_year, :only_integer => true, :greater_than => 1900, :less_than => Time.now.year
