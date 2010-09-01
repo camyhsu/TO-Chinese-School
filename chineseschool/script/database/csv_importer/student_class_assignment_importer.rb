@@ -65,7 +65,7 @@ class StudentClassAssignmentImporter
 
   def find_school_class(grade, old_class_identifier)
     grade.school_classes.detect do |school_class|
-      school_class.english_name[-1..-1] == old_class_identifier
+      school_class.english_name[-1..-1] == old_class_identifier and school_class.active?
     end
   end
 end
