@@ -42,6 +42,6 @@ class Admin::SchoolClassesController < ApplicationController
 
   def flip_active_to(active_flag, school_class)
     school_class.active = active_flag
-    school_class.save
+    school_class.save!
   end
 end
