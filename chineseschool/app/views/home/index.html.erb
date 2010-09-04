@@ -15,4 +15,10 @@ User has roles => <% @user.roles.each do |role| %> <%= h(role.name) %> <% end %>
 <%= link_to 'List all grades', :controller => '/admin/grades', :action => 'index' %>
 <br/>
 <br/>
+<% form_tag :controller => '/registration/student_class_assignments', :action => 'grade' do %>
+  <%= collection_select :grade, :id, Grade.all, :id, :chinese_name %>
+  <%= submit_tag 'Manage students by grade', :class => 'submit' %>
+<% end %>
+<br/>
+<br/>
 <%= link_to 'Create a new family', :controller => '/registration/families', :action => 'new' %>

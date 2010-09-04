@@ -1,0 +1,26 @@
+<% @title = 'Manage Students By Grade' %>
+<% @page_javascript = 'registration/student_class_assignments/grade' %>
+
+<div>
+  <!--<%= link_to 'Add New Student To Grade', :action => :add_new_student %>-->
+</div>
+<br/>
+
+<table id="jquery-datatable" border="1px">
+  <thead>
+    <tr>
+      <th>English Name</th>
+      <th>Chinese Name</th>
+      <th>Grade</th>
+      <th colspan="2">School Class</th>
+      <th colspan="2">Elective Class</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @grade.student_class_assignments.each do |student_class_assignment| -%>
+    <tr>
+      <%= render :partial => 'student_class_assignment', :object => student_class_assignment %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

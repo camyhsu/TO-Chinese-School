@@ -11,8 +11,8 @@
   </thead>
   <tbody>
     <tr>
-      <td><%= h(@family.parent_one.name) if !@family.parent_one.nil? %></td>
-      <td><%= h(@family.parent_two.name) if !@family.parent_two.nil? %></td>
+      <td><%=h @family.parent_one.try(:name) %></td>
+      <td><%=h @family.parent_two.try(:name) %></td>
       <td><%=h @family.children_names %></td>
       <td><%=h @family.address.street_address %></td>
     </tr>

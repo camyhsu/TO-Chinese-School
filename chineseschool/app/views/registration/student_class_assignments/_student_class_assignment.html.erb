@@ -1,0 +1,21 @@
+      <td><%=h "#{student_class_assignment.student.english_first_name} #{student_class_assignment.student.english_last_name}" %></td>
+      <td><%=h student_class_assignment.student.chinese_name %></td>
+      <td><%=h student_class_assignment.grade.chinese_name %></td>
+      <td>
+        <%=h student_class_assignment.school_class.try(:chinese_name) %>
+      </td>
+      <td>
+        <% select_school_class_handler = "selectClass(this, '#{url_for :action => :select_school_class, :id => student_class_assignment}')" %>
+        <%= collection_select :student_class_assignment, :school_class, student_class_assignment.grade.school_classes,
+          :id, :chinese_name, {:include_blank => true, :selected => student_class_assignment.school_class.try(:id) },
+          {:onchange => select_school_class_handler} %>
+      </td>
+      <td>
+        <%=h student_class_assignment.elective_class.try(:chinese_name) %>
+      </td>
+      <td>
+        <% select_electiv_class_handler = "selectClass(this, '#{url_for :action => :select_elective_class, :id => student_class_assignment}')" %>
+        <%= collection_select :student_class_assignment, :elective_class, SchoolClass.all(:conditions => 'grade_id is null and active is true'), 
+          :id, :chinese_name, {:include_blank => true, :selected => student_class_assignment.elective_class.try(:id) },
+          {:onchange => select_electiv_class_handler} %>
+      </td>
