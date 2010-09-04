@@ -8,3 +8,13 @@ function selectClass(selectElement, url) {
         jRowElement.html(data);
     });
 }
+
+function removeFromGrade(button, url) {
+    var jRowElement = $(button).parent().parent();
+    jRowElement.effect('highlight', {}, 2000);
+    $.post(url, function(data) {
+        if (data == "remove_successful") {
+            window.jQueryDataTable.fnDeleteRow(jRowElement[0]);
+        }
+    });
+}

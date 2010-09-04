@@ -1,6 +1,6 @@
 class Registration::StudentClassAssignmentsController < ApplicationController
 
-  verify :only => [:select_school_class, :select_elective_class] , :method => :post,
+  verify :only => [:remove_from_grade, :select_school_class, :select_elective_class] , :method => :post,
       :add_flash => { :notice => 'Illegal GET' }, :redirect_to => { :action => 'index' }
 
 
@@ -11,6 +11,13 @@ class Registration::StudentClassAssignmentsController < ApplicationController
 
   def add_new_student
     
+  end
+
+  def remove_from_grade
+    if request.post?
+      StudentClassAssignment.destroy params[:id].to_i
+      render :text => 'remove_successful'
+    end
   end
 
   def select_school_class

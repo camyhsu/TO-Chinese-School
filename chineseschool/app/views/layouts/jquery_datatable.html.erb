@@ -10,7 +10,8 @@
 
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
-        $('#jquery-datatable').dataTable({
+        window.jQueryDataTable = $('#jquery-datatable').dataTable({
+          "bJQueryUI": true,
           "bProcessing": true,
           "iDisplayLength": 25,
           "sPaginationType": "full_numbers"
