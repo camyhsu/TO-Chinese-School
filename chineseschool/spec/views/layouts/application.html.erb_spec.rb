@@ -17,14 +17,14 @@ describe '/layouts/application' do
     response.should have_tag('title', fake_page_title)
   end
 
-  it 'should have stylesheet link to scaffold style' do
-    render '/layouts/application.html.erb'
-    response.should have_tag('link[href^="/stylesheets/scaffold.css"][rel="stylesheet"][type="text/css"]', 1)
-  end
-
   it 'should have stylesheet link to layout style' do
     render '/layouts/application.html.erb'
     response.should have_tag('link[href^="/stylesheets/layout.css"][rel="stylesheet"][type="text/css"]', 1)
+  end
+
+  it 'should have stylesheet link to jquery-ui style' do
+    render '/layouts/application.html.erb'
+    response.should have_tag('link[href^="/stylesheets/hot-sneaks/jquery-ui-1.8.4.custom.css"][rel="stylesheet"][type="text/css"]', 1)
   end
 
   it 'should have the top bar image' do
