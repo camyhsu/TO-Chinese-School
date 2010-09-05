@@ -1,10 +1,27 @@
 /* Global styles */
 
-h1 {
-    font:  150% sans-serif;
-    color: #226;
-    border-bottom: 3px dotted #77d;
+body { background-color: #fff; color: #333; }
+
+body, p, ol, ul, td {
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size:   14px;
+  line-height: 20px;
 }
+
+pre {
+  background-color: #eee;
+  padding: 10px;
+  font-size: 14px;
+}
+
+a { color: #000; }
+a:visited { color: #666; }
+a:hover { color: #fff; background-color:#000; }
+
+select {
+  font-size: 14px;
+}
+
 
 #top-bar {
     padding-bottom: 4ex;
@@ -45,6 +62,7 @@ h1 {
   padding: 2px;
   background-color: #EEFFEE;
   display: inline;
+  /* display: table; */
 }
 
 .fieldWithErrors * {
@@ -64,7 +82,7 @@ h1 {
   text-align: left;
   font-weight: bold;
   padding: 5px 5px 5px 15px;
-  font-size: 12px;
+  font-size: 14px;
   margin: -7px;
   background-color: #c00;
   color: #fff;
@@ -77,7 +95,7 @@ h1 {
 }
 
 #errorExplanation ul li {
-  font-size: 12px;
+  font-size: 14px;
   list-style: square;
 }
 
@@ -109,7 +127,7 @@ h1 {
 }
 
 .signin .submit {
-    margin-left: 8em;
+    margin-left: 9em;
 }
 
 .register-link a {
@@ -131,7 +149,7 @@ h1 {
 }
 
 .change-password .submit {
-    margin-left: 17em;
+    margin-left: 19em;
 }
 
 .register label {
@@ -143,7 +161,7 @@ h1 {
 }
 
 .register .submit {
-    margin-left: 17em;
+    margin-left: 19em;
 }
 
 .person-edit label {
@@ -155,7 +173,7 @@ h1 {
 }
 
 .person-edit .submit {
-    margin-left: 14em;
+    margin-left: 15em;
 }
 
 .school-class-edit label {

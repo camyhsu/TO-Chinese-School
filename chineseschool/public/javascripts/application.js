@@ -15,3 +15,9 @@
         settings.data += ((settings.data == "") ? "" : "&") + "authenticity_token=" + encodeURIComponent(AUTH_TOKEN);
     });
 })(jQuery);
+
+
+$(document).ready(function() {
+    $(".button").button();
+
+});

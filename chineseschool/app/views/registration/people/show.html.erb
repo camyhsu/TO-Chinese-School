@@ -9,11 +9,11 @@
   <tbody>
     <tr>
       <%= render :partial => 'person', :object => @person %>
-      <td><%= link_to 'Edit', :action => :edit, :id => @person.id %></td>
+      <td><%= link_to 'Edit', {:action => :edit, :id => @person.id}, {:class => 'button'} %></td>
     </tr>
   </tbody>
 </table>
 <br/>
 <div>
-  <%= link_to 'Link to Family', :action => :find_families_for, :id => @person.id %>
+  <%= link_to 'Link to Family', {:action => :find_families_for, :id => @person.id}, {:class => 'button'} %>
 </div>

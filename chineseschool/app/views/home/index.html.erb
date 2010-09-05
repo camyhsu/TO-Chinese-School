@@ -6,19 +6,19 @@ User has roles => <% @user.roles.each do |role| %> <%= h(role.name) %> <% end %>
 
 <br/>
 <br/>
-<%= link_to 'List all people on record', :controller => '/registration/people', :action => 'index' %>
+<%= link_to 'List all people on record', {:controller => '/registration/people', :action => 'index'}, {:class => 'button'} %>
 <br/>
 <br/>
-<%= link_to 'List all school classes', :controller => '/admin/school_classes', :action => 'index' %>
+<%= link_to 'List all school classes', {:controller => '/admin/school_classes', :action => 'index'}, {:class => 'button'} %>
 <br/>
 <br/>
-<%= link_to 'List all grades', :controller => '/admin/grades', :action => 'index' %>
+<%= link_to 'List all grades', {:controller => '/admin/grades', :action => 'index'}, {:class => 'button'} %>
 <br/>
 <br/>
 <% form_tag :controller => '/registration/student_class_assignments', :action => 'grade' do %>
   <%= collection_select :grade, :id, Grade.all, :id, :chinese_name %>
-  <%= submit_tag 'Manage students by grade', :class => 'submit' %>
+  <%= submit_tag 'Manage students by grade', :class => 'button' %>
 <% end %>
 <br/>
 <br/>
-<%= link_to 'Create a new family', :controller => '/registration/families', :action => 'new' %>
+<%= link_to 'Create a new family', {:controller => '/registration/families', :action => 'new'}, {:class => 'button'} %>

@@ -20,9 +20,6 @@
 </table>
 <br/>
 <div>
-  <% if @family.parent_two.nil? %> <%= link_to 'Add Parent', :action => :add_parent, :id => @family %><% end %>
-</div>
-<br/>
-<div>
-  <%= link_to 'Add Child', :action => :add_child, :id => @family %>
+  <% if @family.parent_two.nil? %> <%= link_to 'Add Parent', {:action => :add_parent, :id => @family}, {:class => 'button'} %><% end %>
+  <%= link_to 'Add Child', {:action => :add_child, :id => @family}, {:class => 'button'} %>
 </div>
