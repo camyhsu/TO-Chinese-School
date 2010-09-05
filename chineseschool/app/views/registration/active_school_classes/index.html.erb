@@ -1,0 +1,24 @@
+<% @title = 'Active School Classes' %>
+<% @page_javascript = 'registration/active_school_classes/index' %>
+
+<table id="jquery-datatable" border="1px">
+  <thead>
+    <tr>
+      <th>English Name</th>
+      <th>Chinese Name</th>
+      <th>Description</th>
+      <th>Location</th>
+      <th>Room Parent</th>
+      <th>Primary Instructor</th>
+      <th>Secondary Instructor</th>
+      <th>Teaching Assistant</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @active_school_classes.each do |active_school_class| -%>
+    <tr>
+      <%= render :partial => 'active_school_class', :object => active_school_class %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
