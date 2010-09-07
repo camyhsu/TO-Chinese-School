@@ -8,6 +8,7 @@ class SchoolClass < ActiveRecord::Base
   has_many :students, :through => :student_class_assignments
 
   validates_presence_of :english_name, :chinese_name
+  validates_uniqueness_of :english_name, :chinese_name
 
   validates_numericality_of :max_size, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true
   validates_numericality_of :min_age, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true
