@@ -36,6 +36,7 @@ class ApplicationController < ActionController::Base
 
   def check_authorization
     find_user_in_session
+    logger.info "Authorizing: user => #{@user.id} | controller_path => #{controller_path} | action_name => #{action_name}"
     if @user.authorized?(controller_path, action_name)
       return true
     else
