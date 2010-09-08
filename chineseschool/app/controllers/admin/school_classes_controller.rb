@@ -12,7 +12,7 @@ class Admin::SchoolClassesController < ApplicationController
       # Remove grade from params before creating the new SchoolClass object due to type incompatibility (string v.s. integer)
       selected_grade_id = params[:school_class].delete :grade
       @school_class = SchoolClass.new(params[:school_class])
-      @school_class.grade_id = selected_grade_id.to_i
+      @school_class.grade_id = selected_grade_id.to_i unless selected_grade_id.blank?
       if @school_class.save
         flash[:notice] = 'School Class added successfully'
         redirect_to :action => :index
