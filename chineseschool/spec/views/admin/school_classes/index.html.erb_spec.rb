@@ -6,7 +6,7 @@ describe "/admin/school_classes/index" do
   include ApplicationHelper
   
   before(:each) do
-    @page_title = 'School Classes'
+    @page_title = 'All School Classes'
     assigns[:school_classes] = [ school_classes(:first_grade), school_classes(:chinese_history_one) ]
     render '/admin/school_classes/index.html.erb'
   end
@@ -15,6 +15,7 @@ describe "/admin/school_classes/index" do
 
   it 'should have column headers in html table' do
     headers = []
+    headers << ''
     headers << 'English Name'
     headers << 'Chinese Name'
     headers << 'Description'
