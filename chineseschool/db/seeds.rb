@@ -29,6 +29,7 @@ grades_index = Right.create(:name => 'List Grades', :controller => 'admin/grades
 
 school_classes_index = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
 school_classes_new = Right.create(:name => 'Create New School Class', :controller => 'admin/school_classes', :action => 'new')
+school_classes_edit = Right.create(:name => 'Edit School Class', :controller => 'admin/school_classes', :action => 'edit')
 school_classes_enable = Right.create(:name => 'Enable School Class', :controller => 'admin/school_classes', :action => 'enable')
 school_classes_disable = Right.create(:name => 'Disable School Class', :controller => 'admin/school_classes', :action => 'disable')
 
@@ -56,6 +57,7 @@ registration_officer.rights << grades_index
 
 registration_officer.rights << school_classes_index
 registration_officer.rights << school_classes_new
+registration_officer.rights << school_classes_edit
 registration_officer.rights << school_classes_enable
 registration_officer.rights << school_classes_disable
 

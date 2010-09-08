@@ -1,0 +1,32 @@
+          <div>
+            <label for="english_name"><span style="color:red">*&nbsp;</span>English Name:</label>
+            <%= school_class_form.text_field :english_name, :size => 20 %>
+          </div>
+          <div>
+            <label for="chinese_name"><span style="color:red">*&nbsp;</span>Chinese Name:</label>
+            <%= school_class_form.text_field :chinese_name, :size => 20 %>
+          </div>
+          <div>
+            <label for="description">Description:</label>
+            <%= school_class_form.text_field :description, :size => 50 %>
+          </div>
+          <div>
+            <label for="location">Location:</label>
+            <%= school_class_form.text_field :location, :size => 20 %>
+          </div>
+          <div>
+            <label for="max_size">Max Size:</label>
+            <%= school_class_form.text_field :max_size, :size => 4 %>
+          </div>
+          <div>
+            <label for="min_age">Min Age:</label>
+            <%= school_class_form.text_field :min_age, :size => 4 %>
+          </div>
+          <div>
+            <label for="max_age">Max Age:</label>
+            <%= school_class_form.text_field :max_age, :size => 4 %>
+          </div>
+          <div>
+            <label for="grade">Grade:</label>
+            <%= school_class_form.collection_select :grade, Grade.all, :id, :chinese_name, {:include_blank => true, :selected => current_grade_id} %>
+          </div>
