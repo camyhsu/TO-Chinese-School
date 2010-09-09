@@ -9,10 +9,6 @@ class Registration::StudentClassAssignmentsController < ApplicationController
     render :layout => 'jquery_datatable'
   end
 
-  def add_new_student
-    
-  end
-
   def remove_from_grade
     StudentClassAssignment.destroy params[:id].to_i
     render :text => 'remove_successful'
