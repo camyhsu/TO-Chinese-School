@@ -1,19 +1,73 @@
 <% @title = 'Person Details' %>
+<% @page_javascript = 'registration/people/show' %>
 
-<table class="details-table" border="1px">
-  <thead>
-    <tr>
-      <%= render :partial => 'person_tablehead' %>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <%= render :partial => 'person', :object => @person %>
-      <td><%= link_to 'Edit', {:action => :edit, :id => @person.id}, {:class => 'button'} %></td>
-    </tr>
-  </tbody>
+<h3>Person</h3>
+<table class="person-detail" border="0px">
+  <tr>
+    <td class="label">Chinese Name:</td>
+    <td><%=h @person.chinese_name %></td>
+  </tr>
+  <tr>
+    <td class="label">English Name:</td>
+    <td><%=h "#{@person.english_first_name} #{@person.english_last_name}" %></td>
+  </tr>
+  <tr>
+    <td class="label">Gender:</td>
+    <td><%=h @person.gender %></td>
+  </tr>
+  <tr>
+    <td class="label">Birth Month/Year:</td>
+    <td><%=h "#{@person.birth_month}/#{@person.birth_year}" %></td>
+  </tr>
+  <tr>
+    <td class="label">Native Language:</td>
+    <td><%=h @person.native_language %></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><%= link_to 'Edit Person Details', {:action => :edit, :id => @person.id}, {:class => 'button'} %></td>
+  </tr>
 </table>
-<br/>
-<div>
-  <%= link_to 'Link to Family', {:action => :find_families_for, :id => @person.id}, {:class => 'button'} %>
-</div>
+<hr/>
+<h3>Family</h3>
+<% @person.families.each do |family| -%>
+<table class="person-detail" border="0px">
+  <tr>
+    <td class="label">Parent One:</td>
+    <td><%=h family.parent_one.try(:name) %></td>
+  </tr>
+  <tr>
+    <td class="label">Parent Two:</td>
+    <td><%=h family.parent_two.try(:name) %></td>
+  </tr>
+  <tr>
+    <td class="label">Children:</td>
+    <td><%=h family.children_names %></td>
+  </tr>
+  <tr>
+    <td class="label">Address:</td>
+    <td><%=h family.address.street_address %></td>
+  </tr>
+  <tr>
+    <td class="label">Home Phone:</td>
+    <td><%=h family.address.home_phone %></td>
+  </tr>
+  <tr>
+    <td class="label">Cell Phone:</td>
+    <td><%=h family.address.cell_phone %></td>
+  </tr>
+  <tr>
+    <td class="label">Email:</td>
+    <td><%=h family.address.email %></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><%= link_to 'Edit Family Data', {:controller => 'registration/families', :action => :show, :id => family.id}, {:class => 'button'} %></td>
+  </tr>
+</table>
+<% end %>
+<hr/>
+<h3>Grade And Class Assignment</h3>
+<table class="person-detail" border="0px">
+  <%= render :partial => 'student_class_assignment', :object => @person.student_class_assignment, :locals => {:student_id => @person.id} %>
+</table>

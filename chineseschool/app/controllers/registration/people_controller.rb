@@ -1,5 +1,8 @@
 class Registration::PeopleController < ApplicationController
 
+  verify :only => [:select_grade, :select_school_class, :select_elective_class] , :method => :post,
+      :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
+  
   def index
     @people = Person.find(:all)
     render :layout => 'jquery_datatable'
@@ -21,10 +24,47 @@ class Registration::PeopleController < ApplicationController
     end
   end
 
-  def find_families_for
-    person = Person.find_by_id(params[:id].to_i)
-    families = person.families
-    redirect_to(:controller => 'registration/families', :action => 'show', :id => families[0].id) and return if families.size == 1
-    redirect_to(:controller => 'registration/families', :action => 'show_list', :id => families.collect { |family| family.id })
+  def select_grade
+    if params[:selected_grade_id].blank?
+      unless params[:id].blank?
+        # selected blank grade but has a previous student class assignment
+        StudentClassAssignment.destroy params[:id].to_i
+        @student_id = params[:student_id]
+      end
+    else
+      if params[:id].blank?
+        # selected a new grade without a previous student class assignment
+        @student_class_assignment = StudentClassAssignment.new
+        @student_class_assignment.student = Person.find_by_id params[:student_id].to_i
+      else
+        @student_class_assignment = StudentClassAssignment.find_by_id params[:id].to_i
+      end
+      @student_class_assignment.grade = Grade.find_by_id params[:selected_grade_id]
+      @student_class_assignment.school_class = nil
+      @student_class_assignment.elective_class = nil
+      @student_class_assignment.save!
+      @student_id = @student_class_assignment.student.id
+    end
+    render :action => :one_student_class_assignment, :layout => 'ajax_layout'
+  end
+
+  def select_school_class
+    @student_id = params[:student_id]
+    @student_class_assignment = StudentClassAssignment.find_by_id params[:id].to_i
+    selected_school_class = SchoolClass.find_by_id params[:selected_class_id]
+    @student_class_assignment.school_class = selected_school_class
+    @student_class_assignment.save!
+    @student_id = @student_class_assignment.student.id
+    render :action => :one_student_class_assignment, :layout => 'ajax_layout'
+  end
+
+  def select_elective_class
+    @student_id = params[:student_id]
+    @student_class_assignment = StudentClassAssignment.find_by_id params[:id].to_i
+    selected_elective_class = SchoolClass.find_by_id params[:selected_class_id]
+    @student_class_assignment.elective_class = selected_elective_class
+    @student_class_assignment.save!
+    @student_id = @student_class_assignment.student.id
+    render :action => :one_student_class_assignment, :layout => 'ajax_layout'
   end
 end

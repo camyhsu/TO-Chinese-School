@@ -191,3 +191,11 @@ select {
 .details-table td {
     text-align: center;
 }
+
+.person-detail .label {
+    width: 15em;
+    float: left;
+    font-weight: bold;
+    text-align: right;
+    margin-right: 0.5em;
+}

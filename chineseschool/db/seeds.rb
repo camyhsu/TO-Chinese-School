@@ -36,7 +36,9 @@ school_classes_disable = Right.create(:name => 'Disable School Class', :controll
 people_index = Right.create(:name => 'List People', :controller => 'registration/people', :action => 'index')
 people_show = Right.create(:name => 'Show Person Details', :controller => 'registration/people', :action => 'show')
 people_edit = Right.create(:name => 'Edit Person Basic Data', :controller => 'registration/people', :action => 'edit')
-people_find_family_for = Right.create(:name => 'Find The Family For A Person', :controller => 'registration/people', :action => 'find_families_for')
+people_select_grade = Right.create(:name => 'Select Grade On Person Details', :controller => 'registration/people', :action => 'select_grade')
+people_select_school_class = Right.create(:name => 'Select School Class On Person Details', :controller => 'registration/people', :action => 'select_school_class')
+people_select_elective_class = Right.create(:name => 'Select Elective Class On Person Details', :controller => 'registration/people', :action => 'select_elective_class')
 
 families_show = Right.create(:name => 'Show Family Details', :controller => 'registration/families', :action => 'show')
 families_new = Right.create(:name => 'Create New Family', :controller => 'registration/families', :action => 'new')
@@ -44,9 +46,9 @@ families_add_parent = Right.create(:name => 'Add Parent To Family', :controller 
 families_add_child = Right.create(:name => 'Add Child To Family', :controller => 'registration/families', :action => 'add_child')
 
 student_class_assignments_grade = Right.create(:name => 'Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'grade')
-student_class_assignments_select_school_class = Right.create(:name => 'Select School Class For Student', :controller => 'registration/student_class_assignments', :action => 'select_school_class')
-student_class_assignments_select_elective_class = Right.create(:name => 'Select Elective Class For Student', :controller => 'registration/student_class_assignments', :action => 'select_elective_class')
-student_class_assignments_remove_from_grade = Right.create(:name => 'Remove Student From Grade', :controller => 'registration/student_class_assignments', :action => 'remove_from_grade')
+student_class_assignments_select_school_class = Right.create(:name => 'Select School Class On Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'select_school_class')
+student_class_assignments_select_elective_class = Right.create(:name => 'Select Elective Class On Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'select_elective_class')
+student_class_assignments_remove_from_grade = Right.create(:name => 'Remove Student From Grade On Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'remove_from_grade')
 
 
 #
@@ -64,7 +66,9 @@ registration_officer.rights << school_classes_disable
 registration_officer.rights << people_index
 registration_officer.rights << people_show
 registration_officer.rights << people_edit
-registration_officer.rights << people_find_family_for
+registration_officer.rights << people_select_grade
+registration_officer.rights << people_select_school_class
+registration_officer.rights << people_select_elective_class
 
 registration_officer.rights << families_show
 registration_officer.rights << families_new

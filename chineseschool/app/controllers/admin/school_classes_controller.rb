@@ -1,6 +1,7 @@
 class Admin::SchoolClassesController < ApplicationController
 
-  verify :only => [:enable, :disable] , :method => :post, :add_flash => { :notice => 'Illegal GET' }, :redirect_to => { :action => 'index' }
+  verify :only => [:enable, :disable] , :method => :post, 
+      :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
 
   def index
     @school_classes = SchoolClass.all
