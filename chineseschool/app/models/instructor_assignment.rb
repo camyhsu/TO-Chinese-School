@@ -7,6 +7,4 @@ class InstructorAssignment < ActiveRecord::Base
 
   validates_presence_of :school_year, :school_class, :instructor
   
-  
-
 end

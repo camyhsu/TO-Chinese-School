@@ -4,10 +4,10 @@ class Person < ActiveRecord::Base
 
   has_one :student_class_assignment, :foreign_key => 'student_id', :dependent => :destroy
 
-  validates_presence_of :gender, :birth_year, :birth_month
+  validates_presence_of :gender
 
-  validates_numericality_of :birth_year, :only_integer => true, :greater_than => 1900, :less_than => Time.now.year
-  validates_numericality_of :birth_month, :only_integer => true, :greater_than => 0, :less_than => 13
+  validates_numericality_of :birth_year, :allow_nil => true, :only_integer => true, :greater_than => 1900, :less_than => Time.now.year
+  validates_numericality_of :birth_month, :allow_nil => true, :only_integer => true, :greater_than => 0, :less_than => 13
 
   validate :name_is_not_blank
 

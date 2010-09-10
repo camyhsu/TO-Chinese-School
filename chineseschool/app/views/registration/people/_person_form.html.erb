@@ -15,12 +15,12 @@
             <%= person_form.select :gender, %w{M F} %>
           </div>
           <div>
-            <label for="birth_year"><span style="color:red">*&nbsp;</span>Birth Year:</label>
+            <label for="birth_year">Birth Year:</label>
             <%= person_form.text_field :birth_year, :size => 4 %>
           </div>
           <div>
-            <label for="birth_month"><span style="color:red">*&nbsp;</span>Birth Month:</label>
-            <%= person_form.select :birth_month, (1..12) %>
+            <label for="birth_month">Birth Month:</label>
+            <%= person_form.select :birth_month, (1..12), :include_blank => true %>
           </div>
           <div>
             <label for="native_language">Native Language:</label>
