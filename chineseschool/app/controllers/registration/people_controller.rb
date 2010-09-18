@@ -67,4 +67,32 @@ class Registration::PeopleController < ApplicationController
     @student_id = @student_class_assignment.student.id
     render :action => :one_student_class_assignment, :layout => 'ajax_layout'
   end
+
+  def add_instructor_assignment
+    if request.post?
+      @instructor_assignment = InstructorAssignment.new
+      @instructor_assignment.school_year = SchoolYear.find_by_id params[:instructor_assignment][:school_year].to_i
+      @instructor_assignment.school_class = SchoolClass.find_by_id params[:instructor_assignment][:school_class].to_i
+      @instructor_assignment.instructor = Person.find_by_id params[:id].to_i
+      @instructor_assignment.start_date = parse_date params[:instructor_assignment][:start_date_string]
+      @instructor_assignment.end_date = parse_date params[:instructor_assignment][:end_date_string]
+      @instructor_assignment.role = params[:instructor_assignment][:role]
+      if @instructor_assignment.save
+        flash[:notice] = 'Instructor Assignment added successfully'
+        redirect_to :action => :show, :id => @instructor_assignment.instructor
+      end
+    else
+      @instructor_assignment = InstructorAssignment.new
+      @instructor_assignment.instructor_id = params[:id]
+      @instructor_assignment.start_date = Date.today
+    end
+  end
+
+
+  private
+
+  def parse_date(input)
+    return nil if input.blank?
+    return Date.parse input
+  end
 end

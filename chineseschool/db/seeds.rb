@@ -39,6 +39,7 @@ people_edit = Right.create(:name => 'Edit Person Basic Data', :controller => 're
 people_select_grade = Right.create(:name => 'Select Grade On Person Details', :controller => 'registration/people', :action => 'select_grade')
 people_select_school_class = Right.create(:name => 'Select School Class On Person Details', :controller => 'registration/people', :action => 'select_school_class')
 people_select_elective_class = Right.create(:name => 'Select Elective Class On Person Details', :controller => 'registration/people', :action => 'select_elective_class')
+people_add_instructor_assignment = Right.create(:name => 'Add Instructor Assignment On Person Details', :controller => 'registration/people', :action => 'add_instructor_assignment')
 
 families_show = Right.create(:name => 'Show Family Details', :controller => 'registration/families', :action => 'show')
 families_new = Right.create(:name => 'Create New Family', :controller => 'registration/families', :action => 'new')
@@ -69,6 +70,7 @@ registration_officer.rights << people_edit
 registration_officer.rights << people_select_grade
 registration_officer.rights << people_select_school_class
 registration_officer.rights << people_select_elective_class
+registration_officer.rights << people_add_instructor_assignment
 
 registration_officer.rights << families_show
 registration_officer.rights << families_new

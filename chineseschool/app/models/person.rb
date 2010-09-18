@@ -3,6 +3,7 @@ class Person < ActiveRecord::Base
   belongs_to :address
 
   has_one :student_class_assignment, :foreign_key => 'student_id', :dependent => :destroy
+  has_many :instructor_assignments, :foreign_key => 'instructor_id', :dependent => :destroy
 
   validates_presence_of :gender
 
