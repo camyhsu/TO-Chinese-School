@@ -23,3 +23,7 @@
   <% if @family.parent_two.nil? %> <%= link_to 'Add Parent', {:action => :add_parent, :id => @family}, {:class => 'button'} %><% end %>
   <%= link_to 'Add Child', {:action => :add_child, :id => @family}, {:class => 'button'} %>
 </div>
+<br/>
+<div>
+  <%= link_to 'Create Another New Family', {:controller => '/registration/families', :action => 'new'}, {:class => 'button'} %>
+</div>
