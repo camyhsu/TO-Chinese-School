@@ -3,6 +3,8 @@
 #
 ROLE_NAME_REGISTRATION_OFFICER = 'Registration Officer'
 ROLE_NAME_INSTRUCTOR = 'Instructor'
+ROLE_NAME_ROOM_PARENT = 'Room Parent'
+
 
 
 #
@@ -20,6 +22,8 @@ end
 #
 create_role(ROLE_NAME_REGISTRATION_OFFICER)
 create_role(ROLE_NAME_INSTRUCTOR)
+create_role(ROLE_NAME_ROOM_PARENT)
+
 
 #
 # Create rights
