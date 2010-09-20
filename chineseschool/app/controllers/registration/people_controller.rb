@@ -2,7 +2,8 @@ class Registration::PeopleController < ApplicationController
 
   verify :only => [:select_grade, :select_school_class, :select_elective_class] , :method => :post,
       :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
-  
+
+
   def index
     @people = Person.find(:all)
     render :layout => 'jquery_datatable'

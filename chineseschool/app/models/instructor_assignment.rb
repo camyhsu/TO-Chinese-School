@@ -1,4 +1,6 @@
 class InstructorAssignment < ActiveRecord::Base
+
+  ROLES = ['Primary Instructor', 'Room Parent', 'Secondary Instructor', 'Teaching Assistant']
   
   belongs_to :school_year
   belongs_to :school_class

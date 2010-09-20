@@ -18,5 +18,5 @@
           </div>
           <div>
             <label for="role"><span style="color:red">*&nbsp;</span>Role:</label>
-            <%= instructor_assignment_form.select :role, ['Primary Instructor', 'Secondary Instructor', 'Teaching Assistant'] %>
+            <%= instructor_assignment_form.select :role, InstructorAssignment::ROLES %>
           </div>

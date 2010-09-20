@@ -18,3 +18,13 @@ function selectClass(selectElement, url) {
         jTableElement.html(data);
     });
 }
+
+function selectRole(selectElement, url) {
+    var jSelectElement = $(selectElement);
+    var selectedRole = jSelectElement.children('option:selected').attr('value');
+    var jTableElement = jSelectElement.parent().parent().parent();
+    jTableElement.effect('highlight', {}, 2000);
+    $.post(url, {selected_role : selectedRole}, function(data) {
+        jTableElement.html(data);
+    });
+}

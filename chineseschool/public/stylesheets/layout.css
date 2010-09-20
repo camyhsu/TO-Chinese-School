@@ -199,3 +199,7 @@ select {
     text-align: right;
     margin-right: 0.5em;
 }
+
+#add-instructor-assignment {
+    padding-left: 16em;
+}

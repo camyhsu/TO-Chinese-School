@@ -73,36 +73,14 @@
 </table>
 <hr/>
 <h3>Instructor Assignment</h3>
+<% @person.instructor_assignments.each do |instructor_assignment| %>
 <table class="person-detail" border="0px">
-  <% @person.instructor_assignments.each do |instructor_assignment| %>
-  <tr>
-    <td class="label">School Year:</td>
-    <td><%=h instructor_assignment.try(:school_year).try(:name) %></td>
-  </tr>
-  <tr>
-    <td class="label">School Class:</td>
-    <td><%=h instructor_assignment.try(:school_class).try(:chinese_name) %></td>
-  </tr>
-  <tr>
-    <td class="label">Start Date:</td>
-    <td><%=h instructor_assignment.try(:start_date) %></td>
-  </tr>
-  <tr>
-    <td class="label">End Date:</td>
-    <td><%=h instructor_assignment.try(:end_date) %></td>
-  </tr>
-  <tr>
-    <td class="label">Role:</td>
-    <td><%=h instructor_assignment.try(:role) %></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td><hr/></td>
-  </tr>
-  <% end %>
-  <tr>
-    <td></td>
-    <td><%= link_to 'Add Instructor Assignment', {:controller => 'registration/people', :action => :add_instructor_assignment, :id => @person}, {:class => 'button'} %></td>
-  </tr>
+  <%= render :partial => '/registration/instructor_assignments/instructor_assignment', :object => instructor_assignment %>
 </table>
+<% end %>
+<div id="add-instructor-assignment">
+   <%= link_to 'Add Instructor Assignment', {:action => :add_instructor_assignment, :id => @person}, {:class => 'button'} %>
+</div>
+
+
 
