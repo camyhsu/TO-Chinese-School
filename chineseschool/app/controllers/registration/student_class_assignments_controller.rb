@@ -4,12 +4,12 @@ class Registration::StudentClassAssignmentsController < ApplicationController
       :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
 
 
-  def grade
+  def list_by_grade
     @grade = Grade.find_by_id params[:grade][:id]
     render :layout => 'jquery_datatable'
   end
 
-  def remove_from_grade
+  def destroy
     StudentClassAssignment.destroy params[:id].to_i
     render :text => 'remove_successful'
   end

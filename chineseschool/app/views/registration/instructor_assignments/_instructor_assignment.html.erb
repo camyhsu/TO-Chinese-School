@@ -60,5 +60,11 @@
   </tr>
   <tr>
     <td></td>
+    <td>
+      <%= link_to 'Remove This Instructor Assignment', {:controller => 'registration/instructor_assignments', :action => :delete, :id => @person}, {:class => 'button'} %>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
     <td><hr/></td>
   </tr>

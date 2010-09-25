@@ -20,5 +20,5 @@
           {:onchange => select_electiv_class_handler} %>
       </td>
       <td>
-        <input type="button" value="Remove" onclick="removeFromGrade(this, '<%= url_for :action => :remove_from_grade, :id => student_class_assignment %>')"/>
+        <input type="button" value="Remove" onclick="removeFromGrade(this, '<%= url_for :action => :destroy, :id => student_class_assignment %>')"/>
       </td>
