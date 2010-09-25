@@ -2,7 +2,24 @@
       <td><%=h active_school_class.chinese_name %></td>
       <td><%=h active_school_class.description %></td>
       <td><%=h active_school_class.location %></td>
-      <td><%=h active_school_class.room_parent %></td>
-      <td>Primary Instructor</td>
-      <td>Secondary Instructor</td>
-      <td>Teaching Assistant</td>
+      <% assignment_hash = active_school_class.current_instructor_assignments %>
+      <td>
+        <% assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].each do |instructor| %>
+        <%=link_to "#{instructor.name}", :controller => '/registration/people', :action => 'show', :id => instructor %>&nbsp;
+        <% end %>
+      </td>
+      <td>
+        <% assignment_hash[InstructorAssignment::ROLE_ROOM_PARENT].each do |instructor| %>
+        <%=link_to "#{instructor.name}", :controller => '/registration/people', :action => 'show', :id => instructor %>&nbsp;
+        <% end %>
+      </td>
+      <td>
+        <% assignment_hash[InstructorAssignment::ROLE_SECONDARY_INSTRUCTOR].each do |instructor| %>
+        <%=link_to "#{instructor.name}", :controller => '/registration/people', :action => 'show', :id => instructor %>&nbsp;
+        <% end %>
+      </td>
+      <td>
+        <% assignment_hash[InstructorAssignment::ROLE_TEACHING_ASSISTANT].each do |instructor| %>
+        <%=link_to "#{instructor.name}", :controller => '/registration/people', :action => 'show', :id => instructor %>&nbsp;
+        <% end %>
+      </td>

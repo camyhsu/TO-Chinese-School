@@ -1,6 +1,10 @@
 class InstructorAssignment < ActiveRecord::Base
-
-  ROLES = ['Primary Instructor', 'Room Parent', 'Secondary Instructor', 'Teaching Assistant']
+  
+  ROLE_PRIMARY_INSTRUCTOR = 'Primary Instructor'
+  ROLE_ROOM_PARENT = 'Room Parent'
+  ROLE_SECONDARY_INSTRUCTOR = 'Secondary Instructor'
+  ROLE_TEACHING_ASSISTANT = 'Teaching Assistant'
+  ROLES = [ROLE_PRIMARY_INSTRUCTOR, ROLE_ROOM_PARENT, ROLE_SECONDARY_INSTRUCTOR, ROLE_TEACHING_ASSISTANT]
   
   belongs_to :school_year
   belongs_to :school_class

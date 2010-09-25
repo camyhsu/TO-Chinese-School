@@ -37,6 +37,8 @@ school_classes_edit = Right.create(:name => 'Edit School Class', :controller => 
 school_classes_enable = Right.create(:name => 'Enable School Class', :controller => 'admin/school_classes', :action => 'enable')
 school_classes_disable = Right.create(:name => 'Disable School Class', :controller => 'admin/school_classes', :action => 'disable')
 
+active_school_classes_index = Right.create(:name => 'List Active School Classes', :controller => 'registration/active_school_classes', :action => 'index')
+
 people_index = Right.create(:name => 'List People', :controller => 'registration/people', :action => 'index')
 people_show = Right.create(:name => 'Show Person Details', :controller => 'registration/people', :action => 'show')
 people_edit = Right.create(:name => 'Edit Person Basic Data', :controller => 'registration/people', :action => 'edit')
@@ -73,6 +75,8 @@ registration_officer.rights << school_classes_new
 registration_officer.rights << school_classes_edit
 registration_officer.rights << school_classes_enable
 registration_officer.rights << school_classes_disable
+
+registration_officer.rights << active_school_classes_index
 
 registration_officer.rights << people_index
 registration_officer.rights << people_show
