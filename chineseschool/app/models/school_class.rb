@@ -1,7 +1,6 @@
 class SchoolClass < ActiveRecord::Base
   
   belongs_to :grade
-  belongs_to :room_parent, :class_name => 'Person', :foreign_key => 'room_parent_id'
 
   # next two lines are used for regular class assignments, not elective class assignments
   has_many :student_class_assignments

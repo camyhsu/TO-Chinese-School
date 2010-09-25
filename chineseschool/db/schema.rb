@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100918162333) do
+ActiveRecord::Schema.define(:version => 20100925053811) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -107,9 +107,8 @@ ActiveRecord::Schema.define(:version => 20100918162333) do
     t.integer  "max_size"
     t.integer  "min_age"
     t.integer  "max_age"
-    t.boolean  "active",         :default => true, :null => false
+    t.boolean  "active",       :default => true, :null => false
     t.integer  "grade_id"
-    t.integer  "room_parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
