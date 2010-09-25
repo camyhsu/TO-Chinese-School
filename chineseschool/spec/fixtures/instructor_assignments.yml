@@ -6,8 +6,7 @@ one:
   end_date: 
   school_year_id: 
   school_class_id: 
-  primary: 
-  assistant: false
+  role:
 
 two:
   person_id: 
@@ -15,5 +14,4 @@ two:
   end_date: 
   school_year_id: 
   school_class_id: 
-  primary: 
-  assistant: false
+  role: 

@@ -8,7 +8,6 @@ first_grade:
   max_age: 0
   active: true
   grade_id: 3
-  room_parent_id: 
 
 chinese_history_one:
   english_name: Chinese Culture and History I
@@ -20,4 +19,3 @@ chinese_history_one:
   max_age: 15
   active: false
   grade_id:
-  room_parent_id: 
