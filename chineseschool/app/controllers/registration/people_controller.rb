@@ -75,8 +75,8 @@ class Registration::PeopleController < ApplicationController
       @instructor_assignment.school_year = SchoolYear.find_by_id params[:instructor_assignment][:school_year].to_i
       @instructor_assignment.school_class = SchoolClass.find_by_id params[:instructor_assignment][:school_class].to_i
       @instructor_assignment.instructor = Person.find_by_id params[:id].to_i
-      @instructor_assignment.start_date = parse_date params[:instructor_assignment][:start_date_string]
-      @instructor_assignment.end_date = parse_date params[:instructor_assignment][:end_date_string]
+      @instructor_assignment.start_date = find_start_date params[:instructor_assignment][:start_date_string], @instructor_assignment.school_year
+      @instructor_assignment.end_date = find_end_date params[:instructor_assignment][:end_date_string], @instructor_assignment.school_year
       @instructor_assignment.role = params[:instructor_assignment][:role]
       if @instructor_assignment.save
         flash[:notice] = 'Instructor Assignment added successfully'
@@ -85,7 +85,25 @@ class Registration::PeopleController < ApplicationController
     else
       @instructor_assignment = InstructorAssignment.new
       @instructor_assignment.instructor_id = params[:id]
-      @instructor_assignment.start_date = Date.today
+    end
+  end
+
+
+  private
+
+  def find_start_date(input_string, school_year)
+    if input_string.blank?
+      school_year.start_date
+    else
+      parse_date input_string
+    end
+  end
+
+  def find_end_date(input_string, school_year)
+    if input_string.blank?
+      school_year.end_date
+    else
+      parse_date input_string
     end
   end
 end
