@@ -59,6 +59,7 @@ instructor_assignments_select_school_class = Right.create(:name => 'Select Schoo
 instructor_assignments_select_start_date = Right.create(:name => 'Select Start Date For Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'select_start_date')
 instructor_assignments_select_end_date = Right.create(:name => 'Select End Date For Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'select_end_date')
 instructor_assignments_select_role = Right.create(:name => 'Select Role For Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'select_role')
+instructor_assignments_destroy = Right.create(:name => 'Destroy Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'destroy')
 
 
 #
@@ -95,3 +96,4 @@ registration_officer.rights << instructor_assignments_select_school_class
 registration_officer.rights << instructor_assignments_select_start_date
 registration_officer.rights << instructor_assignments_select_end_date
 registration_officer.rights << instructor_assignments_select_role
+registration_officer.rights << instructor_assignments_destroy

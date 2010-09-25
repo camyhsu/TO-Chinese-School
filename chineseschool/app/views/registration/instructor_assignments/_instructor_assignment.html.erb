@@ -1,6 +1,13 @@
 <tr>
     <td></td>
     <td>
+      <input type="button" value="Remove This Instructor Assignment" class="button" 
+             onclick="removeInstructorAssignment(this, '<%= url_for :controller => 'registration/instructor_assignments', :action => :destroy, :id => instructor_assignment %>')"/>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
       <%= error_messages_for 'instructor_assignment' %>
     </td>
   </tr>
@@ -56,12 +63,6 @@
           :action => :select_role, :id => instructor_assignment}')" %>
       <%= select :instructor_assignment, :role, InstructorAssignment::ROLES,
           {:selected => instructor_assignment.role}, {:onchange => select_role_handler} %>
-    </td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>
-      <%= link_to 'Remove This Instructor Assignment', {:controller => 'registration/instructor_assignments', :action => :delete, :id => @person}, {:class => 'button'} %>
     </td>
   </tr>
   <tr>

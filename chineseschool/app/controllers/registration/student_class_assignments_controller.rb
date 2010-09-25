@@ -11,7 +11,7 @@ class Registration::StudentClassAssignmentsController < ApplicationController
 
   def destroy
     StudentClassAssignment.destroy params[:id].to_i
-    render :text => 'remove_successful'
+    render :text => 'destroy_successful'
   end
 
   def select_school_class

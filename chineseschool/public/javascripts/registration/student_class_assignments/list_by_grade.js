@@ -13,7 +13,7 @@ function removeFromGrade(button, url) {
     var jRowElement = $(button).parent().parent();
     jRowElement.effect('highlight', {}, 2000);
     $.post(url, function(data) {
-        if (data == "remove_successful") {
+        if (data == "destroy_successful") {
             window.jQueryDataTable.fnDeleteRow(jRowElement[0]);
         }
     });

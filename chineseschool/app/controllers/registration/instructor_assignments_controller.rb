@@ -1,7 +1,12 @@
 class Registration::InstructorAssignmentsController < ApplicationController
   
-  verify :only => [:select_school_class, :select_role] , :method => :post,
+  verify :method => :post,
       :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
+
+  def destroy
+    InstructorAssignment.destroy params[:id].to_i
+    render :text => 'destroy_successful'
+  end
 
   def select_school_class
     @instructor_assignment = InstructorAssignment.find_by_id params[:id]

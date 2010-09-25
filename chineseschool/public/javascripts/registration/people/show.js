@@ -18,7 +18,7 @@ function selectClass(selectElement, url) {
     var jTableElement = jSelectElement.parent().parent().parent();
     jTableElement.effect('highlight', {}, 2000);
     $.post(url, {selected_class_id : selectedClassId}, function(data) {
-        setTableDataAndWireUpDatePicker(jTableElement, data);
+        setTableDataAndWireUpJQueryUi(jTableElement, data);
     });
 }
 
@@ -28,7 +28,7 @@ function selectAssignmentDate(textFieldElement, url) {
     var jTableElement = jTextFieldElement.parent().parent().parent();
     jTableElement.effect('highlight', {}, 2000);
     $.post(url, {selected_date_string : selectedDateString}, function(data) {
-        setTableDataAndWireUpDatePicker(jTableElement, data);
+        setTableDataAndWireUpJQueryUi(jTableElement, data);
     });
 }
 
@@ -38,11 +38,23 @@ function selectRole(selectElement, url) {
     var jTableElement = jSelectElement.parent().parent().parent();
     jTableElement.effect('highlight', {}, 2000);
     $.post(url, {selected_role : selectedRole}, function(data) {
-        setTableDataAndWireUpDatePicker(jTableElement, data);
+        setTableDataAndWireUpJQueryUi(jTableElement, data);
     });
 }
 
-function setTableDataAndWireUpDatePicker(jTableElement, data) {
+function removeInstructorAssignment(button, url) {
+    var jTableElement = $(button).parent().parent().parent();
+    jTableElement.effect('highlight', {}, 2000);
+    $.post(url, function(data) {
+        if (data == "destroy_successful") {
+            jTableElement.remove();
+        }
+    });
+}
+
+// Not called from HTML directly - used only by other scripts
+function setTableDataAndWireUpJQueryUi(jTableElement, data) {
     jTableElement.html(data);
     jTableElement.find('.jquery-datepicker').datepicker({dateFormat: 'yy-mm-dd'});
+    jTableElement.find('.button').button();
 }
