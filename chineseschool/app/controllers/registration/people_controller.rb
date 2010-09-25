@@ -88,12 +88,4 @@ class Registration::PeopleController < ApplicationController
       @instructor_assignment.start_date = Date.today
     end
   end
-
-
-  private
-
-  def parse_date(input)
-    return nil if input.blank?
-    return Date.parse input
-  end
 end

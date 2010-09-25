@@ -56,6 +56,8 @@ student_class_assignments_select_elective_class = Right.create(:name => 'Select 
 student_class_assignments_remove_from_grade = Right.create(:name => 'Remove Student From Grade On Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'remove_from_grade')
 
 instructor_assignments_select_school_class = Right.create(:name => 'Select School Class For Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'select_school_class')
+instructor_assignments_select_start_date = Right.create(:name => 'Select Start Date For Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'select_start_date')
+instructor_assignments_select_end_date = Right.create(:name => 'Select End Date For Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'select_end_date')
 instructor_assignments_select_role = Right.create(:name => 'Select Role For Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'select_role')
 
 
@@ -90,4 +92,6 @@ registration_officer.rights << student_class_assignments_select_elective_class
 registration_officer.rights << student_class_assignments_remove_from_grade
 
 registration_officer.rights << instructor_assignments_select_school_class
+registration_officer.rights << instructor_assignments_select_start_date
+registration_officer.rights << instructor_assignments_select_end_date
 registration_officer.rights << instructor_assignments_select_role

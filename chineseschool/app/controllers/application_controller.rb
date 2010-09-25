@@ -52,4 +52,11 @@ class ApplicationController < ActionController::Base
   def find_user_in_session
     @user = User.find(session[:user_id])
   end
+
+  private
+
+  def parse_date(input)
+    return nil if input.blank?
+    return Date.parse input
+  end
 end
