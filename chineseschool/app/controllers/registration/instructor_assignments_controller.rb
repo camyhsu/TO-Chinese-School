@@ -5,29 +5,41 @@ class Registration::InstructorAssignmentsController < ApplicationController
 
   def select_school_class
     @instructor_assignment = InstructorAssignment.find_by_id params[:id]
+    old_school_class = @instructor_assignment.school_class
     @instructor_assignment.school_class = SchoolClass.find_by_id params[:selected_class_id]
-    @instructor_assignment.save!
+    if not @instructor_assignment.save
+      @instructor_assignment.school_class = old_school_class  # change it back to the old value for display
+    end
     render :action => :one_instructor_assignment, :layout => 'ajax_layout'
   end
 
   def select_start_date
     @instructor_assignment = InstructorAssignment.find_by_id params[:id]
+    old_start_date = @instructor_assignment.start_date
     @instructor_assignment.start_date = parse_date params[:selected_date_string]
-    @instructor_assignment.save!
+    if not @instructor_assignment.save
+      @instructor_assignment.start_date = old_start_date  # change it back to the old value for display
+    end
     render :action => :one_instructor_assignment, :layout => 'ajax_layout'
   end
 
   def select_end_date
     @instructor_assignment = InstructorAssignment.find_by_id params[:id]
+    old_end_date = @instructor_assignment.end_date
     @instructor_assignment.end_date = parse_date params[:selected_date_string]
-    @instructor_assignment.save!
+    if not @instructor_assignment.save
+      @instructor_assignment.end_date = old_end_date  # change it back to the old value for display
+    end
     render :action => :one_instructor_assignment, :layout => 'ajax_layout'
   end
 
   def select_role
     @instructor_assignment = InstructorAssignment.find_by_id params[:id]
+    old_role = @instructor_assignment.role
     @instructor_assignment.role = params[:selected_role]
-    @instructor_assignment.save!
+    if not @instructor_assignment.save
+      @instructor_assignment.role = old_role  # change it back to the old value for display
+    end
     render :action => :one_instructor_assignment, :layout => 'ajax_layout'
   end
 end

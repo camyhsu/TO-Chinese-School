@@ -1,4 +1,10 @@
 <tr>
+    <td></td>
+    <td>
+      <%= error_messages_for 'instructor_assignment' %>
+    </td>
+  </tr>
+  <tr>
     <td class="label">School Year:</td>
     <td><%=h instructor_assignment.school_year.try(:name) %></td>
   </tr>
