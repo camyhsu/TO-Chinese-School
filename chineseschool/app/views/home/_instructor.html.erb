@@ -2,8 +2,8 @@
 
 <br/>
 <% @user.person.instructor_assignments.each do |instructor_assignment| %>
-<%= link_to "Student List For #{instructor_assignment.school_class.chinese_name}(#{instructor_assignment.school_class.english_name})",
-    {:controller => '/admin/grades', :action => 'index'}, {:class => 'button'} %>
+<%= link_to "Student List For #{instructor_assignment.school_class.name}",
+    {:controller => '/instruction/school_classes', :action => 'show', :id => instructor_assignment.school_class}, {:class => 'button'} %>
 <% end %>
 
 <br/>

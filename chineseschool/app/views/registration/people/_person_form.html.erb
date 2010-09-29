@@ -12,7 +12,7 @@
           </div>
           <div>
             <label for="gender"><span style="color:red">*&nbsp;</span>Gender:</label>
-            <%= person_form.select :gender, %w{M F} %>
+            <%= person_form.select :gender, [Person::GENDER_MALE, Person::GENDER_FEMALE] %>
           </div>
           <div>
             <label for="birth_year">Birth Year:</label>

@@ -1,5 +1,8 @@
 class Person < ActiveRecord::Base
 
+  GENDER_MALE = 'M'
+  GENDER_FEMALE = 'F'
+
   belongs_to :address
 
   has_one :student_class_assignment, :foreign_key => 'student_id', :dependent => :destroy
@@ -23,9 +26,15 @@ class Person < ActiveRecord::Base
   end
   
   def families
-    families_as_parent = Family.find(:all, :conditions => "parent_one_id = #{self.id} or parent_two_id = #{self.id}")
-    families_as_child = Family.find(:all, :conditions => "id in (select family_id from families_children where child_id = #{self.id})")
-    families_as_parent + families_as_child
+    find_families_as_parent + find_families_as_child
+  end
+
+  def find_families_as_parent
+    Family.all :conditions => ["parent_one_id = ? or parent_two_id = ?", self.id, self.id]
+  end
+
+  def find_families_as_child
+    Family.all :conditions => ["id in (select family_id from families_children where child_id = ?)", self.id]
   end
 
   def email_and_phone_number_correct?(email, phone_number)

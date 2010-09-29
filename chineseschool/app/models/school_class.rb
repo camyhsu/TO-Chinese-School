@@ -13,6 +13,10 @@ class SchoolClass < ActiveRecord::Base
   validates_numericality_of :min_age, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true
   validates_numericality_of :max_age, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true
 
+
+  def name
+    "#{chinese_name}(#{english_name})"
+  end
   
   def instructor_assignment_history
     @instructor_assignment_history ||= InstructorAssignmentHistory.new(self.id)

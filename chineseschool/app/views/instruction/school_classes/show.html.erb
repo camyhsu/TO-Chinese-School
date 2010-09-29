@@ -1,0 +1,30 @@
+<% @title = "Student List For #{@school_class.name}" %>
+
+<table class="details-table" border="1px">
+  <thead>
+    <tr>
+      <th>學生</th>
+      <th>Last Name</th>
+      <th>First Name</th>
+      <th>性别</th>
+      <th>父親</th>
+      <th>母親</th>
+      <th>Email</th>
+      <th>電話</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_class.students.each do |student| -%>
+    <tr>
+      <td><%=h student.chinese_name %></td>
+      <td><%=h student.english_last_name %></td>
+      <td><%=h student.english_first_name %></td>
+      <td><%=h student.gender %></td>
+      <%= format_family_fields student %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<p>
+  Total Student Count: <%= @school_class.students.size %>
+</p>
