@@ -1,10 +1,6 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
-ROLE_NAME_REGISTRATION_OFFICER = 'Registration Officer'
-ROLE_NAME_INSTRUCTOR = 'Instructor'
-ROLE_NAME_ROOM_PARENT = 'Room Parent'
-
 
 
 #
@@ -20,9 +16,9 @@ end
 #
 # Create roles
 #
-create_role(ROLE_NAME_REGISTRATION_OFFICER)
-create_role(ROLE_NAME_INSTRUCTOR)
-create_role(ROLE_NAME_ROOM_PARENT)
+create_role(Role::ROLE_NAME_REGISTRATION_OFFICER)
+create_role(Role::ROLE_NAME_INSTRUCTOR)
+create_role(Role::ROLE_NAME_ROOM_PARENT)
 
 
 #

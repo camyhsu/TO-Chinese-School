@@ -5,6 +5,9 @@ class HomeController < ApplicationController
   before_filter :find_user_in_session
 
   def index
+    @home_templates = []
+    @home_templates << 'registration_officer' if registration_resources_enabled?
+    @home_templates << 'instructor' if instructor_resources_enabled?
   end
 
   def change_password
@@ -21,5 +24,21 @@ class HomeController < ApplicationController
         flash.now[:notice] = 'Invalid current password'
       end
     end
+  end
+
+
+  private
+
+  def registration_resources_enabled?
+    return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
+    return true if @user.has_role? Role::ROLE_NAME_REGISTRATION_OFFICER
+    false
+  end
+
+  def instructor_resources_enabled?
+    return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
+    return true if @user.has_role? Role::ROLE_NAME_INSTRUCTOR
+    return true if @user.has_role? Role::ROLE_NAME_ROOM_PARENT
+    false
   end
 end

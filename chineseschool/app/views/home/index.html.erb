@@ -1,27 +1,5 @@
 <% @title = 'Home' %>
 
-<h3>Under Construction!!</h3>
-
-User has roles => <% @user.roles.each do |role| %> <%= h(role.name) %> <% end %>
-
-<br/>
-<br/>
-<%= link_to 'List All People', {:controller => '/registration/people', :action => 'index'}, {:class => 'button'} %>
-<br/>
-<br/>
-<%= link_to 'List All Grades', {:controller => '/admin/grades', :action => 'index'}, {:class => 'button'} %>
-<br/>
-<br/>
-<%= link_to 'List All School Classes', {:controller => '/admin/school_classes', :action => 'index'}, {:class => 'button'} %>
-<br/>
-<br/>
-<%= link_to 'List Active School Classes', {:controller => '/registration/active_school_classes', :action => 'index'}, {:class => 'button'} %>
-<br/>
-<br/>
-<% form_tag :controller => '/registration/student_class_assignments', :action => 'list_by_grade' do %>
-  <%= collection_select :grade, :id, Grade.all, :id, :chinese_name %>
-  <%= submit_tag 'Manage Students By Grade', :class => 'button' %>
+<% @home_templates.each do |home_template| %>
+<%= render :partial => home_template %>
 <% end %>
-<br/>
-<br/>
-<%= link_to 'Create A New Family', {:controller => '/registration/families', :action => 'new'}, {:class => 'button'} %>

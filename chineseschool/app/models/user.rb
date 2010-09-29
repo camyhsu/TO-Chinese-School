@@ -21,6 +21,10 @@ class User < ActiveRecord::Base
     self.roles.any? { |role| role.authorized?(controller_path, action_name) }
   end
 
+  def has_role?(role_name)
+    self.roles.any? { |role| role.name == role_name}
+  end
+
   def password_correct?(passwd)
     User.hash_password(passwd, self.password_salt) == self.password_hash
   end
