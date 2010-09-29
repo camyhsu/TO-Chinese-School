@@ -34,7 +34,7 @@ class Person < ActiveRecord::Base
   end
 
   def find_families_as_child
-    Family.all :conditions => ["id in (select family_id from families_children where child_id = ?)", self.id]
+    Family.all :from => 'families, families_children', :conditions => ["families.id = families_children.family_id and families_children.child_id = ?", self.id]
   end
 
   def email_and_phone_number_correct?(email, phone_number)
