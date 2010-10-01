@@ -203,3 +203,13 @@ select {
 #add-instructor-assignment {
     padding-left: 16em;
 }
+
+.student-list-header {
+    border: 0px;
+    width: 100%;
+    font-weight: bold;
+}
+
+.student-list-header .room-parent-cell {
+    text-align: right;
+}
