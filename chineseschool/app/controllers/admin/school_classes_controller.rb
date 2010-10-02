@@ -28,6 +28,7 @@ class Admin::SchoolClassesController < ApplicationController
       @school_class = SchoolClass.find_by_id(params[:id].to_i)
       @school_class.english_name = params[:school_class][:english_name]
       @school_class.chinese_name = params[:school_class][:chinese_name]
+      @school_class.short_name = params[:school_class][:short_name]
       @school_class.description = params[:school_class][:description]
       @school_class.location = params[:school_class][:location]
       @school_class.max_size = params[:school_class][:max_size]
