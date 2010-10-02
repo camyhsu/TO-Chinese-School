@@ -3,6 +3,7 @@ class Person < ActiveRecord::Base
   GENDER_MALE = 'M'
   GENDER_FEMALE = 'F'
 
+  has_one :user
   belongs_to :address
 
   has_one :student_class_assignment, :foreign_key => 'student_id', :dependent => :destroy

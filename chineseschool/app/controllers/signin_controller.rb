@@ -54,4 +54,14 @@ class SigninController < ApplicationController
       end
     end
   end
+
+  def register_with_invitation
+    timed_token = TimedToken.find_by_token params[:id]
+    redirect_to :action => 'invalid_token' and return if timed_token.nil?
+    
+    if request.post?
+    else
+
+    end
+  end
 end
