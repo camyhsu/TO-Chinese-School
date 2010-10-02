@@ -28,7 +28,8 @@ class SchoolClass < ActiveRecord::Base
     association_key = 'elective_class_id' if elective?
     people = Person.all :select => 'people.*', 
         :from => 'people, student_class_assignments',
-        :conditions => ["people.id = student_class_assignments.student_id and student_class_assignments.#{association_key} = ?", self.id]
+        :conditions => ["people.id = student_class_assignments.student_id and student_class_assignments.#{association_key} = ?", self.id],
+        :order => 'people.english_last_name ASC, people.english_first_name ASC'
     puts people.inspect
     people
   end
