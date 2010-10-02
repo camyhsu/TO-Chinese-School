@@ -30,8 +30,9 @@ class Address < ActiveRecord::Base
   
   def email_and_phone_number_correct?(email_to_check, phone_number_to_check)
     cleaned_phone_number = clean_phone_number phone_number_to_check
-    puts "Cleaning phone number #{phone_number_to_check} => #{cleaned_phone_number}"
-    (self.email == email_to_check) and ((self.home_phone == cleaned_phone_number) or (self.cell_phone == cleaned_phone_number))
+    logger.info "Cleaning phone number #{phone_number_to_check} => #{cleaned_phone_number}"
+    (self.email == email_to_check) and 
+        ((read_attribute(:home_phone) == cleaned_phone_number) or (read_attribute(:cell_phone) == cleaned_phone_number))
   end
 
   def format_phone_number(phone_number)
