@@ -1,6 +1,7 @@
 first_grade:
   english_name: 1st Grade
   chinese_name: 一年級
+  short_name: 1A
   description: 1st Grade
   location: F-10*
   max_size: 0
@@ -12,6 +13,7 @@ first_grade:
 chinese_history_one:
   english_name: Chinese Culture and History I
   chinese_name: 中國歷史研討（初）
+  short_name: 
   description: Chinese Culture and History I
   location: I-9
   max_size: 30

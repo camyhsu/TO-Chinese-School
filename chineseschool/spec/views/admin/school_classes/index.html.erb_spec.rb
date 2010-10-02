@@ -18,6 +18,7 @@ describe "/admin/school_classes/index" do
     headers << ''
     headers << 'English Name'
     headers << 'Chinese Name'
+    headers << 'Short Name'
     headers << 'Description'
     headers << 'Location'
     headers << 'Maximum Size'
@@ -43,6 +44,7 @@ describe "/admin/school_classes/index" do
     with_tag(tr_element, 'td') do
       with_tag('td', school_classes(school_class).english_name)
       with_tag('td', school_classes(school_class).chinese_name)
+      with_tag('td', school_classes(school_class).short_name)
       with_tag('td', school_classes(school_class).description)
       with_tag('td', school_classes(school_class).location)
       with_tag('td', school_classes(school_class).max_size.to_s)
