@@ -207,6 +207,10 @@ select {
 .student-list-header {
     border: 0px;
     width: 100%;
+}
+
+.student-list-header td {
+    font-size: larger;
     font-weight: bold;
 }
 
