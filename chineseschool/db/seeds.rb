@@ -27,11 +27,11 @@ create_role(Role::ROLE_NAME_ROOM_PARENT)
 Right.delete_all
 grades_index = Right.create(:name => 'List Grades', :controller => 'admin/grades', :action => 'index')
 
-school_classes_index = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
-school_classes_new = Right.create(:name => 'Create New School Class', :controller => 'admin/school_classes', :action => 'new')
-school_classes_edit = Right.create(:name => 'Edit School Class', :controller => 'admin/school_classes', :action => 'edit')
-school_classes_enable = Right.create(:name => 'Enable School Class', :controller => 'admin/school_classes', :action => 'enable')
-school_classes_disable = Right.create(:name => 'Disable School Class', :controller => 'admin/school_classes', :action => 'disable')
+registration_school_classes_index = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
+registration_school_classes_new = Right.create(:name => 'Create New School Class', :controller => 'admin/school_classes', :action => 'new')
+registration_school_classes_edit = Right.create(:name => 'Edit School Class', :controller => 'admin/school_classes', :action => 'edit')
+registration_school_classes_enable = Right.create(:name => 'Enable School Class', :controller => 'admin/school_classes', :action => 'enable')
+registration_school_classes_disable = Right.create(:name => 'Disable School Class', :controller => 'admin/school_classes', :action => 'disable')
 
 active_school_classes_index = Right.create(:name => 'List Active School Classes', :controller => 'registration/active_school_classes', :action => 'index')
 
@@ -60,17 +60,21 @@ instructor_assignments_select_role = Right.create(:name => 'Select Role For Inst
 instructor_assignments_destroy = Right.create(:name => 'Destroy Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'destroy')
 
 
+instruction_school_classes_show = Right.create(:name => 'Student List For One School Class', :controller => 'instruction/school_classes', :action => 'show')
+
+
+
 #
 # Assign rights to Registration Officer
 #
-registration_officer = Role.find_by_name(ROLE_NAME_REGISTRATION_OFFICER)
+registration_officer = Role.find_by_name(Role::ROLE_NAME_REGISTRATION_OFFICER)
 registration_officer.rights << grades_index
 
-registration_officer.rights << school_classes_index
-registration_officer.rights << school_classes_new
-registration_officer.rights << school_classes_edit
-registration_officer.rights << school_classes_enable
-registration_officer.rights << school_classes_disable
+registration_officer.rights << registration_school_classes_index
+registration_officer.rights << registration_school_classes_new
+registration_officer.rights << registration_school_classes_edit
+registration_officer.rights << registration_school_classes_enable
+registration_officer.rights << registration_school_classes_disable
 
 registration_officer.rights << active_school_classes_index
 
@@ -97,3 +101,17 @@ registration_officer.rights << instructor_assignments_select_start_date
 registration_officer.rights << instructor_assignments_select_end_date
 registration_officer.rights << instructor_assignments_select_role
 registration_officer.rights << instructor_assignments_destroy
+
+
+#
+# Assign rights to Instructor
+#
+instructor = Role.find_by_name(Role::ROLE_NAME_INSTRUCTOR)
+instructor.rights << instruction_school_classes_show
+
+
+#
+# Assign rights to Room Parent
+#
+room_parent = Role.find_by_name(Role::ROLE_NAME_ROOM_PARENT)
+room_parent.rights << instruction_school_classes_show
