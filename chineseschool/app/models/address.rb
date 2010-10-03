@@ -29,10 +29,13 @@ class Address < ActiveRecord::Base
   end
   
   def email_and_phone_number_correct?(email_to_check, phone_number_to_check)
+    (self.email == email_to_check) and phone_number_correct?(phone_number_to_check)
+  end
+
+  def phone_number_correct?(phone_number_to_check)
     cleaned_phone_number = clean_phone_number phone_number_to_check
     logger.info "Cleaning phone number #{phone_number_to_check} => #{cleaned_phone_number}"
-    (self.email == email_to_check) and 
-        ((read_attribute(:home_phone) == cleaned_phone_number) or (read_attribute(:cell_phone) == cleaned_phone_number))
+    (read_attribute(:home_phone) == cleaned_phone_number) or (read_attribute(:cell_phone) == cleaned_phone_number)
   end
 
   def format_phone_number(phone_number)

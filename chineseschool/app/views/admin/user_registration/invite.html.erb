@@ -1,0 +1,23 @@
+<% @title = 'Invite User Registration' %>
+
+<div class="account-form">
+  
+  <% form_tag do %>
+    <fieldset>
+      <legend>Invite User Registration</legend>
+      <span class="register">
+        <div>
+          <label for="person_id">Person Id:</label>
+          <%= text_field_tag :person_id, params[:person_id] %>
+        </div>
+        <div>
+          <label for="email_destination">Email Destination:</label>
+          <%= text_field_tag :email_destination, params[:email_destination] %>
+        </div>
+        <div>
+          <%= submit_tag 'Invite', :class => 'submit' %>
+        </div>
+      </span>
+    </fieldset>
+  <% end %>
+</div>

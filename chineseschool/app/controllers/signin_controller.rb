@@ -25,8 +25,8 @@ class SigninController < ApplicationController
                                                   params[:email].strip, params[:phone_number])
       if people_found.size == 1
         person_found = people_found.first
-        if existing_user = User.find_by_person_id(person_found.id)
-          flash.now[:notice] = "This person already have an account with username #{existing_user.username}" and return
+        unless person_found.user.nil?
+          flash.now[:notice] = "This person already have an account with username #{person_found.user.username}" and return
         end
 
         # 
@@ -57,11 +57,28 @@ class SigninController < ApplicationController
 
   def register_with_invitation
     timed_token = TimedToken.find_by_token params[:id]
-    redirect_to :action => 'invalid_token' and return if timed_token.nil?
+    redirect_to :action => 'invalid_token' and return if timed_token.nil? or timed_token.expired?
     
     if request.post?
-    else
+      if params[:password] != params[:password_confirmation]
+        flash.now[:notice] = 'Password does not match confirmation re-typed' and return
+      end
+      person = timed_token.person
+      unless person.user.nil?
+        flash.now[:notice] = "This person already have an account with username #{person.user.username}" and return
+      end
+      unless person.phone_number_correct? params[:phone_number]
+        flash.now[:notice] = 'Unable to match phone number with existing records - please try again' and return
+      end
 
+      @user = User.new(:username => params[:username], :person => person)
+      @user.password = params[:password]
+      @user.setup_instructor_roles
+      
+      if @user.save
+        flash[:notice] = 'Account successfully registered'
+        redirect_to :action => 'index'
+      end
     end
   end
 end

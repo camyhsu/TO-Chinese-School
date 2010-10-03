@@ -24,6 +24,12 @@ class InstructorAssignment < ActiveRecord::Base
     self.end_date.try(:to_date)
   end
 
+  def find_role_by_instructor_role
+    return Role.find_by_name(Role::ROLE_NAME_INSTRUCTOR) if self.role == ROLE_PRIMARY_INSTRUCTOR or self.role == ROLE_SECONDARY_INSTRUCTOR
+    return Role.find_by_name(Role::ROLE_NAME_ROOM_PARENT) if self.role == ROLE_ROOM_PARENT
+    nil
+  end
+
   
   private
 

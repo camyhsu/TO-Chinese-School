@@ -39,12 +39,21 @@ class Person < ActiveRecord::Base
   end
 
   def email_and_phone_number_correct?(email, phone_number)
-    puts "checking email and phone number for Person id => #{self.id}"
     if self.address
       self.addres.email_and_phone_number_correct? email, phone_number
     else
       self.families.detect do |family|
         family.address.email_and_phone_number_correct? email, phone_number
+      end
+    end
+  end
+
+  def phone_number_correct?(phone_number)
+    if self.address
+      self.address.phone_number_correct?
+    else
+      self.families.detect do |family|
+        family.address.phone_number_correct? phone_number
       end
     end
   end

@@ -25,6 +25,13 @@ class User < ActiveRecord::Base
     self.roles.any? { |role| role.name == role_name}
   end
 
+  def setup_instructor_roles
+    self.person.instructor_assignments.each do |instructor_assignment|
+      role_found = instructor_assignment.find_role_by_instructor_role
+      self.roles << role_found if role_found and (not self.roles.include?(role_found))
+    end
+  end
+
   def password_correct?(passwd)
     User.hash_password(passwd, self.password_salt) == self.password_hash
   end
