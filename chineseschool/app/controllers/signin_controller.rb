@@ -73,7 +73,7 @@ class SigninController < ApplicationController
 
       @user = User.new(:username => params[:username], :person => person)
       @user.password = params[:password]
-      @user.setup_instructor_roles
+      @user.adjust_instructor_roles
       
       if @user.save
         flash[:notice] = 'Account successfully registered'

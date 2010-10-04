@@ -4,7 +4,10 @@ class Registration::InstructorAssignmentsController < ApplicationController
       :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
 
   def destroy
-    InstructorAssignment.destroy params[:id].to_i
+    instructor_assignment = InstructorAssignment.find_by_id params[:id].to_i
+    instructor_assignment.destroy
+    instructor_user = instructor_assignment.instructor.user
+    instructor_user.adjust_instructor_roles if instructor_user
     render :text => 'destroy_successful'
   end
 
