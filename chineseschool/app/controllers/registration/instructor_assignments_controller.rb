@@ -45,7 +45,10 @@ class Registration::InstructorAssignmentsController < ApplicationController
     @instructor_assignment = InstructorAssignment.find_by_id params[:id]
     old_role = @instructor_assignment.role
     @instructor_assignment.role = params[:selected_role]
-    if not @instructor_assignment.save
+    if @instructor_assignment.save
+      instructor_user = @instructor_assignment.instructor.user
+      instructor_user.adjust_instructor_roles if instructor_user
+    else
       @instructor_assignment.role = old_role  # change it back to the old value for display
     end
     render :action => :one_instructor_assignment, :layout => 'ajax_layout'
