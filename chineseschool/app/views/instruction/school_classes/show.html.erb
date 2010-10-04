@@ -40,7 +40,7 @@
     <tr>
       <td><%=h student.chinese_name %></td>
       <% if @school_class.elective? %>
-      <td><%=h student.student_class_assignment.try(:school_class).try(:chinese_name) %></td>
+      <td><%=h student.student_class_assignment.try(:school_class).try(:short_name) %></td>
       <% end %>
       <td><%=h student.english_last_name %></td>
       <td><%=h student.english_first_name %></td>
