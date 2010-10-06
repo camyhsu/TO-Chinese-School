@@ -6,7 +6,7 @@ class Role < ActiveRecord::Base
   ROLE_NAME_ROOM_PARENT = 'Room Parent'
 
   has_and_belongs_to_many :users
-  has_and_belongs_to_many :rights
+  has_and_belongs_to_many :rights, :order => 'controller ASC, action ASC'
 
   validates_presence_of :name
   validates_uniqueness_of :name

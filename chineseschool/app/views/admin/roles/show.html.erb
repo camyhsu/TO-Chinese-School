@@ -6,17 +6,28 @@ Role Name: <%=h @role.name %>
 
 Rights:
 <br/>
-<% @role.rights.each do |right| -%>
-<%=h right.name %>
-<br/>
-<% end %>
+<table>
+  <% @role.rights.each do |right| -%>
+  <tr>
+    <td><%=h "#{right.controller}/#{right.action}" %></td>
+    <td><%=h right.name %></td>
+  </tr>
+  <% end %>
+</table>
 
 <br/>
 <br/>
 
 Users with this role:
 <br/>
-<% @role.users.each do |user| -%>
-<%=h user.username %>
+<table>
+  <% @role.users.each do |user| -%>
+  <tr>
+    <td><%=h user.username %></td>
+    <td><%= link_to "#{user.person.name}", :controller => 'registration/people', :action => 'show', :id => user.person %></td>
+  </tr>
+  <% end %>
+</table>
+
+
 <br/>
-<% end %>
