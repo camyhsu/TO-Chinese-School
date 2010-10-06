@@ -37,6 +37,7 @@ class Address < ActiveRecord::Base
   end
 
   def format_phone_number(phone_number)
+    return '' if phone_number.blank?
     "(#{phone_number[0..2]}) #{phone_number[3..5]}-#{phone_number[6..-1]}"
   end
 
