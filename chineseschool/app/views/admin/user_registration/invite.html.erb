@@ -12,7 +12,7 @@
         </div>
         <div>
           <label for="email_destination">Email Destination:</label>
-          <%= text_field_tag :email_destination, params[:email_destination] %>
+          <%= text_field_tag :email_destination, params[:email_destination], :size => 40 %>
         </div>
         <div>
           <%= submit_tag 'Invite', :class => 'submit' %>
