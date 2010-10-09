@@ -23,3 +23,6 @@
         <%=link_to "#{instructor.name}", :controller => '/registration/people', :action => 'show', :id => instructor %>&nbsp;
         <% end %>
       </td>
+      <td>
+        <%= link_to 'Student List', :controller => '/instruction/school_classes', :action => 'show', :id => active_school_class.id %>
+      </td>

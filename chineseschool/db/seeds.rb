@@ -104,6 +104,8 @@ registration_officer.rights << instructor_assignments_select_end_date
 registration_officer.rights << instructor_assignments_select_role
 registration_officer.rights << instructor_assignments_destroy
 
+registration_officer.rights << instruction_school_classes_show
+
 
 #
 # Assign rights to Instructor
