@@ -28,12 +28,12 @@ class Registration::FamiliesController < ApplicationController
   end
 
   def edit_address
-    family = Family.find_by_id params[:id].to_i
-    @address = family.address
+    @family = Family.find_by_id params[:id].to_i
+    @address = @family.address
     if request.post?
       if @address.update_attributes params[:address]
         flash[:notice] = 'Family address updated successfully'
-        redirect_to :action => :show, :id => family.id
+        redirect_to :action => :show, :id => @family.id
       end
     end
   end

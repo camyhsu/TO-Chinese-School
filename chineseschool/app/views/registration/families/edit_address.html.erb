@@ -1,5 +1,9 @@
 <% @title = 'Edit Family Address' %>
 
+<%=h @family.parent_one.try(:name) %>
+<br/>
+<%=h @family.parent_two.try(:name) %>
+<br/>
 <div class="account-form">
   <%= error_messages_for :address %>
 
