@@ -11,16 +11,28 @@
   </thead>
   <tbody>
     <tr>
-      <td><%=h @family.parent_one.try(:name) %></td>
-      <td><%=h @family.parent_two.try(:name) %></td>
-      <td><%=h @family.children_names %></td>
+      <td>
+        <% if @family.parent_one %>
+        <%=link_to "#{@family.parent_one.name}", :controller => '/registration/people', :action => 'show', :id => @family.parent_one %>&nbsp;
+        <% end %>
+      </td>
+      <td>
+        <% if @family.parent_two %>
+        <%=link_to "#{@family.parent_two.name}", :controller => '/registration/people', :action => 'show', :id => @family.parent_two %>&nbsp;
+        <% end %>
+      </td>
+      <td>
+        <% @family.children.each do |child| %>
+        <%=link_to "#{child.name}", :controller => '/registration/people', :action => 'show', :id => child %><br/>
+        <% end %>
+      </td>
       <td><%=h @family.address.street_address %></td>
     </tr>
   </tbody>
 </table>
 <br/>
 <div>
-  <%= link_to 'Edit Address', {:controller => '/registration/families', :action => 'edit_address', :id => @family}, {:class => 'button'} %>
+  <%= link_to 'Edit Family Address', {:controller => '/registration/families', :action => 'edit_address', :id => @family}, {:class => 'button'} %>
 </div>
 <br/>
 <div>
