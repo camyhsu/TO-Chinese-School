@@ -1,0 +1,18 @@
+<% @title = 'Edit Family Address' %>
+
+<div class="account-form">
+  <%= error_messages_for :address %>
+
+  <% form_for :address do |form| %>
+    <fieldset>
+        <legend>Edit Family Address</legend>
+        <span class="person-edit">
+          <%= render :partial => 'registration/addresses/address_form', :object => form %>
+          <span style="color:red">*&nbsp;</span>Required Field
+          <div>
+            <%= submit_tag 'Save', :class => 'submit' %>
+          </div>
+        </span>
+    </fieldset>
+  <% end %>
+</div>

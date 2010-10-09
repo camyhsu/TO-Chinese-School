@@ -20,6 +20,10 @@
 </table>
 <br/>
 <div>
+  <%= link_to 'Edit Address', {:controller => '/registration/families', :action => 'edit_address', :id => @family}, {:class => 'button'} %>
+</div>
+<br/>
+<div>
   <% if @family.parent_two.nil? %> <%= link_to 'Add Parent', {:action => :add_parent, :id => @family}, {:class => 'button'} %><% end %>
   <%= link_to 'Add Child', {:action => :add_child, :id => @family}, {:class => 'button'} %>
 </div>

@@ -45,6 +45,7 @@ people_add_instructor_assignment = Right.create(:name => 'Add Instructor Assignm
 
 families_show = Right.create(:name => 'Show Family Details', :controller => 'registration/families', :action => 'show')
 families_new = Right.create(:name => 'Create New Family', :controller => 'registration/families', :action => 'new')
+families_edit_address = Right.create(:name => 'Edit Family Address', :controller => 'registration/families', :action => 'edit_address')
 families_add_parent = Right.create(:name => 'Add Parent To Family', :controller => 'registration/families', :action => 'add_parent')
 families_add_child = Right.create(:name => 'Add Child To Family', :controller => 'registration/families', :action => 'add_child')
 
@@ -88,6 +89,7 @@ registration_officer.rights << people_add_instructor_assignment
 
 registration_officer.rights << families_show
 registration_officer.rights << families_new
+registration_officer.rights << families_edit_address
 registration_officer.rights << families_add_parent
 registration_officer.rights << families_add_child
 
