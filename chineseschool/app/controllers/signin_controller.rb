@@ -30,7 +30,25 @@ class SigninController < ApplicationController
   end
 
   def reset_password
+    timed_token = TimedToken.find_by_token params[:id]
+    redirect_to :action => 'invalid_token' and return if timed_token.nil? or timed_token.expired?
     
+    @user = timed_token.person.user
+    redirect_to :action => 'invalid_token' and return if @user.nil?
+
+    if request.post?
+      if params[:password] != params[:password_confirmation]
+        flash.now[:notice] = 'Password does not match confirmation re-typed' and return
+      end
+      unless timed_token.person.phone_number_correct? params[:phone_number]
+        flash.now[:notice] = 'Unable to match phone number with existing records - please try again' and return
+      end
+      @user.password = params[:password]
+      if @user.save
+        flash[:notice] = 'Password successfully updated'
+        redirect_to :action => 'index'
+      end
+    end
   end
 
   def register
