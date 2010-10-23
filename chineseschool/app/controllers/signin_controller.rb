@@ -16,6 +16,23 @@ class SigninController < ApplicationController
     end
   end
 
+  def forgot_password
+    if request.post?
+      user_found = User.find_by_username params[:username]
+      flash.now[:notice] = 'Username does not exist' and return unless user_found
+      email_destination = user_found.person.personal_email_address
+      flash.now[:notice] = 'Unable to find email address for the user' and return unless email_destination
+      email = SigninMailer.create_forgot_password user_found.person, email_destination
+      SigninMailer.deliver email
+      flash[:notice] = 'Password Reset Request sent to email address on record'
+      redirect_to :action => 'index'
+    end
+  end
+
+  def reset_password
+    
+  end
+
   def register
     if request.post?
       if params[:password] != params[:password_confirmation]

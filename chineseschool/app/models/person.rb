@@ -38,6 +38,18 @@ class Person < ActiveRecord::Base
     Family.all :from => 'families, families_children', :conditions => ["families.id = families_children.family_id and families_children.child_id = ?", self.id]
   end
 
+  def personal_email_address
+    if self.address
+      self.address.email
+    else
+      family_with_email = self.families.detect do |family|
+        !family.address.email.blank?
+      end
+      return nil if family_with_email.nil?
+      family_with_email.address.email
+    end
+  end
+
   def email_and_phone_number_correct?(email, phone_number)
     if self.address
       self.addres.email_and_phone_number_correct? email, phone_number

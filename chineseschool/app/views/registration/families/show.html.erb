@@ -13,12 +13,12 @@
     <tr>
       <td>
         <% if @family.parent_one %>
-        <%=link_to "#{@family.parent_one.name}", :controller => '/registration/people', :action => 'show', :id => @family.parent_one %>&nbsp;
+        <%=link_to "#{@family.parent_one.name}", :controller => '/registration/people', :action => 'show', :id => @family.parent_one %>
         <% end %>
       </td>
       <td>
         <% if @family.parent_two %>
-        <%=link_to "#{@family.parent_two.name}", :controller => '/registration/people', :action => 'show', :id => @family.parent_two %>&nbsp;
+        <%=link_to "#{@family.parent_two.name}", :controller => '/registration/people', :action => 'show', :id => @family.parent_two %>
         <% end %>
       </td>
       <td>

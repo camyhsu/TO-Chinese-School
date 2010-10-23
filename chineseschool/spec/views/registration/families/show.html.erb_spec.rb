@@ -24,10 +24,12 @@ describe "/registration/families/show" do
     response.should have_tag('tbody') do
       with_tag('tr', 1)
       with_tag('tr') do
-        with_tag('td', families(:family_three).parent_one.name)
-        with_tag('td', families(:family_three).parent_two.name)
-        with_tag('td', families(:family_three).children_names)
-        with_tag('td', families(:family_three).address.street_address)
+        with_tag('td') do |td_elements|
+          with_tag(td_elements[0], 'td', families(:family_three).parent_one.name)
+          with_tag(td_elements[1], 'td', families(:family_three).parent_two.name)
+          with_tag(td_elements[2], 'td', '')
+          with_tag(td_elements[3], 'td', families(:family_three).address.street_address)
+        end
       end
     end
   end
