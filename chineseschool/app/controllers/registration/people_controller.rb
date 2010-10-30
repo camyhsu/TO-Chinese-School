@@ -10,18 +10,42 @@ class Registration::PeopleController < ApplicationController
   end
 
   def show
-    @person = Person.find_by_id(params[:id].to_i)
+    @person = Person.find_by_id params[:id].to_i
   end
 
   def edit
+    @person = Person.find_by_id params[:id].to_i
     if request.post?
-      @person = Person.find_by_id(params[:id].to_i)
-      if @person.update_attributes(params[:person])
+      if @person.update_attributes params[:person]
         flash[:notice] = 'Person updated successfully'
         redirect_to :action => :show, :id => @person.id
       end
+    end
+  end
+
+  def new_address
+    @person = Person.find_by_id params[:id].to_i
+    if request.post?
+      @address = Address.new params[:address]
+      return unless @address.valid?
+      @address.save!
+      @person.address = @address
+      @person.save!
+      flash[:notice] = 'Personal address created successfully'
+      redirect_to :action => :show, :id => @person.id
     else
-      @person = Person.find_by_id(params[:id].to_i)
+      @address = @person.families.first.address
+    end
+  end
+
+  def edit_address
+    @person = Person.find_by_id params[:id].to_i
+    @address = @person.address
+    if request.post?
+      if @address.update_attributes params[:address]
+        flash[:notice] = 'Personal address updated successfully'
+        redirect_to :action => :show, :id => @person.id
+      end
     end
   end
 
@@ -70,9 +94,9 @@ class Registration::PeopleController < ApplicationController
   end
 
   def add_instructor_assignment
+    @instructor_assignment = InstructorAssignment.new
     if request.post?
       person = Person.find_by_id params[:id].to_i
-      @instructor_assignment = InstructorAssignment.new
       @instructor_assignment.school_year = SchoolYear.find_by_id params[:instructor_assignment][:school_year].to_i
       @instructor_assignment.school_class = SchoolClass.find_by_id params[:instructor_assignment][:school_class].to_i
       @instructor_assignment.instructor = person
@@ -85,7 +109,6 @@ class Registration::PeopleController < ApplicationController
         redirect_to :action => :show, :id => @instructor_assignment.instructor
       end
     else
-      @instructor_assignment = InstructorAssignment.new
       @instructor_assignment.instructor_id = params[:id]
     end
   end

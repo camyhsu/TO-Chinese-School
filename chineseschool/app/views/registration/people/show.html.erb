@@ -27,6 +27,18 @@
     <td></td>
     <td><%= link_to 'Edit Person Details', {:action => :edit, :id => @person.id}, {:class => 'button'} %></td>
   </tr>
+  <% if @person.address.nil? %>
+  <tr>
+    <td></td>
+    <td><%= link_to 'Create Personal Address', {:action => :new_address, :id => @person.id}, {:class => 'button'} %></td>
+  </tr>
+  <% else %>
+  <%= render :partial => '/registration/addresses/address', :object => @person.address %>
+  <tr>
+    <td></td>
+    <td><%= link_to 'Edit Personal Address', {:action => :edit_address, :id => @person.id}, {:class => 'button'} %></td>
+  </tr>
+  <% end %>
 </table>
 <hr/>
 <h3>Family for <%=h @person.name %></h3>
@@ -44,22 +56,7 @@
     <td class="label">Children:</td>
     <td><%=h family.children_names %></td>
   </tr>
-  <tr>
-    <td class="label">Address:</td>
-    <td><%=h family.address.street_address %></td>
-  </tr>
-  <tr>
-    <td class="label">Home Phone:</td>
-    <td><%=h family.address.home_phone %></td>
-  </tr>
-  <tr>
-    <td class="label">Cell Phone:</td>
-    <td><%=h family.address.cell_phone %></td>
-  </tr>
-  <tr>
-    <td class="label">Email:</td>
-    <td><%=h family.address.email %></td>
-  </tr>
+  <%= render :partial => '/registration/addresses/address', :object => family.address %>
   <tr>
     <td></td>
     <td><%= link_to 'Edit Family Data', {:controller => 'registration/families', :action => :show, :id => family.id}, {:class => 'button'} %></td>

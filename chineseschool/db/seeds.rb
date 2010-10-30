@@ -38,6 +38,8 @@ active_school_classes_index = Right.create(:name => 'List Active School Classes'
 people_index = Right.create(:name => 'List People', :controller => 'registration/people', :action => 'index')
 people_show = Right.create(:name => 'Show Person Details', :controller => 'registration/people', :action => 'show')
 people_edit = Right.create(:name => 'Edit Person Basic Data', :controller => 'registration/people', :action => 'edit')
+people_edit_address = Right.create(:name => 'Edit Personal Address', :controller => 'registration/people', :action => 'edit_address')
+people_new_address = Right.create(:name => 'Create Personal Address', :controller => 'registration/people', :action => 'new_address')
 people_select_grade = Right.create(:name => 'Select Grade On Person Details', :controller => 'registration/people', :action => 'select_grade')
 people_select_school_class = Right.create(:name => 'Select School Class On Person Details', :controller => 'registration/people', :action => 'select_school_class')
 people_select_elective_class = Right.create(:name => 'Select Elective Class On Person Details', :controller => 'registration/people', :action => 'select_elective_class')
@@ -82,6 +84,8 @@ registration_officer.rights << active_school_classes_index
 registration_officer.rights << people_index
 registration_officer.rights << people_show
 registration_officer.rights << people_edit
+registration_officer.rights << people_edit_address
+registration_officer.rights << people_new_address
 registration_officer.rights << people_select_grade
 registration_officer.rights << people_select_school_class
 registration_officer.rights << people_select_elective_class
