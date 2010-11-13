@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Family do
-  fixtures :people
+  fixtures :addresses, :families, :people
   
   it 'should be able to save and read children association' do
     family = Family.new
@@ -14,6 +14,18 @@ describe Family do
     found_family.should have(2).children
     found_family.child_ids.should include(people(:person_one).id)
     found_family.child_ids.should include(people(:person_two).id)
+  end
+
+  it 'should belongs to parent_one' do
+    families(:family_three).parent_one.should == people(:person_four)
+  end
+
+  it 'should belongs to parent_two' do
+    families(:family_three).parent_two.should == people(:person_five)
+  end
+
+  it 'should belongs to address' do
+    families(:family_three).address.should == addresses(:one)
   end
 end
 
