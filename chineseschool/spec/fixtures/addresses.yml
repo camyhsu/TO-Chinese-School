@@ -19,3 +19,11 @@ two:
   home_phone: 
   cell_phone: 8056661234
   email: tester2@tocs.org
+
+minimal:
+  id: 3
+  street: 123 Random St
+  city: Thousand Oaks
+  state: CA
+  zipcode: 91360
+  home_phone: 8051234567

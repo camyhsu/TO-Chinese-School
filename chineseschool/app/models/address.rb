@@ -42,6 +42,7 @@ class Address < ActiveRecord::Base
   end
 
   def clean_phone_number(phone_number_to_clean)
+    return nil if phone_number_to_clean.nil?
     phone_number_to_clean.gsub /\D/, ''
   end
 end

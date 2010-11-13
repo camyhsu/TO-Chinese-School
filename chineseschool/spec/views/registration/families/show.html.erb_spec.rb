@@ -27,7 +27,7 @@ describe "/registration/families/show" do
         with_tag('td') do |td_elements|
           with_tag(td_elements[0], 'td', families(:family_three).parent_one.name)
           with_tag(td_elements[1], 'td', families(:family_three).parent_two.name)
-          with_tag(td_elements[2], 'td', '')
+          #with_tag(td_elements[2], 'td', '')
           with_tag(td_elements[3], 'td', families(:family_three).address.street_address)
         end
       end
