@@ -1,0 +1,18 @@
+
+first_grade_assignment_one:
+  student_id: 1001
+  grade_id: 3
+  school_class_id:
+  elective_class_id:
+
+first_grade_assignment_two:
+  student_id: 1002
+  grade_id: 3
+  school_class_id:
+  elective_class_id:
+
+second_grade_assignment_one:
+  student_id: 1003
+  grade_id: 4
+  school_class_id:
+  elective_class_id:

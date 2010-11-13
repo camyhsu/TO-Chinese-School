@@ -10,6 +10,30 @@ first_grade:
   active: true
   grade_id: 3
 
+first_grade_class_b:
+  english_name: 1st Grade
+  chinese_name: 一年級
+  short_name: 1B
+  description: 1st Grade Class B
+  location: F-11*
+  max_size: 0
+  min_age: 0
+  max_age: 0
+  active: true
+  grade_id: 3
+
+first_grade_class_inactive:
+  english_name: 1st Grade
+  chinese_name: 一年級
+  short_name: 1F
+  description: 1st Grade Class F Inactive
+  location: F-11*
+  max_size: 0
+  min_age: 0
+  max_age: 0
+  active: false
+  grade_id: 3
+
 chinese_history_one:
   english_name: Chinese Culture and History I
   chinese_name: 中國歷史研討（初）
