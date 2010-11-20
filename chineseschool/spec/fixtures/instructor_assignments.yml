@@ -1,17 +1,8 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  person_id: 
-  start_date: 
-  end_date: 
-  school_year_id: 
-  school_class_id: 
-  role:
-
-two:
-  person_id: 
-  start_date: 
-  end_date: 
-  school_year_id: 
-  school_class_id: 
-  role: 
+minimal:
+  school_year_id: 1
+  school_class_id: 1
+  instructor_id: 1001
+  start_date: 2008-09-06
+  end_date: 2009-06-06
+  role: Primary Instructor
