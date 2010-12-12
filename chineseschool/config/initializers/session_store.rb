@@ -6,7 +6,8 @@
 # no regular words or you'll be exposed to dictionary attacks.
 ActionController::Base.session = {
   :key         => '_chineseschool_session',
-  :secret      => '593cb58abe112cbb66424f77a6f5518baebfd26727485e6e1fe470c2818c3640d55df3f988c0434ca00868542549b208f58223619d9f62a8c86dc10bec845f67'
+  :secret      => '593cb58abe112cbb66424f77a6f5518baebfd26727485e6e1fe470c2818c3640d55df3f988c0434ca00868542549b208f58223619d9f62a8c86dc10bec845f67',
+  :path => '/chineseschool'
 }
 
 # Use the database for sessions instead of the cookie-based default,

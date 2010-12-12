@@ -19,7 +19,7 @@ config.action_view.cache_template_loading            = true
 # config.cache_store = :mem_cache_store
 
 # Enable serving of images, stylesheets, and javascripts from an asset server
-config.action_controller.asset_host = 'http://to-cs.org/chineseschool'
+config.action_controller.asset_host = 'https://to-cs.org/chineseschool'
 
 # Mailer configuration
 config.action_mailer.delivery_method = :smtp
@@ -38,3 +38,8 @@ config.action_mailer.raise_delivery_errors = false
 
 # Enable threaded mode
 # config.threadsafe!
+
+# Make session cookie for SSL only
+ActionController::Base.session = {
+  :secure => true
+}
