@@ -17,21 +17,20 @@ class SchoolClass < ActiveRecord::Base
   def elective?
     self.grade.nil?
   end
-  
-  def student_class_assignments
-    return StudentClassAssignment.find_by_elective_class_id(self.id) if elective?
-    StudentClassAssignment.find_by_school_class_id(self.id)
+
+  def class_size
+    condition_clause = 'school_class_id = ?'
+    condition_clause = 'elective_class_id = ?' if elective?
+    StudentClassAssignment.count(:conditions => [condition_clause, self.id])
   end
 
   def students
     association_key = 'school_class_id'
     association_key = 'elective_class_id' if elective?
-    people = Person.all :select => 'people.*', 
+    Person.all :select => 'people.*', 
         :from => 'people, student_class_assignments',
         :conditions => ["people.id = student_class_assignments.student_id and student_class_assignments.#{association_key} = ?", self.id],
         :order => 'people.english_last_name ASC, people.english_first_name ASC'
-    puts people.inspect
-    people
   end
   
   def instructor_assignment_history
@@ -41,14 +40,16 @@ class SchoolClass < ActiveRecord::Base
   def current_instructor_assignments
     instructor_assignments = InstructorAssignment.all :conditions => ["school_year_id = ? AND school_class_id = ?",
         SchoolYear.current_school_year.id, self.id ]
-    assignment_hash = create_empty_assignment_hash
+    assignment_hash = create_empty_instructor_assignment_hash
     instructor_assignments.each do |instructor_assignment|
       assignment_hash[instructor_assignment.role] << instructor_assignment.instructor
     end
     assignment_hash
   end
-  
-  def create_empty_assignment_hash
+
+  private
+
+  def create_empty_instructor_assignment_hash
     assignment_hash = {}
     assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR] = []
     assignment_hash[InstructorAssignment::ROLE_ROOM_PARENT] = []

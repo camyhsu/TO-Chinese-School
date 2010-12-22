@@ -8,7 +8,7 @@ describe Person, 'showing name' do
   end
 
   it 'should return English first name in parentheses if only english first name exists' do
-    people(:person_one).name.should == "(#{people(:person_one).english_first_name} )"
+    people(:person_with_only_first_name).name.should == "(#{people(:person_with_only_first_name).english_first_name} )"
   end
   
   it 'should return English last name in parentheses if only english last name exists' do

@@ -1,7 +1,7 @@
 
 person_one:
   id: 1001
-  english_last_name: 
+  english_last_name: Smith
   english_first_name: First
   chinese_name: 
   gender: M
@@ -57,6 +57,16 @@ person_six:
   gender: F
   birth_year: 2001
   birth_month: 5
+  native_language:
+
+person_with_only_first_name:
+  id: 1233
+  english_last_name: 
+  english_first_name: First Only
+  chinese_name:
+  gender: M
+  birth_year: 1999
+  birth_month: 1
   native_language:
 
 person_with_chinese_name:

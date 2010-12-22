@@ -1,0 +1,40 @@
+<% @title = '班級人數清單' %>
+
+<h2>千橡中文學校  <%=h @current_school_year.name %>學年度  班級人數清單</h2>
+
+<table class="details-table" border="1px">
+  <thead>
+    <tr>
+      <th>班級</th>
+      <th>人數</th>
+      <th>教室</th>
+      <th>老師</th>
+      <th>Room Parent and Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @active_grade_classes.each do |grade_class| -%>
+    <tr>
+      <td><%=h grade_class.short_name %></td>
+      <td><%= grade_class.class_size %></td>
+      <td><%=h grade_class.location %></td>
+      <% assignment_hash = grade_class.current_instructor_assignments %>
+      <td>
+        <% assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].each do |instructor| %>
+        <%=h instructor.name %>&nbsp;
+        <% end %>
+      </td>
+      <td>
+        <% assignment_hash[InstructorAssignment::ROLE_ROOM_PARENT].each do |instructor| %>
+        <%=h instructor.name %>&nbsp;
+        <%=h instructor.personal_email_address %>&nbsp;
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<br/>
+Total Student Count: <%= @active_grade_classes.collect(&:class_size).inject(0, &:+) %>
+<br/>
+Today's Date: <%= Date.today.to_s %>
