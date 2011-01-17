@@ -53,6 +53,7 @@ families_add_parent = Right.create(:name => 'Add Parent To Family', :controller 
 families_add_child = Right.create(:name => 'Add Child To Family', :controller => 'registration/families', :action => 'add_child')
 
 student_class_assignments_list_by_grade = Right.create(:name => 'Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'list_by_grade')
+student_class_assignments_list_active_students_by_name = Right.create(:name => 'List Active Students By Name', :controller => 'registration/student_class_assignments', :action => 'list_active_students_by_name')
 student_class_assignments_select_school_class = Right.create(:name => 'Select School Class On Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'select_school_class')
 student_class_assignments_select_elective_class = Right.create(:name => 'Select Elective Class On Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'select_elective_class')
 student_class_assignments_destroy = Right.create(:name => 'Remove Student From Grade On Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'destroy')
@@ -100,6 +101,7 @@ registration_officer.rights << families_add_parent
 registration_officer.rights << families_add_child
 
 registration_officer.rights << student_class_assignments_list_by_grade
+registration_officer.rights << student_class_assignments_list_active_students_by_name
 registration_officer.rights << student_class_assignments_select_school_class
 registration_officer.rights << student_class_assignments_select_elective_class
 registration_officer.rights << student_class_assignments_destroy

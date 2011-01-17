@@ -9,6 +9,18 @@ class Registration::StudentClassAssignmentsController < ApplicationController
     render :layout => 'jquery_datatable'
   end
 
+  def list_active_students_by_name
+    @active_student_class_assignments = StudentClassAssignment.all(:conditions => 'school_class_id is not null')
+    @active_student_class_assignments.sort! do |a, b|
+      last_name_order = a.student.english_last_name <=> b.student.english_last_name
+      if last_name_order == 0
+        a.student.english_first_name <=> b.student.english_first_name
+      else
+        last_name_order
+      end
+    end
+  end
+
   def destroy
     StudentClassAssignment.destroy params[:id].to_i
     render :text => 'destroy_successful'
