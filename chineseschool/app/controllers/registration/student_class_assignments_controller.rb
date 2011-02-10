@@ -10,6 +10,7 @@ class Registration::StudentClassAssignmentsController < ApplicationController
   end
 
   def list_active_students_by_name
+    @current_school_year = SchoolYear.current_school_year
     @active_student_class_assignments = StudentClassAssignment.all(:conditions => 'school_class_id is not null')
     @active_student_class_assignments.sort! do |a, b|
       last_name_order = a.student.english_last_name <=> b.student.english_last_name
@@ -17,6 +18,13 @@ class Registration::StudentClassAssignmentsController < ApplicationController
         a.student.english_first_name <=> b.student.english_first_name
       else
         last_name_order
+      end
+    end
+    respond_to do |format|
+      format.html
+      format.pdf do
+        prawnto :filename => 'tocs_active_students.pdf'
+        render :layout => false
       end
     end
   end

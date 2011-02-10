@@ -1,0 +1,6 @@
+[submodule "chineseschool/vendor/gems/prawn-0.11.1.pre"]
+	path = chineseschool/vendor/gems/prawn-0.11.1.pre
+	url = git://github.com/sandal/prawn.git
+[submodule "chineseschool/vendor/gems/ttfunk-1.0.0"]
+	path = chineseschool/vendor/gems/ttfunk-1.0.0
+	url = git://github.com/sandal/ttfunk.git
