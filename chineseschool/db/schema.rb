@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101002190844) do
+ActiveRecord::Schema.define(:version => 20110210221345) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -121,6 +121,14 @@ ActiveRecord::Schema.define(:version => 20101002190844) do
     t.date     "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "registration_start_date"
+    t.date     "registration_75_percent_date"
+    t.date     "registration_50_percent_date"
+    t.date     "registration_end_date"
+    t.date     "refund_75_percent_date"
+    t.date     "refund_50_percent_date"
+    t.date     "refund_25_percent_date"
+    t.date     "refund_end_date"
   end
 
   create_table "student_class_assignments", :force => true do |t|

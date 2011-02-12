@@ -1,0 +1,84 @@
+<% @title = 'School Year' %>
+
+<h3>School Year</h3>
+<table border="0px">
+  <tr>
+    <td class="label">Name:</td>
+    <td><%=h @school_year.name %></td>
+  </tr>
+  <tr>
+    <td class="label">Description:</td>
+    <td><%=h @school_year.description %></td>
+  </tr>
+  <tr>
+    <td class="label">Start Date:</td>
+    <td><%=h @school_year.start_date %></td>
+  </tr>
+  <tr>
+    <td class="label">End Date:</td>
+    <td><%=h @school_year.end_date %></td>
+  </tr>
+</table>
+<p>The following dates are related to registration fee proration.
+<ul>
+  <li>
+    Registration Start Date - the date registration formally starts.  Registration
+    before this date is accepted with pre-registration discount on tuition.
+  </li>
+  <li>
+    Registration 75 Percent Date - the date after which 75% of full tuition would be charged.
+  </li>
+  <li>
+    Registration 50 Percent Date - the date after which 50% of full tuition would be charged.
+  </li>
+  <li>
+    Registration End Date - the date after which no registration is allowed.
+  </li>
+  <li>
+    Refund 75 Percent Date - the date after which only 75% of full tuition would be refunded.
+  </li>
+  <li>
+    Refund 50 Percent Date - the date after which only 50% of full tuition would be refunded.
+  </li>
+  <li>
+    Refund 25 Percent Date - the date after which only 25% of full tuition would be refunded.
+  </li>
+  <li>
+    Refund End Date - the date after which no refund would be allowed.
+  </li>
+</ul>
+</p>
+<table border="0px">
+  <tr>
+    <td class="label">Registration Start Date:</td>
+    <td><%=h @school_year.registration_start_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Registration 75 Percent Date:</td>
+    <td><%=h @school_year.registration_75_percent_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Registration 50 Percent Date:</td>
+    <td><%=h @school_year.registration_50_percent_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Registration End Date:</td>
+    <td><%=h @school_year.registration_end_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Refund 75 Percent Date:</td>
+    <td><%=h @school_year.refund_75_percent_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Refund 50 Percent Date:</td>
+    <td><%=h @school_year.refund_50_percent_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Refund 25 Percent Date:</td>
+    <td><%=h @school_year.refund_25_percent_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Refund End Date:</td>
+    <td><%=h @school_year.refund_end_date %></td>
+  </tr>
+</table>

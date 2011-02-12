@@ -27,11 +27,14 @@ create_role(Role::ROLE_NAME_ROOM_PARENT)
 Right.delete_all
 grades_index = Right.create(:name => 'List Grades', :controller => 'admin/grades', :action => 'index')
 
-registration_school_classes_index = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
-registration_school_classes_new = Right.create(:name => 'Create New School Class', :controller => 'admin/school_classes', :action => 'new')
-registration_school_classes_edit = Right.create(:name => 'Edit School Class', :controller => 'admin/school_classes', :action => 'edit')
-registration_school_classes_enable = Right.create(:name => 'Enable School Class', :controller => 'admin/school_classes', :action => 'enable')
-registration_school_classes_disable = Right.create(:name => 'Disable School Class', :controller => 'admin/school_classes', :action => 'disable')
+school_years_index = Right.create(:name => 'List School Years', :controller => 'admin/school_years', :action => 'index')
+school_years_show = Right.create(:name => 'Show School Year Details', :controller => 'admin/school_years', :action => 'show')
+
+school_classes_index = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
+school_classes_new = Right.create(:name => 'Create New School Class', :controller => 'admin/school_classes', :action => 'new')
+school_classes_edit = Right.create(:name => 'Edit School Class', :controller => 'admin/school_classes', :action => 'edit')
+school_classes_enable = Right.create(:name => 'Enable School Class', :controller => 'admin/school_classes', :action => 'enable')
+school_classes_disable = Right.create(:name => 'Disable School Class', :controller => 'admin/school_classes', :action => 'disable')
 
 active_school_classes_index = Right.create(:name => 'List Active School Classes', :controller => 'registration/active_school_classes', :action => 'index')
 active_school_classes_student_count = Right.create(:name => '班級人數清單', :controller => 'registration/active_school_classes', :action => 'student_count')
@@ -75,11 +78,14 @@ instruction_school_classes_show = Right.create(:name => 'Student List For One Sc
 registration_officer = Role.find_by_name(Role::ROLE_NAME_REGISTRATION_OFFICER)
 registration_officer.rights << grades_index
 
-registration_officer.rights << registration_school_classes_index
-registration_officer.rights << registration_school_classes_new
-registration_officer.rights << registration_school_classes_edit
-registration_officer.rights << registration_school_classes_enable
-registration_officer.rights << registration_school_classes_disable
+registration_officer.rights << school_years_index
+registration_officer.rights << school_years_show
+
+registration_officer.rights << school_classes_index
+registration_officer.rights << school_classes_new
+registration_officer.rights << school_classes_edit
+registration_officer.rights << school_classes_enable
+registration_officer.rights << school_classes_disable
 
 registration_officer.rights << active_school_classes_index
 registration_officer.rights << active_school_classes_student_count
