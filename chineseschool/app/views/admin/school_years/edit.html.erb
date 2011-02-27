@@ -1,0 +1,19 @@
+<% @title = 'Edit School Year' %>
+<% @page_javascript = 'admin/school_years/edit' %>
+
+<div class="account-form">
+  <%= error_messages_for :school_year %>
+
+  <% form_for :school_year do |form| %>
+    <fieldset>
+        <legend>Edit School Year</legend>
+        <span class="school-year-edit">
+          <%= render :partial => 'school_year_form', :object => form %>
+          <span style="color:red">*&nbsp;</span>Required Field
+          <div>
+            <%= submit_tag 'Save', :class => 'submit' %>
+          </div>
+        </span>
+    </fieldset>
+  <% end %>
+</div>

@@ -29,6 +29,7 @@ grades_index = Right.create(:name => 'List Grades', :controller => 'admin/grades
 
 school_years_index = Right.create(:name => 'List School Years', :controller => 'admin/school_years', :action => 'index')
 school_years_show = Right.create(:name => 'Show School Year Details', :controller => 'admin/school_years', :action => 'show')
+school_years_edit = Right.create(:name => 'Edit School Year Details', :controller => 'admin/school_years', :action => 'edit')
 
 school_classes_index = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
 school_classes_new = Right.create(:name => 'Create New School Class', :controller => 'admin/school_classes', :action => 'new')
@@ -80,6 +81,7 @@ registration_officer.rights << grades_index
 
 registration_officer.rights << school_years_index
 registration_officer.rights << school_years_show
+registration_officer.rights << school_years_edit
 
 registration_officer.rights << school_classes_index
 registration_officer.rights << school_classes_new

@@ -18,6 +18,10 @@
     <td class="label">End Date:</td>
     <td><%=h @school_year.end_date %></td>
   </tr>
+  <tr>
+    <td class="label">Age Cutoff Month:</td>
+    <td><%=h @school_year.age_cutoff_month %></td>
+  </tr>
 </table>
 <p>The following dates are related to registration fee proration.
 <ul>
@@ -82,3 +86,11 @@
     <td><%=h @school_year.refund_end_date %></td>
   </tr>
 </table>
+
+<br/>
+<br/>
+<%= link_to 'Edit', {:controller => '/admin/school_years', :action => 'edit', :id => @school_year.id}, {:class => 'button'} %>
+<br/>
+<br/>
+<%= link_to 'Back to School Year List', {:controller => '/admin/school_years', :action => 'index'}, {:class => 'button'} %>
+<br/>

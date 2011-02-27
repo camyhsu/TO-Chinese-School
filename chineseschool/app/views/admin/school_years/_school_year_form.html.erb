@@ -1,0 +1,22 @@
+          <div>
+            <label for="name"><span style="color:red">*&nbsp;</span>Name:</label>
+            <%= school_year_form.text_field :name, :size => 20 %>
+          </div>
+          <div>
+            <label for="description">Description:</label>
+            <%= school_year_form.text_field :description, :size => 40 %>
+          </div>
+          <%= future_date_form_field :start_date, 'Start Date', school_year_form %>
+          <%= future_date_form_field :end_date, 'End Date', school_year_form %>
+          <div>
+            <label for="age_cutoff_month">Age Cutoff Month:</label>
+            <%= school_year_form.select :age_cutoff_month, (1..12) %>
+          </div>
+          <%= future_date_form_field :registration_start_date, 'Registration Start Date', school_year_form %>
+          <%= future_date_form_field :registration_75_percent_date, 'Registration 75% Date', school_year_form %>
+          <%= future_date_form_field :registration_50_percent_date, 'Registration 50% Date', school_year_form %>
+          <%= future_date_form_field :registration_end_date, 'Registration End Date', school_year_form %>
+          <%= future_date_form_field :refund_75_percent_date, 'Refund 75% Date', school_year_form %>
+          <%= future_date_form_field :refund_50_percent_date, 'Refund 50% Date', school_year_form %>
+          <%= future_date_form_field :refund_25_percent_date, 'Refund 25% Date', school_year_form %>
+          <%= future_date_form_field :refund_end_date, 'Refund End Date', school_year_form %>
