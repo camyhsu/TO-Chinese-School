@@ -18,9 +18,13 @@
       <td><%=h school_year.start_date %></td>
       <td><%=h school_year.end_date %></td>
       <td>
-        <%= link_to 'Details', :action => 'show', :id => school_year.id %>
+        <%= link_to 'Details', {:action => 'show', :id => school_year.id}, {:class => 'button'} %>
       </td>
     </tr>
     <% end %>
   </tbody>
 </table>
+
+<br/>
+<%= link_to 'Create New School Year', {:action => 'new'}, {:class => 'button'} %>
+<br/>

@@ -8,6 +8,18 @@ class Admin::SchoolYearsController < ApplicationController
     @school_year = SchoolYear.find_by_id params[:id].to_i
   end
 
+  def new
+    if request.post?
+      @school_year = SchoolYear.new params[:school_year]
+      if @school_year.save
+        flash[:notice] = 'School Year added successfully'
+        redirect_to :action => :index
+      end
+    else
+      @school_year = SchoolYear.new
+    end
+  end
+
   def edit
     if request.post?
       @school_year = SchoolYear.find_by_id(params[:id].to_i)
@@ -36,7 +48,6 @@ class Admin::SchoolYearsController < ApplicationController
   private
 
   def set_date_if_original_in_future(date_attribute_symbol)
-    puts "set date called with #{date_attribute_symbol.to_s}"
     original_value = @school_year.send date_attribute_symbol
     return unless original_value.nil? or original_value >= Date.today
     @school_year.send((date_attribute_symbol.to_s + '=').to_sym, parse_date(params[:school_year][date_attribute_symbol]))

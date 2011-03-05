@@ -19,6 +19,21 @@ class SchoolYear < ActiveRecord::Base
   private
 
   def date_order
-    
+    validate_start_end_date_order
+    #validate_registration_date_order
+    #validate_refund_date_order
+  end
+
+  def validate_start_end_date_order
+    validate_date_in_order :start_date, :end_date
+  end
+
+  def validate_date_in_order(earlier_date_symbol, later_date_symbol)
+    earlier_date = self.send earlier_date_symbol
+    later_date = self.send later_date_symbol
+    return if earlier_date.nil? or later_date.nil?
+    if earlier_date > later_date
+      errors.add(earlier_date_symbol, " can not be later than #{later_date_symbol.to_s.humanize}")
+    end
   end
 end
