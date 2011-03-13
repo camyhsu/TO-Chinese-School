@@ -7,7 +7,7 @@
     <fieldset>
         <legend>Edit Person</legend>
         <span class="person-edit">
-          <%= render :partial => 'person_form', :object => form %>
+          <%= render :partial => '/registration/people/person_form', :object => form %>
           <span style="color:red">*&nbsp;</span>Required Field
           <div>
             <%= submit_tag 'Save', :class => 'submit' %>

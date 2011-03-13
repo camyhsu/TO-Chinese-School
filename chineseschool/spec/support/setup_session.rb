@@ -15,8 +15,8 @@ def stub_check_authentication_and_authorization_in(controller)
   stub_check_authorization_in controller
 end
 
-def stub_find_user_in_session_for_controller
-  User.stubs(:find).returns(User.new(:person => Person.new))
+def stub_find_user_in_session_for_controller(fake_user = User.new(:person => Person.new))
+  User.stubs(:find).returns(fake_user)
 end
 
 def stub_find_user_in_session_for_view

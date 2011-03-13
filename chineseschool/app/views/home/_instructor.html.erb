@@ -1,7 +1,7 @@
 <h3>Instructor Resources</h3>
 
 <br/>
-<% @user.person.instructor_assignments.each do |instructor_assignment| %>
+<% @person.instructor_assignments.each do |instructor_assignment| %>
 <%= link_to "Student List For #{instructor_assignment.school_class.name}",
     {:controller => '/instruction/school_classes', :action => 'show', :id => instructor_assignment.school_class}, {:class => 'button'} %>
 <br/><br/>

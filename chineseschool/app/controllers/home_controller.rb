@@ -6,8 +6,10 @@ class HomeController < ApplicationController
 
   def index
     @home_templates = []
+    @home_templates << 'student_parent' if student_parent_resources_enabled?
     @home_templates << 'registration_officer' if registration_resources_enabled?
     @home_templates << 'instructor' if instructor_resources_enabled?
+    @person = @user.person
   end
 
   def change_password
@@ -39,6 +41,12 @@ class HomeController < ApplicationController
     return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
     return true if @user.has_role? Role::ROLE_NAME_INSTRUCTOR
     return true if @user.has_role? Role::ROLE_NAME_ROOM_PARENT
+    false
+  end
+
+  def student_parent_resources_enabled?
+    return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
+    return true if @user.has_role? Role::ROLE_NAME_STUDENT_PARENT
     false
   end
 end
