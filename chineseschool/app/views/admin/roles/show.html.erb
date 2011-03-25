@@ -29,5 +29,16 @@ Users with this role:
   <% end %>
 </table>
 
-
+<br/>
+Add user to this role:
+<% form_tag({ :action => 'add_user', :id => @role.id })do %>
+<%= text_field_tag :user_id, params[:user_id], :size => 20 %>
+<%= submit_tag 'Add', :class => 'submit' %>
+<% end %>
+<br/>
+Remove user from this role:
+<% form_tag({ :action => 'remove_user', :id => @role.id })do %>
+<%= text_field_tag :user_id, params[:user_id], :size => 20 %>
+<%= submit_tag 'Remove', :class => 'submit' %>
+<% end %>
 <br/>
