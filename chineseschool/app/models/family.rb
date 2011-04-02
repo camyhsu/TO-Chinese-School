@@ -18,4 +18,20 @@ class Family < ActiveRecord::Base
     end
     children_names.chop.chop
   end
+
+  def parent_one_is?(person)
+    if self.parent_one.nil?
+      false
+    else
+      person.id == self.parent_one.id
+    end
+  end
+
+  def parent_two_is?(person)
+    if self.parent_two.nil?
+      false
+    else
+      person.id == self.parent_two.id
+    end
+  end
 end

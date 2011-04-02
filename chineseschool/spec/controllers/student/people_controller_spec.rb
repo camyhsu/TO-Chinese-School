@@ -8,24 +8,6 @@ describe Student::PeopleController, 'checking authorization' do
     set_up_person_finding_by_id
   end
   
-  def set_up_fake_person
-    @fake_person = Person.new
-    @fake_person_id = rand 100000
-    @fake_person.id = @fake_person_id
-    fake_family = Family.new
-    @fake_person.stubs(:families).returns([ fake_family ])
-  end
-  
-  def set_up_user_finding_in_authorization
-    fake_user = User.new(:person => @fake_person)
-    stub_find_user_in_session_for_controller fake_user
-    fake_user.stubs(:authorized?).returns(true)
-  end
-  
-  def set_up_person_finding_by_id
-    Person.stubs(:find_by_id).returns(@fake_person)
-  end
-  
   it 'should not redirect if the user is allowed to edit personal data' do
     get :edit, {:id => @fake_person_id}
     response.should_not be_redirect

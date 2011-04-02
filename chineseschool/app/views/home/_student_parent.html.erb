@@ -39,6 +39,30 @@
   </tr>
   <% end %>
 </table>
-
+<hr/>
+<h3>Family for <%=h @person.name %></h3>
+<% @person.families.each do |family| -%>
+<table class="person-detail" border="0px">
+  <tr>
+    <td class="label">Parent One:</td>
+    <td><%=h family.parent_one.try(:name) %></td>
+  </tr>
+  <tr>
+    <td class="label">Parent Two:</td>
+    <td><%=h family.parent_two.try(:name) %></td>
+  </tr>
+  <tr>
+    <td class="label">Children:</td>
+    <td><%=h family.children_names %></td>
+  </tr>
+  <%= render :partial => '/registration/addresses/address', :object => family.address %>
+  <tr>
+    <td></td>
+    <td>
+      <%= link_to 'Edit Family Address', {:controller => '/student/families', :action => 'edit_address', :id => family}, {:class => 'button'} %>
+    </td>
+  </tr>
+</table>
+<% end %>
 <br/>
 <hr/>
