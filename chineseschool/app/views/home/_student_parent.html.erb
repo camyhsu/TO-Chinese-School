@@ -62,7 +62,12 @@
       <%= link_to 'Edit Family Address', {:controller => '/student/families', :action => 'edit_address', :id => family}, {:class => 'button'} %>
     </td>
   </tr>
+  <tr>
+    <td></td>
+    <td>
+      <%= link_to 'Add Child', {:controller => '/student/families', :action => :add_child, :id => family}, {:class => 'button'} %>
+    </td>
+  </tr>
 </table>
 <% end %>
-<br/>
 <hr/>

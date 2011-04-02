@@ -8,13 +8,13 @@ describe Student::FamiliesController, 'checking authorization' do
     set_up_family_finding_by_id
   end
 
-  it 'should not redirect if the user is the parent one of the family' do
+  it 'should not redirect if the user is the parent one of the family when editing family address' do
     @fake_family.parent_one = @fake_person
     get :edit_address, {:id => @fake_family_id}
     response.should_not be_redirect
   end
 
-  it 'should not redirect if the user is the parent two of the family' do
+  it 'should not redirect if the user is the parent two of the family when editing family address' do
     @fake_family.parent_two = @fake_person
     get :edit_address, {:id => @fake_family_id}
     response.should_not be_redirect
@@ -26,6 +26,28 @@ describe Student::FamiliesController, 'checking authorization' do
   end
 
   it 'should redirect to home page if editing family address is not allowed' do
+    get :edit_address, {:id => rand(100000)}
+    response.should redirect_to(:controller => '/home', :action => :index)
+  end
+
+  it 'should not redirect if the user is the parent one of the family when adding child' do
+    @fake_family.parent_one = @fake_person
+    get :add_child, {:id => @fake_family_id}
+    response.should_not be_redirect
+  end
+
+  it 'should not redirect if the user is the parent two of the family when adding child' do
+    @fake_family.parent_two = @fake_person
+    get :add_child, {:id => @fake_family_id}
+    response.should_not be_redirect
+  end
+
+  it 'should set flash notice if adding child is not allowed' do
+    get :edit_address, {:id => rand(100000)}
+    flash[:notice].should == 'Access to requested family data not authorized'
+  end
+
+  it 'should redirect to home page if adding child is not allowed' do
     get :edit_address, {:id => rand(100000)}
     response.should redirect_to(:controller => '/home', :action => :index)
   end
@@ -47,6 +69,25 @@ describe Student::FamiliesController, 'editing family address' do
   it 'should re-use view template for /registration/families/edit_address' do
     get :edit_address, {:id => @fake_family_id}
     response.should render_template('registration/families/edit_address.html.erb')
+  end
+end
+
+describe Student::FamiliesController, 'adding child' do
+  # This controller uses template from other controllers, so we force rendering
+  # of views in these test to make sure there are no path issues for partials
+  integrate_views
+
+  before(:each) do
+    stub_check_authentication_in @controller
+    set_up_fake_person
+    set_up_user_finding_in_authorization
+    set_up_family_finding_by_id
+    @controller.stubs(:action_authorized?).returns(true)
+  end
+
+  it 'should re-use view template for /registration/families/add_child' do
+    get :add_child, {:id => @fake_family_id}
+    response.should render_template('registration/families/add_child.html.erb')
   end
 end
 

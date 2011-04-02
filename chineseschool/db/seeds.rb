@@ -73,6 +73,7 @@ instructor_assignments_destroy = Right.create(:name => 'Destroy Instructor Assig
 
 instruction_school_classes_show = Right.create(:name => 'Student List For One School Class', :controller => 'instruction/school_classes', :action => 'show')
 
+student_families_add_child = Right.create(:name => 'Add Child To Family By Parent', :controller => 'student/families', :action => 'add_child')
 student_families_edit_address = Right.create(:name => 'Edit Family Address By Parent', :controller => 'student/families', :action => 'edit_address')
 
 student_people_edit = Right.create(:name => 'Edit Person Basic Data By Parent', :controller => 'student/people', :action => 'edit')
@@ -150,6 +151,7 @@ room_parent.rights << instruction_school_classes_show
 # Assign rights to Student Parent
 #
 student_parent = Role.find_by_name(Role::ROLE_NAME_STUDENT_PARENT)
+student_parent.rights << student_families_add_child
 student_parent.rights << student_families_edit_address
 
 student_parent.rights << student_people_edit
