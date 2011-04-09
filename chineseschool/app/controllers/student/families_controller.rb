@@ -17,12 +17,13 @@ class Student::FamiliesController < ApplicationController
   def add_child
     if request.post?
       @child = Person.new params[:child]
-      return unless @child.valid?
-      family = Family.find_by_id params[:id].to_i
-      family.children << @child
-      if family.save
-        flash[:notice] = 'New child added successfully'
-        redirect_to :controller => '/home', :action => :index and return
+      if @child.valid?
+        family = Family.find_by_id params[:id].to_i
+        family.children << @child
+        if family.save
+          flash[:notice] = 'New child added successfully'
+          redirect_to :controller => '/home', :action => :index and return
+        end
       end
     else
       @child = Person.new
