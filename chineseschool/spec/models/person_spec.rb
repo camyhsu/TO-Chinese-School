@@ -45,3 +45,73 @@ describe Person, 'finding families' do
     person_three_families.should include(families(:family_one))
   end
 end
+
+describe Person, 'checking if the person is a child' do
+  fixtures :people, :families, :families_children
+
+  it 'should return true if the person is a child in any family' do
+    a_child = people(:person_three)
+    a_child.is_a_child?.should be_true
+  end
+
+  it 'should return false if the person is not a child' do
+    a_parent = people(:person_one)
+    a_parent.is_a_child?.should be_false
+  end
+end
+
+describe Person, 'validating birth year' do
+  fixtures :people, :families, :families_children
+
+  it 'should allow nil birth year if the person is not a child' do
+    a_parent = people(:person_one)
+    a_parent.birth_year = nil
+    a_parent.valid?.should be_true
+  end
+
+  it 'should allow blank birth year if the person is not a child' do
+    a_parent = people(:person_one)
+    a_parent.birth_year = ''
+    a_parent.valid?.should be_true
+  end
+
+  it 'should not allow nil birth year if the person is a child' do
+    a_child = people(:person_three)
+    a_child.birth_year = nil
+    a_child.valid?.should be_false
+  end
+
+  it 'should not allow blank birth year if the person is a child' do
+    a_child = people(:person_three)
+    a_child.birth_year = ''
+    a_child.valid?.should be_false
+  end
+end
+
+describe Person, 'validating birth month' do
+  fixtures :people, :families, :families_children
+
+  it 'should allow nil birth month if the person is not a child' do
+    a_parent = people(:person_one)
+    a_parent.birth_month = nil
+    a_parent.valid?.should be_true
+  end
+
+  it 'should allow blank birth month if the person is not a child' do
+    a_parent = people(:person_one)
+    a_parent.birth_month = ''
+    a_parent.valid?.should be_true
+  end
+
+  it 'should not allow nil birth month if the person is a child' do
+    a_child = people(:person_three)
+    a_child.birth_month = nil
+    a_child.valid?.should be_false
+  end
+
+  it 'should not allow blank birth month if the person is a child' do
+    a_child = people(:person_three)
+    a_child.birth_month = ''
+    a_child.valid?.should be_false
+  end
+end

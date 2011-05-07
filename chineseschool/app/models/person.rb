@@ -10,11 +10,13 @@ class Person < ActiveRecord::Base
   has_many :instructor_assignments, :foreign_key => 'instructor_id', :dependent => :destroy
 
   validates_presence_of :gender
+  validates_presence_of :birth_year, :if => Proc.new { |person| person.is_a_child? }
+  validates_presence_of :birth_month, :if => Proc.new { |person| person.is_a_child? }
 
   validates_numericality_of :birth_year, :allow_nil => true, :only_integer => true, :greater_than => 1900, :less_than => Time.now.year
   validates_numericality_of :birth_month, :allow_nil => true, :only_integer => true, :greater_than => 0, :less_than => 13
 
-  validate :name_is_not_blank
+  validate :name_is_not_blank, :birth_year_is_valid
 
 
   def name
@@ -24,6 +26,10 @@ class Person < ActiveRecord::Base
   def birth_info
     return '' if birth_month.blank? or birth_year.blank?
     "#{birth_month}/#{birth_year}"
+  end
+
+  def is_a_child?
+    Person.count_by_sql("SELECT COUNT(1) FROM families_children WHERE child_id = #{self.id}") > 0
   end
   
   def families
@@ -83,5 +89,13 @@ class Person < ActiveRecord::Base
     return unless self.english_first_name.blank? or self.english_last_name.blank?
     return unless self.chinese_name.blank?
     errors.add_to_base('Engilsh Name or Chinese Name is required')
+  end
+
+  def birth_year_is_valid
+    
+  end
+
+  def birth_month_is_valid
+    
   end
 end
