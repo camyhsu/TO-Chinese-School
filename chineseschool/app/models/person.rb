@@ -16,7 +16,7 @@ class Person < ActiveRecord::Base
   validates_numericality_of :birth_year, :allow_nil => true, :only_integer => true, :greater_than => 1900, :less_than => Time.now.year
   validates_numericality_of :birth_month, :allow_nil => true, :only_integer => true, :greater_than => 0, :less_than => 13
 
-  validate :name_is_not_blank, :birth_year_is_valid
+  validate :name_is_not_blank
 
 
   def name
@@ -30,6 +30,12 @@ class Person < ActiveRecord::Base
 
   def is_a_child?
     Person.count_by_sql("SELECT COUNT(1) FROM families_children WHERE child_id = #{self.id}") > 0
+  end
+
+  def is_a_parent_of?(child_id)
+    Person.count_by_sql("SELECT COUNT(1) FROM families, families_children WHERE " +
+        "(families.parent_one_id = #{self.id} OR families.parent_two_id = #{self.id}) AND " +
+        "families.id = families_children.family_id AND families_children.child_id = #{child_id}") > 0
   end
   
   def families
@@ -89,13 +95,5 @@ class Person < ActiveRecord::Base
     return unless self.english_first_name.blank? or self.english_last_name.blank?
     return unless self.chinese_name.blank?
     errors.add_to_base('Engilsh Name or Chinese Name is required')
-  end
-
-  def birth_year_is_valid
-    
-  end
-
-  def birth_month_is_valid
-    
   end
 end

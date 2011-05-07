@@ -44,7 +44,7 @@ class Student::PeopleController < ApplicationController
   private
 
   def action_authorized?
-    if @user.person.id == params[:id].to_i
+    if @user.person.id == params[:id].to_i or @user.person.is_a_parent_of?(params[:id].to_i)
       return true
     else
       flash[:notice] = "Access to requested personal data not authorized"

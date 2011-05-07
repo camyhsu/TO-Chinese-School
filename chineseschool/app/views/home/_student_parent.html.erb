@@ -71,3 +71,35 @@
 </table>
 <% end %>
 <hr/>
+<h3>Student Registration Information</h3>
+<% @person.families.each do |family| -%>
+  <% family.children.each do |student| -%>
+    <table class="person-detail" border="0px">
+      <tr>
+        <td class="label">Chinese Name:</td>
+        <td><%=h student.chinese_name %></td>
+      </tr>
+      <tr>
+        <td class="label">English Name:</td>
+        <td><%=h "#{student.english_first_name} #{student.english_last_name}" %></td>
+      </tr>
+      <tr>
+        <td class="label">Gender:</td>
+        <td><%=h student.gender %></td>
+      </tr>
+      <tr>
+        <td class="label">Birth Month/Year:</td>
+        <td><%=h student.birth_info %></td>
+      </tr>
+      <tr>
+        <td class="label">Native Language:</td>
+        <td><%=h student.native_language %></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><%= link_to 'Edit Student Details', {:controller => '/student/people', :action => :edit, :id => student.id}, {:class => 'button'} %></td>
+      </tr>
+    </table>
+  <% end %>
+<% end %>
+<hr/>

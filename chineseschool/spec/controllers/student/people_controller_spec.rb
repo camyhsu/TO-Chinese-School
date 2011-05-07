@@ -4,12 +4,19 @@ describe Student::PeopleController, 'checking authorization' do
   before(:each) do
     stub_check_authentication_in @controller
     set_up_fake_person
-    set_up_user_finding_in_authorization
-    set_up_person_finding_by_id
+    set_up_finding_user_in_authorization
+    set_up_finding_person_by_id
+    @fake_child_id = rand 100000
   end
   
-  it 'should not redirect if the user is allowed to edit personal data' do
+  it 'should not redirect if the user is the person whose data are to be edited' do
     get :edit, {:id => @fake_person_id}
+    response.should_not be_redirect
+  end
+
+  it 'should not redirect if the user is a parent of the person whose data are to be edited' do
+    @fake_person.expects(:is_a_parent_of?).with(@fake_child_id).once.returns(true)
+    get :edit, {:id => @fake_child_id}
     response.should_not be_redirect
   end
 
@@ -62,8 +69,8 @@ describe Student::PeopleController, 'editing personal data' do
   before(:each) do
     stub_check_authentication_in @controller
     set_up_fake_person
-    set_up_user_finding_in_authorization
-    set_up_person_finding_by_id
+    set_up_finding_user_in_authorization
+    set_up_finding_person_by_id
     @controller.stubs(:action_authorized?).returns(true)
   end
 
@@ -81,8 +88,8 @@ describe Student::PeopleController, 'creating personal address' do
   before(:each) do
     stub_check_authentication_in @controller
     set_up_fake_person
-    set_up_user_finding_in_authorization
-    set_up_person_finding_by_id
+    set_up_finding_user_in_authorization
+    set_up_finding_person_by_id
     @controller.stubs(:action_authorized?).returns(true)
   end
 
@@ -100,8 +107,8 @@ describe Student::PeopleController, 'editing personal address' do
   before(:each) do
     stub_check_authentication_in @controller
     set_up_fake_person
-    set_up_user_finding_in_authorization
-    set_up_person_finding_by_id
+    set_up_finding_user_in_authorization
+    set_up_finding_person_by_id
     @controller.stubs(:action_authorized?).returns(true)
   end
 
@@ -119,12 +126,12 @@ def set_up_fake_person
   @fake_person.stubs(:families).returns([ fake_family ])
 end
 
-def set_up_user_finding_in_authorization
+def set_up_finding_user_in_authorization
   fake_user = User.new(:person => @fake_person)
   stub_find_user_in_session_for_controller fake_user
   fake_user.stubs(:authorized?).returns(true)
 end
 
-def set_up_person_finding_by_id
+def set_up_finding_person_by_id
   Person.stubs(:find_by_id).returns(@fake_person)
 end

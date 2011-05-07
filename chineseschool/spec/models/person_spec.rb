@@ -60,6 +60,22 @@ describe Person, 'checking if the person is a child' do
   end
 end
 
+describe Person, 'checking if the person is a parent of the given child' do
+  fixtures :people, :families, :families_children
+
+  it 'should return true if the person is a parent of the given child in a family' do
+    a_parent = people(:person_one)
+    the_child = people(:person_three)
+    a_parent.is_a_parent_of?(the_child.id).should be_true
+  end
+
+  it 'should return false if the person is not a parent of the given child in any family' do
+    not_a_parent = people(:person_two)
+    the_child = people(:person_three)
+    not_a_parent.is_a_parent_of?(the_child.id).should be_false
+  end
+end
+
 describe Person, 'validating birth year' do
   fixtures :people, :families, :families_children
 
