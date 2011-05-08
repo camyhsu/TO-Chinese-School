@@ -1,35 +1,41 @@
 
 first_grade_assignment_one:
+  school_year_id: 1
   student_id: 1001
   grade_id: 3
   school_class_id: 1
   elective_class_id: 4
 
 first_grade_assignment_two:
+  school_year_id: 1
   student_id: 1002
   grade_id: 3
   school_class_id: 1
   elective_class_id:
 
 first_grade_assignment_three:
+  school_year_id: 1
   student_id: 1003
   grade_id: 3
   school_class_id: 1
   elective_class_id: 
 
 first_grade_assignment_four:
+  school_year_id: 1
   student_id: 1004
   grade_id: 3
   school_class_id: 1
   elective_class_id: 4
 
 second_grade_assignment_one:
+  school_year_id: 1
   student_id: 1005
   grade_id: 4
   school_class_id: 
   elective_class_id:
 
 chinese_history_assignment_two:
+  school_year_id: 1
   student_id: 1234
   grade_id:
   school_class_id: 

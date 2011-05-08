@@ -24,3 +24,9 @@ def stub_find_user_in_session_for_view
   stub_person.stubs(:name).returns(random_string 8)
   assigns[:user] = User.new(:person => stub_person)
 end
+
+def stub_current_school_year
+  fake_school_year = SchoolYear.new
+  fake_school_year.id = 1
+  SchoolYear.stubs(:current_school_year).returns(fake_school_year)
+end

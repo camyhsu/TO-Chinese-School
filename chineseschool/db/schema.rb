@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110213001533) do
+ActiveRecord::Schema.define(:version => 20110508181040) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -139,7 +139,10 @@ ActiveRecord::Schema.define(:version => 20110213001533) do
     t.integer  "elective_class_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "school_year_id"
   end
+
+  add_index "student_class_assignments", ["school_year_id"], :name => "index_student_class_assignments_on_school_year_id"
 
   create_table "timed_tokens", :force => true do |t|
     t.string   "token"

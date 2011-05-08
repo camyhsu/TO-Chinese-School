@@ -50,6 +50,10 @@ class StudentClassAssignmentImporter
     end
 
     student_class_assignment = StudentClassAssignment.new
+    
+    # Must change this to proper school year if importing historical data
+    student_class_assignment.school_year = SchoolYear.current_school_year
+
     student_class_assignment.student = student
     student_class_assignment.grade = new_grade
     

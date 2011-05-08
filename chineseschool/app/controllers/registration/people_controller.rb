@@ -60,6 +60,7 @@ class Registration::PeopleController < ApplicationController
       if params[:id].blank?
         # selected a new grade without a previous student class assignment
         @student_class_assignment = StudentClassAssignment.new
+        @student_class_assignment.school_year = SchoolYear.current_school_year
         @student_class_assignment.student = Person.find_by_id params[:student_id].to_i
       else
         @student_class_assignment = StudentClassAssignment.find_by_id params[:id].to_i

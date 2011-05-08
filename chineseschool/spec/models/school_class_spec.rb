@@ -31,6 +31,10 @@ end
 describe SchoolClass, 'counting class size' do
   fixtures :school_classes, :student_class_assignments
 
+  before(:each) do
+    stub_current_school_year
+  end
+
   it 'should count class size correctly for school class' do
     school_classes(:first_grade).class_size.should == 4
     school_classes(:first_grade_class_b).class_size.should == 0

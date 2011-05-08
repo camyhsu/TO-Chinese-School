@@ -11,7 +11,7 @@ class Registration::StudentClassAssignmentsController < ApplicationController
 
   def list_active_students_by_name
     @current_school_year = SchoolYear.current_school_year
-    @active_student_class_assignments = StudentClassAssignment.all(:conditions => 'school_class_id is not null')
+    @active_student_class_assignments = StudentClassAssignment.all(:conditions => ['school_class_id is not null AND school_year_id = ?', SchoolYear.current_school_year.id])
     @active_student_class_assignments.sort! do |a, b|
       last_name_order = a.student.english_last_name <=> b.student.english_last_name
       if last_name_order == 0

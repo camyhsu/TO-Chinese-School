@@ -3,7 +3,8 @@ require 'spec_helper'
 describe Registration::StudentClassAssignmentsController, 'listing active students by name' do
   before(:each) do
     stub_check_authentication_and_authorization_in @controller
-    @active_student_class_assignment_condition = {:conditions => 'school_class_id is not null'}
+    stub_current_school_year
+    @active_student_class_assignment_condition = {:conditions => ['school_class_id is not null AND school_year_id = ?', SchoolYear.current_school_year.id]}
     @fake_active_student_class_assignments = create_fake_active_student_class_assignments
   end
 
@@ -58,6 +59,7 @@ describe Registration::StudentClassAssignmentsController, 'listing active studen
 
   def create_student_class_assignment(english_last_name, english_first_name)
     student_class_assignment = StudentClassAssignment.new
+    student_class_assignment.school_year = SchoolYear.current_school_year
     student = Person.new
     student.english_first_name = english_first_name
     student.english_last_name = english_last_name
