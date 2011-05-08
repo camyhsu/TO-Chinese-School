@@ -6,5 +6,8 @@ class Grade < ActiveRecord::Base
   
   has_many :student_class_assignments
   has_many :students, :through => :student_class_assignments
-  
+
+  def name
+    "#{self.chinese_name}(#{self.english_name})"
+  end
 end

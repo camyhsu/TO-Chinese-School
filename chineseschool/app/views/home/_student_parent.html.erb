@@ -98,16 +98,16 @@
       <% unless student.student_class_assignment.nil? -%>
         <tr>
           <td class="label">Grade:</td>
-          <td><%=h student.student_class_assignment.try(:grade).try(:chinese_name) %></td>
+          <td><%=h student.student_class_assignment.try(:grade).try(:name) %></td>
         </tr>
         <% unless student.student_class_assignment.try(:grade).nil? -%>
           <tr>
             <td class="label">School Class:</td>
-            <td><%=h student.student_class_assignment.try(:school_class).try(:chinese_name) %></td>
+            <td><%=h student.student_class_assignment.try(:school_class).try(:name) %></td>
           </tr>
           <tr>
             <td class="label">Elective Class:</td>
-            <td><%=h student.student_class_assignment.try(:elective_class).try(:chinese_name) %></td>
+            <td><%=h student.student_class_assignment.try(:elective_class).try(:name) %></td>
           </tr>
         <% end %>
       <% end %>
@@ -117,7 +117,7 @@
       </tr>
       <tr>
         <td></td>
-        <td><%= link_to 'Register For Next School Year', {:controller => '/student/people', :action => :edit, :id => student.id}, {:class => 'button'} %></td>
+        <td><hr/></td>
       </tr>
     </table>
   <% end %>
