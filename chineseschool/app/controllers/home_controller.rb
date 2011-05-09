@@ -6,9 +6,9 @@ class HomeController < ApplicationController
 
   def index
     @home_templates = []
-    @home_templates << 'student_parent' if student_parent_resources_enabled?
     @home_templates << 'registration_officer' if registration_resources_enabled?
     @home_templates << 'instructor' if instructor_resources_enabled?
+    @home_templates << 'student_parent' if student_parent_resources_enabled?
     @person = @user.person
   end
 
