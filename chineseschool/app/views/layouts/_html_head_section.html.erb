@@ -2,7 +2,7 @@
 <title><%= page_title %></title>
 <%= stylesheet_link_tag 'layout', 'hot-sneaks/jquery-ui-1.8.4.custom.css' %>
 
-<%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>
+<%= csrf_meta_tag %>
 <%= javascript_include_tag 'jquery-1.4.2.min', 'jquery-ui-1.8.4.custom.min', 'application' %>
 
 <% unless page_javascript.nil? %>
