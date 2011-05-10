@@ -10,4 +10,8 @@ class Grade < ActiveRecord::Base
   def name
     "#{self.chinese_name}(#{self.english_name})"
   end
+
+  def current_year_student_class_assignments
+    self.student_class_assignments.all :conditions => ['school_year_id = ?', SchoolYear.current_school_year.id]
+  end
 end

@@ -95,19 +95,20 @@
         <td class="label">Native Language:</td>
         <td><%=h student.native_language %></td>
       </tr>
-      <% unless student.student_class_assignment.nil? -%>
+      <% unless student.current_year_student_class_assignment.nil? -%>
+        <% student_class_assignment = student.current_year_student_class_assignment %>
         <tr>
           <td class="label">Grade:</td>
-          <td><%=h student.student_class_assignment.try(:grade).try(:name) %></td>
+          <td><%=h student_class_assignment.try(:grade).try(:name) %></td>
         </tr>
-        <% unless student.student_class_assignment.try(:grade).nil? -%>
+        <% unless student_class_assignment.try(:grade).nil? -%>
           <tr>
             <td class="label">School Class:</td>
-            <td><%=h student.student_class_assignment.try(:school_class).try(:name) %></td>
+            <td><%=h student_class_assignment.try(:school_class).try(:name) %></td>
           </tr>
           <tr>
             <td class="label">Elective Class:</td>
-            <td><%=h student.student_class_assignment.try(:elective_class).try(:name) %></td>
+            <td><%=h student_class_assignment.try(:elective_class).try(:name) %></td>
           </tr>
         <% end %>
       <% end %>

@@ -15,7 +15,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @grade.student_class_assignments.each do |student_class_assignment| -%>
+    <% @grade.current_year_student_class_assignments.each do |student_class_assignment| -%>
     <tr>
       <%= render :partial => 'student_class_assignment', :object => student_class_assignment %>
     </tr>

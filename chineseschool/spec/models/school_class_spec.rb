@@ -48,6 +48,10 @@ end
 describe SchoolClass, 'finding students' do
   fixtures :school_classes, :student_class_assignments, :people
 
+  before(:each) do
+    stub_current_school_year
+  end
+
   it 'should find students for school class' do
     students = school_classes(:first_grade).students
     students.size.should == 4

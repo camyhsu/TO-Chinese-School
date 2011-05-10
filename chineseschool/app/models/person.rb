@@ -6,7 +6,7 @@ class Person < ActiveRecord::Base
   has_one :user
   belongs_to :address
 
-  has_one :student_class_assignment, :foreign_key => 'student_id', :dependent => :destroy
+  has_many :student_class_assignments, :foreign_key => 'student_id', :dependent => :destroy
   has_many :instructor_assignments, :foreign_key => 'instructor_id', :dependent => :destroy
 
   validates_presence_of :gender
@@ -36,6 +36,10 @@ class Person < ActiveRecord::Base
     Person.count_by_sql("SELECT COUNT(1) FROM families, families_children WHERE " +
         "(families.parent_one_id = #{self.id} OR families.parent_two_id = #{self.id}) AND " +
         "families.id = families_children.family_id AND families_children.child_id = #{child_id}") > 0
+  end
+
+  def current_year_student_class_assignment
+    self.student_class_assignments.first :conditions => ['school_year_id = ?', SchoolYear.current_school_year.id]
   end
   
   def families
