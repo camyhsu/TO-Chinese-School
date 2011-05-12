@@ -116,4 +116,8 @@ class SigninController < ApplicationController
       end
     end
   end
+
+  def ping
+    render :text => "Pong - #{Time.now}"
+  end
 end
