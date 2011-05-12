@@ -99,7 +99,7 @@ describe SigninController, 'handling post request for singin, tested with views,
     User.expects(:authenticate).with(@fake_username, @fake_password).once.returns(nil)
     post :index, :username => @fake_username, :password => @fake_password
     response.should render_template(:index)
-    response.should have_tag('p#flash-notice', 'Invalid username / password combination')
+    response.should have_tag('p#flash-notice', 'Invalid username / password combination - For technical support, please email engineering@to-cs.org')
   end
 end
 
