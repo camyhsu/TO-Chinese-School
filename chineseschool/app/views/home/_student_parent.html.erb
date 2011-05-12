@@ -72,6 +72,10 @@
 <% end %>
 <hr/>
 <h3>Student Registration Information</h3>
+<% @active_registration_school_years.each do |registration_year| %>
+<%= link_to "Register For #{registration_year.name} School Year", {:controller => '/student/registration', :action => :display_registration_options, :id => registration_year}, {:class => 'button'} %>
+<br/><br/>
+<% end %>
 <% @person.families.each do |family| -%>
   <% family.children.each do |student| -%>
     <table class="person-detail" border="0px">

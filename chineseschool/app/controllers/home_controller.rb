@@ -8,7 +8,10 @@ class HomeController < ApplicationController
     @home_templates = []
     @home_templates << 'registration_officer' if registration_resources_enabled?
     @home_templates << 'instructor' if instructor_resources_enabled?
-    @home_templates << 'student_parent' if student_parent_resources_enabled?
+    if student_parent_resources_enabled?
+      @home_templates << 'student_parent'
+      @active_registration_school_years = SchoolYear.all :conditions => ['registration_start_date <= ? AND registration_end_date >= ?', Date.today, Date.today], :order => 'start_date ASC'
+    end
     @person = @user.person
   end
 

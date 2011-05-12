@@ -80,6 +80,8 @@ student_people_edit = Right.create(:name => 'Edit Person Basic Data By Parent', 
 student_people_new_address = Right.create(:name => 'Create Personal Address By Parent', :controller => 'student/people', :action => 'new_address')
 student_people_edit_address = Right.create(:name => 'Edit Personal Address By Parent', :controller => 'student/people', :action => 'edit_address')
 
+student_registration_display_options = Right.create(:name => 'Display Registration Options', :controller => 'student/registration', :action => 'display_registration_options')
+
 
 
 #
@@ -157,3 +159,5 @@ student_parent.rights << student_families_edit_address
 student_parent.rights << student_people_edit
 student_parent.rights << student_people_new_address
 student_parent.rights << student_people_edit_address
+
+student_parent.rights << student_registration_display_options
