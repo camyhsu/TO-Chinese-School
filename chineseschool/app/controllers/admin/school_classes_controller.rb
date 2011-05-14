@@ -14,10 +14,15 @@ class Admin::SchoolClassesController < ApplicationController
       selected_grade_id = params[:school_class].delete :grade
       @school_class = SchoolClass.new(params[:school_class])
       @school_class.grade_id = selected_grade_id.to_i unless selected_grade_id.blank?
-      if @school_class.save
-        flash[:notice] = 'School Class added successfully'
-        redirect_to :action => :index
+      return unless @school_class.valid?
+      school_class_active_flag = create_new_school_class_active_flag @school_class
+      school_class_active_flag.active = true
+      SchoolClass.transaction do
+        school_class_active_flag.save!
+        @school_class.save!
       end
+      flash[:notice] = 'School Class added successfully'
+      redirect_to :action => :index
     else
       @school_class = SchoolClass.new
     end
@@ -67,7 +72,18 @@ class Admin::SchoolClassesController < ApplicationController
   private
 
   def flip_active_to(active_flag, school_class)
-    school_class.active = active_flag
-    school_class.save!
+    school_class_active_flag = school_class.current_school_year_active_flag
+    if school_class_active_flag.nil?
+      school_class_active_flag = create_new_school_class_active_flag school_class
+    end
+    school_class_active_flag.active = active_flag
+    school_class_active_flag.save!
+  end
+
+  def create_new_school_class_active_flag(school_class)
+    school_class_active_flag = SchoolClassActiveFlag.new
+    school_class_active_flag.school_class = school_class
+    school_class_active_flag.school_year = SchoolYear.current_school_year
+    school_class_active_flag
   end
 end

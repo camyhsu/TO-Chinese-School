@@ -7,11 +7,11 @@ describe Grade do
     grades(:first_grade).next_grade.should == grades(:second_grade)
   end
 
-  it 'should have many active school classes' do
-    grades(:first_grade).should have(2).school_classes
+  it 'should have many school classes' do
+    grades(:first_grade).should have(3).school_classes
     grades(:first_grade).school_classes.should include(school_classes(:first_grade))
     grades(:first_grade).school_classes.should include(school_classes(:first_grade_class_b))
-    grades(:first_grade).school_classes.should_not include(school_classes(:first_grade_class_inactive))
+    grades(:first_grade).school_classes.should include(school_classes(:first_grade_class_inactive))
   end
 
   it 'should have many student class assignments' do
@@ -26,5 +26,18 @@ describe Grade do
     grades(:first_grade).students.should include(student_class_assignments(:first_grade_assignment_one).student)
     grades(:first_grade).students.should include(student_class_assignments(:first_grade_assignment_two).student)
     grades(:first_grade).students.should_not include(student_class_assignments(:second_grade_assignment_one).student)
+  end
+end
+
+describe Grade, 'finding active school classes' do
+  fixtures :grades, :school_classes, :school_class_active_flags
+
+  it 'should find active school classes belonging to this grade' do
+    stub_current_school_year
+    active_school_classes = grades(:first_grade).active_school_classes
+    active_school_classes.should have(2).school_classes
+    active_school_classes.should include(school_classes(:first_grade))
+    active_school_classes.should include(school_classes(:first_grade_class_b))
+    active_school_classes.should_not include(school_classes(:first_grade_class_inactive))
   end
 end

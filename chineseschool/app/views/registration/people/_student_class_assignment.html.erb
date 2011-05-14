@@ -19,7 +19,7 @@
     <td class="label">Select New School Class:</td>
     <td>
       <% select_school_class_handler = "selectClass(this, '#{url_for :action => :select_school_class, :id => student_class_assignment}')" %>
-      <%= collection_select :student_class_assignment, :school_class, student_class_assignment.grade.school_classes,
+      <%= collection_select :student_class_assignment, :school_class, student_class_assignment.grade.active_school_classes,
           :id, :chinese_name, {:include_blank => true, :selected => student_class_assignment.try(:school_class).try(:id)},
           {:onchange => select_school_class_handler} %>
     </td>
@@ -33,7 +33,7 @@
     <td class="label">Select New Elective Class:</td>
     <td>
       <% select_elective_class_handler = "selectClass(this, '#{url_for :action => :select_elective_class, :id => student_class_assignment}')" %>
-      <%= collection_select :student_class_assignment, :elective_class, SchoolClass.all(:conditions => 'grade_id is null and active is true'),
+      <%= collection_select :student_class_assignment, :elective_class, SchoolClass.find_all_active_elective_classes,
           :id, :chinese_name, {:include_blank => true, :selected => student_class_assignment.try(:elective_class).try(:id)},
           {:onchange => select_elective_class_handler} %></td>
   </tr>

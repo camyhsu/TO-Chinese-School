@@ -9,33 +9,30 @@ first_grade:
   max_size: 0
   min_age: 0
   max_age: 0
-  active: true
   grade_id: 3
 
 first_grade_class_b:
   id: 2
-  english_name: 1st Grade
-  chinese_name: 一年級
+  english_name: 1st B
+  chinese_name: 一年級 B
   short_name: 1B
   description: 1st Grade Class B
   location: F-11*
   max_size: 0
   min_age: 0
   max_age: 0
-  active: true
   grade_id: 3
 
 first_grade_class_inactive:
   id: 3
-  english_name: 1st Grade
-  chinese_name: 一年級
+  english_name: 1st F
+  chinese_name: 一年級 F
   short_name: 1F
   description: 1st Grade Class F Inactive
   location: F-11*
   max_size: 0
   min_age: 0
   max_age: 0
-  active: false
   grade_id: 3
 
 chinese_history_one:
@@ -48,5 +45,28 @@ chinese_history_one:
   max_size: 30
   min_age: 10
   max_age: 15
-  active: false
+  grade_id:
+
+second_grade:
+  id: 5
+  english_name: 2nd Grade
+  chinese_name: 二年級
+  short_name: 2A
+  description: 2nd Grade A
+  location: F-12*
+  max_size: 0
+  min_age: 0
+  max_age: 0
+  grade_id: 4
+
+chinese_history_two:
+  id: 6
+  english_name: Chinese Culture and History II
+  chinese_name: 中國歷史研討（中）
+  short_name:
+  description: Chinese Culture and History II
+  location: I-10
+  max_size: 30
+  min_age: 10
+  max_age: 15
   grade_id:

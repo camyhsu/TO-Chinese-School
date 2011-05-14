@@ -2,6 +2,8 @@ class SchoolClass < ActiveRecord::Base
   
   belongs_to :grade
 
+  has_many :school_class_active_flags
+
   validates_presence_of :english_name, :chinese_name
   validates_uniqueness_of :english_name, :chinese_name
 
@@ -16,6 +18,14 @@ class SchoolClass < ActiveRecord::Base
 
   def elective?
     self.grade.nil?
+  end
+
+  def current_school_year_active_flag
+    self.school_class_active_flags.first :conditions => ['school_year_id = ?', SchoolYear.current_school_year.id]
+  end
+
+  def active_in_current_school_year?
+    current_school_year_active_flag.active == true
   end
 
   def class_size
@@ -45,6 +55,14 @@ class SchoolClass < ActiveRecord::Base
       assignment_hash[instructor_assignment.role] << instructor_assignment.instructor
     end
     assignment_hash
+  end
+
+  def self.find_all_active_school_classes
+    self.all.reject { |school_class| !school_class.active_in_current_school_year? }
+  end
+
+  def self.find_all_active_elective_classes
+    self.all(:conditions => ['grade_id is null']).reject { |school_class| !school_class.active_in_current_school_year? }
   end
 
   private

@@ -1,0 +1,35 @@
+
+current_year_first_grade_active:
+  school_class_id: 1
+  school_year_id: 1
+  active: true
+
+current_year_first_grade_class_b_active:
+  school_class_id: 2
+  school_year_id: 1
+  active: true
+
+current_year_first_grade_class_inactive:
+  school_class_id: 3
+  school_year_id: 1
+  active: false
+
+current_year_chinese_history_one_inactive:
+  school_class_id: 4
+  school_year_id: 1
+  active: false
+
+current_year_second_grade_active:
+  school_class_id: 5
+  school_year_id: 1
+  active: true
+
+current_year_chinese_history_two_active:
+  school_class_id: 6
+  school_year_id: 1
+  active: true
+
+next_year_first_grade_class_b_inactive:
+  school_class_id: 2
+  school_year_id: 2
+  active: false

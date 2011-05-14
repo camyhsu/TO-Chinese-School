@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110508181040) do
+ActiveRecord::Schema.define(:version => 20110512013805) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -99,6 +99,17 @@ ActiveRecord::Schema.define(:version => 20110508181040) do
     t.datetime "updated_at"
   end
 
+  create_table "school_class_active_flags", :force => true do |t|
+    t.integer  "school_class_id"
+    t.integer  "school_year_id"
+    t.boolean  "active",          :default => true, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "school_class_active_flags", ["school_class_id"], :name => "index_school_class_active_flags_on_school_class_id"
+  add_index "school_class_active_flags", ["school_year_id"], :name => "index_school_class_active_flags_on_school_year_id"
+
   create_table "school_classes", :force => true do |t|
     t.string   "english_name"
     t.string   "chinese_name"
@@ -107,7 +118,6 @@ ActiveRecord::Schema.define(:version => 20110508181040) do
     t.integer  "max_size"
     t.integer  "min_age"
     t.integer  "max_age"
-    t.boolean  "active",       :default => true, :null => false
     t.integer  "grade_id"
     t.datetime "created_at"
     t.datetime "updated_at"

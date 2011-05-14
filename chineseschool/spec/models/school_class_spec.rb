@@ -28,6 +28,22 @@ describe SchoolClass, 'checking elective status' do
   end
 end
 
+describe SchoolClass, 'checking current school year active status' do
+  fixtures :school_classes, :school_class_active_flags
+
+  before(:each) do
+    stub_current_school_year
+  end
+  
+  it 'should return true if school class is active in current school year' do
+    school_classes(:first_grade).active_in_current_school_year?.should be_true
+  end
+
+  it 'should return false if school class is not active in current school year' do
+    school_classes(:first_grade_class_inactive).active_in_current_school_year?.should be_false
+  end
+end
+
 describe SchoolClass, 'counting class size' do
   fixtures :school_classes, :student_class_assignments
 
@@ -69,6 +85,34 @@ describe SchoolClass, 'finding students' do
     students[0].should == people(:person_with_chinese_name)
     students[1].should == people(:person_four)
     students[2].should == people(:person_one)
+  end
+end
+
+describe SchoolClass, 'finding all active school classes' do
+  fixtures :school_classes, :school_class_active_flags
+  
+  it 'should find all active school classes for the current year' do
+    stub_current_school_year
+    active_school_classes = SchoolClass.find_all_active_school_classes
+    active_school_classes.should have(4).school_classes
+    active_school_classes.should include(school_classes(:first_grade))
+    active_school_classes.should include(school_classes(:first_grade_class_b))
+    active_school_classes.should include(school_classes(:second_grade))
+    active_school_classes.should_not include(school_classes(:first_grade_class_inactive))
+    active_school_classes.should_not include(school_classes(:chinese_history_one))
+    active_school_classes.should include(school_classes(:chinese_history_two))
+  end
+end
+
+describe SchoolClass, 'finding all active elective classes' do
+  fixtures :school_classes, :school_class_active_flags
+
+  it 'should find all active elective classes for the current year' do
+    stub_current_school_year
+    active_school_classes = SchoolClass.find_all_active_elective_classes
+    active_school_classes.should have(1).school_classes
+    active_school_classes.should_not include(school_classes(:chinese_history_one))
+    active_school_classes.should include(school_classes(:chinese_history_two))
   end
 end
 

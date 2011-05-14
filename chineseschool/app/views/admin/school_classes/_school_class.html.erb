@@ -8,8 +8,8 @@
       <td><%=h school_class.min_age %></td>
       <td><%=h school_class.max_age %></td>
       <td><%=h school_class.grade.try(:chinese_name) %></td>
-      <td><%= convert_to_yes_no school_class.active? %></td>
-      <% if school_class.active? %>
+      <td><%= convert_to_yes_no school_class.active_in_current_school_year? %></td>
+      <% if school_class.active_in_current_school_year? %>
         <td>
           <input type="button" value="Disable" onclick="toggleActive(this, '<%= url_for :action => :disable, :id => school_class %>')"/>
         </td>

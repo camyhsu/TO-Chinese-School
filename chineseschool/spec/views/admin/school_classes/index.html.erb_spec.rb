@@ -1,11 +1,12 @@
 require 'spec_helper'
 
 describe "/admin/school_classes/index" do
-  fixtures :school_classes
+  fixtures :school_classes, :school_class_active_flags
 
   include ApplicationHelper
   
   before(:each) do
+    stub_current_school_year
     @page_title = 'All School Classes'
     assigns[:school_classes] = [ school_classes(:first_grade), school_classes(:chinese_history_one) ]
     render '/admin/school_classes/index.html.erb'
@@ -51,7 +52,7 @@ describe "/admin/school_classes/index" do
       with_tag('td', school_classes(school_class).min_age.to_s)
       with_tag('td', school_classes(school_class).max_age.to_s)
       with_tag('td', grade_display_name(school_classes(school_class).grade))
-      with_tag('td', convert_to_yes_no(school_classes(school_class).active))
+      with_tag('td', convert_to_yes_no(school_classes(school_class).active_in_current_school_year?))
     end
   end
 
