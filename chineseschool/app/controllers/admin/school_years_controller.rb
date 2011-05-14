@@ -12,6 +12,7 @@ class Admin::SchoolYearsController < ApplicationController
     if request.post?
       @school_year = SchoolYear.new params[:school_year]
       if @school_year.save
+        initialize_school_class_active_flags_for @school_year
         flash[:notice] = 'School Year added successfully'
         redirect_to :action => :index
       end
@@ -46,6 +47,16 @@ class Admin::SchoolYearsController < ApplicationController
   end
 
   private
+
+  def initialize_school_class_active_flags_for(school_year)
+    SchoolClass.all.each do |school_class|
+      school_class_active_flag = SchoolClassActiveFlag.new
+      school_class_active_flag.school_class = school_class
+      school_class_active_flag.school_year = school_year
+      school_class_active_flag.active = true
+      school_class_active_flag.save!
+    end
+  end
 
   def set_date_if_original_in_future(date_attribute_symbol)
     original_value = @school_year.send date_attribute_symbol
