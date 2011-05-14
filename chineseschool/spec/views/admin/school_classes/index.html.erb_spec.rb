@@ -9,7 +9,8 @@ describe "/admin/school_classes/index" do
     stub_current_school_year
     @page_title = 'All School Classes'
     assigns[:school_classes] = [ school_classes(:first_grade), school_classes(:chinese_history_one) ]
-    assigns[:current_school_year] = SchoolYear.new(:id => 1, :name => 'Current')
+    @current_school_year = SchoolYear.new(:id => 1, :name => 'Current')
+    assigns[:current_school_year] = @current_school_year
     render '/admin/school_classes/index.html.erb'
   end
 
@@ -53,7 +54,7 @@ describe "/admin/school_classes/index" do
       with_tag('td', school_classes(school_class).min_age.to_s)
       with_tag('td', school_classes(school_class).max_age.to_s)
       with_tag('td', grade_display_name(school_classes(school_class).grade))
-      with_tag('td', convert_to_yes_no(school_classes(school_class).active_in_current_school_year?))
+      with_tag('td', convert_to_yes_no(school_classes(school_class).active_in? @current_school_year))
     end
   end
 

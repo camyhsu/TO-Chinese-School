@@ -21,12 +21,16 @@
       <th>Grade</th>
       <th><%=h @current_school_year.name %> Active?</th>
       <th></th>
+      <% unless @next_school_year.nil? %>
+      <th><%=h @next_school_year.name %> Active?</th>
+      <th></th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
     <% @school_classes.each do |school_class| -%>
     <tr>
-      <%= render :partial => 'school_class', :object => school_class %>
+      <%= render :partial => 'school_class', :object => school_class, :locals => {:current_school_year => @current_school_year, :next_school_year => @next_school_year} %>
     </tr>
     <% end %>
   </tbody>

@@ -36,8 +36,7 @@ school_years_edit = Right.create(:name => 'Edit School Year Details', :controlle
 school_classes_index = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
 school_classes_new = Right.create(:name => 'Create New School Class', :controller => 'admin/school_classes', :action => 'new')
 school_classes_edit = Right.create(:name => 'Edit School Class', :controller => 'admin/school_classes', :action => 'edit')
-school_classes_enable = Right.create(:name => 'Enable School Class', :controller => 'admin/school_classes', :action => 'enable')
-school_classes_disable = Right.create(:name => 'Disable School Class', :controller => 'admin/school_classes', :action => 'disable')
+school_classes_toggle_active = Right.create(:name => 'Toggle School Class Active Status', :controller => 'admin/school_classes', :action => 'toggle_active')
 
 active_school_classes_index = Right.create(:name => 'List Active School Classes', :controller => 'registration/active_school_classes', :action => 'index')
 active_school_classes_student_count = Right.create(:name => '班級人數清單', :controller => 'registration/active_school_classes', :action => 'student_count')
@@ -98,8 +97,7 @@ registration_officer.rights << school_years_edit
 registration_officer.rights << school_classes_index
 registration_officer.rights << school_classes_new
 registration_officer.rights << school_classes_edit
-registration_officer.rights << school_classes_enable
-registration_officer.rights << school_classes_disable
+registration_officer.rights << school_classes_toggle_active
 
 registration_officer.rights << active_school_classes_index
 registration_officer.rights << active_school_classes_student_count

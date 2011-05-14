@@ -1,6 +1,6 @@
 class Admin::SchoolClassesController < ApplicationController
 
-  verify :only => [:enable, :disable] , :method => :post, 
+  verify :only => [:toggle_active] , :method => :post,
       :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
 
   def index
@@ -55,32 +55,15 @@ class Admin::SchoolClassesController < ApplicationController
     end
   end
 
-  def enable
-    if request.post?
-      @school_class = SchoolClass.find_by_id params[:id].to_i
-      flip_active_to true, @school_class
-      render :action => :one_school_class, :layout => 'ajax_layout'
-    end
-  end
-
-  def disable
-    if request.post?
-      @school_class = SchoolClass.find_by_id params[:id].to_i
-      flip_active_to false, @school_class
-      render :action => :one_school_class, :layout => 'ajax_layout'
-    end
+  def toggle_active
+    @school_class = SchoolClass.find_by_id params[:id].to_i
+    @school_class.flip_active_to params[:active], params[:school_year_id].to_i
+    @current_school_year = SchoolYear.current_school_year
+    @next_school_year = SchoolYear.next_school_year
+    render :action => :one_school_class, :layout => 'ajax_layout'
   end
 
   private
-
-  def flip_active_to(active_flag, school_class)
-    school_class_active_flag = school_class.current_school_year_active_flag
-    if school_class_active_flag.nil?
-      school_class_active_flag = create_new_school_class_active_flag school_class
-    end
-    school_class_active_flag.active = active_flag
-    school_class_active_flag.save!
-  end
 
   def create_new_school_class_active_flag(school_class)
     school_class_active_flag = SchoolClassActiveFlag.new

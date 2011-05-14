@@ -8,13 +8,27 @@
       <td><%=h school_class.min_age %></td>
       <td><%=h school_class.max_age %></td>
       <td><%=h school_class.grade.try(:chinese_name) %></td>
-      <td><%= convert_to_yes_no school_class.active_in_current_school_year? %></td>
-      <% if school_class.active_in_current_school_year? %>
+      <% active_in_current_school_year = school_class.active_in?(current_school_year) %>
+      <td><%= convert_to_yes_no active_in_current_school_year %></td>
+      <% if active_in_current_school_year %>
         <td>
-          <input type="button" value="Disable" onclick="toggleActive(this, '<%= url_for :action => :disable, :id => school_class %>')"/>
+          <input type="button" value="Disable" onclick="toggleActive(this, '<%= url_for :action => :toggle_active, :id => school_class %>', 'false', '<%= current_school_year.id %>')"/>
         </td>
       <% else %>
         <td>
-          <input type="button" value="Enable" onclick="toggleActive(this, '<%= url_for :action => :enable, :id => school_class %>')"/>
+          <input type="button" value="Enable" onclick="toggleActive(this, '<%= url_for :action => :toggle_active, :id => school_class %>', 'true', '<%= current_school_year.id %>')"/>
         </td>
+      <% end %>
+      <% unless next_school_year.nil? %>
+        <% active_in_next_school_year = school_class.active_in?(next_school_year) %>
+        <td><%= convert_to_yes_no active_in_next_school_year %></td>
+        <% if active_in_next_school_year %>
+          <td>
+            <input type="button" value="Disable" onclick="toggleActive(this, '<%= url_for :action => :toggle_active, :id => school_class %>', 'false', '<%= next_school_year.id %>')"/>
+          </td>
+        <% else %>
+          <td>
+            <input type="button" value="Enable" onclick="toggleActive(this, '<%= url_for :action => :toggle_active, :id => school_class %>', 'true', '<%= next_school_year.id %>')"/>
+          </td>
+        <% end %>
       <% end %>

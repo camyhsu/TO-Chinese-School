@@ -6,5 +6,4 @@ $(document).ajaxSend(function(e, xhr, options) {
 
 $(document).ready(function() {
     $(".button").button();
-
 });

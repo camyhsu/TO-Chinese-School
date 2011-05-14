@@ -28,6 +28,23 @@ class SchoolClass < ActiveRecord::Base
     current_school_year_active_flag.active == true
   end
 
+  def active_in?(school_year)
+    school_class_active_flag = self.school_class_active_flags.first :conditions => ['school_year_id = ?', school_year.id]
+    return false if school_class_active_flag.nil?
+    school_class_active_flag.active == true
+  end
+
+  def flip_active_to(active_flag, school_year_id)
+    school_class_active_flag = self.school_class_active_flags.first :conditions => ['school_year_id = ?', school_year_id]
+    if school_class_active_flag.nil?
+      school_class_active_flag = SchoolClassActiveFlag.new
+      school_class_active_flag.school_class = self
+      school_class_active_flag.school_year_id = school_year_id
+    end
+    school_class_active_flag.active = active_flag
+    school_class_active_flag.save!
+  end
+
   def class_size
     class_clause = 'school_class_id = ?'
     class_clause = 'elective_class_id = ?' if elective?
