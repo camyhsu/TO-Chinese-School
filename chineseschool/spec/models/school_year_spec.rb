@@ -18,8 +18,7 @@ end
 
 describe SchoolYear, 'finding current school year' do
   after(:each) do
-    teardown_current_school_year
-    teardown_school_years_starting_in_near_future
+    teardown_school_years
   end
   
   it 'should find the school year today falls into if there is one' do
@@ -29,15 +28,42 @@ describe SchoolYear, 'finding current school year' do
 
   it 'should find the first school year starting in the near future if today does not fall into one' do
     SchoolYear.current_school_year.should be_nil
-    setup_school_years_starting_in_near_future
+    setup_two_school_years_starting_in_near_future
     SchoolYear.current_school_year.should == @first_school_year_starting_in_near_future
+  end
+end
+
+describe SchoolYear, 'finding next school year' do
+  after(:each) do
+    teardown_school_years
+  end
+
+  it 'should find the first school year starting in the near future' do
+    setup_current_school_year
+    setup_two_school_years_starting_in_near_future
+    SchoolYear.next_school_year.should == @first_school_year_starting_in_near_future
+  end
+
+  it 'should find the following school year if current school year is the one starting in the near future' do
+    setup_two_school_years_starting_in_near_future
+    SchoolYear.next_school_year.should == @second_school_year_starting_in_near_future
+  end
+
+  it 'should return nil if next school year could not be found' do
+    setup_current_school_year
+    SchoolYear.next_school_year.should be_nil
+  end
+
+  it 'should return nil if next school year could not be found when current school year is the one starting in the near future' do
+    setup_one_school_years_starting_in_near_future
+    SchoolYear.next_school_year.should be_nil
   end
 end
 
 describe SchoolYear, 'finding current and future school years' do
   it 'should find current and future years' do
     fake_school_years = [SchoolYear.new, SchoolYear.new]
-    SchoolYear.expects(:all).with(:conditions => ["end_date >= ?", Date.today], :order => 'end_date ASC').once.returns(fake_school_years)
+    SchoolYear.expects(:all).with(:conditions => ["end_date >= ?", Date.today], :order => 'start_date ASC').once.returns(fake_school_years)
     SchoolYear.find_current_and_future_school_years.should == fake_school_years
   end
 end
@@ -66,15 +92,15 @@ def setup_current_school_year
   @current_school_year.save!
 end
 
-def teardown_current_school_year
-  @current_school_year.delete unless @current_school_year.nil?
-end
-
-def setup_school_years_starting_in_near_future
+def setup_one_school_years_starting_in_near_future
   @first_school_year_starting_in_near_future = create_fake_school_year
   @first_school_year_starting_in_near_future.start_date = Date.today + 1
   @first_school_year_starting_in_near_future.end_date = Date.today + 10
   @first_school_year_starting_in_near_future.save!
+end
+
+def setup_two_school_years_starting_in_near_future
+  setup_one_school_years_starting_in_near_future
   
   @second_school_year_starting_in_near_future = create_fake_school_year
   @second_school_year_starting_in_near_future.start_date = Date.today + 2
@@ -82,7 +108,8 @@ def setup_school_years_starting_in_near_future
   @second_school_year_starting_in_near_future.save!
 end
 
-def teardown_school_years_starting_in_near_future
+def teardown_school_years
+  @current_school_year.delete unless @current_school_year.nil?
   @first_school_year_starting_in_near_future.delete unless @first_school_year_starting_in_near_future.nil?
   @second_school_year_starting_in_near_future.delete unless @second_school_year_starting_in_near_future.nil?
 end

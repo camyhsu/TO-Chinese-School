@@ -9,6 +9,7 @@ describe "/admin/school_classes/index" do
     stub_current_school_year
     @page_title = 'All School Classes'
     assigns[:school_classes] = [ school_classes(:first_grade), school_classes(:chinese_history_one) ]
+    assigns[:current_school_year] = SchoolYear.new(:id => 1, :name => 'Current')
     render '/admin/school_classes/index.html.erb'
   end
 
@@ -26,7 +27,7 @@ describe "/admin/school_classes/index" do
     headers << 'Minimum Age'
     headers << 'Maximum Age'
     headers << 'Grade'
-    headers << 'Active?'
+    headers << 'Current Active?'
     headers << ''
     show_that_table_headers_exist_with headers
   end

@@ -9,13 +9,15 @@ class SchoolYear < ActiveRecord::Base
   validate :date_order
 
   def self.current_school_year
-    current_school_year = self.first :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today]
-    return current_school_year unless current_school_year.nil?
-    self.first :conditions => ["end_date >= ?", Date.today], :order => 'start_date ASC'
+    self.find_current_and_future_school_years[0]
+  end
+
+  def self.next_school_year
+    self.find_current_and_future_school_years[1]
   end
   
   def self.find_current_and_future_school_years
-    self.all :conditions => ["end_date >= ?", Date.today], :order => 'end_date ASC'
+    self.all :conditions => ["end_date >= ?", Date.today], :order => 'start_date ASC'
   end
 
   private

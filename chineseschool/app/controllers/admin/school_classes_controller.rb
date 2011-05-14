@@ -5,6 +5,8 @@ class Admin::SchoolClassesController < ApplicationController
 
   def index
     @school_classes = SchoolClass.all
+    @current_school_year = SchoolYear.current_school_year
+    @next_school_year = SchoolYear.next_school_year
     render :layout => 'jquery_datatable'
   end
 
