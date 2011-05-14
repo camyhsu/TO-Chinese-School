@@ -27,6 +27,7 @@ class Admin::SchoolClassesController < ApplicationController
       redirect_to :action => :index
     else
       @school_class = SchoolClass.new
+      @school_class.max_size = 25
     end
   end
 
