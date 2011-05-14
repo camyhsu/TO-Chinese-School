@@ -19,6 +19,10 @@ class Person < ActiveRecord::Base
   validate :name_is_not_blank
 
 
+  def mark_as_new_child
+    @new_child = true
+  end
+
   def name
     "#{chinese_name}(#{english_first_name} #{english_last_name})"
   end
@@ -29,6 +33,8 @@ class Person < ActiveRecord::Base
   end
 
   def is_a_child?
+    return true if @new_child
+    return false if self.id.nil? # treated as new parent
     Person.count_by_sql("SELECT COUNT(1) FROM families_children WHERE child_id = #{self.id}") > 0
   end
 

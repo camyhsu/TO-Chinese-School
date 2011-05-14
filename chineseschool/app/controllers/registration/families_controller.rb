@@ -56,6 +56,7 @@ class Registration::FamiliesController < ApplicationController
   def add_child
     if request.post?
       @child = Person.new params[:child]
+      @child.mark_as_new_child
       return unless @child.valid?
       family = Family.find_by_id params[:id].to_i
       family.children << @child

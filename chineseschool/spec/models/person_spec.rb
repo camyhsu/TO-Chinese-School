@@ -58,6 +58,17 @@ describe Person, 'checking if the person is a child' do
     a_parent = people(:person_one)
     a_parent.is_a_child?.should be_false
   end
+
+  it 'should return true if the person is marked as a new child' do
+    a_new_child = Person.new
+    a_new_child.mark_as_new_child
+    a_new_child.is_a_child?.should be_true
+  end
+
+  it 'should return false if the person is new (no id) and is not marked as a new child' do
+    a_new_parent = Person.new
+    a_new_parent.is_a_child?.should be_false
+  end
 end
 
 describe Person, 'checking if the person is a parent of the given child' do
