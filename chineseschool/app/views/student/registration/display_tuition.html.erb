@@ -1,0 +1,57 @@
+<% @title = 'Tuition and Fee' %>
+
+<h3>Tuition and Fee For <%=h @registration_school_year.name %> School Year</h3>
+
+<% @registration_entries.each do |registration_entry| %>
+<p>
+  For <%=h registration_entry[:student].name %>
+  <br/>
+  entering grade
+  <% if registration_entry[:next_grade].nil? -%>
+    TBD
+  <% else %>
+    <%=h registration_entry[:next_grade].name %>
+  <% end %>
+  <br/>
+  <% unless registration_entry[:elective_class].nil? -%>
+    selecting elective class <%=h registration_entry[:elective_class].name %>
+  <% end %>
+</p>
+<table class="tuition-detail" border="0px">
+  <tr>
+    <td class="label">Registration Fee:</td>
+    <td>$20</td>
+  </tr>
+  <tr>
+    <td class="label">Tuition:</td>
+    <td>$400</td>
+  </tr>
+  <tr>
+    <td class="label">Books:</td>
+    <td>$20</td>
+  </tr>
+</table>
+<hr/>
+<% end %>
+
+<table class="tuition-detail" border="0px">
+  <tr>
+    <td class="label">CCCA Annual Membership:</td>
+    <td>$20</td>
+  </tr>
+  <tr>
+    <td class="label">PVA Annual Membership:</td>
+    <td>$20</td>
+  </tr>
+</table>
+<hr/>
+<table class="tuition-detail" border="0px">
+  <tr>
+    <td class="label">Grand Total:</td>
+    <td>$20</td>
+  </tr>
+  <tr>
+    <td class="label"></td>
+    <td><%= link_to 'Continue', {:action => :display_legal}, {:class => 'button'} %></td>
+  </tr>
+</table>

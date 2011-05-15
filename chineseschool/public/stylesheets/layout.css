@@ -243,3 +243,17 @@ select {
     padding-left: 0.1em;
     padding-right: 0.1em;
 }
+
+.tuition-detail td {
+    width: 5em;
+    float: left;
+    text-align: right;
+}
+
+.tuition-detail .label {
+    width: 25em;
+    float: left;
+    font-weight: bold;
+    text-align: right;
+    margin-right: 0.5em;
+}
