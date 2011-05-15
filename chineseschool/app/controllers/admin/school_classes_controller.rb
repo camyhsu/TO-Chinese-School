@@ -17,10 +17,9 @@ class Admin::SchoolClassesController < ApplicationController
       @school_class = SchoolClass.new(params[:school_class])
       @school_class.grade_id = selected_grade_id.to_i unless selected_grade_id.blank?
       return unless @school_class.valid?
-      school_class_active_flag = create_new_school_class_active_flag @school_class
-      school_class_active_flag.active = true
+      school_class_active_flags = create_new_school_class_active_flags @school_class
       SchoolClass.transaction do
-        school_class_active_flag.save!
+        school_class_active_flags.each { |school_class_active_flag| school_class_active_flag.save! }
         @school_class.save!
       end
       flash[:notice] = 'School Class added successfully'
@@ -66,10 +65,13 @@ class Admin::SchoolClassesController < ApplicationController
 
   private
 
-  def create_new_school_class_active_flag(school_class)
-    school_class_active_flag = SchoolClassActiveFlag.new
-    school_class_active_flag.school_class = school_class
-    school_class_active_flag.school_year = SchoolYear.current_school_year
-    school_class_active_flag
+  def create_new_school_class_active_flags(school_class)
+    SchoolYear.find_current_and_future_school_years.collect do |school_year|
+      school_class_active_flag = SchoolClassActiveFlag.new
+      school_class_active_flag.school_class = school_class
+      school_class_active_flag.school_year = school_year
+      school_class_active_flag.active = true
+      school_class_active_flag
+    end
   end
 end
