@@ -70,3 +70,15 @@ chinese_history_two:
   min_age: 10
   max_age: 15
   grade_id:
+
+chinese_history_full:
+  id: 7
+  english_name: Chinese Culture and History III
+  chinese_name: 中國歷史研討（高）
+  short_name:
+  description: Chinese Culture and History III
+  location: I-10
+  max_size: 0
+  min_age: 10
+  max_age: 15
+  grade_id:

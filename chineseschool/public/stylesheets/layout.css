@@ -229,3 +229,17 @@ select {
 .student-list-header .room-parent-cell {
     text-align: right;
 }
+
+.registration-options-table td {
+    width: 9em;
+    height: 2em;
+    text-align: center;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.registration-options-table .checkbox {
+    width: 2em;
+    padding-left: 0.1em;
+    padding-right: 0.1em;
+}

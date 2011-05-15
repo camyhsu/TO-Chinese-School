@@ -1,12 +1,39 @@
 <% @title = 'Student Registration' %>
 
 <h3>Registration For:</h3>
-<table border="0px">
-  <tr>
-    <td></td>
-    <td></td>
-    <td>Current Grade</td>
-    <td>Next Grade</td>
-    <td>Select Elective Class</td>
-  </tr>
+<table class="registration-options-table" border="0px">
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th>Current Grade</th>
+      <th>Next Grade</th>
+      <th>Select Elective Class</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% form_tag :action => 'display_pricing' do %>
+      <% @possible_students.each do |student| -%>
+    <tr>
+      <td class="checkbox"><%= check_box_tag student.id, 1 %></td>
+      <td><%=h student.name %></td>
+      <% current_grade = student.current_year_student_class_assignment.try(:grade) %>
+      <td><%=h current_grade.try(:name) %></td>
+      <td><%=h current_grade.try(:next_grade).try(:name) %></td>
+      <td>
+        <%= collection_select :student_class_assignment, :elective_class, @available_elective_classes, :id, :name, {:include_blank => true} %>
+      </td>
+    </tr>
+      <% end %>
+    <tr>
+      <td class="checkbox"></td>
+      <td></td>
+      <td style="padding-top: 1em;">
+        <%= submit_tag 'Continue', :class => 'button'  %>
+      </td>
+      <td></td>
+      <td></td>
+    </tr>
+    <% end %>
+  </tbody>
 </table>
