@@ -1,6 +1,21 @@
-<%#
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
-%>
+<% @title = 'Consent' %>
 
-<%= "display_legal.html" %>
+<h3>Legal Consent</h3>
+
+<p>
+  Before registering, parents must agree to rules stated here.
+</p>
+
+<p>
+  More stuffs, TBD
+</p>
+
+<p>
+  By clicking on the "Agree" button below, I, <%=h @user.person.name %>, agree to
+  the legal terms outlined above (blah blah blah)
+</p>
+
+<%= link_to 'Agree', {:action => :payment_entry}, {:class => 'button'} %>
+<br/>
+<br/>
+<%= link_to 'Cancel Registration', {:action => :cancel_registration}, {:class => 'button'} %>

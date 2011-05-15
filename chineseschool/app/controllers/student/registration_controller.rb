@@ -15,6 +15,15 @@ class Student::RegistrationController < ApplicationController
     
   end
 
+  def payment_entry
+    
+  end
+  
+  def cancel_registration
+    # TODO - remove session data about registration
+    redirect_to :controller => '/home', :action => 'index'
+  end
+
   private
   
   def find_possible_students

@@ -81,6 +81,9 @@ student_people_edit_address = Right.create(:name => 'Edit Personal Address By Pa
 
 student_registration_display_options = Right.create(:name => 'Display Registration Options', :controller => 'student/registration', :action => 'display_registration_options')
 student_registration_display_tuition = Right.create(:name => 'Display Tuition', :controller => 'student/registration', :action => 'display_tuition')
+student_registration_display_legal = Right.create(:name => 'Display Legal Consent', :controller => 'student/registration', :action => 'display_legal')
+student_registration_payment_entry = Right.create(:name => 'Payment Entry', :controller => 'student/registration', :action => 'payment_entry')
+student_registration_cancel_registration = Right.create(:name => 'Cancel Registration', :controller => 'student/registration', :action => 'cancel_registration')
 
 
 
@@ -161,3 +164,6 @@ student_parent.rights << student_people_edit_address
 
 student_parent.rights << student_registration_display_options
 student_parent.rights << student_registration_display_tuition
+student_parent.rights << student_registration_display_legal
+student_parent.rights << student_registration_payment_entry
+student_parent.rights << student_registration_cancel_registration
