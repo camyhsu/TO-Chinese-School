@@ -7,7 +7,7 @@ class SchoolClass < ActiveRecord::Base
   validates_presence_of :english_name, :chinese_name
   validates_uniqueness_of :english_name, :chinese_name
 
-  validates_numericality_of :max_size, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true
+  validates_numericality_of :max_size, :only_integer => true, :greater_than => 0, :allow_nil => false
   validates_numericality_of :min_age, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true
   validates_numericality_of :max_age, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true
   
