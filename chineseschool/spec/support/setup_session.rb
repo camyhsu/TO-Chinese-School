@@ -30,3 +30,9 @@ def stub_current_school_year
   fake_school_year.id = 1
   SchoolYear.stubs(:current_school_year).returns(fake_school_year)
 end
+
+def stub_next_school_year
+  fake_school_year = SchoolYear.new
+  fake_school_year.id = 2
+  SchoolYear.stubs(:next_school_year).returns(fake_school_year)
+end

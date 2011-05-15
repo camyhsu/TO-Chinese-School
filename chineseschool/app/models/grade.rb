@@ -16,6 +16,6 @@ class Grade < ActiveRecord::Base
   end
 
   def active_school_classes
-    self.school_classes.reject { |school_class| !school_class.active_in_current_school_year? }
+    self.school_classes.reject { |school_class| !school_class.active_in?(SchoolYear.current_school_year) }
   end
 end

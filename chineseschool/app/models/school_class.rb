@@ -20,14 +20,6 @@ class SchoolClass < ActiveRecord::Base
     self.grade.nil?
   end
 
-  def current_school_year_active_flag
-    self.school_class_active_flags.first :conditions => ['school_year_id = ?', SchoolYear.current_school_year.id]
-  end
-
-  def active_in_current_school_year?
-    current_school_year_active_flag.active == true
-  end
-
   def active_in?(school_year)
     school_class_active_flag = self.school_class_active_flags.first :conditions => ['school_year_id = ?', school_year.id]
     return false if school_class_active_flag.nil?
@@ -75,11 +67,19 @@ class SchoolClass < ActiveRecord::Base
   end
 
   def self.find_all_active_school_classes
-    self.all.reject { |school_class| !school_class.active_in_current_school_year? }
+    self.all.reject { |school_class| !school_class.active_in?(SchoolYear.current_school_year) }
   end
 
   def self.find_all_active_elective_classes
-    self.all(:conditions => ['grade_id is null']).reject { |school_class| !school_class.active_in_current_school_year? }
+    self.all(:conditions => ['grade_id is null']).reject { |elective_class| !elective_class.active_in?(SchoolYear.current_school_year) }
+  end
+
+  def self.find_available_elective_classes_for_registration(school_year)
+    available_elective_classes = self.all(:conditions => ['grade_id is null']).reject { |elective_class| !elective_class.active_in?(school_year) }
+    available_elective_classes.reject! do |elective_class|
+      StudentClassAssignment.count(:conditions => ["elective_class_id = ? AND school_year_id = ?", elective_class.id, school_year.id]) >= elective_class.max_size
+    end
+    available_elective_classes
   end
 
   private

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe SchoolClass do
-
   it 'should have an instructor assignment history' do
     SchoolClass.new.instructor_assignment_history.should_not be_nil
   end
@@ -28,7 +27,7 @@ describe SchoolClass, 'checking elective status' do
   end
 end
 
-describe SchoolClass, 'checking current school year active status' do
+describe SchoolClass, 'checking active status' do
   fixtures :school_classes, :school_class_active_flags
 
   before(:each) do
@@ -36,11 +35,23 @@ describe SchoolClass, 'checking current school year active status' do
   end
   
   it 'should return true if school class is active in current school year' do
-    school_classes(:first_grade).active_in_current_school_year?.should be_true
+    school_classes(:first_grade).active_in?(SchoolYear.current_school_year).should be_true
   end
 
   it 'should return false if school class is not active in current school year' do
-    school_classes(:first_grade_class_inactive).active_in_current_school_year?.should be_false
+    school_classes(:first_grade_class_inactive).active_in?(SchoolYear.current_school_year).should be_false
+  end
+
+  it 'should return true if school class is active in given school year' do
+    next_school_year = SchoolYear.new
+    next_school_year.id = 2
+    school_classes(:chinese_history_one).active_in?(next_school_year).should be_true
+  end
+
+  it 'should return false if school class is not active in given school year' do
+    next_school_year = SchoolYear.new
+    next_school_year.id = 2
+    school_classes(:chinese_history_two).active_in?(next_school_year).should be_false
   end
 end
 
@@ -116,7 +127,16 @@ describe SchoolClass, 'finding all active elective classes' do
   end
 end
 
-describe SchoolClass, 'finding current instructor assignments' do
+describe SchoolClass, 'finding all available elective classes for registration' do
+  fixtures :school_classes, :school_class_active_flags
 
-  it 'should find instructor assignments for the current school year'
+  it 'should find all available elective classes for registration from next year if next year is not nil' do
+    stub_next_school_year
+    next_school_year = SchoolYear.new
+    next_school_year.id = 2
+    available_elective_classes = SchoolClass.find_available_elective_classes_for_registration next_school_year
+    available_elective_classes.should have(1).school_classes
+    available_elective_classes.should include(school_classes(:chinese_history_one))
+    available_elective_classes.should_not include(school_classes(:chinese_history_two))
+  end
 end
