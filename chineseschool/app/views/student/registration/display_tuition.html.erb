@@ -20,15 +20,15 @@
 <table class="tuition-detail" border="0px">
   <tr>
     <td class="label">Registration Fee:</td>
-    <td>$20</td>
+    <td><%=number_to_currency @registration_school_year.registration_fee %></td>
   </tr>
   <tr>
     <td class="label">Tuition:</td>
-    <td>$400</td>
+    <td><%=number_to_currency(registration_entry[:tuition_in_cents] / 100.0) %></td>
   </tr>
   <tr>
     <td class="label">Books:</td>
-    <td>$20</td>
+    <td><%=number_to_currency @registration_school_year.book_charge %></td>
   </tr>
 </table>
 <hr/>
@@ -36,19 +36,19 @@
 
 <table class="tuition-detail" border="0px">
   <tr>
-    <td class="label">CCCA Annual Membership:</td>
-    <td>$20</td>
+    <td class="label">PVA Annual Membership:</td>
+    <td><%=number_to_currency(@registration_pva_due_in_cents / 100.0) %></td>
   </tr>
   <tr>
-    <td class="label">PVA Annual Membership:</td>
-    <td>$20</td>
+    <td class="label">CCCA Annual Membership:</td>
+    <td><%=number_to_currency(@registration_ccca_due_in_cents / 100.0) %></td>
   </tr>
 </table>
 <hr/>
 <table class="tuition-detail" border="0px">
   <tr>
     <td class="label">Grand Total:</td>
-    <td>$20</td>
+    <td><%=number_to_currency(@registration_grand_total_in_cents / 100.0) %></td>
   </tr>
   <tr>
     <td class="label"></td>
