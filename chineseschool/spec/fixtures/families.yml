@@ -16,3 +16,10 @@ family_three:
   parent_one_id: 1004
   parent_two_id: 1005
   address_id: 1
+
+family_ccca_lifetime_memeber:
+  id: 4
+  parent_one_id: 1010
+  parent_two_id: 1011
+  address_id: 1
+  ccca_lifetime_member: true

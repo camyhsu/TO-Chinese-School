@@ -89,6 +89,7 @@ class Student::RegistrationController < ApplicationController
   end
 
   def calculate_ccca_due_in_cents
+    return 0 if @user.person.families.detect { |family| family.ccca_lifetime_member? }
     @registration_school_year.ccca_membership_due_in_cents
   end
 

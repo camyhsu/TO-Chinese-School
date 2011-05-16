@@ -60,3 +60,15 @@ describe Family, 'showing children names' do
     family.children_names.should == expected_children_name
   end
 end
+
+describe Family, 'checking ccca lifetime member status' do
+  fixtures :families
+
+  it 'should return true if the family is a ccca lifetime member' do
+    families(:family_ccca_lifetime_memeber).ccca_lifetime_member?.should be_true
+  end
+
+  it 'should return false if the family is not a ccca lifetime member' do
+    families(:family_one).ccca_lifetime_member?.should be_false
+  end
+end
