@@ -11,6 +11,7 @@ class Admin::SchoolYearsController < ApplicationController
   def new
     if request.post?
       @school_year = SchoolYear.new params[:school_year]
+      set_fees_from_params
       if @school_year.save
         initialize_school_class_active_flags_for @school_year
         flash[:notice] = 'School Year added successfully'
@@ -29,6 +30,7 @@ class Admin::SchoolYearsController < ApplicationController
       set_date_if_original_in_future :start_date
       set_date_if_original_in_future :end_date
       @school_year.age_cutoff_month = params[:school_year][:age_cutoff_month]
+      set_fees_from_params
       set_date_if_original_in_future :registration_start_date
       set_date_if_original_in_future :registration_75_percent_date
       set_date_if_original_in_future :registration_50_percent_date
@@ -62,5 +64,13 @@ class Admin::SchoolYearsController < ApplicationController
     original_value = @school_year.send date_attribute_symbol
     return unless original_value.nil? or original_value >= Date.today
     @school_year.send((date_attribute_symbol.to_s + '=').to_sym, parse_date(params[:school_year][date_attribute_symbol]))
+  end
+
+  def set_fees_from_params
+    @school_year.registration_fee = params[:school_year][:registration_fee].to_f
+    @school_year.tuition = params[:school_year][:tuition].to_f
+    @school_year.book_charge = params[:school_year][:book_charge].to_f
+    @school_year.pva_membership_due = params[:school_year][:pva_membership_due].to_f
+    @school_year.ccca_membership_due = params[:school_year][:ccca_membership_due].to_f
   end
 end

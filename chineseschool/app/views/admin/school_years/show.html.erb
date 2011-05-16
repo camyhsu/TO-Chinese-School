@@ -22,6 +22,26 @@
     <td class="label">Age Cutoff Month:</td>
     <td><%=h @school_year.age_cutoff_month %></td>
   </tr>
+  <tr>
+    <td class="label">Registration Fee:</td>
+    <td><%=number_to_currency @school_year.registration_fee %></td>
+  </tr>
+  <tr>
+    <td class="label">Tuition:</td>
+    <td><%=number_to_currency @school_year.tuition %></td>
+  </tr>
+  <tr>
+    <td class="label">Book Charge:</td>
+    <td><%=number_to_currency @school_year.book_charge %></td>
+  </tr>
+  <tr>
+    <td class="label">PVA Membership Due:</td>
+    <td><%=number_to_currency @school_year.pva_membership_due %></td>
+  </tr>
+  <tr>
+    <td class="label">CCCA Membership Due:</td>
+    <td><%=number_to_currency @school_year.ccca_membership_due %></td>
+  </tr>
 </table>
 <p>The following dates are related to registration fee proration.
 <ul>

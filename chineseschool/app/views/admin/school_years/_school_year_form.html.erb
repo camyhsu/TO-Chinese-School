@@ -12,6 +12,26 @@
             <label for="age_cutoff_month">Age Cutoff Month:</label>
             <%= school_year_form.select :age_cutoff_month, (1..12) %>
           </div>
+          <div>
+            <label for="registration_fee"><span style="color:red">*&nbsp;</span>Registration Fee:</label>
+            <%= school_year_form.text_field :registration_fee, :size => 20 %>
+          </div>
+          <div>
+            <label for="tuition"><span style="color:red">*&nbsp;</span>Tuition:</label>
+            <%= school_year_form.text_field :tuition, :size => 20 %>
+          </div>
+          <div>
+            <label for="book_charge"><span style="color:red">*&nbsp;</span>Book Charge:</label>
+            <%= school_year_form.text_field :book_charge, :size => 20 %>
+          </div>
+          <div>
+            <label for="pva_membership_due"><span style="color:red">*&nbsp;</span>PVA Membership Due:</label>
+            <%= school_year_form.text_field :pva_membership_due, :size => 20 %>
+          </div>
+          <div>
+            <label for="ccca_membership_due"><span style="color:red">*&nbsp;</span>CCCA Membership Due:</label>
+            <%= school_year_form.text_field :ccca_membership_due, :size => 20 %>
+          </div>
           <%= future_date_form_field :registration_start_date, 'Registration Start Date', school_year_form %>
           <%= future_date_form_field :registration_75_percent_date, 'Registration 75% Date', school_year_form %>
           <%= future_date_form_field :registration_50_percent_date, 'Registration 50% Date', school_year_form %>

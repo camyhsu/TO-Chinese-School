@@ -4,9 +4,57 @@ class SchoolYear < ActiveRecord::Base
       :registration_start_date, :registration_75_percent_date,
       :registration_50_percent_date, :registration_end_date,
       :refund_75_percent_date, :refund_50_percent_date,
-      :refund_25_percent_date, :refund_end_date
+      :refund_25_percent_date, :refund_end_date,
+      :registration_fee_in_cents, :tuition_in_cents, :book_charge_in_cents,
+      :pva_membership_due_in_cents, :ccca_membership_due_in_cents
+
+  validates_numericality_of :registration_fee_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
+  validates_numericality_of :tuition_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
+  validates_numericality_of :book_charge_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
+  validates_numericality_of :pva_membership_due_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
+  validates_numericality_of :ccca_membership_due_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
 
   validate :date_order
+
+  def registration_fee
+    self.registration_fee_in_cents / 100.0
+  end
+
+  def registration_fee=(registration_fee)
+    self.registration_fee_in_cents = (registration_fee * 100).to_i
+  end
+
+  def tuition
+    self.tuition_in_cents / 100.0
+  end
+
+  def tuition=(tuition)
+    self.tuition_in_cents = (tuition * 100).to_i
+  end
+
+  def book_charge
+    self.book_charge_in_cents / 100.0
+  end
+
+  def book_charge=(book_charge)
+    self.book_charge_in_cents = (book_charge * 100).to_i
+  end
+
+  def pva_membership_due
+    self.pva_membership_due_in_cents / 100.0
+  end
+
+  def pva_membership_due=(pva_membership_due)
+    self.pva_membership_due_in_cents = (pva_membership_due * 100).to_i
+  end
+
+  def ccca_membership_due
+    self.ccca_membership_due_in_cents / 100.0
+  end
+
+  def ccca_membership_due=(ccca_membership_due)
+    self.ccca_membership_due_in_cents = (ccca_membership_due * 100).to_i
+  end
 
   def self.current_school_year
     self.find_current_and_future_school_years[0]
