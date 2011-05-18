@@ -11,6 +11,7 @@ class HomeController < ApplicationController
     if student_parent_resources_enabled?
       @home_templates << 'student_parent'
       @active_registration_school_years = SchoolYear.all :conditions => ['registration_start_date <= ? AND registration_end_date >= ?', Date.today, Date.today], :order => 'start_date ASC'
+      @possible_students = find_possible_students
     end
     @person = @user.person
   end

@@ -59,4 +59,12 @@ class ApplicationController < ActionController::Base
     return nil if input.blank?
     return Date.parse input
   end
+
+  def find_possible_students
+    possible_students = []
+    @user.person.families.each do |family|
+      possible_students += family.children
+    end
+    possible_students
+  end
 end

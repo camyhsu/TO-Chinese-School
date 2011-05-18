@@ -34,14 +34,6 @@ class Student::RegistrationController < ApplicationController
 
   private
   
-  def find_possible_students
-    possible_students = []
-    @user.person.families.each do |family|
-      possible_students += family.children
-    end
-    possible_students
-  end
-
   def extract_selected_registration_options
     registration_entries = []
     find_possible_students.each do |student|
