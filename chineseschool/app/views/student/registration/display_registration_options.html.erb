@@ -18,14 +18,22 @@
       <td class="checkbox"><%= check_box_tag "#{student.id}_register", true %></td>
       <td><%=h student.name %></td>
       <% current_grade = student.current_year_student_class_assignment.try(:grade) %>
-      <td><%=h current_grade.try(:name) %></td>
-      <td>
-        <%=h current_grade.try(:next_grade).try(:name) %>
-        <%= hidden_field_tag "#{student.id}_next_grade", current_grade.try(:next_grade).try(:id) %>
-      </td>
-      <td>
-        <%= collection_select "#{student.id}_elective", :elective_class, @available_elective_classes, :id, :name, {:include_blank => true} %>
-      </td>
+      <% if current_grade.nil? %>
+        <td>Unknown</td>
+        <td>TBD</td>
+        <td></td>
+      <% else %>
+        <td>
+          <%=h current_grade.try(:name) %>
+        </td>
+        <td>
+          <%=h current_grade.try(:next_grade).try(:name) %>
+          <%= hidden_field_tag "#{student.id}_next_grade", current_grade.try(:next_grade).try(:id) %>
+        </td>
+        <td>
+          <%= collection_select "#{student.id}_elective", :elective_class, @available_elective_classes, :id, :name, {:include_blank => true} %>
+        </td>
+      <% end %>
     </tr>
       <% end %>
     <tr>

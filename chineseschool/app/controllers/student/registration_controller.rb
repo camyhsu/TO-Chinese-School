@@ -57,17 +57,21 @@ class Student::RegistrationController < ApplicationController
   end
 
   def extract_elective_class_from_params(student_id)
-    elective_class_id = params["#{student_id}_elective".to_sym][:elective_class]
+    elective_class_hash = params["#{student_id}_elective".to_sym]
+    return nil if elective_class_hash.nil?
+    elective_class_id = elective_class_hash[:elective_class]
     return nil if elective_class_id.blank?
     SchoolClass.find_by_id elective_class_id.to_i
   end
 
   def calculate_tuition_in_cents(existing_registration_count)
-    # 3rd student and beyond from the same family gets 10% discount on tuition
+    # 3rd student and beyond from the same family gets fixed amount discount on tuition
+    # TODO - pre-K discount
+    # TODO - pre-registraiton tuition
     if existing_registration_count < 2
       @registration_school_year.tuition_in_cents
     else
-      (@registration_school_year.tuition_in_cents * 0.9).to_i
+      @registration_school_year.tuition_in_cents #- discount
     end
   end
 
