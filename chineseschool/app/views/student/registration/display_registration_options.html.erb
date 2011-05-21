@@ -8,32 +8,38 @@
       <th></th>
       <th>Current Grade</th>
       <th>Next Grade</th>
+      <th>Select School Class Type</th>
       <th>Select Elective Class</th>
     </tr>
   </thead>
   <tbody>
-    <% form_tag :action => 'display_tuition', :id => @registration_school_year do %>
+    <% form_tag :action => 'save_registration_preference', :id => @registration_school_year do %>
       <% @possible_students.each do |student| -%>
     <tr>
       <td class="checkbox"><%= check_box_tag "#{student.id}_register", true %></td>
       <td><%=h student.name %></td>
       <% current_grade = student.current_year_student_class_assignment.try(:grade) %>
+      <% next_grade = current_grade.try(:next_grade) %>
       <% if current_grade.nil? %>
-        <td>Unknown</td>
+        <td>Not In Record</td>
         <td>TBD</td>
-        <td></td>
       <% else %>
         <td>
-          <%=h current_grade.try(:name) %>
+          <%=h current_grade.name %>
         </td>
         <td>
-          <%=h current_grade.try(:next_grade).try(:name) %>
-          <%= hidden_field_tag "#{student.id}_next_grade", current_grade.try(:next_grade).try(:id) %>
-        </td>
-        <td>
-          <%= collection_select "#{student.id}_elective", :elective_class, @available_elective_classes, :id, :name, {:include_blank => true} %>
+          <%=h next_grade.try(:name) %>
+          <%= hidden_field_tag "#{student.id}_next_grade", next_grade.try(:id) %>
         </td>
       <% end %>
+      <td>
+        <% unless next_grade.nil? %>
+        <%= select "#{student.id}_school_class_type", :school_class_type, RegistrationPreference.find_available_school_class_types(next_grade) %>
+        <% end %>
+      </td>
+      <td>
+        <%= collection_select "#{student.id}_elective", :elective_class, @available_elective_classes, :id, :name, {:include_blank => true} %>
+      </td>
     </tr>
       <% end %>
     <tr>

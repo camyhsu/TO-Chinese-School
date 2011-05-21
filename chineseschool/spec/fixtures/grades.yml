@@ -1,4 +1,11 @@
 
+k_grade:
+  id: 2
+  chinese_name: 幼稚園
+  english_name: Kindergarden
+  short_name: K
+  next_grade: 3
+
 first_grade:
   id: 3
   chinese_name: 一年級
@@ -12,3 +19,10 @@ second_grade:
   english_name: 2nd Grade
   short_name: 2
   next_grade: 5
+
+third_grade:
+  id: 5
+  chinese_name: 三年級
+  english_name: 3rd Grade
+  short_name: 3
+  next_grade: 6

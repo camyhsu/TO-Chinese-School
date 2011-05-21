@@ -6,7 +6,7 @@ class Student::RegistrationController < ApplicationController
     @available_elective_classes = SchoolClass.find_available_elective_classes_for_registration @registration_school_year
   end
   
-  def display_tuition
+  def save_registration_preference
     # calculations here must be done in a specific order because
     # later calculations may depends on the result of earlier calculations
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
