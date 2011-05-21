@@ -5,3 +5,4 @@ two_thousand_eight:
   description: 2008 to 2009 school year
   start_date: 2008-09-06
   end_date: 2009-06-06
+  age_cutoff_month: 11

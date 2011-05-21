@@ -142,3 +142,34 @@ describe Person, 'validating birth month' do
     a_child.valid?.should be_false
   end
 end
+
+describe Person, 'calculating school age for a school year' do
+  fixtures :people, :school_years
+
+  it 'should return nil if birth year is nil or blank' do
+    parent = people(:person_one)
+    parent.birth_year = nil
+    parent.school_age_for(nil).should be_nil
+    parent.birth_year = ''
+    parent.school_age_for(nil).should be_nil
+  end
+
+  it 'should return nil if birth month is nil or blank' do
+    parent = people(:person_one)
+    parent.birth_month = nil
+    parent.school_age_for(nil).should be_nil
+    parent.birth_month = ''
+    parent.school_age_for(nil).should be_nil
+  end
+
+  it 'should return the correct school age for birth month before age cutoff' do
+    student = people(:person_one)
+    student.school_age_for(school_years(:two_thousand_eight)).should == 9
+  end
+
+  it 'should return the correct school age for birth month on or after age cutoff' do
+    student = people(:person_one)
+    student.birth_month = 11
+    student.school_age_for(school_years(:two_thousand_eight)).should == 8
+  end
+end

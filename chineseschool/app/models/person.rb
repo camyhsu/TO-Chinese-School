@@ -32,6 +32,13 @@ class Person < ActiveRecord::Base
     "#{birth_month}/#{birth_year}"
   end
 
+  def school_age_for(school_year)
+    return nil if self.birth_year.blank? or self.birth_month.blank?
+    school_age = school_year.start_date.year - self.birth_year
+    return (school_age - 1) if school_year.age_cutoff_month <= self.birth_month
+    school_age
+  end
+
   def is_a_child?
     return true if @new_child
     return false if self.id.nil? # treated as new parent
