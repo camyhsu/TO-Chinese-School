@@ -17,8 +17,20 @@
             <%= school_year_form.text_field :registration_fee, :size => 20 %>
           </div>
           <div>
+            <label for="tuition"><span style="color:red">*&nbsp;</span>Pre-registration Tuition:</label>
+            <%= school_year_form.text_field :pre_registration_tuition, :size => 20 %>
+          </div>
+          <div>
             <label for="tuition"><span style="color:red">*&nbsp;</span>Tuition:</label>
             <%= school_year_form.text_field :tuition, :size => 20 %>
+          </div>
+          <div>
+            <label for="tuition"><span style="color:red">*&nbsp;</span>Tuition Discount For 3 Or More Child:</label>
+            <%= school_year_form.text_field :tuition_discount_for_three_or_more_child, :size => 20 %>
+          </div>
+          <div>
+            <label for="tuition"><span style="color:red">*&nbsp;</span>Tuition Discount For Pre-K:</label>
+            <%= school_year_form.text_field :tuition_discount_for_pre_k, :size => 20 %>
           </div>
           <div>
             <label for="book_charge"><span style="color:red">*&nbsp;</span>Book Charge:</label>
@@ -33,6 +45,7 @@
             <%= school_year_form.text_field :ccca_membership_due, :size => 20 %>
           </div>
           <%= future_date_form_field :registration_start_date, 'Registration Start Date', school_year_form %>
+          <%= future_date_form_field :pre_registration_end_date, 'Pre-registration End Date', school_year_form %>
           <%= future_date_form_field :registration_75_percent_date, 'Registration 75% Date', school_year_form %>
           <%= future_date_form_field :registration_50_percent_date, 'Registration 50% Date', school_year_form %>
           <%= future_date_form_field :registration_end_date, 'Registration End Date', school_year_form %>

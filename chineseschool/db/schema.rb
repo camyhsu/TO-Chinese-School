@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110516055016) do
+ActiveRecord::Schema.define(:version => 20110519145722) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -141,11 +141,15 @@ ActiveRecord::Schema.define(:version => 20110516055016) do
     t.date     "refund_25_percent_date"
     t.date     "refund_end_date"
     t.integer  "age_cutoff_month"
-    t.integer  "registration_fee_in_cents",    :default => 2000,  :null => false
-    t.integer  "tuition_in_cents",             :default => 38000, :null => false
-    t.integer  "book_charge_in_cents",         :default => 2000,  :null => false
-    t.integer  "pva_membership_due_in_cents",  :default => 1500,  :null => false
-    t.integer  "ccca_membership_due_in_cents", :default => 2000,  :null => false
+    t.integer  "registration_fee_in_cents",                         :default => 2000,  :null => false
+    t.integer  "tuition_in_cents",                                  :default => 38000, :null => false
+    t.integer  "book_charge_in_cents",                              :default => 2000,  :null => false
+    t.integer  "pva_membership_due_in_cents",                       :default => 1500,  :null => false
+    t.integer  "ccca_membership_due_in_cents",                      :default => 2000,  :null => false
+    t.date     "pre_registration_end_date"
+    t.integer  "pre_registration_tuition_in_cents",                 :default => 38000, :null => false
+    t.integer  "tuition_discount_for_three_or_more_child_in_cents", :default => 3800,  :null => false
+    t.integer  "tuition_discount_for_pre_k_in_cents",               :default => 4000,  :null => false
   end
 
   create_table "student_class_assignments", :force => true do |t|

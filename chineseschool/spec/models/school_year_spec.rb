@@ -75,6 +75,7 @@ def create_fake_school_year
   school_year.end_date = Date.today
   school_year.age_cutoff_month = 12
   school_year.registration_start_date = Date.today
+  school_year.pre_registration_end_date = Date.today
   school_year.registration_75_percent_date = Date.today
   school_year.registration_50_percent_date = Date.today
   school_year.registration_end_date = Date.today

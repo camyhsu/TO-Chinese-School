@@ -1,15 +1,20 @@
 class SchoolYear < ActiveRecord::Base
 
   validates_presence_of :name, :start_date, :end_date, :age_cutoff_month,
-      :registration_start_date, :registration_75_percent_date,
-      :registration_50_percent_date, :registration_end_date,
-      :refund_75_percent_date, :refund_50_percent_date,
-      :refund_25_percent_date, :refund_end_date,
-      :registration_fee_in_cents, :tuition_in_cents, :book_charge_in_cents,
-      :pva_membership_due_in_cents, :ccca_membership_due_in_cents
+      :registration_start_date, :pre_registration_end_date, 
+      :registration_75_percent_date, :registration_50_percent_date,
+      :registration_end_date, :refund_75_percent_date,
+      :refund_50_percent_date, :refund_25_percent_date,
+      :refund_end_date, :registration_fee_in_cents,
+      :pre_registration_tuition_in_cents, :tuition_in_cents,
+      :tuition_discount_for_three_or_more_child_in_cents, :tuition_discount_for_pre_k_in_cents,
+      :book_charge_in_cents, :pva_membership_due_in_cents, :ccca_membership_due_in_cents
 
   validates_numericality_of :registration_fee_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
+  validates_numericality_of :pre_registration_tuition_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
   validates_numericality_of :tuition_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
+  validates_numericality_of :tuition_discount_for_three_or_more_child_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
+  validates_numericality_of :tuition_discount_for_pre_k_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
   validates_numericality_of :book_charge_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
   validates_numericality_of :pva_membership_due_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
   validates_numericality_of :ccca_membership_due_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
@@ -24,12 +29,36 @@ class SchoolYear < ActiveRecord::Base
     self.registration_fee_in_cents = (registration_fee * 100).to_i
   end
 
+  def pre_registration_tuition
+    self.pre_registration_tuition_in_cents / 100.0
+  end
+
+  def pre_registration_tuition=(pre_registration_tuition)
+    self.pre_registration_tuition_in_cents = (pre_registration_tuition * 100).to_i
+  end
+
   def tuition
     self.tuition_in_cents / 100.0
   end
 
   def tuition=(tuition)
     self.tuition_in_cents = (tuition * 100).to_i
+  end
+
+  def tuition_discount_for_three_or_more_child
+    self.tuition_discount_for_three_or_more_child_in_cents / 100.0
+  end
+
+  def tuition_discount_for_three_or_more_child=(tuition_discount_for_three_or_more_child)
+    self.tuition_discount_for_three_or_more_child_in_cents = (tuition_discount_for_three_or_more_child * 100).to_i
+  end
+
+  def tuition_discount_for_pre_k
+    self.tuition_discount_for_pre_k_in_cents / 100.0
+  end
+
+  def tuition_discount_for_pre_k=(tuition_discount_for_pre_k)
+    self.tuition_discount_for_pre_k_in_cents = (tuition_discount_for_pre_k * 100).to_i
   end
 
   def book_charge

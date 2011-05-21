@@ -27,8 +27,20 @@
     <td><%=number_to_currency @school_year.registration_fee %></td>
   </tr>
   <tr>
+    <td class="label">Pre-registration Tuition:</td>
+    <td><%=number_to_currency @school_year.pre_registration_tuition %></td>
+  </tr>
+  <tr>
     <td class="label">Tuition:</td>
     <td><%=number_to_currency @school_year.tuition %></td>
+  </tr>
+  <tr>
+    <td class="label">Tuition Discount for 3 or more child:</td>
+    <td><%=number_to_currency @school_year.tuition_discount_for_three_or_more_child %></td>
+  </tr>
+  <tr>
+    <td class="label">Tuition Discount for PreK:</td>
+    <td><%=number_to_currency @school_year.tuition_discount_for_pre_k %></td>
   </tr>
   <tr>
     <td class="label">Book Charge:</td>
@@ -47,6 +59,10 @@
 <ul>
   <li>
     Registration Start Date - the date registration starts.
+  </li>
+  <li>
+    Pre-registration End Date - the date after which full tuition would be charged.
+    On or before this date, pre-registration tuition would be charged.
   </li>
   <li>
     Registration 75 Percent Date - the date after which 75% of full tuition would be charged.
@@ -75,6 +91,10 @@
   <tr>
     <td class="label">Registration Start Date:</td>
     <td><%=h @school_year.registration_start_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Pre-registration End Date:</td>
+    <td><%=h @school_year.pre_registration_end_date %></td>
   </tr>
   <tr>
     <td class="label">Registration 75 Percent Date:</td>
