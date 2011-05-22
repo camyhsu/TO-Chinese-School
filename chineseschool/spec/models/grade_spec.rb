@@ -41,3 +41,30 @@ describe Grade, 'finding active school classes' do
     active_school_classes.should_not include(school_classes(:first_grade_class_inactive))
   end
 end
+
+describe Grade, 'finding grade by school age' do
+  fixtures :grades
+
+  # This spec does not cover all cases
+  it 'should return nil for school age 3 or below' do
+    Grade.find_by_school_age(3).should be_nil
+    Grade.find_by_school_age(2).should be_nil
+    Grade.find_by_school_age(1).should be_nil
+  end
+  
+  it 'should return grade Pre for school age 4' do
+    Grade.find_by_school_age(4).should == grades(:pre_grade)
+  end
+
+  it 'should return grade K for school age 5' do
+    Grade.find_by_school_age(5).should == grades(:k_grade)
+  end
+
+  it 'should return grade 3 for school age 8' do
+    Grade.find_by_school_age(8).should == grades(:third_grade)
+  end
+
+  it 'should return nil for school age older than highest possible grade' do
+    Grade.find_by_school_age(9).should be_nil
+  end
+end

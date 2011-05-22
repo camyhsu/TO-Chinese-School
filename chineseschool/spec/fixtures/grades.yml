@@ -1,3 +1,9 @@
+pre_grade:
+  id: 1
+  chinese_name: 學前班
+  english_name: Preschool
+  short_name: Pre
+  next_grade: 2
 
 k_grade:
   id: 2
@@ -25,4 +31,4 @@ third_grade:
   chinese_name: 三年級
   english_name: 3rd Grade
   short_name: 3
-  next_grade: 6
+  next_grade: 
