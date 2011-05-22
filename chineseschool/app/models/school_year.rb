@@ -1,5 +1,7 @@
 class SchoolYear < ActiveRecord::Base
 
+  belongs_to :previous_school_year, :class_name => 'SchoolYear', :foreign_key => 'previous_school_year_id'
+
   validates_presence_of :name, :start_date, :end_date, :age_cutoff_month,
       :registration_start_date, :pre_registration_end_date, 
       :registration_75_percent_date, :registration_50_percent_date,

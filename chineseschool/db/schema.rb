@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110521170535) do
+ActiveRecord::Schema.define(:version => 20110522214026) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -163,6 +163,7 @@ ActiveRecord::Schema.define(:version => 20110521170535) do
     t.integer  "pre_registration_tuition_in_cents",                 :default => 38000, :null => false
     t.integer  "tuition_discount_for_three_or_more_child_in_cents", :default => 3800,  :null => false
     t.integer  "tuition_discount_for_pre_k_in_cents",               :default => 4000,  :null => false
+    t.integer  "previous_school_year_id"
   end
 
   create_table "student_class_assignments", :force => true do |t|

@@ -16,6 +16,14 @@ describe SchoolYear do
   end
 end
 
+describe SchoolYear, 'finding previous school year' do
+  fixtures :school_years
+
+  it 'should return previous school year when asked' do
+    school_years(:two_thousand_nine).previous_school_year.should == school_years(:two_thousand_eight)
+  end
+end
+
 describe SchoolYear, 'finding current school year' do
   after(:each) do
     teardown_school_years

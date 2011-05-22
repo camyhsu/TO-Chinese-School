@@ -6,3 +6,12 @@ two_thousand_eight:
   start_date: 2008-09-06
   end_date: 2009-06-06
   age_cutoff_month: 11
+
+two_thousand_nine:
+  id: 2
+  name: 2009-2010
+  description: 2009 to 2010 school year
+  start_date: 2009-09-06
+  end_date: 2010-06-06
+  age_cutoff_month: 12
+  previous_school_year_id: 1
