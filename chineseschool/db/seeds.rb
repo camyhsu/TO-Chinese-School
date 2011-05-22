@@ -79,7 +79,7 @@ student_people_edit = Right.create(:name => 'Edit Person Basic Data By Parent', 
 student_people_new_address = Right.create(:name => 'Create Personal Address By Parent', :controller => 'student/people', :action => 'new_address')
 student_people_edit_address = Right.create(:name => 'Edit Personal Address By Parent', :controller => 'student/people', :action => 'edit_address')
 
-student_registration_display_options = Right.create(:name => 'Display Registration Options', :controller => 'student/registration', :action => 'display_registration_options')
+student_registration_display_options = Right.create(:name => 'Display Registration Options', :controller => 'student/registration', :action => 'display_options')
 student_registration_display_tuition = Right.create(:name => 'Display Tuition', :controller => 'student/registration', :action => 'display_tuition')
 student_registration_display_legal = Right.create(:name => 'Display Legal Consent', :controller => 'student/registration', :action => 'display_legal')
 student_registration_payment_entry = Right.create(:name => 'Payment Entry', :controller => 'student/registration', :action => 'payment_entry')

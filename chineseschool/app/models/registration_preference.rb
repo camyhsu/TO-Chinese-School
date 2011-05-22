@@ -13,12 +13,11 @@ class RegistrationPreference < ActiveRecord::Base
 
   validates_presence_of :school_year, :student, :entered_by
 
-  def self.find_available_school_class_types(grade)
-    return nil if grade.nil?
+  def find_available_school_class_types
     available_school_class_types = []
     available_school_class_types << SCHOOL_CLASS_TYPE_SIMPLIFIED
     available_school_class_types << SCHOOL_CLASS_TYPE_TRADITIONAL
-    if ('K' == grade.short_name) or ('1' == grade.short_name) or ('2' == grade.short_name)
+    if ('K' == self.grade.short_name) or ('1' == self.grade.short_name) or ('2' == self.grade.short_name)
       available_school_class_types << SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION
     end
     available_school_class_types

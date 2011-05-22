@@ -25,7 +25,9 @@ class Grade < ActiveRecord::Base
     return nil if school_age < 4
     # Currently defined lowest grade is PreK for age 4
     grade = GRADE_PRESCHOOL
-    (school_age - 4).times { grade = grade.next_grade }
+    (school_age - 4).times do
+      grade = grade.next_grade unless grade.nil?
+    end
     grade
   end
 end

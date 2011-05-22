@@ -66,5 +66,7 @@ describe Grade, 'finding grade by school age' do
 
   it 'should return nil for school age older than highest possible grade' do
     Grade.find_by_school_age(9).should be_nil
+    Grade.find_by_school_age(10).should be_nil
+    Grade.find_by_school_age(11).should be_nil
   end
 end

@@ -1,0 +1,56 @@
+<% @title = 'Student Registration Options' %>
+
+<h3>Registration For <%=h @registration_school_year.name %> School Year</h3>
+<% if @registration_preferences.empty? %>
+<p>No eligible students to register - please contact registration@to-cs.org for special case registration</p>
+<% else %>
+  <table class="registration-options-table" border="0px">
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+        <th><%=h @registration_school_year.previous_school_year.name %> Grade</th>
+        <th><%=h @registration_school_year.name %> Grade</th>
+        <th>Select School Class Type</th>
+        <th>Select Elective Class</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% form_tag :action => 'save_registration_preferences', :id => @registration_school_year do %>
+        <% @registration_preferences.each do |registration_preference| -%>
+          <% student = registration_preference.student %>
+          <tr>
+            <td class="checkbox"><%= check_box_tag "#{student.id}_register", true %></td>
+            <td><%=h student.name %></td>
+            <td>
+              <% if registration_preference.previous_grade.nil? -%>
+                Not In Record
+              <% else %>
+                <%=h registration_preference.previous_grade.name %>
+              <% end %>
+            </td>
+            <td>
+              <%=h registration_preference.grade.name %>
+              <%= hidden_field_tag "#{student.id}_grade", registration_preference.grade.id %>
+            </td>
+            <td>
+              <%= select "#{student.id}_school_class_type", :school_class_type, registration_preference.find_available_school_class_types %>
+            </td>
+            <td>
+              <%= collection_select "#{student.id}_elective", :elective_class, @available_elective_classes, :id, :name, {:include_blank => true} %>
+            </td>
+          </tr>
+        <% end %>
+      <tr>
+        <td class="checkbox"></td>
+        <td></td>
+        <td style="padding-top: 1em;">
+          <%= submit_tag 'Continue', :class => 'button'  %>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

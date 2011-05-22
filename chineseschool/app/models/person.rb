@@ -50,9 +50,9 @@ class Person < ActiveRecord::Base
         "(families.parent_one_id = #{self.id} OR families.parent_two_id = #{self.id}) AND " +
         "families.id = families_children.family_id AND families_children.child_id = #{child_id}") > 0
   end
-
-  def current_year_student_class_assignment
-    self.student_class_assignments.first :conditions => ['school_year_id = ?', SchoolYear.current_school_year.id]
+  
+  def student_class_assignment_for(school_year)
+    self.student_class_assignments.first :conditions => ['school_year_id = ?', school_year.id]
   end
   
   def families

@@ -66,7 +66,7 @@
 <hr/>
 <h3>Grade And Class Assignments for <%=h @person.name %></h3>
 <table class="person-detail" border="0px">
-  <%= render :partial => 'student_class_assignment', :object => @person.current_year_student_class_assignment, :locals => {:student_id => @person.id} %>
+  <%= render :partial => 'student_class_assignment', :object => @person.student_class_assignment_for(SchoolYear.current_school_year), :locals => {:student_id => @person.id} %>
 </table>
 <hr/>
 <h3>Instructor Assignments for <%=h @person.name %></h3>

@@ -74,7 +74,7 @@
 <% if @possible_students.size > 0 -%>
   <h3>Student Registration Information</h3>
   <% @active_registration_school_years.each do |registration_year| %>
-  <%= link_to "Register For #{registration_year.name} School Year", {:controller => '/student/registration', :action => :display_registration_options, :id => registration_year}, {:class => 'button'} %>
+  <%= link_to "Register For #{registration_year.name} School Year", {:controller => '/student/registration', :action => :display_options, :id => registration_year}, {:class => 'button'} %>
   <br/><br/>
   <% end %>
   <% @possible_students.each do |student| -%>
@@ -99,8 +99,8 @@
         <td class="label">Native Language:</td>
         <td><%=h student.native_language %></td>
       </tr>
-      <% unless student.current_year_student_class_assignment.nil? -%>
-        <% student_class_assignment = student.current_year_student_class_assignment %>
+      <% student_class_assignment = student.student_class_assignment_for SchoolYear.current_school_year %>
+      <% unless student_class_assignment.nil? -%>
         <tr>
           <td class="label">Grade:</td>
           <td><%=h student_class_assignment.try(:grade).try(:name) %></td>
