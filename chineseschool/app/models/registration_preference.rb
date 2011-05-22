@@ -5,10 +5,13 @@ class RegistrationPreference < ActiveRecord::Base
   SCHOOL_CLASS_TYPE_TRADITIONAL = 'T'
 
   belongs_to :school_year
-  belongs_to :person
+  belongs_to :student, :class_name => 'Person', :foreign_key => 'student_id'
   belongs_to :entered_by, :class_name => 'Person', :foreign_key => 'entered_by_id'
+  belongs_to :previous_grade, :class_name => 'Grade', :foreign_key => 'previous_grade_id'
+  belongs_to :grade
+  belongs_to :elective_class, :class_name => 'SchoolClass', :foreign_key => 'elective_class_id'
 
-  validates_presence_of :school_year, :person, :entered_by
+  validates_presence_of :school_year, :student, :entered_by
 
   def self.find_available_school_class_types(grade)
     return nil if grade.nil?
