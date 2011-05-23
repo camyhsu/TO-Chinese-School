@@ -45,14 +45,14 @@ class Student::RegistrationController < ApplicationController
         # No class assignment in the previous school year - go for age-based grade assignment
         age_based_grade = Grade.find_by_school_age(student.school_age_for(@registration_school_year))
         unless age_based_grade.nil?
-          registration_preference.grade = age_based_grade
+          registration_preference.grade = age_based_grade.snap_down_to_first_active_grade @registration_school_year
           registration_preferences << registration_preference
         end
         # If age-based grade is nil, it means the student is either too young or too old - don't add to list
       else
         # Grade assignment based on previous school year
         registration_preference.previous_grade = previous_school_year_class_assignment.grade
-        registration_preference.grade = registration_preference.previous_grade.next_grade
+        registration_preference.grade = registration_preference.previous_grade.next_grade.snap_down_to_first_active_grade @registration_school_year
         registration_preferences << registration_preference
       end
     end

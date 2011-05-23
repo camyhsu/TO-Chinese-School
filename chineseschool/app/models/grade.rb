@@ -3,6 +3,7 @@ class Grade < ActiveRecord::Base
   GRADE_PRESCHOOL = self.find_by_short_name 'Pre'
 
   belongs_to :next_grade, :class_name => 'Grade', :foreign_key => 'next_grade'
+  has_one :previous_grade, :class_name => 'Grade', :foreign_key => 'next_grade'
 
   has_many :school_classes
   
@@ -19,6 +20,18 @@ class Grade < ActiveRecord::Base
 
   def active_school_classes
     self.school_classes.reject { |school_class| !school_class.active_in?(SchoolYear.current_school_year) }
+  end
+
+  def has_active_school_classes_in?(school_year)
+    SchoolClassActiveFlag.count(
+        :conditions => ["active = true AND school_year_id = ? AND school_class_id = school_classes.id AND school_classes.grade_id = ?", school_year.id, self.id],
+        :include => :school_class) > 0
+  end
+
+  def snap_down_to_first_active_grade(school_year)
+    snapped_grade = self
+    snapped_grade = snapped_grade.previous_grade until snapped_grade.has_active_school_classes_in? school_year
+    snapped_grade
   end
   
   def self.find_by_school_age(school_age)

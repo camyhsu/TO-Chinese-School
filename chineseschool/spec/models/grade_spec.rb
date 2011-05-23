@@ -7,6 +7,10 @@ describe Grade do
     grades(:first_grade).next_grade.should == grades(:second_grade)
   end
 
+  it 'should has a previous grade' do
+    grades(:second_grade).previous_grade.should == grades(:first_grade)
+  end
+
   it 'should have many school classes' do
     grades(:first_grade).should have(3).school_classes
     grades(:first_grade).school_classes.should include(school_classes(:first_grade))
@@ -39,6 +43,45 @@ describe Grade, 'finding active school classes' do
     active_school_classes.should include(school_classes(:first_grade))
     active_school_classes.should include(school_classes(:first_grade_class_b))
     active_school_classes.should_not include(school_classes(:first_grade_class_inactive))
+  end
+end
+
+describe Grade, 'checking if having active school classes in a school year' do
+  fixtures :grades, :school_classes, :school_class_active_flags
+
+  before(:each) do
+    @fake_school_year = SchoolYear.new
+    @fake_school_year.id = 1
+  end
+
+  it 'should return true if having active school classes in the given school year' do
+    grades(:first_grade).has_active_school_classes_in?(@fake_school_year).should be_true
+  end
+
+  it 'should return false if having no active school classes in the given school year' do
+    @fake_school_year.id = 2
+    grades(:first_grade).has_active_school_classes_in?(@fake_school_year).should be_false
+  end
+
+  it 'should return false if having no school classes in the grade' do
+    grades(:third_grade).has_active_school_classes_in?(@fake_school_year).should be_false
+  end
+end
+
+describe Grade, 'snapping down to the first active grade' do
+  fixtures :grades, :school_classes, :school_class_active_flags
+
+  before(:each) do
+    @fake_school_year = SchoolYear.new
+    @fake_school_year.id = 1
+  end
+
+  it 'should return the grade itself if it is active' do
+    grades(:first_grade).snap_down_to_first_active_grade(@fake_school_year).should == grades(:first_grade)
+  end
+
+  it 'should return the highest active grade below itself if it is not active' do
+    grades(:third_grade).snap_down_to_first_active_grade(@fake_school_year).should == grades(:second_grade)
   end
 end
 
