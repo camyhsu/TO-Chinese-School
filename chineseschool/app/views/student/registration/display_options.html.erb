@@ -78,10 +78,12 @@
               <%= hidden_field_tag "#{student.id}_grade", registration_preference.grade.id %>
             </td>
             <td>
-              <%= select "#{student.id}_school_class_type", :school_class_type, registration_preference.find_available_school_class_types %>
+              <%= select "#{student.id}_school_class_type", :school_class_type,
+                  registration_preference.find_available_school_class_types %>
             </td>
             <td>
-              <%= collection_select "#{student.id}_elective", :elective_class, @available_elective_classes, :id, :name, {:include_blank => true} %>
+              <%= collection_select "#{student.id}_elective", :elective_class, 
+                  SchoolClass.find_available_elective_classes_for_registration(student.school_age_for(@registration_school_year), @registration_school_year), :id, :name, {:include_blank => true} %>
             </td>
           </tr>
         <% end %>

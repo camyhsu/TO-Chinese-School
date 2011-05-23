@@ -31,7 +31,7 @@ class Person < ActiveRecord::Base
     return '' if birth_month.blank? or birth_year.blank?
     "#{birth_month}/#{birth_year}"
   end
-
+  
   def school_age_for(school_year)
     return nil if self.birth_year.blank? or self.birth_month.blank?
     school_age = school_year.start_date.year - self.birth_year

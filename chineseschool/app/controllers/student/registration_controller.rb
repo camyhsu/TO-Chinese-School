@@ -4,7 +4,6 @@ class Student::RegistrationController < ApplicationController
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
     @previous_school_year = @registration_school_year.previous_school_year
     @registration_preferences = create_registration_preferences_for_display_optioins
-    @available_elective_classes = SchoolClass.find_available_elective_classes_for_registration @registration_school_year
   end
   
   def save_registration_preferences

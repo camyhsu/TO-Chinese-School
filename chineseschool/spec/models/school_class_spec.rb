@@ -99,6 +99,62 @@ describe SchoolClass, 'finding students' do
   end
 end
 
+describe SchoolClass, 'checking if a school age is allowed' do
+  before(:each) do
+    @school_class = SchoolClass.new
+    @random_age = rand(15) + 1
+  end
+
+  it 'should return true if both min and max age is nil' do
+    @school_class.allow_school_age?(nil).should be_true
+  end
+
+  it 'should return true if both min and max age is zero' do
+    @school_class.max_age = 0
+    @school_class.min_age = 0
+    @school_class.allow_school_age?(nil).should be_true
+  end
+
+  it 'should return true if given age is less than or equal to max age' do
+    @school_class.max_age = @random_age
+    @school_class.allow_school_age?(@random_age).should be_true
+    @school_class.allow_school_age?(@random_age - 1).should be_true
+  end
+
+  it 'should return false if given age is greater than max age' do
+    @school_class.max_age = @random_age
+    @school_class.allow_school_age?(@random_age + 1).should be_false
+  end
+
+  it 'should return true if given age is greater than or equal to min age' do
+    @school_class.min_age = @random_age
+    @school_class.allow_school_age?(@random_age).should be_true
+    @school_class.allow_school_age?(@random_age + 1).should be_true
+  end
+
+  it 'should return false if given age is less than min age' do
+    @school_class.min_age = @random_age
+    @school_class.allow_school_age?(@random_age - 1).should be_false
+  end
+end
+
+describe SchoolClass, 'finding if the school class is full' do
+  fixtures :school_classes, :student_class_assignments
+
+  before(:each) do
+    @fake_school_year = SchoolYear.new
+    @fake_school_year.id = 1
+  end
+
+  it 'should return true if the school class is full' do
+    school_classes(:chinese_history_one).elective_is_full_for?(@fake_school_year).should be_true
+  end
+
+  it 'should return false if the school class is not full' do
+    school_classes(:chinese_history_two).elective_is_full_for?(@fake_school_year).should be_false
+  end
+end
+
 describe SchoolClass, 'finding all active school classes' do
   fixtures :school_classes, :school_class_active_flags
   
@@ -124,19 +180,5 @@ describe SchoolClass, 'finding all active elective classes' do
     active_school_classes.should have(1).school_classes
     active_school_classes.should_not include(school_classes(:chinese_history_one))
     active_school_classes.should include(school_classes(:chinese_history_two))
-  end
-end
-
-describe SchoolClass, 'finding all available elective classes for registration' do
-  fixtures :school_classes, :school_class_active_flags
-
-  it 'should find all available elective classes for registration from next year if next year is not nil' do
-    stub_next_school_year
-    next_school_year = SchoolYear.new
-    next_school_year.id = 2
-    available_elective_classes = SchoolClass.find_available_elective_classes_for_registration next_school_year
-    available_elective_classes.should have(1).school_classes
-    available_elective_classes.should include(school_classes(:chinese_history_one))
-    available_elective_classes.should_not include(school_classes(:chinese_history_two))
   end
 end

@@ -6,7 +6,7 @@ first_grade:
   short_name: 1A
   description: 1st Grade
   location: F-10*
-  max_size: 0
+  max_size: 4
   min_age: 0
   max_age: 0
   grade_id: 3
@@ -18,7 +18,7 @@ first_grade_class_b:
   short_name: 1B
   description: 1st Grade Class B
   location: F-11*
-  max_size: 0
+  max_size: 4
   min_age: 0
   max_age: 0
   grade_id: 3
@@ -42,7 +42,7 @@ chinese_history_one:
   short_name: 
   description: Chinese Culture and History I
   location: I-9
-  max_size: 30
+  max_size: 3
   min_age: 10
   max_age: 15
   grade_id:
@@ -66,7 +66,7 @@ chinese_history_two:
   short_name:
   description: Chinese Culture and History II
   location: I-10
-  max_size: 30
+  max_size: 3
   min_age: 10
   max_age: 15
   grade_id:
