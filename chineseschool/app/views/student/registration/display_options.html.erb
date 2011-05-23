@@ -1,15 +1,59 @@
 <% @title = 'Student Registration Options' %>
 
 <h3>Registration For <%=h @registration_school_year.name %> School Year</h3>
+
+<ul>
+  <li>
+    Grade is determined by the follow rules:
+    <ol>
+      <li>
+        If a student attended school in <%=h @previous_school_year.name %>,
+        the grade for <%=h @registration_school_year.name %> would be the following grade in natural order.
+      </li>
+      <li>
+        If the following grade is not available, the grade would be the highest grade available.
+      </li>
+      <li>
+        If a student did not attend school in <%=h @previous_school_year.name %>,
+        the grade for <%=h @registration_school_year.name %> would be assigned based on school age.
+      </li>
+      <li>
+        If the age based grade is not available, the grade would be the highest grade available.
+      </li>
+      <li>
+        Children in the family not within school age and did not attend school in <%=h @previous_school_year.name %> are not eligible for registration.
+      </li>
+    </ol>
+  </li>
+  <li>
+    Please select the desired language class type:
+    <ul>
+      <li><b>S</b> - 簡體中文(Simplified Chinese)</li>
+      <li><b>T</b> - 繁體中文(Traditional Chinese)</li>
+      <li><b>SE</b> - 雙語(Simplified Chinese with English Instructions) - only available for grade K, 1st, and 2nd</li>
+    </ul>
+  </li>
+  <li>
+    Elective class is only available for 1st grade or above.  Selections are First Come, First Serve,
+    until a class is full.
+  </li>
+  <li>
+    Please read <a href="/chineseschool/registration-overview-2011.pdf">Registraion Overview</a> or contact registration@to-cs.org for additional questions.
+  </li>
+</ul>
+<br/><br/>
+
 <% if @registration_preferences.empty? %>
-<p>No eligible students to register - please contact registration@to-cs.org for special case registration</p>
+  <p style="font-weight: bold">
+    No eligible students to register - please contact registration@to-cs.org for special case registration
+  </p>
 <% else %>
   <table class="registration-options-table" border="0px">
     <thead>
       <tr>
         <th></th>
         <th></th>
-        <th><%=h @registration_school_year.previous_school_year.name %> Grade</th>
+        <th><%=h @previous_school_year.name %> Grade</th>
         <th><%=h @registration_school_year.name %> Grade</th>
         <th>Select School Class Type</th>
         <th>Select Elective Class</th>
