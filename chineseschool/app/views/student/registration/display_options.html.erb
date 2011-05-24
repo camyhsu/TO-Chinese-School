@@ -71,6 +71,7 @@
                 Not In Record
               <% else %>
                 <%=h registration_preference.previous_grade.name %>
+                <%= hidden_field_tag "#{student.id}_previous_grade", registration_preference.previous_grade.id %>
               <% end %>
             </td>
             <td>

@@ -10,16 +10,14 @@ class Student::RegistrationController < ApplicationController
     # calculations here must be done in a specific order because
     # later calculations may depends on the result of earlier calculations
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
-    @registration_entries = extract_selected_registration_options
-    @registration_pva_due_in_cents = calculate_pva_due_in_cents
-    @registration_ccca_due_in_cents = calculate_ccca_due_in_cents
-    @registration_grand_total_in_cents = calculate_grand_total_in_cents
+    registration_preference_ids = create_and_save_registration_preferences
+    # Store registration preference ids for the controller after legal consent
+    session[:registration_preference_ids] = registration_preference_ids
+#    @registration_pva_due_in_cents = calculate_pva_due_in_cents
+#    @registration_ccca_due_in_cents = calculate_ccca_due_in_cents
+#    @registration_grand_total_in_cents = calculate_grand_total_in_cents
     # store grand total in session for later verification
-    session[:registration_grand_total_in_cents] = @registration_grand_total_in_cents
-  end
-
-  def display_legal
-    
+    #session[:registration_grand_total_in_cents] = @registration_grand_total_in_cents
   end
 
   def payment_entry
@@ -59,38 +57,45 @@ class Student::RegistrationController < ApplicationController
     registration_preferences
   end
   
-  def extract_selected_registration_options
-    registration_entries = []
+  def create_and_save_registration_preferences
+    registration_preference_ids = []
     find_possible_students.each do |student|
       student_register_flag = params["#{student.id}_register".to_sym]
-      if (not student_register_flag.nil?) and (student_register_flag == "true")
-#        registration_preference = RegistrationPreference.new
-#        registration_preference.school_year = @registration_school_year
-#        registration_preference.student = student
-#        registration_preference.entered_by = @user.person
-        registration_entry = {}
-        registration_entry[:student] = student
-        registration_entry[:next_grade] = extract_next_grade_from_params student.id
-        registration_entry[:elective_class] = extract_elective_class_from_params student.id
-        registration_entry[:tuition_in_cents] = calculate_tuition_in_cents registration_entries.size
-        registration_entries << registration_entry
+      if (!student_register_flag.nil?) and (student_register_flag == "true")
+        registration_preference = RegistrationPreference.new
+        registration_preference.school_year = @registration_school_year
+        registration_preference.student = student
+        registration_preference.entered_by = @user.person
+        registration_preference.previous_grade_id = extract_previous_grade_id_from_params student.id
+        registration_preference.grade_id = extract_grade_id_from_params student.id
+        registration_preference.school_class_type = params["#{student.id}_school_class_type".to_sym][:school_class_type]
+        registration_preference.elective_class_id = extract_elective_class_id_from_params student.id
+        if registration_preference.save
+          registration_preference_ids << registration_preference.id
+        end
       end
     end
-    registration_entries
+    registration_preference_ids
   end
 
-  def extract_next_grade_from_params(student_id)
-    next_grade_id = params["#{student_id}_next_grade".to_sym]
-    return nil if next_grade_id.blank?
-    Grade.find_by_id next_grade_id.to_i
+  def extract_previous_grade_id_from_params(student_id)
+    previous_grade_id = params["#{student_id}_previous_grade".to_sym]
+    return nil if previous_grade_id.blank?
+    previous_grade_id.to_i
   end
 
-  def extract_elective_class_from_params(student_id)
+  def extract_grade_id_from_params(student_id)
+    grade_id = params["#{student_id}_grade".to_sym]
+    return nil if grade_id.blank?
+    grade_id.to_i
+  end
+
+  def extract_elective_class_id_from_params(student_id)
     elective_class_hash = params["#{student_id}_elective".to_sym]
     return nil if elective_class_hash.nil?
     elective_class_id = elective_class_hash[:elective_class]
     return nil if elective_class_id.blank?
-    SchoolClass.find_by_id elective_class_id.to_i
+    elective_class_id.to_i
   end
 
   def calculate_tuition_in_cents(existing_registration_count)
