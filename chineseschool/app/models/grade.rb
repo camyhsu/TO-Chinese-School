@@ -33,6 +33,12 @@ class Grade < ActiveRecord::Base
     snapped_grade = snapped_grade.previous_grade until snapped_grade.has_active_school_classes_in? school_year
     snapped_grade
   end
+
+  def below_first_grade?
+    # Assuming only PreK and K are below first grade without checking the whole chain
+    return true if GRADE_PRESCHOOL == self or GRADE_PRESCHOOL.next_grade == self
+    false
+  end
   
   def self.find_by_school_age(school_age)
     return nil if school_age < 4

@@ -82,8 +82,10 @@
                   registration_preference.find_available_school_class_types %>
             </td>
             <td>
-              <%= collection_select "#{student.id}_elective", :elective_class, 
-                  SchoolClass.find_available_elective_classes_for_registration(student.school_age_for(@registration_school_year), @registration_school_year), :id, :name, {:include_blank => true} %>
+              <% unless registration_preference.grade.below_first_grade? %>
+                <%= collection_select "#{student.id}_elective", :elective_class,
+                    SchoolClass.find_available_elective_classes_for_registration(student.school_age_for(@registration_school_year), @registration_school_year), :id, :name, {:include_blank => true} %>
+              <% end %>
             </td>
           </tr>
         <% end %>

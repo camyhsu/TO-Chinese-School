@@ -85,6 +85,24 @@ describe Grade, 'snapping down to the first active grade' do
   end
 end
 
+describe Grade, 'checking if a grade is below first grade' do
+  fixtures :grades
+  
+  it 'should return true for PreK' do
+    grades(:pre_grade).below_first_grade?.should be_true
+  end
+
+  it 'should return true for K' do
+    grades(:k_grade).below_first_grade?.should be_true
+  end
+
+  it 'should return false for 1st grade or above' do
+    grades(:first_grade).below_first_grade?.should be_false
+    grades(:second_grade).below_first_grade?.should be_false
+    grades(:third_grade).below_first_grade?.should be_false
+  end
+end
+
 describe Grade, 'finding grade by school age' do
   fixtures :grades
 
