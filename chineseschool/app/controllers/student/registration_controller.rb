@@ -21,12 +21,14 @@ class Student::RegistrationController < ApplicationController
   end
 
   def payment_entry
+    @registration_school_year = SchoolYear.find_by_id params[:id].to_i
     
   end
   
   def cancel_registration
     # TODO - remove session data about registration
-    session[:registration_grand_total_in_cents] = nil
+    session[:registration_preference_ids] = nil
+    #session[:registration_grand_total_in_cents] = nil
     redirect_to :controller => '/home', :action => 'index'
   end
 
