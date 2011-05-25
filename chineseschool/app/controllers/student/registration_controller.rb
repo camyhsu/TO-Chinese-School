@@ -10,7 +10,7 @@ class Student::RegistrationController < ApplicationController
     # calculations here must be done in a specific order because
     # later calculations may depends on the result of earlier calculations
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
-    registration_preference_ids = create_and_save_registration_preferences
+    registration_preference_ids = save_registration_preferences_from_params
     # Store registration preference ids for the controller after legal consent
     session[:registration_preference_ids] = registration_preference_ids
 #    @registration_pva_due_in_cents = calculate_pva_due_in_cents
@@ -57,15 +57,12 @@ class Student::RegistrationController < ApplicationController
     registration_preferences
   end
   
-  def create_and_save_registration_preferences
+  def save_registration_preferences_from_params
     registration_preference_ids = []
     find_possible_students.each do |student|
       student_register_flag = params["#{student.id}_register".to_sym]
       if (!student_register_flag.nil?) and (student_register_flag == "true")
-        registration_preference = RegistrationPreference.new
-        registration_preference.school_year = @registration_school_year
-        registration_preference.student = student
-        registration_preference.entered_by = @user.person
+        registration_preference = find_or_create_registration_preference_for student
         registration_preference.previous_grade_id = extract_previous_grade_id_from_params student.id
         registration_preference.grade_id = extract_grade_id_from_params student.id
         registration_preference.school_class_type = params["#{student.id}_school_class_type".to_sym][:school_class_type]
@@ -76,6 +73,17 @@ class Student::RegistrationController < ApplicationController
       end
     end
     registration_preference_ids
+  end
+
+  def find_or_create_registration_preference_for(student)
+    registration_preference = RegistrationPreference.first :conditions => ['school_year_id = ? AND student_id = ?', @registration_school_year.id, student.id]
+    if registration_preference.nil?
+      registration_preference = RegistrationPreference.new
+      registration_preference.school_year = @registration_school_year
+      registration_preference.student = student
+    end
+    registration_preference.entered_by = @user.person
+    registration_preference
   end
 
   def extract_previous_grade_id_from_params(student_id)
