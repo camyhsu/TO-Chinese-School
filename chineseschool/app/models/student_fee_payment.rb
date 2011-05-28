@@ -10,6 +10,18 @@ class StudentFeePayment < ActiveRecord::Base
   validates_numericality_of :book_charge_in_cents, :only_integer => true, :allow_nil => false
 
 
+  def registration_fee
+    self.registration_fee_in_cents / 100.0
+  end
+
+  def book_charge
+    self.book_charge_in_cents / 100.0
+  end
+
+  def tuition
+    self.tuition_in_cents / 100.0
+  end
+  
   def total_in_cents
     self.registration_fee_in_cents + self.book_charge_in_cents + self.tuition_in_cents
   end

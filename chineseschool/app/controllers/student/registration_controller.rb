@@ -7,28 +7,52 @@ class Student::RegistrationController < ApplicationController
   end
   
   def save_registration_preferences
-    # calculations here must be done in a specific order because
-    # later calculations may depends on the result of earlier calculations
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
     registration_preference_ids = save_registration_preferences_from_params
-    # Store registration preference ids for the controller after legal consent
-    session[:registration_preference_ids] = registration_preference_ids
+    if registration_preference_ids.empty?
+      flash[:notice] = 'No student selected for registration!!'
+      redirect_to :action => :display_options, :id => @registration_school_year
+    else
+      # Store registration preference ids for the controller after legal consent
+      session[:registration_preference_ids] = registration_preference_ids
+    end
+    
 #    @registration_pva_due_in_cents = calculate_pva_due_in_cents
 #    @registration_ccca_due_in_cents = calculate_ccca_due_in_cents
 #    @registration_grand_total_in_cents = calculate_grand_total_in_cents
-    # store grand total in session for later verification
-    #session[:registration_grand_total_in_cents] = @registration_grand_total_in_cents
   end
 
   def payment_entry
+    # calculations here must be done in a specific order because
+    # later calculations may depends on the result of earlier calculations
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
-    
+    registration_preference_ids = session[:registration_preference_ids]
+    if registration_preference_ids.nil? or registration_preference_ids.empty?
+      flash[:notice] = 'No student selected for registration!!'
+      redirect_to(:action => :display_options, :id => @registration_school_year) and return
+    end
+
+    @registration_payment = RegistrationPayment.new
+    @registration_payment.school_year = @registration_school_year
+    @registration_payment.paid_by = @user.person
+    @registration_student_entries = {}
+    registration_preference_ids.each do |registration_preference_id|
+      registration_preference = RegistrationPreference.find_by_id registration_preference_id
+      student_fee_payment = StudentFeePayment.new
+      student_fee_payment.student = registration_preference.student
+      student_fee_payment.fill_in_tuition_and_fee @registration_school_year, registration_preference.grade, @registration_payment.student_fee_payments.size
+      student_fee_payment.registration_payment = @registration_payment
+      @registration_payment.student_fee_payments << student_fee_payment
+      @registration_student_entries[registration_preference] = student_fee_payment
+    end
+    @registration_payment.fill_in_due
+    @registration_payment.calculate_grand_total
+    @registration_payment.save!
   end
   
   def cancel_registration
     # TODO - remove session data about registration
     session[:registration_preference_ids] = nil
-    #session[:registration_grand_total_in_cents] = nil
     redirect_to :controller => '/home', :action => 'index'
   end
 
@@ -106,40 +130,5 @@ class Student::RegistrationController < ApplicationController
     elective_class_id = elective_class_hash[:elective_class]
     return nil if elective_class_id.blank?
     elective_class_id.to_i
-  end
-
-  def calculate_tuition_in_cents(existing_registration_count)
-    # 3rd student and beyond from the same family gets fixed amount discount on tuition
-    # TODO - pre-K discount
-    # TODO - pre-registraiton tuition
-    if existing_registration_count < 2
-      @registration_school_year.tuition_in_cents
-    else
-      @registration_school_year.tuition_in_cents #- discount
-    end
-  end
-
-  def calculate_pva_due_in_cents
-    # PVA membership due is up to 2 parents per family
-    if @registration_entries.size < 2
-      @registration_school_year.pva_membership_due_in_cents
-    else
-      @registration_school_year.pva_membership_due_in_cents * 2
-    end
-  end
-
-  def calculate_ccca_due_in_cents
-    return 0 if @user.person.families.detect { |family| family.ccca_lifetime_member? }
-    @registration_school_year.ccca_membership_due_in_cents
-  end
-
-  def calculate_grand_total_in_cents
-    grand_total_in_cents = 0
-    grand_total_in_cents += @registration_school_year.registration_fee_in_cents * @registration_entries.size
-    @registration_entries.each { |registration_entry| grand_total_in_cents += registration_entry[:tuition_in_cents] }
-    grand_total_in_cents += @registration_school_year.book_charge_in_cents * @registration_entries.size
-    grand_total_in_cents += @registration_pva_due_in_cents
-    grand_total_in_cents += @registration_ccca_due_in_cents
-    grand_total_in_cents
   end
 end

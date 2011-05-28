@@ -10,10 +10,22 @@ class RegistrationPayment < ActiveRecord::Base
   validates_numericality_of :ccca_due_in_cents, :only_integer => true, :allow_nil => false
   validates_numericality_of :grand_total_in_cents, :only_integer => true, :allow_nil => false
 
+
+  def pva_due
+    self.pva_due_in_cents / 100.0
+  end
+
+  def ccca_due
+    self.ccca_due_in_cents / 100.0
+  end
+
+  def grand_total
+    self.grand_total_in_cents / 100.0
+  end
   
   def fill_in_due
-    self.pva_due_in_cents = calculate_pva_due
-    self.ccca_due_in_cents = calculate_ccca_due
+    self.pva_due_in_cents = calculate_pva_due_in_cents
+    self.ccca_due_in_cents = calculate_ccca_due_in_cents
   end
   
   def calculate_grand_total
@@ -25,7 +37,7 @@ class RegistrationPayment < ActiveRecord::Base
   
   private
   
-  def calculate_pva_due
+  def calculate_pva_due_in_cents
     # PVA membership due is up to 2 parents per family
     if self.student_fee_payments.size > 1
       self.school_year.pva_membership_due_in_cents * 2
@@ -34,7 +46,7 @@ class RegistrationPayment < ActiveRecord::Base
     end
   end
 
-  def calculate_ccca_due
+  def calculate_ccca_due_in_cents
     return 0 if self.paid_by.families.detect { |family| family.ccca_lifetime_member? }
     self.school_year.ccca_membership_due_in_cents
   end
