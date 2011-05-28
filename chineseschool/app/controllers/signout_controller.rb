@@ -4,7 +4,7 @@ class SignoutController < ApplicationController
 
   def index
     # TODO - remove session data about registration
-    session[:registration_grand_total_in_cents] = nil
+    session[:registration_preference_ids] = nil
     session[:user_id] = nil
     redirect_to(:controller => 'signin', :action => 'index')
   end
