@@ -125,12 +125,14 @@ module ActiveMerchant
       return if pem.blank?
       
       http.cert = OpenSSL::X509::Certificate.new(pem)
-      
-      if pem_password
-        http.key = OpenSSL::PKey::RSA.new(pem, pem_password)
-      else
-        http.key = OpenSSL::PKey::RSA.new(pem)
-      end
+      # Comment out the next section - this caused failure with linkpoint pem
+#      if pem_password
+#        puts 'has pem password'
+#        http.key = OpenSSL::PKey::RSA.new(pem, pem_password)
+#      else
+#        puts 'no pem password'
+#        http.key = OpenSSL::PKey::RSA.new(pem)
+#      end
     end
         
     def retry_exceptions
