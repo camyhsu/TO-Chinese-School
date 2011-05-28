@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110522214026) do
+ActiveRecord::Schema.define(:version => 20110528140833) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -68,6 +68,17 @@ ActiveRecord::Schema.define(:version => 20110522214026) do
     t.integer  "birth_month"
     t.string   "native_language"
     t.integer  "address_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "registration_payments", :force => true do |t|
+    t.integer  "school_year_id"
+    t.integer  "paid_by_id"
+    t.integer  "pva_due_in_cents"
+    t.integer  "ccca_due_in_cents"
+    t.integer  "grand_total_in_cents"
+    t.boolean  "paid",                 :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -177,6 +188,19 @@ ActiveRecord::Schema.define(:version => 20110522214026) do
   end
 
   add_index "student_class_assignments", ["school_year_id"], :name => "index_student_class_assignments_on_school_year_id"
+
+  create_table "student_fee_payments", :force => true do |t|
+    t.integer  "registration_payment_id"
+    t.integer  "student_id"
+    t.integer  "registration_fee_in_cents"
+    t.integer  "tuition_in_cents"
+    t.integer  "book_charge_in_cents"
+    t.boolean  "pre_registration",          :default => false, :null => false
+    t.boolean  "multiple_child_discount",   :default => false, :null => false
+    t.boolean  "pre_k_discount",            :default => false, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "timed_tokens", :force => true do |t|
     t.string   "token"
