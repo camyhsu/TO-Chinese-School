@@ -1,5 +1,22 @@
 require 'spec_helper'
 
+describe StudentFeePayment, 'calculating total' do
+  before(:each) do
+    @student_fee_payment = StudentFeePayment.new
+
+    @registration_fee = rand 100000
+    @student_fee_payment.registration_fee_in_cents = @registration_fee
+    @book_charge = rand 100000
+    @student_fee_payment.book_charge_in_cents = @book_charge
+    @tuition = rand 100000
+    @student_fee_payment.tuition_in_cents = @tuition
+  end
+
+  it 'should return the total of all tuition and fee' do
+    @student_fee_payment.total_in_cents.should == (@registration_fee + @book_charge + @tuition)
+  end
+end
+
 describe StudentFeePayment, 'filling in tuition and fee' do
   before(:each) do
     @student_fee_payment = StudentFeePayment.new
