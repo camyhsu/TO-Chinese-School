@@ -1,10 +1,11 @@
 <% @title = 'Tuition and Fee' %>
 
-<h3>Tuition and Fee For <%=h @registration_school_year.name %> School Year</h3>
+<h3>Tuition and Fee For <%=h @registration_payment.school_year.name %> School Year</h3>
 
-<% @registration_student_entries.each do |registration_preference, student_fee_payment| %>
+<% @registration_payment.student_fee_payments.each do |student_fee_payment| %>
 <p>
-  For <%=h registration_preference.student.name %>
+  For <%=h student_fee_payment.student.name %>
+  <% registration_preference = student_fee_payment.student.registration_preference_for(@registration_payment.school_year) %>
   <br/>
   entering grade <%=h registration_preference.grade.name %>
   <br/>

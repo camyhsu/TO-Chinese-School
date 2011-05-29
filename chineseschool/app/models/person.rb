@@ -9,6 +9,8 @@ class Person < ActiveRecord::Base
   has_many :student_class_assignments, :foreign_key => 'student_id', :dependent => :destroy
   has_many :instructor_assignments, :foreign_key => 'instructor_id', :dependent => :destroy
 
+  has_many :registration_preferences, :foreign_key => 'student_id'
+
   validates_presence_of :gender
   validates_presence_of :birth_year, :if => Proc.new { |person| person.is_a_child? }
   validates_presence_of :birth_month, :if => Proc.new { |person| person.is_a_child? }
@@ -53,6 +55,10 @@ class Person < ActiveRecord::Base
   
   def student_class_assignment_for(school_year)
     self.student_class_assignments.first :conditions => ['school_year_id = ?', school_year.id]
+  end
+
+  def registration_preference_for(school_year)
+    self.registration_preferences.first :conditions => ['school_year_id = ?', school_year.id]
   end
   
   def families
