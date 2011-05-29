@@ -1,6 +1,8 @@
 class Student::RegistrationController < ApplicationController
 
-  verify :only => [:save_registration_preferences, :payment_entry] , :method => :post,
+  ALLOWED_CREDIT_CARD_TYPE = ['visa', 'master', 'discover']
+
+  verify :only => [:save_registration_preferences, :payment_entry, :submit_payment] , :method => :post,
       :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
   
   def display_options
@@ -19,36 +21,41 @@ class Student::RegistrationController < ApplicationController
   end
 
   def payment_entry
-    # calculations here must be done in a specific order because
-    # later calculations may depends on the result of earlier calculations
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
     registration_preference_ids = params[:registration_preferences].values
     if registration_preference_ids.nil? or registration_preference_ids.empty?
       flash[:notice] = 'No student selected for registration!!'
       redirect_to(:action => :display_options, :id => @registration_school_year) and return
     end
-
-    @registration_payment = RegistrationPayment.new
-    @registration_payment.school_year = @registration_school_year
-    @registration_payment.paid_by = @user.person
-    @registration_student_entries = {}
-    registration_preference_ids.each do |registration_preference_id|
-      registration_preference = RegistrationPreference.find_by_id registration_preference_id
-      student_fee_payment = StudentFeePayment.new
-      student_fee_payment.student = registration_preference.student
-      student_fee_payment.fill_in_tuition_and_fee @registration_school_year, registration_preference.grade, @registration_payment.student_fee_payments.size
-      student_fee_payment.registration_payment = @registration_payment
-      @registration_payment.student_fee_payments << student_fee_payment
-      @registration_student_entries[registration_preference] = student_fee_payment
-    end
-    @registration_payment.fill_in_due
-    @registration_payment.calculate_grand_total
-    @registration_payment.save!
+    @registration_payment = create_and_save_registration_payment registration_preference_ids
   end
   
-  def cancel_registration
-    # TODO - remove session data about registration
+  def remove_pending_registration_payment
+    registration_payment = RegistrationPayment.find_by_id params[:id].to_i
+    if registration_payment.nil?
+      logger.warn "Could not find registration payment with id => #{params[:id]}"
+    else
+      if registration_payment.paid?
+        logger.warn "Attempting to remove a paid registration #{registration_payment.id} by user #{@user.id}"
+      else
+        registration_payment.destroy
+      end
+    end
     redirect_to :controller => '/home', :action => 'index'
+  end
+
+  def submit_payment
+    @registration_payment = RegistrationPayment.find_by_id params[:id].to_i
+    credit_card = ActiveMerchant::Billing::CreditCard.new(
+        :number => params[:card_number], :verification_value => params[:cvv_code], 
+        :month => params[:valid_through][:month], :year => params[:valid_through][:year])
+
+    credit_card.valid?
+    puts credit_card.type
+    puts credit_card.number
+    puts credit_card.verification_value
+    puts credit_card.month
+    puts credit_card.year
   end
 
   private
@@ -125,5 +132,27 @@ class Student::RegistrationController < ApplicationController
     elective_class_id = elective_class_hash[:elective_class]
     return nil if elective_class_id.blank?
     elective_class_id.to_i
+  end
+
+  def create_and_save_registration_payment(registration_preference_ids)
+    # calculations here must be done in a specific order because
+    # later calculations may depends on the result of earlier calculations
+    registration_payment = RegistrationPayment.new
+    registration_payment.school_year = @registration_school_year
+    registration_payment.paid_by = @user.person
+    @registration_student_entries = {}
+    registration_preference_ids.each do |registration_preference_id|
+      registration_preference = RegistrationPreference.find_by_id registration_preference_id
+      student_fee_payment = StudentFeePayment.new
+      student_fee_payment.student = registration_preference.student
+      student_fee_payment.fill_in_tuition_and_fee @registration_school_year, registration_preference.grade, registration_payment.student_fee_payments.size
+      student_fee_payment.registration_payment = registration_payment
+      registration_payment.student_fee_payments << student_fee_payment
+      @registration_student_entries[registration_preference] = student_fee_payment
+    end
+    registration_payment.fill_in_due
+    registration_payment.calculate_grand_total
+    registration_payment.save!
+    registration_payment
   end
 end

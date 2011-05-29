@@ -45,8 +45,35 @@
     <td class="label">Grand Total:</td>
     <td><%=number_to_currency @registration_payment.grand_total %></td>
   </tr>
-  <tr>
-    <td class="label"></td>
-    <td><%= link_to 'Continue', {:action => :display_legal}, {:class => 'button'} %></td>
-  </tr>
 </table>
+<br/><br/>
+<div class="account-form">
+  <% form_tag :action => 'submit_payment', :id => @registration_payment do %>
+    <fieldset>
+        <legend>Enter Credit Card Information</legend>
+        <span class="payment-entry">
+          <p>Chinese School Accepts Visa, MasterCard, or Discover Credit Card</p>
+          <div>
+            <label for="card_number"><span style="color:red">*&nbsp;</span>Card Number:</label>
+            <%= text_field_tag :card_number, '', :size => 16 %>
+          </div>
+          <div>
+            <label for="card_number"><span style="color:red">*&nbsp;</span>Valid Through:</label>
+            <%= select "valid_through", :month, (1..12) %>
+            &nbsp;/
+            <%= select "valid_through", :year, (Date.today.year..(Date.today.year + 5)) %>
+          </div>
+          <div>
+            <label for="card_number"><span style="color:red">*&nbsp;</span>CVV Code:</label>
+            <%= text_field_tag :cvv_code, '', :size => 3 %>
+          </div>
+          <span style="color:red">*&nbsp;</span>Required Field
+          <div>
+            <%= submit_tag 'Submit Payment', :class => 'submit' %>
+          </div>
+        </span>
+    </fieldset>
+  <% end %>
+</div>
+<br/>
+<%= link_to 'Cancel Registration', {:action => :remove_pending_registration_payment, :id => @registration_payment}, {:class => 'button'} %>

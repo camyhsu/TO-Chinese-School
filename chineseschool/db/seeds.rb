@@ -82,8 +82,8 @@ student_people_edit_address = Right.create(:name => 'Edit Personal Address By Pa
 student_registration_display_options = Right.create(:name => 'Display Registration Options', :controller => 'student/registration', :action => 'display_options')
 student_registration_save_registration_preferences = Right.create(:name => 'Save Registration Preferences', :controller => 'student/registration', :action => 'save_registration_preferences')
 student_registration_payment_entry = Right.create(:name => 'Payment Entry', :controller => 'student/registration', :action => 'payment_entry')
-student_registration_cancel_registration = Right.create(:name => 'Cancel Registration', :controller => 'student/registration', :action => 'cancel_registration')
-
+student_registration_remove_pending_registration_payment = Right.create(:name => 'Remove Pending Registration Payment', :controller => 'student/registration', :action => 'remove_pending_registration_payment')
+student_registration_submit_payment = Right.create(:name => 'Submit Payment', :controller => 'student/registration', :action => 'submit_payment')
 
 
 #
@@ -164,4 +164,5 @@ student_parent.rights << student_people_edit_address
 student_parent.rights << student_registration_display_options
 student_parent.rights << student_registration_save_registration_preferences
 student_parent.rights << student_registration_payment_entry
-student_parent.rights << student_registration_cancel_registration
+student_parent.rights << student_registration_remove_pending_registration_payment
+student_parent.rights << student_registration_submit_payment

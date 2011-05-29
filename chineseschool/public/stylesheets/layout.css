@@ -257,3 +257,15 @@ select {
     text-align: right;
     margin-right: 0.5em;
 }
+
+.payment-entry label {
+    width: 11em;
+    float: left;
+    text-align: right;
+    margin-right: 0.1em;
+    display: block;
+}
+
+.payment-entry .submit {
+    margin-left: 15em;
+}
