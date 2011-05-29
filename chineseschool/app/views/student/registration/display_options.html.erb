@@ -90,16 +90,24 @@
             </td>
           </tr>
         <% end %>
+        <tr>
+          <td class="checkbox"></td>
+          <td style="padding-top: 1em;">
+            <%= submit_tag 'Continue', :class => 'button'  %>
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      <% end %>
       <tr>
         <td class="checkbox"></td>
-        <td></td>
-        <td style="padding-top: 1em;">
-          <%= submit_tag 'Continue', :class => 'button'  %>
+        <td colspan="2" style="padding-top: 0.5em; text-align: left;">
+          <%= link_to 'Cancel Registration', {:controller => '/home', :action => :index}, {:class => 'button'} %>
         </td>
         <td></td>
         <td></td>
       </tr>
-      <% end %>
     </tbody>
   </table>
 <% end %>

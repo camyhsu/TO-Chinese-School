@@ -1,5 +1,8 @@
 class Student::RegistrationController < ApplicationController
 
+  verify :only => [:save_registration_preferences, :payment_entry] , :method => :post,
+      :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
+  
   def display_options
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
     @previous_school_year = @registration_school_year.previous_school_year
@@ -8,25 +11,18 @@ class Student::RegistrationController < ApplicationController
   
   def save_registration_preferences
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
-    registration_preference_ids = save_registration_preferences_from_params
-    if registration_preference_ids.empty?
+    @registration_preference_ids = save_registration_preferences_from_params
+    if @registration_preference_ids.empty?
       flash[:notice] = 'No student selected for registration!!'
       redirect_to :action => :display_options, :id => @registration_school_year
-    else
-      # Store registration preference ids for the controller after legal consent
-      session[:registration_preference_ids] = registration_preference_ids
     end
-    
-#    @registration_pva_due_in_cents = calculate_pva_due_in_cents
-#    @registration_ccca_due_in_cents = calculate_ccca_due_in_cents
-#    @registration_grand_total_in_cents = calculate_grand_total_in_cents
   end
 
   def payment_entry
     # calculations here must be done in a specific order because
     # later calculations may depends on the result of earlier calculations
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
-    registration_preference_ids = session[:registration_preference_ids]
+    registration_preference_ids = params[:registration_preferences].values
     if registration_preference_ids.nil? or registration_preference_ids.empty?
       flash[:notice] = 'No student selected for registration!!'
       redirect_to(:action => :display_options, :id => @registration_school_year) and return
@@ -52,7 +48,6 @@ class Student::RegistrationController < ApplicationController
   
   def cancel_registration
     # TODO - remove session data about registration
-    session[:registration_preference_ids] = nil
     redirect_to :controller => '/home', :action => 'index'
   end
 

@@ -15,7 +15,11 @@
   the legal terms outlined above (blah blah blah)
 </p>
 
-<%= link_to 'Agree', {:action => :payment_entry, :id => @registration_school_year}, {:class => 'button'} %>
+<% form_tag :action => 'payment_entry', :id => @registration_school_year do %>
+  <% @registration_preference_ids.each_with_index do |registration_preference_id, index| %>
+    <%= hidden_field_tag "registration_preferences[#{index}]", registration_preference_id %>
+  <% end %>
+  <%= submit_tag 'Agree', :class => 'button'  %>
+<% end %>
 <br/>
-<br/>
-<%= link_to 'Cancel Registration', {:action => :cancel_registration}, {:class => 'button'} %>
+<%= link_to 'Cancel Registration', {:controller => '/home', :action => :index}, {:class => 'button'} %>
