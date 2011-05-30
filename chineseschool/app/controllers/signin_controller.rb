@@ -102,10 +102,11 @@ class SigninController < ApplicationController
 
       @user = User.new(:username => params[:username], :person => person)
       @user.password = params[:password]
+      @user.roles << Role.find_by_name(Role::ROLE_NAME_STUDENT_PARENT)
       @user.adjust_instructor_roles
       
       if @user.save
-        flash[:notice] = 'Account successfully registered'
+        flash[:notice] = 'Account successfully created'
         redirect_to :action => 'index'
       end
     end
