@@ -87,14 +87,14 @@ class SigninController < ApplicationController
   def register_with_invitation
     timed_token = TimedToken.find_by_token params[:id]
     redirect_to :action => 'invalid_token' and return if timed_token.nil? or timed_token.expired?
+    person = timed_token.person
+    unless person.user.nil?
+      flash.now[:notice] = "This person already have an account with username #{person.user.username}" and return
+    end
     
     if request.post?
       if params[:password] != params[:password_confirmation]
         flash.now[:notice] = 'Password does not match confirmation re-typed' and return
-      end
-      person = timed_token.person
-      unless person.user.nil?
-        flash.now[:notice] = "This person already have an account with username #{person.user.username}" and return
       end
       unless person.phone_number_correct? params[:phone_number]
         flash.now[:notice] = 'Unable to match phone number with existing records - please try again' and return
