@@ -54,39 +54,33 @@ class SigninController < ApplicationController
   def register
     if request.post?
       if params[:password] != params[:password_confirmation]
-        flash.now[:notice] = 'Password does not match confirmation re-typed' and return
+        flash.now[:password_not_match] = 'Password does not match confirmation re-typed' and return
       end
-      people_found = Person.find_people_on_record(params[:english_first_name].strip, params[:english_last_name].strip,
-                                                  params[:email].strip, params[:phone_number])
-      if people_found.size == 1
-        person_found = people_found.first
-        unless person_found.user.nil?
-          flash.now[:notice] = "This person already have an account with username #{person_found.user.username}" and return
-        end
-
-        # 
-        # This is a temporary guard to allow only Wanlin and Linda to register accounts
-        #
-        puts "Person found with id => #{person_found.id}"
-        if person_found.id != 938 and person_found.id != 477
-          flash.now[:notice] = 'System temporarily closed to public - please register account later' and return
-        end
-        
-        @user = User.new(:username => params[:username], :person => person_found)
-        @user.password = params[:password]
-
-        #
-        # Again temporary - give the user created the role of Registration Officer
-        #
-        @user.roles << Role.find_by_name('Registration Officer')
-
-        if @user.save
-          flash[:notice] = 'Account successfully registered'
-          redirect_to :action => 'index'
-        end
-      else
-        flash.now[:notice] = 'Unable to match identity with existing records - please try again or contact Chinese School'
+      
+      @address = Address.new params[:address]
+      @parent_one = Person.new params[:parent_one]
+      @user = User.new(:username => params[:user][:username], :person => @parent_one)
+      @user.password = params[:password]
+      @user.roles << Role.find_by_name(Role::ROLE_NAME_STUDENT_PARENT)
+      valid_address = @address.valid?
+      valid_parent_one = @parent_one.valid?
+      valid_user = @user.valid?
+      return unless valid_address and valid_parent_one and valid_user
+      
+      new_family = Family.new
+      new_family.address = @address
+      new_family.parent_one = @parent_one
+      Family.transaction do
+        new_family.save!
+        @user.save!
       end
+
+      flash[:notice] = 'Account successfully created'
+      redirect_to :action => 'index'
+    else
+      @address = Address.new
+      @parent_one = Person.new
+      @user = User.new
     end
   end
 

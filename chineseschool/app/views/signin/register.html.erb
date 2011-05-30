@@ -1,49 +1,56 @@
-<% @title = 'Register' %>
+<% @title = 'Register For User Account' %>
+
+<p style="color: red;">
+  <span style="font-weight: bold;">
+    Families with existing or prior students in Thousand Oaks Chinese School
+  </span>
+   - Please contact engineering@to-cs.org with your information to obtain
+  account invitation so that your account could be linked to existing data.
+  Do not use the form below to create new account.
+</p>
+<br/>
 
 <div class="account-form">
-  <%= error_messages_for :user %>
+  <%= error_messages_for :address, :parent_one, :user, :object_name => 'family' %>
 
-  <% form_tag do %>
+  <% form_for :address do |form| %>
     <fieldset>
-      <legend>Register For An Account</legend>
-      <span class="register">
+      <legend>Register User Account For New Family</legend>
+      <span class="person-edit">
         <div>
-          We can only accept people who are staff members on record to register new accounts.<br/>
-          Please verify your identity against existing records with Chinese School:
+          Family Address:
         </div>
+        <%= render :partial => 'registration/addresses/address_form', :object => form %>
+        <br/>
         <div>
-          <label for="english_first_name">English First Name:</label>
-          <%= text_field_tag :english_first_name, params[:english_first_name] %>
+          Parent One of the family:
         </div>
-        <div>
-          <label for="english_last_name">English Last Name:</label>
-          <%= text_field_tag :english_last_name, params[:english_last_name] %>
-        </div>
-        <div>
-          <label for="email">Email Address:</label>
-          <%= text_field_tag :email, params[:email] %>
-        </div>
-        <div>
-          <label for="phone_number">Phone Number:</label>
-          <%= text_field_tag :phone_number, params[:phone_number] %>
-          home phone number or mobile phone number
-        </div>
+        <% fields_for :parent_one do |parent_one| %>
+        <%= render :partial => 'registration/people/person_form', :object => parent_one %>
+        <% end %>
         <br/>
         <div>
           Please create your account username and password:
         </div>
+        <% fields_for :user do |user| %>
         <div>
-          <label for="username">Username:</label>
-          <%= text_field_tag :username, params[:username] %>
+          <label for="username"><span style="color:red">*&nbsp;</span>Username:</label>
+          <%= user.text_field :username %>
         </div>
         <div>
-          <label for="password">Password:</label>
+          <label for="password"><span style="color:red">*&nbsp;</span>Password:</label>
           <%= password_field_tag :password %>
         </div>
         <div>
-          <label for="password_confirmation">Re-type Password:</label>
+          <label for="password_confirmation"><span style="color:red">*&nbsp;</span>Re-type Password:</label>
           <%= password_field_tag :password_confirmation %>
+          <% unless flash[:password_not_match].nil? %>
+            <span style="color:red"><%=h flash[:password_not_match]%></span>
+          <% end %>
         </div>
+        <% end %>
+        <br/>
+        <span style="color:red">*&nbsp;</span>Required Field
         <div>
           <%= submit_tag 'Register', :class => 'submit' %>
         </div>
