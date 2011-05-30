@@ -70,7 +70,7 @@
 </table>
 <hr/>
 <h3>Instructor Assignments for <%=h @person.name %></h3>
-<% @person.instructor_assignments.each do |instructor_assignment| %>
+<% @person.instructor_assignments_for(SchoolYear.current_school_year).each do |instructor_assignment| %>
 <table class="person-detail" border="0px">
   <%= render :partial => '/registration/instructor_assignments/instructor_assignment', :object => instructor_assignment %>
 </table>
