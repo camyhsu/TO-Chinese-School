@@ -18,16 +18,19 @@ Rights:
 <br/>
 <br/>
 
-Users with this role:
-<br/>
-<table>
-  <% @role.users.each do |user| -%>
-  <tr>
-    <td><%=h user.username %></td>
-    <td><%= link_to "#{user.person.name}", :controller => 'registration/people', :action => 'show', :id => user.person %></td>
-  </tr>
-  <% end %>
-</table>
+<% # Do not show users for role student parent because every user should have this role %>
+<% unless @role.name == Role::ROLE_NAME_STUDENT_PARENT %>
+  Users with this role:
+  <br/>
+  <table>
+    <% @role.users.each do |user| -%>
+    <tr>
+      <td><%=h user.username %></td>
+      <td><%= link_to "#{user.person.name}", :controller => 'registration/people', :action => 'show', :id => user.person %></td>
+    </tr>
+    <% end %>
+  </table>
+<% end %>
 
 <br/>
 Add user to this role:
