@@ -105,16 +105,16 @@
       <% student_class_assignment = student.student_class_assignment_for SchoolYear.current_school_year %>
       <% unless student_class_assignment.nil? -%>
         <tr>
-          <td class="label">Grade:</td>
+          <td class="label"><%=h SchoolYear.current_school_year.name %> Grade:</td>
           <td><%=h student_class_assignment.try(:grade).try(:name) %></td>
         </tr>
         <% unless student_class_assignment.try(:grade).nil? -%>
           <tr>
-            <td class="label">School Class:</td>
+            <td class="label"><%=h SchoolYear.current_school_year.name %> School Class:</td>
             <td><%=h student_class_assignment.try(:school_class).try(:name) %></td>
           </tr>
           <tr>
-            <td class="label">Elective Class:</td>
+            <td class="label"><%=h SchoolYear.current_school_year.name %> Elective Class:</td>
             <td><%=h student_class_assignment.try(:elective_class).try(:name) %></td>
           </tr>
         <% end %>
