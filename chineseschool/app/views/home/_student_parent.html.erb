@@ -1,4 +1,9 @@
 
+<% @active_registration_school_years.each do |registration_year| %>
+  <%= link_to "Register For #{registration_year.name} School Year", {:controller => '/student/registration', :action => :display_options, :id => registration_year}, {:class => 'button'} %>
+  <br/>
+<% end %>
+
 <br/>
 <h3>Person</h3>
 <table class="person-detail" border="0px">
@@ -72,11 +77,7 @@
 <% end %>
 <hr/>
 <% if @possible_students.size > 0 -%>
-  <h3>Student Registration Information</h3>
-  <% @active_registration_school_years.each do |registration_year| %>
-  <%= link_to "Register For #{registration_year.name} School Year", {:controller => '/student/registration', :action => :display_options, :id => registration_year}, {:class => 'button'} %>
-  <br/><br/>
-  <% end %>
+  <h3>Student Information</h3>
   <% @possible_students.each do |student| -%>
     <table class="person-detail" border="0px">
       <tr>
@@ -125,6 +126,10 @@
         <td><hr/></td>
       </tr>
     </table>
+  <% end %>
+  <% @active_registration_school_years.each do |registration_year| %>
+    <%= link_to "Register For #{registration_year.name} School Year", {:controller => '/student/registration', :action => :display_options, :id => registration_year}, {:class => 'button'} %>
+    <br/>
   <% end %>
   <hr/>
 <% end %>
