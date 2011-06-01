@@ -53,15 +53,15 @@ class SigninController < ApplicationController
 
   def register
     if request.post?
-      if params[:password] != params[:password_confirmation]
-        flash.now[:password_not_match] = 'Password does not match confirmation re-typed' and return
-      end
-      
       @address = Address.new params[:address]
       @parent_one = Person.new params[:parent_one]
       @user = User.new(:username => params[:user][:username], :person => @parent_one)
       @user.password = params[:password]
       @user.roles << Role.find_by_name(Role::ROLE_NAME_STUDENT_PARENT)
+
+      if params[:password] != params[:password_confirmation]
+        flash.now[:password_not_match] = 'Password does not match confirmation re-typed' and return
+      end
       valid_address = @address.valid?
       valid_parent_one = @parent_one.valid?
       valid_user = @user.valid?
