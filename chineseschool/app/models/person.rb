@@ -2,6 +2,7 @@ class Person < ActiveRecord::Base
 
   GENDER_MALE = 'M'
   GENDER_FEMALE = 'F'
+  AVAILABLE_NATIVE_LANGUAGE = ['Mandarin', 'English', 'Cantonese', 'Other']
 
   has_one :user
   belongs_to :address
