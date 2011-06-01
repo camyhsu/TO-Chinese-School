@@ -13,10 +13,14 @@ class Student::RegistrationController < ApplicationController
   
   def save_registration_preferences
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
-    @registration_preference_ids = save_registration_preferences_from_params
-    if @registration_preference_ids.empty?
+    @registration_preferences = save_registration_preferences_from_params
+    if @registration_preferences.empty?
       flash[:notice] = 'No student selected for registration!!'
       redirect_to :action => :display_options, :id => @registration_school_year
+    else
+      @student_names = @registration_preferences.collect do |registration_preference|
+        registration_preference.student.name
+      end.join(', ')
     end
   end
 
@@ -28,6 +32,7 @@ class Student::RegistrationController < ApplicationController
       redirect_to(:action => :display_options, :id => registration_school_year.id) and return
     end
     @registration_payment = create_and_save_registration_payment registration_preference_ids, registration_school_year
+    @credit_card = ActiveMerchant::Billing::CreditCard.new
   end
   
   def remove_pending_registration_payment
@@ -46,16 +51,20 @@ class Student::RegistrationController < ApplicationController
 
   def submit_payment
     @registration_payment = RegistrationPayment.find_by_id params[:id].to_i
-    credit_card = ActiveMerchant::Billing::CreditCard.new(
+    @credit_card = ActiveMerchant::Billing::CreditCard.new(
         :number => params[:card_number], :verification_value => params[:cvv_code], 
         :month => params[:valid_through][:month], :year => params[:valid_through][:year])
 
-    credit_card.valid?
-    puts credit_card.type
-    puts credit_card.number
-    puts credit_card.verification_value
-    puts credit_card.month
-    puts credit_card.year
+    @credit_card.valid?
+    puts @credit_card.type
+    puts @credit_card.number
+    puts @credit_card.verification_value
+    puts @credit_card.month
+    puts @credit_card.year
+
+    unless @credit_card.valid?
+      render :template => '/student/registration/payment_entry'
+    end
   end
 
   private
@@ -86,7 +95,7 @@ class Student::RegistrationController < ApplicationController
   end
   
   def save_registration_preferences_from_params
-    registration_preference_ids = []
+    registration_preferences = []
     find_possible_students.each do |student|
       student_register_flag = params["#{student.id}_register".to_sym]
       if (!student_register_flag.nil?) and (student_register_flag == "true")
@@ -96,11 +105,11 @@ class Student::RegistrationController < ApplicationController
         registration_preference.school_class_type = params["#{student.id}_school_class_type".to_sym][:school_class_type]
         registration_preference.elective_class_id = extract_elective_class_id_from_params student.id
         if registration_preference.save
-          registration_preference_ids << registration_preference.id
+          registration_preferences << registration_preference
         end
       end
     end
-    registration_preference_ids
+    registration_preferences
   end
 
   def find_or_create_registration_preference_for(student)
