@@ -1,7 +1,7 @@
 <% @title = 'Create User' %>
 
 <p style="color: red;">
-  <span style="font-weight: bold;">
+  <span style="font-weight: bold; background-color: yellow;">
     Families with existing or prior students in Thousand Oaks Chinese School
   </span>
    - Please contact engineering@to-cs.org with your information to obtain
@@ -26,19 +26,19 @@
 
   <% form_for :address do |form| %>
     <fieldset>
-      <legend>Create User For New Family</legend>
+      <legend style="font-weight: bold;">Create User For New Family <span style="color: yellow;">ONLY</span></legend>
       <span class="person-edit">
         <div>
-          Family Address:
-        </div>
-        <%= render :partial => 'registration/addresses/address_form', :object => form %>
-        <br/>
-        <div>
-          Parent One of the family:
+          Parent One:
         </div>
         <% fields_for :parent_one do |parent_one| %>
         <%= render :partial => 'registration/people/person_form', :object => parent_one %>
         <% end %>
+        <br/>
+        <div>
+          Family Address:
+        </div>
+        <%= render :partial => 'registration/addresses/address_form', :object => form %>
         <br/>
         <div>
           Please create your account username and password:
