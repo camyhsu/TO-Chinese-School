@@ -25,7 +25,7 @@ class SigninMailer < ActionMailer::Base
     timed_token = TimedToken.new
     timed_token.generate_token
     timed_token.person = person
-    timed_token.expiration = Time.now.advance :days => 2
+    timed_token.expiration = Time.now.advance :days => 3
     timed_token.save!
     "https://www.to-cs.org/chineseschool/signin/register_with_invitation/#{timed_token.token}"
   end

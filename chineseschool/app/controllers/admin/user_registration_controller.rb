@@ -12,4 +12,25 @@ class Admin::UserRegistrationController < ApplicationController
           "email_destination => #{params[:email_destination]}"
     end
   end
+
+  def invite_parents_by_school_class
+    if request.post?
+      params[:parent_one].each_key do |family_id|
+        family = Family.find_by_id family_id.to_i
+        send_invitation_to family.parent_one, family.address.email
+      end
+      params[:parent_two].each_key do |family_id|
+        family = Family.find_by_id family_id.to_i
+        send_invitation_to family.parent_two, family.address.email
+      end
+    end
+    @students = SchoolClass.find_by_id(params[:id].to_i).students
+  end
+
+  private
+
+  def send_invitation_to(person, email_destination)
+    email = SigninMailer.create_registration_invitation person, email_destination
+    SigninMailer.deliver email
+  end
 end

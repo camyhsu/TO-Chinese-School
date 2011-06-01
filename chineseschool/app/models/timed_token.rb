@@ -12,6 +12,10 @@ class TimedToken < ActiveRecord::Base
   def expired?
     self.expiration < Time.now
   end
+
+  def self.has_unexpired_token_for?(person_id)
+    self.all(:conditions => ['person_id = ? AND expiration >= ?', person_id, Time.now]).size > 0
+  end
   
   
   private

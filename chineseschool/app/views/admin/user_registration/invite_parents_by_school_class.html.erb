@@ -1,0 +1,59 @@
+<% @title = 'Invite Parent Registration' %>
+
+<% form_tag do %>
+<table>
+  <thead>
+    <th>Student</th>
+    <th>Family Email</th>
+    <th>Parent One</th>
+    <th>Parent Two</th>
+  </thead>
+  <tbody>
+    <% counter = 0 %>
+    <% @students.each do |student| %>
+      <% student.find_families_as_child.each do |family| %>
+        <tr>
+          <td><%=h student.name %></td>
+          <td>
+            <%=h family.address.email %>
+          </td>
+          <td>
+            <%= check_box_tag "parent_one[#{family.id}]", true %>
+            <% if TimedToken.has_unexpired_token_for?(family.parent_one.id) %>
+              <span style="color: goldenrod; font-weight: bold;">
+            <% elsif family.parent_one.user.nil? %>
+              <span>
+            <% else %>
+              <span style="color: red; font-weight: bold;">
+            <% end %>
+              <%=h family.parent_one.name %>
+            </span>
+          </td>
+          <td>
+            <% unless family.parent_two.nil? %>
+              <%= check_box_tag "parent_two[#{family.id}]", true %>
+              <% if TimedToken.has_unexpired_token_for?(family.parent_two.id) %>
+                <span style="color: goldenrod; font-weight: bold;">
+              <% elsif family.parent_two.user.nil? %>
+                <span>
+              <% else %>
+                <span style="color: red; font-weight: bold;">
+              <% end %>
+                <%=h family.parent_two.name %>
+              </span>
+            <% end %>
+          </td>
+        </tr>
+        <% counter += 1 %>
+      <% end %>
+    <% end %>
+    <%= hidden_field_tag "total_size", counter %>
+        <tr>
+          <td></td>
+          <td></td>
+          <td><%= submit_tag 'Send Invitation', :class => 'button'  %></td>
+          <td></td>
+        </tr>
+  </tbody>
+</table>
+<% end %>
