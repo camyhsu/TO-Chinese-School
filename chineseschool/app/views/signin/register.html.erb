@@ -1,32 +1,32 @@
-<% @title = 'Register For User Account' %>
+<% @title = 'Create User' %>
 
 <p style="color: red;">
   <span style="font-weight: bold;">
     Families with existing or prior students in Thousand Oaks Chinese School
   </span>
    - Please contact engineering@to-cs.org with your information to obtain
-  account invitation so that your account could be linked to existing data.
-  Do not use the form below to create new account.
+  user invitation so that your user could be linked to existing data.
+  Do not use the form below to create new user.
 </p>
 <br/>
 <p>
   For new family who has not attend Thousand Oaks Chinese School before, please
-  fill out the form below to create an account.
+  fill out the form below to create a new account.
 </p
 <p>
   Please note that information collected below is for family address and the parent
   who would be managing the account, not the prospective student.  Once the account
   is established, student information could be entered when signed-in with the new
-  account.
+  user.
 </p>
 <br/>
 
 <div class="account-form">
-  <%= error_messages_for :address, :parent_one, :user, :object_name => 'family' %>
+  <%= error_messages_for :address, :parent_one, :user, :object_name => 'user' %>
 
   <% form_for :address do |form| %>
     <fieldset>
-      <legend>Register User Account For New Family</legend>
+      <legend>Create User For New Family</legend>
       <span class="person-edit">
         <div>
           Family Address:
@@ -63,7 +63,7 @@
         <br/>
         <span style="color:red">*&nbsp;</span>Required Field
         <div>
-          <%= submit_tag 'Register', :class => 'submit' %>
+          <%= submit_tag 'Create User', :class => 'submit' %>
         </div>
       </span>
     </fieldset>
