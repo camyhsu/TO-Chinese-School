@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   
 
   # Scrub sensitive parameters from your log
-  filter_parameter_logging :password, :card_number, :cvv_code, :valid_through
+  filter_parameter_logging :password, :credit_card
 
 
   protected

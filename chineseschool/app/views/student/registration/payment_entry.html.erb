@@ -49,24 +49,29 @@
 </table>
 <br/><br/>
 <div class="account-form">
-  <% form_tag :action => 'submit_payment', :id => @registration_payment do %>
+  <%= error_messages_for :credit_card, :header_message => 'The following errors prohibited this credit card from being processed'  %>
+  
+  <% form_for :credit_card, :url => {:action => 'submit_payment', :id => @registration_payment} do |form| %>
     <fieldset>
         <legend>Enter Credit Card Information</legend>
         <span class="payment-entry">
-          <p>Chinese School Accepts Visa, MasterCard, or Discover Credit Card</p>
+          <p>
+            Chinese School does not save credit card information<br/>
+            Visa, MasterCard, or Discover Credit Card are accepted
+          </p>
           <div>
-            <label for="card_number"><span style="color:red">*&nbsp;</span>Card Number:</label>
-            <%= text_field_tag :card_number, '', :size => 16 %>
+            <label for="number"><span style="color:red">*&nbsp;</span>Card Number:</label>
+            <%= form.text_field :number, :size => 16 %>
           </div>
           <div>
-            <label for="card_number"><span style="color:red">*&nbsp;</span>Valid Through:</label>
-            <%= select "valid_through", :month, (1..12) %>
+            <label><span style="color:red">*&nbsp;</span>Valid Through:</label>
+            <%= form.select :month, (1..12) %>
             &nbsp;/
-            <%= select "valid_through", :year, (Date.today.year..(Date.today.year + 5)) %>
+            <%= form.select :year, (Date.today.year..(Date.today.year + 5)) %>
           </div>
           <div>
-            <label for="card_number"><span style="color:red">*&nbsp;</span>CVV Code:</label>
-            <%= text_field_tag :cvv_code, '', :size => 3 %>
+            <label for="verification_value"><span style="color:red">*&nbsp;</span>Card Code:</label>
+            <%= form.text_field :verification_value, :size => 3 %>
           </div>
           <span style="color:red">*&nbsp;</span>Required Field
           <div>

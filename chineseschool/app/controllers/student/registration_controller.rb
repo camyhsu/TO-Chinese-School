@@ -1,7 +1,5 @@
 class Student::RegistrationController < ApplicationController
 
-  ALLOWED_CREDIT_CARD_TYPE = ['visa', 'master', 'discover']
-
   verify :only => [:save_registration_preferences, :payment_entry, :submit_payment] , :method => :post,
       :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
   
@@ -51,16 +49,7 @@ class Student::RegistrationController < ApplicationController
 
   def submit_payment
     @registration_payment = RegistrationPayment.find_by_id params[:id].to_i
-    @credit_card = ActiveMerchant::Billing::CreditCard.new(
-        :number => params[:card_number], :verification_value => params[:cvv_code], 
-        :month => params[:valid_through][:month], :year => params[:valid_through][:year])
-
-    @credit_card.valid?
-    puts @credit_card.type
-    puts @credit_card.number
-    puts @credit_card.verification_value
-    puts @credit_card.month
-    puts @credit_card.year
+    @credit_card = CreditCard.new params[:credit_card]
 
     unless @credit_card.valid?
       render :template => '/student/registration/payment_entry'
