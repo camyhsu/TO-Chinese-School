@@ -24,7 +24,7 @@ describe '/layouts/application' do
 
   it 'should have stylesheet link to jquery-ui style' do
     render '/layouts/application.html.erb'
-    response.should have_tag('link[href^="/stylesheets/hot-sneaks/jquery-ui-1.8.4.custom.css"][rel="stylesheet"][type="text/css"]', 1)
+    response.should have_tag('link[href^="/stylesheets/pepper-grinder/jquery-ui-1.8.13.custom.css"][rel="stylesheet"][type="text/css"]', 1)
   end
 
   it 'should have the top bar image' do
