@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110528140833) do
+ActiveRecord::Schema.define(:version => 20110603202449) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -35,6 +35,21 @@ ActiveRecord::Schema.define(:version => 20110528140833) do
   create_table "families_children", :id => false, :force => true do |t|
     t.integer  "family_id"
     t.integer  "child_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "gateway_transactions", :force => true do |t|
+    t.integer  "registration_payment_id"
+    t.integer  "amount_in_cents"
+    t.string   "credit_card_type"
+    t.string   "credit_card_last_digits"
+    t.string   "approval_status"
+    t.string   "error_message"
+    t.string   "approval_code"
+    t.string   "reference_number"
+    t.boolean  "credit",                  :default => false, :null => false
+    t.text     "response_dump"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

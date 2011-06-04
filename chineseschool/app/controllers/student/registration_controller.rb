@@ -30,7 +30,7 @@ class Student::RegistrationController < ApplicationController
       redirect_to(:action => :display_options, :id => registration_school_year.id) and return
     end
     @registration_payment = create_and_save_registration_payment registration_preference_ids, registration_school_year
-    @credit_card = ActiveMerchant::Billing::CreditCard.new
+    @credit_card = CreditCard.new
   end
   
   def remove_pending_registration_payment
@@ -38,8 +38,8 @@ class Student::RegistrationController < ApplicationController
     if registration_payment.nil?
       logger.warn "Could not find registration payment with id => #{params[:id]}"
     else
-      if registration_payment.paid?
-        logger.warn "Attempting to remove a paid registration #{registration_payment.id} by user #{@user.id}"
+      if registration_payment.paid? or (not registration_payment.gateway_transactions.empty?)
+        logger.warn "Attempting to remove a processed registration #{registration_payment.id} by user #{@user.id}"
       else
         registration_payment.destroy
       end
@@ -50,10 +50,22 @@ class Student::RegistrationController < ApplicationController
   def submit_payment
     @registration_payment = RegistrationPayment.find_by_id params[:id].to_i
     @credit_card = CreditCard.new params[:credit_card]
-
     unless @credit_card.valid?
-      render :template => '/student/registration/payment_entry'
+      render :template => '/student/registration/payment_entry' and return
     end
+    gateway_transaction = create_and_save_initial_gateway_transaction
+    begin
+      response = ::LINKPOINT_GATEWAY.purchase(gateway_transaction.amount_in_cents, @credit_card, :order_id => gateway_transaction.id)
+    rescue => e
+      gateway_transaction.error_message = e.inspect
+      gateway_transaction.save!
+      flash.now[:notice] = "Error occurred when processing payment.  Please try again later or contact engineering@to-cs.org"
+      render :template => '/student/registration/payment_entry' and return
+    end
+    
+    puts response.inspect
+    flash.now[:notice] = "gateway called"
+    render :template => '/student/registration/payment_entry' and return
   end
 
   private
@@ -150,5 +162,15 @@ class Student::RegistrationController < ApplicationController
     registration_payment.calculate_grand_total
     registration_payment.save!
     registration_payment
+  end
+
+  def create_and_save_initial_gateway_transaction
+    gateway_transaction = GatewayTransaction.new
+    gateway_transaction.registration_payment = @registration_payment
+    gateway_transaction.amount_in_cents = @registration_payment.grand_total_in_cents
+    gateway_transaction.credit_card_type = @credit_card.type
+    gateway_transaction.credit_card_last_digits = @credit_card.last_digits
+    gateway_transaction.save!
+    gateway_transaction
   end
 end

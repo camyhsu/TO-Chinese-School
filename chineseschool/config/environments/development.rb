@@ -26,3 +26,9 @@ config.action_mailer.default_charset = "utf-8"
 
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
+
+# Initialize ActiveMerchant for testing
+# This requires test account key file, which is NOT included in the github commit
+ActiveMerchant::Billing::Base.mode = :test
+ActiveMerchant::Billing::LinkpointGateway.pem_file = File.read "#{RAILS_ROOT}/lib/key/1909689160.pem"
+::LINKPOINT_GATEWAY = ActiveMerchant::Billing::LinkpointGateway.new(:login => '1909689160')
