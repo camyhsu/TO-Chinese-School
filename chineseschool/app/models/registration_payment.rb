@@ -35,6 +35,10 @@ class RegistrationPayment < ActiveRecord::Base
       self.grand_total_in_cents = self.grand_total_in_cents + student_fee_payment.total_in_cents
     end
   end
+
+  def find_first_approved_gateway_transaction
+    self.gateway_transactions.first :conditions => ['approval_status = ?', GatewayTransaction::APPROVAL_STATUS_APPROVED]
+  end
   
   private
   

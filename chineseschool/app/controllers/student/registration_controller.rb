@@ -49,31 +49,39 @@ class Student::RegistrationController < ApplicationController
 
   def submit_payment
     @registration_payment = RegistrationPayment.find_by_id params[:id].to_i
+    if @registration_payment.paid?
+      redirect_to(:action => :payment_confirmation, :id => @registration_payment) and return
+    end
     @credit_card = CreditCard.new params[:credit_card]
     unless @credit_card.valid?
       render :template => '/student/registration/payment_entry' and return
     end
-    @gateway_transaction = create_and_save_initial_gateway_transaction
+    gateway_transaction = create_and_save_initial_gateway_transaction
     begin
       #response = ::LINKPOINT_GATEWAY.purchase(gateway_transaction.amount_in_cents, @credit_card, :order_id => gateway_transaction.id)
-      #save_gateway_response @gateway_transaction, response
-      fake_response_for_testing_offline @gateway_transaction
+      #save_gateway_response gateway_transaction, response
+      fake_response_for_testing_offline gateway_transaction
     rescue => e
-      @gateway_transaction.error_message = e.inspect
-      @gateway_transaction.save!
+      gateway_transaction.error_message = e.inspect
+      gateway_transaction.save!
       flash.now[:notice] = "Error occurred when processing payment.  Please try again later or contact #{Contacts::WEB_SITE_SUPPORT}"
       render :template => '/student/registration/payment_entry' and return
     end
 
-    if GatewayTransaction::APPROVAL_STATUS_APPROVED == @gateway_transaction.approval_status
+    if GatewayTransaction::APPROVAL_STATUS_APPROVED == gateway_transaction.approval_status
       @registration_payment.paid = true
       @registration_payment.save!
       #create_student_class_assignments
-      render :template => '/student/registration/payment_confirmation'
+      redirect_to :action => :payment_confirmation, :id => @registration_payment
     else
       flash.now[:notice] = "Payment DECLINED by bank.  Please use a different credit card to try again or contact #{Contacts::WEB_SITE_SUPPORT}"
       render :template => '/student/registration/payment_entry'
     end
+  end
+
+  def payment_confirmation
+    @registration_payment = RegistrationPayment.find_by_id params[:id].to_i
+    @gateway_transaction = @registration_payment.find_first_approved_gateway_transaction
   end
 
   private
