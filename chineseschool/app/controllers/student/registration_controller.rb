@@ -53,24 +53,26 @@ class Student::RegistrationController < ApplicationController
     unless @credit_card.valid?
       render :template => '/student/registration/payment_entry' and return
     end
-    gateway_transaction = create_and_save_initial_gateway_transaction
+    @gateway_transaction = create_and_save_initial_gateway_transaction
     begin
-      response = ::LINKPOINT_GATEWAY.purchase(gateway_transaction.amount_in_cents, @credit_card, :order_id => gateway_transaction.id)
-      save_gateway_response gateway_transaction, response
+      #response = ::LINKPOINT_GATEWAY.purchase(gateway_transaction.amount_in_cents, @credit_card, :order_id => gateway_transaction.id)
+      #save_gateway_response @gateway_transaction, response
+      fake_response_for_testing_offline @gateway_transaction
     rescue => e
-      gateway_transaction.error_message = e.inspect
-      gateway_transaction.save!
+      @gateway_transaction.error_message = e.inspect
+      @gateway_transaction.save!
       flash.now[:notice] = "Error occurred when processing payment.  Please try again later or contact #{Contacts::WEB_SITE_SUPPORT}"
       render :template => '/student/registration/payment_entry' and return
     end
 
-    if GatewayTransaction::APPROVAL_STATUS_APPROVED == gateway_transaction.approval_status
+    if GatewayTransaction::APPROVAL_STATUS_APPROVED == @gateway_transaction.approval_status
       @registration_payment.paid = true
       @registration_payment.save!
       #create_student_class_assignments
+      render :template => '/student/registration/payment_confirmation'
     else
       flash.now[:notice] = "Payment DECLINED by bank.  Please use a different credit card to try again or contact #{Contacts::WEB_SITE_SUPPORT}"
-      render :template => '/student/registration/payment_entry' and return
+      render :template => '/student/registration/payment_entry'
     end
   end
 
@@ -189,6 +191,14 @@ class Student::RegistrationController < ApplicationController
     else
       gateway_transaction.error_message = response.params[:error]
     end
+    gateway_transaction.save!
+  end
+
+  def fake_response_for_testing_offline(gateway_transaction)
+    gateway_transaction.approval_status = GatewayTransaction::APPROVAL_STATUS_APPROVED
+    gateway_transaction.response_dump = 'Fake response for offline tests'
+    gateway_transaction.approval_code = 'Fake Code'
+    gateway_transaction.reference_number = 'Fake Ref Number'
     gateway_transaction.save!
   end
 end

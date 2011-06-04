@@ -1,0 +1,15 @@
+<% @title = 'Payment Confirmation' %>
+
+<p>
+  Your payment has been processed on <%= Date.today.to_s %>:<br/>
+  <%= number_to_currency(@gateway_transaction.amount_in_cents / 100.0) %>  has been charged to
+  <%= @gateway_transaction.credit_card_type.capitalize %> Card ending <%= @gateway_transaction.credit_card_last_digits %><br/>
+  Payment Reference Number is
+  <span style="font-weight: bold;"><%=h @gateway_transaction.reference_number %></span><br/>
+</p>
+<p style="color: red;">
+  Please print this page for your record.
+</p>
+<br/>
+<%= render :partial => 'registration_payment', :object => @registration_payment %>
+<br/>

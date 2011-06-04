@@ -1,53 +1,7 @@
 <% @title = 'Tuition and Fee' %>
 
-<h3>Tuition and Fee For <%=h @registration_payment.school_year.name %> School Year</h3>
-
-<% @registration_payment.student_fee_payments.each do |student_fee_payment| %>
-<p>
-  For <%=h student_fee_payment.student.name %>
-  <% registration_preference = student_fee_payment.student.registration_preference_for(@registration_payment.school_year) %>
-  <br/>
-  entering grade <%=h registration_preference.grade.name %>
-  <br/>
-  <% unless registration_preference.elective_class.nil? -%>
-    selecting elective class <%=h registration_preference.elective_class.name %>
-  <% end %>
-</p>
-<table class="tuition-detail" border="0px">
-  <tr>
-    <td class="label">Registration Fee:</td>
-    <td><%=number_to_currency student_fee_payment.registration_fee %></td>
-  </tr>
-  <tr>
-    <td class="label">Tuition:</td>
-    <td><%=number_to_currency student_fee_payment.tuition %></td>
-  </tr>
-  <tr>
-    <td class="label">Books:</td>
-    <td><%=number_to_currency student_fee_payment.book_charge %></td>
-  </tr>
-</table>
-<hr/>
-<% end %>
-
-<table class="tuition-detail" border="0px">
-  <tr>
-    <td class="label">PVA Annual Membership:</td>
-    <td><%=number_to_currency @registration_payment.pva_due %></td>
-  </tr>
-  <tr>
-    <td class="label">CCCA Annual Membership:</td>
-    <td><%=number_to_currency @registration_payment.ccca_due %></td>
-  </tr>
-</table>
-<hr/>
-<table class="tuition-detail" border="0px">
-  <tr>
-    <td class="label">Grand Total:</td>
-    <td><%=number_to_currency @registration_payment.grand_total %></td>
-  </tr>
-</table>
-<br/><br/>
+<%= render :partial => 'registration_payment', :object => @registration_payment %>
+<br/>
 <div class="account-form">
   <%= error_messages_for :credit_card, :header_message => 'The following errors prohibited this credit card from being processed'  %>
   
