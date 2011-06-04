@@ -3,7 +3,7 @@ class SigninMailer < ActionMailer::Base
   def registration_invitation(person, email_destination)
     subject    'Thousand Oaks Chinese School - Registration Invitation'
     recipients email_destination
-    from       'engineering@to-cs.org'
+    from       Contacts::WEB_SITE_SUPPORT
     sent_on    Time.now
     
     body       :person_to_invite => person, :invitation_url => generate_invitation_url(person)
@@ -12,7 +12,7 @@ class SigninMailer < ActionMailer::Base
   def forgot_password(person, email_destination)
     subject    'Thousand Oaks Chinese School - Password Reset'
     recipients email_destination
-    from       'engineering@to-cs.org'
+    from       Contacts::WEB_SITE_SUPPORT
     sent_on    Time.now
 
     body       :person => person, :token_url => generate_forgot_password_url(person)

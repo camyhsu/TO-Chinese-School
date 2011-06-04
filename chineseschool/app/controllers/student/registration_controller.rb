@@ -59,7 +59,7 @@ class Student::RegistrationController < ApplicationController
     rescue => e
       gateway_transaction.error_message = e.inspect
       gateway_transaction.save!
-      flash.now[:notice] = "Error occurred when processing payment.  Please try again later or contact engineering@to-cs.org"
+      flash.now[:notice] = "Error occurred when processing payment.  Please try again later or contact #{Contacts::WEB_SITE_SUPPORT}"
       render :template => '/student/registration/payment_entry' and return
     end
     

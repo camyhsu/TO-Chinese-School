@@ -19,7 +19,7 @@ class Registration::FamiliesController < ApplicationController
         flash[:notice] = 'New family created successfully'
         redirect_to :action => :show, :id => new_family.id
       else
-        flash.now[:notice] = 'System Error!!  Please try again or contact engineering@to-cs.org'
+        flash.now[:notice] = "System Error!!  Please try again or contact #{Contacts::WEB_SITE_SUPPORT}"
       end
     else
       @address = Address.new

@@ -11,7 +11,7 @@ class SigninController < ApplicationController
         session[:original_uri] = nil
         redirect_to(original_uri || {:controller => 'home', :action => 'index'})
       else
-        flash.now[:notice] = "Invalid username / password combination - For technical support, please email engineering@to-cs.org"
+        flash.now[:notice] = "Invalid username / password combination - For technical support, please email #{Contacts::WEB_SITE_SUPPORT}"
       end
     end
   end
