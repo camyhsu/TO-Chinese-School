@@ -56,16 +56,22 @@ class Student::RegistrationController < ApplicationController
     gateway_transaction = create_and_save_initial_gateway_transaction
     begin
       response = ::LINKPOINT_GATEWAY.purchase(gateway_transaction.amount_in_cents, @credit_card, :order_id => gateway_transaction.id)
+      save_gateway_response gateway_transaction, response
     rescue => e
       gateway_transaction.error_message = e.inspect
       gateway_transaction.save!
       flash.now[:notice] = "Error occurred when processing payment.  Please try again later or contact #{Contacts::WEB_SITE_SUPPORT}"
       render :template => '/student/registration/payment_entry' and return
     end
-    
-    puts response.inspect
-    flash.now[:notice] = "gateway called"
-    render :template => '/student/registration/payment_entry' and return
+
+    if GatewayTransaction::APPROVAL_STATUS_APPROVED == gateway_transaction.approval_status
+      @registration_payment.paid = true
+      @registration_payment.save!
+      #create_student_class_assignments
+    else
+      flash.now[:notice] = "Payment DECLINED by bank.  Please use a different credit card to try again or contact #{Contacts::WEB_SITE_SUPPORT}"
+      render :template => '/student/registration/payment_entry' and return
+    end
   end
 
   private
@@ -172,5 +178,17 @@ class Student::RegistrationController < ApplicationController
     gateway_transaction.credit_card_last_digits = @credit_card.last_digits
     gateway_transaction.save!
     gateway_transaction
+  end
+
+  def save_gateway_response(gateway_transaction, response)
+    gateway_transaction.approval_status = response.params[:approved]
+    gateway_transaction.response_dump = response.inspect
+    if response.success
+      gateway_transaction.approval_code = response.params[:code]
+      gateway_transaction.reference_number = response.params[:ref]
+    else
+      gateway_transaction.error_message = response.params[:error]
+    end
+    gateway_transaction.save!
   end
 end
