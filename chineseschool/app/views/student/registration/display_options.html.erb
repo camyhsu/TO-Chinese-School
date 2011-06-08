@@ -41,13 +41,46 @@
     Please read <a href="/chineseschool/registration-overview-2011.pdf">Registraion Overview and Refund Policy</a> or contact registration@to-cs.org for additional questions.
   </li>
 </ul>
-<br/><br/>
+<br/>
+<% unless @completed_registraions.empty? %>
+  <h3>Students Already Registered For <%=h @registration_school_year.name %> School Year</h3>
+  <table class="registration-options-table" border="0px">
+    <thead>
+      <tr>
+        <th></th>
+        <th><%=h @previous_school_year.name %> Grade</th>
+        <th><%=h @registration_school_year.name %> Grade</th>
+        <th>Preferred School Class Type</th>
+        <th>Preferred Elective Class</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @completed_registraions.each do |completed_registration_preference| -%>
+        <tr>
+          <td><%=h completed_registration_preference.student.name %></td>
+          <td>
+            <% if completed_registration_preference.previous_grade.nil? -%>
+              Not In Record
+            <% else %>
+              <%=h completed_registration_preference.previous_grade.name %>
+            <% end %>
+          </td>
+          <td><%=h completed_registration_preference.grade.name %></td>
+          <td><%=h completed_registration_preference.school_class_type %></td>
+          <td><%=h completed_registration_preference.elective_class.name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <br/>
+<% end %>
 
 <% if @registration_preferences.empty? %>
   <p style="font-weight: bold">
     No eligible students to register - please contact registration@to-cs.org for special case registration
   </p>
 <% else %>
+  <h3>Select Students To Register</h3>
   <table class="registration-options-table" border="0px">
     <thead>
       <tr>

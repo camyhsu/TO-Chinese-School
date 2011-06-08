@@ -6,7 +6,7 @@ class Student::RegistrationController < ApplicationController
   def display_options
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
     @previous_school_year = @registration_school_year.previous_school_year
-    @registration_preferences = create_registration_preferences_for_display_optioins
+    create_registration_preferences_for_display_optioins
   end
   
   def save_registration_preferences
@@ -87,28 +87,34 @@ class Student::RegistrationController < ApplicationController
   private
 
   def create_registration_preferences_for_display_optioins
-    # Registration preferences created here are not saved - only used to help rendering display options view
-    registration_preferences = []
+    @completed_registraions = []
+    @registration_preferences = []
     find_possible_students.each do |student|
-      registration_preference = RegistrationPreference.new
-      registration_preference.student = student
-      previous_school_year_class_assignment = student.student_class_assignment_for @registration_school_year.previous_school_year
-      if previous_school_year_class_assignment.nil?
-        # No class assignment in the previous school year - go for age-based grade assignment
-        age_based_grade = Grade.find_by_school_age(student.school_age_for(@registration_school_year))
-        unless age_based_grade.nil?
-          registration_preference.grade = age_based_grade.snap_down_to_first_active_grade @registration_school_year
-          registration_preferences << registration_preference
-        end
-        # If age-based grade is nil, it means the student is either too young or too old - don't add to list
+      existing_registration_preference = student.registration_preference_for @registration_school_year
+      if (not existing_registration_preference.nil?) and existing_registration_preference.registration_completed?
+        @completed_registraions << existing_registration_preference
       else
-        # Grade assignment based on previous school year
-        registration_preference.previous_grade = previous_school_year_class_assignment.grade
-        registration_preference.grade = registration_preference.previous_grade.next_grade.snap_down_to_first_active_grade @registration_school_year
-        registration_preferences << registration_preference
+        # New registration preferences created here are not saved
+        # they are only used to help rendering display options view
+        new_registration_preference = RegistrationPreference.new
+        new_registration_preference.student = student
+        previous_school_year_class_assignment = student.student_class_assignment_for @registration_school_year.previous_school_year
+        if previous_school_year_class_assignment.nil?
+          # No class assignment in the previous school year - go for age-based grade assignment
+          age_based_grade = Grade.find_by_school_age(student.school_age_for(@registration_school_year))
+          unless age_based_grade.nil?
+            new_registration_preference.grade = age_based_grade.snap_down_to_first_active_grade @registration_school_year
+            @registration_preferences << new_registration_preference
+          end
+          # If age-based grade is nil, it means the student is either too young or too old - don't add to list
+        else
+          # Grade assignment based on previous school year
+          new_registration_preference.previous_grade = previous_school_year_class_assignment.grade
+          new_registration_preference.grade = new_registration_preference.previous_grade.next_grade.snap_down_to_first_active_grade @registration_school_year
+          @registration_preferences << new_registration_preference
+        end
       end
     end
-    registration_preferences
   end
   
   def save_registration_preferences_from_params
