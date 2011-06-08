@@ -76,9 +76,11 @@
 <% end %>
 
 <% if @registration_preferences.empty? %>
-  <p style="font-weight: bold">
-    No eligible students to register - please contact registration@to-cs.org for special case registration
-  </p>
+  <% if @completed_registraions.empty? %>
+    <p style="font-weight: bold; color: red;">
+      No eligible students to register - please contact registration@to-cs.org for special case registration
+    </p>
+  <% end %>
 <% else %>
   <h3>Select Students To Register</h3>
   <table class="registration-options-table" border="0px">
