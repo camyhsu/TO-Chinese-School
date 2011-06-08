@@ -58,9 +58,9 @@ class Student::RegistrationController < ApplicationController
     end
     gateway_transaction = create_and_save_initial_gateway_transaction
     begin
-      #response = ::LINKPOINT_GATEWAY.purchase(gateway_transaction.amount_in_cents, @credit_card, :order_id => gateway_transaction.id)
-      #save_gateway_response gateway_transaction, response
-      fake_response_for_testing_offline gateway_transaction
+      response = ::LINKPOINT_GATEWAY.purchase(gateway_transaction.amount_in_cents, @credit_card, :order_id => gateway_transaction.id)
+      save_gateway_response gateway_transaction, response
+      #fake_response_for_testing_offline gateway_transaction
     rescue => e
       gateway_transaction.error_message = e.inspect
       gateway_transaction.save!
@@ -71,7 +71,7 @@ class Student::RegistrationController < ApplicationController
     if GatewayTransaction::APPROVAL_STATUS_APPROVED == gateway_transaction.approval_status
       @registration_payment.paid = true
       @registration_payment.save!
-      #create_student_class_assignments
+      create_student_class_assignments
       redirect_to :action => :payment_confirmation, :id => @registration_payment
     else
       flash.now[:notice] = "Payment DECLINED by bank.  Please use a different credit card to try again or contact #{Contacts::WEB_SITE_SUPPORT}"
@@ -191,15 +191,22 @@ class Student::RegistrationController < ApplicationController
   end
 
   def save_gateway_response(gateway_transaction, response)
-    gateway_transaction.approval_status = response.params[:approved]
+    gateway_transaction.approval_status = response.params['approved']
     gateway_transaction.response_dump = response.inspect
-    if response.success
-      gateway_transaction.approval_code = response.params[:code]
-      gateway_transaction.reference_number = response.params[:ref]
+    if response.success?
+      gateway_transaction.approval_code = response.params['code']
+      gateway_transaction.reference_number = response.params['ref']
     else
-      gateway_transaction.error_message = response.params[:error]
+      gateway_transaction.error_message = response.params['error']
     end
     gateway_transaction.save!
+  end
+
+  def create_student_class_assignments
+    school_year = @registration_payment.school_year
+    @registration_payment.student_fee_payments.each do |student_fee_payment|
+      student_fee_payment.student.create_student_class_assignment_based_on_registration_preference school_year
+    end
   end
 
   def fake_response_for_testing_offline(gateway_transaction)

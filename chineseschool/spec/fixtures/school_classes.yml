@@ -82,3 +82,15 @@ chinese_history_full:
   min_age: 10
   max_age: 15
   grade_id:
+
+first_grade_class_c:
+  id: 8
+  english_name: 1st C
+  chinese_name: 一年級 C
+  short_name: 1C
+  description: 1st Grade Class C
+  location: F-12*
+  max_size: 4
+  min_age: 0
+  max_age: 0
+  grade_id: 3

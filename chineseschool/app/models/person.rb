@@ -114,4 +114,23 @@ class Person < ActiveRecord::Base
       person.email_and_phone_number_correct? email, phone_number
     end
   end
+
+  def create_student_class_assignment_based_on_registration_preference(school_year)
+    registration_preference = registration_preference_for school_year
+    return if registration_preference.registration_completed?
+    student_class_assignment = student_class_assignment_for school_year
+    if student_class_assignment.nil?
+      student_class_assignment = StudentClassAssignment.new
+      student_class_assignment.school_year = school_year
+      student_class_assignment.student = self
+    end
+    student_class_assignment.grade = registration_preference.grade
+    student_class_assignment.set_school_class_based_on registration_preference
+    student_class_assignment.elective_class = registration_preference.elective_class
+    StudentClassAssignment.transaction do
+      student_class_assignment.save!
+      registration_preference.registration_completed = true
+      registration_preference.save!
+    end
+  end
 end

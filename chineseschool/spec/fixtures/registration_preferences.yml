@@ -1,0 +1,20 @@
+
+preference_one:
+  school_year_id: 1
+  student_id: 1001
+  entered_by_id: 1001
+  previous_grade_id:
+  grade_id: 3
+  school_class_type: SE
+  elective_class_id: 6
+  registration_completed: false
+
+preference_six:
+  school_year_id: 1
+  student_id: 1006
+  entered_by_id: 1001
+  previous_grade_id:
+  grade_id: 4
+  school_class_type: T
+  elective_class_id: 6
+  registration_completed: false

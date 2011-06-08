@@ -173,3 +173,50 @@ describe Person, 'calculating school age for a school year' do
     student.school_age_for(school_years(:two_thousand_eight)).should == 8
   end
 end
+
+describe Person, 'creating student class assignment based on registration preference' do
+  fixtures :people, :grades, :student_class_assignments, :registration_preferences, :school_classes
+
+  before(:each) do
+    stub_current_school_year
+  end
+  
+  it 'should not create student class assignment if registration is already completed' do
+    registration_preferences(:preference_six).registration_completed = true
+    registration_preferences(:preference_six).save!
+    people(:person_six).create_student_class_assignment_based_on_registration_preference SchoolYear.current_school_year
+    people(:person_six).student_class_assignments.should == []
+  end
+
+  it 'should create a new student class assignment based on registration preference if none exists' do
+    # precondition
+    people(:person_six).student_class_assignment_for(SchoolYear.current_school_year).should be_nil
+    registration_preferences(:preference_six).registration_completed?.should be_false
+
+    people(:person_six).create_student_class_assignment_based_on_registration_preference SchoolYear.current_school_year
+    student_class_assignment = people(:person_six).student_class_assignment_for SchoolYear.current_school_year
+    student_class_assignment.should_not be_nil
+    student_class_assignment.grade.should == grades(:second_grade)
+    student_class_assignment.school_class.should == school_classes(:second_grade)
+    student_class_assignment.elective_class.should == school_classes(:chinese_history_two)
+    people(:person_six).registration_preference_for(SchoolYear.current_school_year).registration_completed?.should be_true
+  end
+
+  it 'should update existing student class assignment based on registration preference' do
+    # precondition
+    existing_student_class_assignment = people(:person_one).student_class_assignment_for SchoolYear.current_school_year
+    existing_student_class_assignment.should_not be_nil
+    existing_student_class_assignment.grade.should == grades(:first_grade)
+    existing_student_class_assignment.school_class.should == school_classes(:first_grade)
+    existing_student_class_assignment.elective_class.should == school_classes(:chinese_history_one)
+    registration_preferences(:preference_one).registration_completed?.should be_false
+
+    people(:person_one).create_student_class_assignment_based_on_registration_preference SchoolYear.current_school_year
+    student_class_assignment = people(:person_one).student_class_assignment_for SchoolYear.current_school_year
+    student_class_assignment.should_not be_nil
+    student_class_assignment.grade.should == grades(:first_grade)
+    student_class_assignment.school_class.should == school_classes(:first_grade_class_c)
+    student_class_assignment.elective_class.should == school_classes(:chinese_history_two)
+    people(:person_one).registration_preference_for(SchoolYear.current_school_year).registration_completed?.should be_true
+  end
+end

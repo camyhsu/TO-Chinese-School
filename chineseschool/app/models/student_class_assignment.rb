@@ -8,4 +8,11 @@ class StudentClassAssignment < ActiveRecord::Base
 
   validates_presence_of :student, :grade
 
+  def set_school_class_based_on(registration_preference)
+    if RegistrationPreference::SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION == registration_preference.school_class_type
+      self.school_class = self.grade.find_english_instruction_school_class
+    elsif RegistrationPreference::SCHOOL_CLASS_TYPE_TRADITIONAL == registration_preference.school_class_type
+      self.school_class = self.grade.find_traditional_school_class
+    end
+  end
 end

@@ -12,9 +12,10 @@ describe Grade do
   end
 
   it 'should have many school classes' do
-    grades(:first_grade).should have(3).school_classes
+    grades(:first_grade).should have(4).school_classes
     grades(:first_grade).school_classes.should include(school_classes(:first_grade))
     grades(:first_grade).school_classes.should include(school_classes(:first_grade_class_b))
+    grades(:first_grade).school_classes.should include(school_classes(:first_grade_class_c))
     grades(:first_grade).school_classes.should include(school_classes(:first_grade_class_inactive))
   end
 
@@ -129,5 +130,21 @@ describe Grade, 'finding grade by school age' do
     Grade.find_by_school_age(9).should be_nil
     Grade.find_by_school_age(10).should be_nil
     Grade.find_by_school_age(11).should be_nil
+  end
+end
+
+describe Grade, 'finding english instruction school class' do
+  fixtures :grades, :school_classes
+
+  it 'should find school class with short name ended with C' do
+    grades(:first_grade).find_english_instruction_school_class.should == school_classes(:first_grade_class_c)
+  end
+end
+
+describe Grade, 'finding traditional school class' do
+  fixtures :grades, :school_classes
+
+  it 'should find school class with short name ended with A' do
+    grades(:first_grade).find_traditional_school_class.should == school_classes(:first_grade)
   end
 end

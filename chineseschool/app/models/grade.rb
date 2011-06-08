@@ -39,6 +39,14 @@ class Grade < ActiveRecord::Base
     return true if GRADE_PRESCHOOL == self or GRADE_PRESCHOOL.next_grade == self
     false
   end
+
+  def find_english_instruction_school_class
+    self.school_classes.first :conditions => "short_name like '%C'"
+  end
+
+  def find_traditional_school_class
+    self.school_classes.first :conditions => "short_name like '%A'"
+  end
   
   def self.find_by_school_age(school_age)
     return nil if school_age < 4
