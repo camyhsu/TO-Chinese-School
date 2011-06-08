@@ -28,14 +28,14 @@ describe StudentFeePayment, 'filling in tuition and fee' do
     @fake_school_year.book_charge_in_cents = @book_charge_in_cents
 
     @fake_grade = Grade.new
-    @fake_existing_student_count_in_family = rand 100
+    @fake_registration_count_before_this_student = rand 100
   end
   
   it 'should fill in registration fee and book charge and calculate tuition' do
     @student_fee_payment.registration_fee_in_cents.should be_nil
     @student_fee_payment.book_charge_in_cents.should be_nil
-    @student_fee_payment.expects(:calculate_tuition).once.with(@fake_school_year, @fake_grade, @fake_existing_student_count_in_family)
-    @student_fee_payment.fill_in_tuition_and_fee(@fake_school_year, @fake_grade, @fake_existing_student_count_in_family)
+    @student_fee_payment.expects(:calculate_tuition).once.with(@fake_school_year, @fake_grade, @fake_registration_count_before_this_student)
+    @student_fee_payment.fill_in_tuition_and_fee(@fake_school_year, @fake_grade, @fake_registration_count_before_this_student)
     @student_fee_payment.registration_fee_in_cents.should == @registration_fee_in_cents
     @student_fee_payment.book_charge_in_cents.should == @book_charge_in_cents
   end
@@ -113,13 +113,13 @@ describe StudentFeePayment, 'applying multiple child discount' do
     @fake_school_year.tuition_discount_for_three_or_more_child_in_cents = @discount_in_cents
   end
 
-  it 'should apply multiple child discount if existing student count is 2 or more' do
+  it 'should apply multiple child discount if registration count before this student is 2 or more' do
     @student_fee_payment.apply_multiple_child_discount(@fake_school_year, 2)
     @student_fee_payment.multiple_child_discount.should be_true
     @student_fee_payment.tuition_in_cents.should == (@original_tuition_in_cents - @discount_in_cents)
   end
 
-  it 'should not apply multiple child discount if existing student count is 1 or less' do
+  it 'should not apply multiple child discount if registration count before this student is 1 or less' do
     @student_fee_payment.apply_multiple_child_discount(@fake_school_year, 1)
     @student_fee_payment.multiple_child_discount.should be_false
     @student_fee_payment.tuition_in_cents.should == @original_tuition_in_cents

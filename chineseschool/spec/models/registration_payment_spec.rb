@@ -14,39 +14,62 @@ describe RegistrationPayment, 'filling in due' do
     @registration_payment.student_fee_payments << StudentFeePayment.new
   end
 
-  it 'should fill in single pva due if there is one student' do
+  it 'should fill in zero for pva due if there are already two completed registration in the family' do
     @registration_payment.stubs(:calculate_ccca_due)
-    @registration_payment.fill_in_due
+    @registration_payment.fill_in_due 2
+    @registration_payment.pva_due_in_cents.should == 0
+    @registration_payment.fill_in_due 3
+    @registration_payment.pva_due_in_cents.should == 0
+  end
+
+  it 'should fill in single pva due if there is one completed registration in the family and one student registering' do
+    @registration_payment.stubs(:calculate_ccca_due)
+    @registration_payment.fill_in_due 1
     @registration_payment.pva_due_in_cents.should == @pva_due_in_cents
   end
 
-  it 'should fill in double pva due if there is two student' do
+  it 'should fill in single pva due if there is one student registering' do
+    @registration_payment.stubs(:calculate_ccca_due)
+    @registration_payment.fill_in_due 0
+    @registration_payment.pva_due_in_cents.should == @pva_due_in_cents
+  end
+
+  it 'should fill in double pva due if there is two student registering' do
     @registration_payment.student_fee_payments << StudentFeePayment.new
     @registration_payment.stubs(:calculate_ccca_due)
-    @registration_payment.fill_in_due
+    @registration_payment.fill_in_due 0
     @registration_payment.pva_due_in_cents.should == (@pva_due_in_cents * 2)
   end
 
-  it 'should fill in double pva due if there is three or more student' do
+  it 'should fill in double pva due if there is three or more student registering' do
     @registration_payment.student_fee_payments << StudentFeePayment.new
     @registration_payment.student_fee_payments << StudentFeePayment.new
     @registration_payment.stubs(:calculate_ccca_due)
-    @registration_payment.fill_in_due
+    @registration_payment.fill_in_due 0
     @registration_payment.pva_due_in_cents.should == (@pva_due_in_cents * 2)
   end
 
-  it 'should fill in ccca due if the family is not a ccca lifetime member' do
+  it 'should fill in 0 for ccca due if there is already one or more completed registration in the family' do
     setup_fake_family
     @fake_family.ccca_lifetime_member = false
-    @registration_payment.fill_in_due
-    @registration_payment.ccca_due_in_cents.should == @ccca_due_in_cents
+    @registration_payment.fill_in_due 1
+    @registration_payment.ccca_due_in_cents.should == 0
+    @registration_payment.fill_in_due 2
+    @registration_payment.ccca_due_in_cents.should == 0
   end
 
   it 'should fill in 0 for ccca due if the family is a ccca lifetime member' do
     setup_fake_family
     @fake_family.ccca_lifetime_member = true
-    @registration_payment.fill_in_due
+    @registration_payment.fill_in_due 0
     @registration_payment.ccca_due_in_cents.should == 0
+  end
+
+  it 'should fill in ccca due if the family is not a ccca lifetime member and no completed registration in the family' do
+    setup_fake_family
+    @fake_family.ccca_lifetime_member = false
+    @registration_payment.fill_in_due 0
+    @registration_payment.ccca_due_in_cents.should == @ccca_due_in_cents
   end
 
   def setup_fake_family

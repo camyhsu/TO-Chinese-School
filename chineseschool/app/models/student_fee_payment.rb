@@ -26,13 +26,13 @@ class StudentFeePayment < ActiveRecord::Base
     self.registration_fee_in_cents + self.book_charge_in_cents + self.tuition_in_cents
   end
   
-  def fill_in_tuition_and_fee(school_year, grade, existing_student_count_in_family)
+  def fill_in_tuition_and_fee(school_year, grade, registration_count_before_this_student)
     self.registration_fee_in_cents = school_year.registration_fee_in_cents
     self.book_charge_in_cents = school_year.book_charge_in_cents
-    calculate_tuition school_year, grade, existing_student_count_in_family
+    calculate_tuition school_year, grade, registration_count_before_this_student
   end
 
-  def calculate_tuition(school_year, grade, existing_student_count_in_family)
+  def calculate_tuition(school_year, grade, registration_count_before_this_student)
     if Date.today <= school_year.pre_registration_end_date
       self.pre_registration = true
       self.tuition_in_cents = school_year.pre_registration_tuition_in_cents
@@ -40,7 +40,7 @@ class StudentFeePayment < ActiveRecord::Base
       self.tuition_in_cents = school_year.tuition_in_cents
     end
     apply_pre_k_discount school_year, grade
-    apply_multiple_child_discount school_year, existing_student_count_in_family
+    apply_multiple_child_discount school_year, registration_count_before_this_student
   end
 
   def apply_pre_k_discount(school_year, grade)
@@ -50,8 +50,8 @@ class StudentFeePayment < ActiveRecord::Base
     end
   end
 
-  def apply_multiple_child_discount(school_year, existing_student_count_in_family)
-    if existing_student_count_in_family >= 2
+  def apply_multiple_child_discount(school_year, registration_count_before_this_student)
+    if registration_count_before_this_student >= 2
       self.multiple_child_discount = true
       self.tuition_in_cents -= school_year.tuition_discount_for_three_or_more_child_in_cents
     end

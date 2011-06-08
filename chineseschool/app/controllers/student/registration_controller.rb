@@ -169,6 +169,7 @@ class Student::RegistrationController < ApplicationController
   def create_and_save_registration_payment(registration_preference_ids, registration_school_year)
     # calculations here must be done in a specific order because
     # later calculations may depends on the result of earlier calculations
+    completed_registration_count_in_family = count_completed_registration_in_family_for registration_school_year
     registration_payment = RegistrationPayment.new
     registration_payment.school_year = registration_school_year
     registration_payment.paid_by = @user.person
@@ -176,14 +177,25 @@ class Student::RegistrationController < ApplicationController
       registration_preference = RegistrationPreference.find_by_id registration_preference_id
       student_fee_payment = StudentFeePayment.new
       student_fee_payment.student = registration_preference.student
-      student_fee_payment.fill_in_tuition_and_fee registration_school_year, registration_preference.grade, registration_payment.student_fee_payments.size
+      student_fee_payment.fill_in_tuition_and_fee registration_school_year, registration_preference.grade, (registration_payment.student_fee_payments.size + completed_registration_count_in_family)
       student_fee_payment.registration_payment = registration_payment
       registration_payment.student_fee_payments << student_fee_payment
     end
-    registration_payment.fill_in_due
+    registration_payment.fill_in_due completed_registration_count_in_family
     registration_payment.calculate_grand_total
     registration_payment.save!
     registration_payment
+  end
+
+  def count_completed_registration_in_family_for(school_year)
+    counter = 0
+    find_possible_students.each do |student|
+      existing_registration_preference = student.registration_preference_for school_year
+      if (not existing_registration_preference.nil?) and existing_registration_preference.registration_completed?
+        counter += 1
+      end
+    end
+    counter
   end
 
   def create_and_save_initial_gateway_transaction

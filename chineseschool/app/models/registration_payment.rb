@@ -24,9 +24,9 @@ class RegistrationPayment < ActiveRecord::Base
     self.grand_total_in_cents / 100.0
   end
   
-  def fill_in_due
-    self.pva_due_in_cents = calculate_pva_due_in_cents
-    self.ccca_due_in_cents = calculate_ccca_due_in_cents
+  def fill_in_due(completed_registration_count_in_family)
+    self.pva_due_in_cents = calculate_pva_due_in_cents completed_registration_count_in_family
+    self.ccca_due_in_cents = calculate_ccca_due_in_cents completed_registration_count_in_family
   end
   
   def calculate_grand_total
@@ -42,16 +42,16 @@ class RegistrationPayment < ActiveRecord::Base
   
   private
   
-  def calculate_pva_due_in_cents
-    # PVA membership due is up to 2 parents per family
-    if self.student_fee_payments.size > 1
-      self.school_year.pva_membership_due_in_cents * 2
-    else
-      self.school_year.pva_membership_due_in_cents
-    end
+  def calculate_pva_due_in_cents(completed_registration_count_in_family)
+    # PVA membership due is up to 2 parents per family per school year
+    return 0 if completed_registration_count_in_family > 1
+    return self.school_year.pva_membership_due_in_cents if completed_registration_count_in_family == 1
+    return self.school_year.pva_membership_due_in_cents if self.student_fee_payments.size < 2
+    self.school_year.pva_membership_due_in_cents * 2
   end
-
-  def calculate_ccca_due_in_cents
+  
+  def calculate_ccca_due_in_cents(completed_registration_count_in_family)
+    return 0 if completed_registration_count_in_family > 0
     return 0 if self.paid_by.families.detect { |family| family.ccca_lifetime_member? }
     self.school_year.ccca_membership_due_in_cents
   end
