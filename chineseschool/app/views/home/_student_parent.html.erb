@@ -102,21 +102,40 @@
         <td class="label">Native Language:</td>
         <td><%=h student.native_language %></td>
       </tr>
-      <% student_class_assignment = student.student_class_assignment_for SchoolYear.current_school_year %>
-      <% unless student_class_assignment.nil? -%>
+      <% current_student_class_assignment = student.student_class_assignment_for SchoolYear.current_school_year %>
+      <% unless current_student_class_assignment.nil? -%>
         <tr>
           <td class="label"><%=h SchoolYear.current_school_year.name %> Grade:</td>
-          <td><%=h student_class_assignment.try(:grade).try(:name) %></td>
+          <td><%=h current_student_class_assignment.try(:grade).try(:name) %></td>
         </tr>
-        <% unless student_class_assignment.try(:grade).nil? -%>
+        <% unless current_student_class_assignment.try(:grade).nil? -%>
           <tr>
             <td class="label"><%=h SchoolYear.current_school_year.name %> School Class:</td>
-            <td><%=h student_class_assignment.try(:school_class).try(:name) %></td>
+            <td><%=h current_student_class_assignment.try(:school_class).try(:name) %></td>
           </tr>
           <tr>
             <td class="label"><%=h SchoolYear.current_school_year.name %> Elective Class:</td>
-            <td><%=h student_class_assignment.try(:elective_class).try(:name) %></td>
+            <td><%=h current_student_class_assignment.try(:elective_class).try(:name) %></td>
           </tr>
+        <% end %>
+      <% end %>
+      <% unless SchoolYear.next_school_year.nil? -%>
+        <% next_student_class_assignment = student.student_class_assignment_for SchoolYear.next_school_year %>
+        <% unless next_student_class_assignment.nil? -%>
+          <tr>
+            <td class="label"><%=h SchoolYear.next_school_year.name %> Grade:</td>
+            <td><%=h next_student_class_assignment.try(:grade).try(:name) %></td>
+          </tr>
+          <% unless next_student_class_assignment.try(:grade).nil? -%>
+            <tr>
+              <td class="label"><%=h SchoolYear.next_school_year.name %> School Class:</td>
+              <td><%=h next_student_class_assignment.try(:school_class).try(:name) %></td>
+            </tr>
+            <tr>
+              <td class="label"><%=h SchoolYear.next_school_year.name %> Elective Class:</td>
+              <td><%=h next_student_class_assignment.try(:elective_class).try(:name) %></td>
+            </tr>
+          <% end %>
         <% end %>
       <% end %>
       <tr>
