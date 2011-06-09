@@ -67,7 +67,7 @@
           </td>
           <td><%=h completed_registration_preference.grade.name %></td>
           <td><%=h completed_registration_preference.school_class_type %></td>
-          <td><%=h completed_registration_preference.elective_class.name %></td>
+          <td><%=h completed_registration_preference.elective_class.try(:name) %></td>
         </tr>
       <% end %>
     </tbody>
