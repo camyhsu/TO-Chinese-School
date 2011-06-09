@@ -60,7 +60,6 @@ class Student::RegistrationController < ApplicationController
     begin
       response = ::LINKPOINT_GATEWAY.purchase(gateway_transaction.amount_in_cents, @credit_card, :order_id => gateway_transaction.id)
       save_gateway_response gateway_transaction, response
-      #fake_response_for_testing_offline gateway_transaction
     rescue => e
       gateway_transaction.error_message = e.inspect
       gateway_transaction.save!
@@ -225,13 +224,5 @@ class Student::RegistrationController < ApplicationController
     @registration_payment.student_fee_payments.each do |student_fee_payment|
       student_fee_payment.student.create_student_class_assignment_based_on_registration_preference school_year
     end
-  end
-
-  def fake_response_for_testing_offline(gateway_transaction)
-    gateway_transaction.approval_status = GatewayTransaction::APPROVAL_STATUS_APPROVED
-    gateway_transaction.response_dump = 'Fake response for offline tests'
-    gateway_transaction.approval_code = 'Fake Code'
-    gateway_transaction.reference_number = 'Fake Ref Number'
-    gateway_transaction.save!
   end
 end
