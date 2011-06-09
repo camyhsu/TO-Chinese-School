@@ -269,3 +269,11 @@ select {
 .payment-entry .submit {
     margin-left: 15em;
 }
+
+.transaction-history-table td {
+    width: 12em;
+    height: 2em;
+    text-align: center;
+    padding-left: 1em;
+    padding-right: 1em;
+}
