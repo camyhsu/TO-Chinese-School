@@ -1,0 +1,28 @@
+<% @title = 'Transaction History' %>
+
+<h3>Transaction History</h3>
+
+<% if @registration_payments.empty? %>
+<p style="font-weight: bold;">No Transaction History</p>
+<% else %>
+  <table class="details-table" border="1px">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Amount Paid</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @registration_payments.each do |registration_payment| -%>
+        <tr>
+          <td>
+            <%= link_to display_utc_time_in_pacific(registration_payment.updated_at), :action => :show, :id => registration_payment %>
+          </td>
+          <td>Registration</td>
+          <td><%=number_to_currency registration_payment.grand_total %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

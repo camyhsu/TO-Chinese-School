@@ -39,6 +39,10 @@ class RegistrationPayment < ActiveRecord::Base
   def find_first_approved_gateway_transaction
     self.gateway_transactions.first :conditions => ['approval_status = ?', GatewayTransaction::APPROVAL_STATUS_APPROVED]
   end
+
+  def self.find_paid_transactions(paid_by_id)
+    self.all :conditions => ['paid_by_id = ? and paid = true', paid_by_id], :order => 'updated_at DESC'
+  end
   
   private
   

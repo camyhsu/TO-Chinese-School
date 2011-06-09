@@ -86,6 +86,10 @@ student_registration_remove_pending_registration_payment = Right.create(:name =>
 student_registration_submit_payment = Right.create(:name => 'Submit Payment', :controller => 'student/registration', :action => 'submit_payment')
 student_registration_payment_confirmation = Right.create(:name => 'Show Payment Confirmation', :controller => 'student/registration', :action => 'payment_confirmation')
 
+student_transaction_history_index = Right.create(:name => 'List Transaction History', :controller => 'student/transaction_history', :action => 'index')
+student_transaction_history_show = Right.create(:name => 'Show Transaction Detail', :controller => 'student/transaction_history', :action => 'show')
+
+
 
 #
 # Assign rights to Registration Officer
@@ -168,3 +172,6 @@ student_parent.rights << student_registration_payment_entry
 student_parent.rights << student_registration_remove_pending_registration_payment
 student_parent.rights << student_registration_submit_payment
 student_parent.rights << student_registration_payment_confirmation
+
+student_parent.rights << student_transaction_history_index
+student_parent.rights << student_transaction_history_show
