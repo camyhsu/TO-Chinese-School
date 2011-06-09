@@ -15,13 +15,17 @@ class Admin::UserRegistrationController < ApplicationController
 
   def invite_parents_by_school_class
     if request.post?
-      params[:parent_one].each_key do |family_id|
-        family = Family.find_by_id family_id.to_i
-        send_invitation_to family.parent_one, family.address.email
+      unless params[:parent_one].nil?
+        params[:parent_one].each_key do |family_id|
+          family = Family.find_by_id family_id.to_i
+          send_invitation_to family.parent_one, family.address.email
+        end
       end
-      params[:parent_two].each_key do |family_id|
-        family = Family.find_by_id family_id.to_i
-        send_invitation_to family.parent_two, family.address.email
+      unless params[:parent_two].nil?
+        params[:parent_two].each_key do |family_id|
+          family = Family.find_by_id family_id.to_i
+          send_invitation_to family.parent_two, family.address.email
+        end
       end
     end
     @students = SchoolClass.find_by_id(params[:id].to_i).students
