@@ -1,7 +1,7 @@
 <% @title = 'Payment Confirmation' %>
 
 <p>
-  Your payment has been processed on <%= @gateway_transaction.updated_at %>:<br/>
+  Your payment has been processed on <%= display_utc_time_in_pacific(@gateway_transaction.updated_at) %><br/>
   <%= number_to_currency(@gateway_transaction.amount_in_cents / 100.0) %>  has been charged to
   <%= @gateway_transaction.credit_card_type.capitalize %> Card ending <%= @gateway_transaction.credit_card_last_digits %><br/>
   Payment Reference Number is
