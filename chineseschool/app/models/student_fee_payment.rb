@@ -47,6 +47,7 @@ class StudentFeePayment < ActiveRecord::Base
     if Grade::GRADE_PRESCHOOL == grade
       self.pre_k_discount = true
       self.tuition_in_cents -= school_year.tuition_discount_for_pre_k_in_cents
+      self.book_charge_in_cents = 0
     end
   end
 

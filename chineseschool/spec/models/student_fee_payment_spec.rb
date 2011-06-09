@@ -83,6 +83,8 @@ describe StudentFeePayment, 'applying PreK discount' do
     @student_fee_payment = StudentFeePayment.new
     @original_tuition_in_cents = rand 100000
     @student_fee_payment.tuition_in_cents = @original_tuition_in_cents
+    @book_charge_in_cents = rand 1000
+    @student_fee_payment.book_charge_in_cents = @book_charge_in_cents
 
     @fake_school_year = SchoolYear.new
     @discount_in_cents = rand 1000
@@ -93,12 +95,14 @@ describe StudentFeePayment, 'applying PreK discount' do
     @student_fee_payment.apply_pre_k_discount(@fake_school_year, Grade::GRADE_PRESCHOOL)
     @student_fee_payment.pre_k_discount.should be_true
     @student_fee_payment.tuition_in_cents.should == (@original_tuition_in_cents - @discount_in_cents)
+    @student_fee_payment.book_charge_in_cents.should == 0
   end
 
   it 'should not apply PreK discount if given grade is not PreK' do
     @student_fee_payment.apply_pre_k_discount(@fake_school_year, Grade.new)
     @student_fee_payment.pre_k_discount.should be_false
     @student_fee_payment.tuition_in_cents.should == @original_tuition_in_cents
+    @student_fee_payment.book_charge_in_cents.should == @book_charge_in_cents
   end
 end
 
