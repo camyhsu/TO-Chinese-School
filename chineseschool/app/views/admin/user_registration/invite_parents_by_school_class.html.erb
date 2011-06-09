@@ -19,12 +19,12 @@
           </td>
           <td>
             <%= check_box_tag "parent_one[#{family.id}]", true %>
-            <% if TimedToken.has_unexpired_token_for?(family.parent_one.id) %>
-              <span style="color: goldenrod; font-weight: bold;">
-            <% elsif family.parent_one.user.nil? %>
-              <span>
-            <% else %>
+            <% if (not family.parent_one.user.nil?) %>
               <span style="color: red; font-weight: bold;">
+            <% elsif TimedToken.has_unexpired_token_for?(family.parent_one.id) %>
+              <span style="color: goldenrod; font-weight: bold;">
+            <% else %>
+              <span>
             <% end %>
               <%=h family.parent_one.name %>
             </span>
@@ -32,12 +32,12 @@
           <td>
             <% unless family.parent_two.nil? %>
               <%= check_box_tag "parent_two[#{family.id}]", true %>
-              <% if TimedToken.has_unexpired_token_for?(family.parent_two.id) %>
-                <span style="color: goldenrod; font-weight: bold;">
-              <% elsif family.parent_two.user.nil? %>
-                <span>
-              <% else %>
+              <% if (not family.parent_two.user.nil?) %>
                 <span style="color: red; font-weight: bold;">
+              <% elsif TimedToken.has_unexpired_token_for?(family.parent_two.id) %>
+                <span style="color: goldenrod; font-weight: bold;">
+              <% else %>
+                <span>
               <% end %>
                 <%=h family.parent_two.name %>
               </span>
