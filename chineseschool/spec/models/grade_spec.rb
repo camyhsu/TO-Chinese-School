@@ -148,3 +148,11 @@ describe Grade, 'finding traditional school class' do
     grades(:first_grade).find_traditional_school_class.should == school_classes(:first_grade)
   end
 end
+
+describe Grade, 'finding default simplified school class' do
+  fixtures :grades, :school_classes
+
+  it 'should find school class with short name ended with B' do
+    grades(:first_grade).find_default_simplified_school_class.should == school_classes(:first_grade_class_b)
+  end
+end

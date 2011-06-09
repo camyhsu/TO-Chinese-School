@@ -47,6 +47,10 @@ class Grade < ActiveRecord::Base
   def find_traditional_school_class
     self.school_classes.first :conditions => "short_name like '%A'"
   end
+
+  def find_default_simplified_school_class
+    self.school_classes.first :conditions => "short_name like '%B'"
+  end
   
   def self.find_by_school_age(school_age)
     return nil if school_age < 4

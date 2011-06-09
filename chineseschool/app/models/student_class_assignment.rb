@@ -13,6 +13,8 @@ class StudentClassAssignment < ActiveRecord::Base
       self.school_class = self.grade.find_english_instruction_school_class
     elsif RegistrationPreference::SCHOOL_CLASS_TYPE_TRADITIONAL == registration_preference.school_class_type
       self.school_class = self.grade.find_traditional_school_class
+    else
+      self.school_class = self.grade.find_default_simplified_school_class
     end
   end
 end
