@@ -40,8 +40,12 @@ class RegistrationPayment < ActiveRecord::Base
     self.gateway_transactions.first :conditions => ['approval_status = ?', GatewayTransaction::APPROVAL_STATUS_APPROVED]
   end
 
-  def self.find_paid_transactions(paid_by_id)
-    self.all :conditions => ['paid_by_id = ? and paid = true', paid_by_id], :order => 'updated_at DESC'
+  def self.find_paid_payments_paid_by(paid_by)
+    self.all :conditions => ['paid_by_id = ? and paid = true', paid_by.id], :order => 'updated_at DESC'
+  end
+
+  def self.find_paid_payments_for(school_year)
+    self.all :conditions => ['school_year_id = ? and paid = true', school_year.id], :order => 'updated_at DESC'
   end
   
   private

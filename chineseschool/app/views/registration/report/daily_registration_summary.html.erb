@@ -1,0 +1,26 @@
+<% @title = 'Daily Registration Summary' %>
+
+<h3>Daily Registration Summary</h3>
+
+<% if @registration_summaries.empty? %>
+  <p style="font-weight: bold;">No Registration For <%=h @registration_school_year.name %> School Year</p>
+<% else %>
+  <table class="transaction-history-table" border="0px">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Registered Student Count</th>
+        <th>Total Amount Paid</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @registration_summaries.each do |summary| -%>
+        <tr>
+          <td><%= summary[0].to_s %></td>
+          <td><%= summary[1][:student_count] %></td>
+          <td><%=number_to_currency(summary[1][:total_amount_in_cents] / 100.0) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

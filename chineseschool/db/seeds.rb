@@ -69,6 +69,8 @@ instructor_assignments_select_end_date = Right.create(:name => 'Select End Date 
 instructor_assignments_select_role = Right.create(:name => 'Select Role For Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'select_role')
 instructor_assignments_destroy = Right.create(:name => 'Destroy Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'destroy')
 
+report_daily_registration_summary = Right.create(:name => 'Daily Registration Summary Report', :controller => 'registration/report', :action => 'daily_registration_summary')
+
 
 instruction_school_classes_show = Right.create(:name => 'Student List For One School Class', :controller => 'instruction/school_classes', :action => 'show')
 
@@ -139,6 +141,8 @@ registration_officer.rights << instructor_assignments_select_role
 registration_officer.rights << instructor_assignments_destroy
 
 registration_officer.rights << instruction_school_classes_show
+
+registration_officer.rights << report_daily_registration_summary
 
 
 #

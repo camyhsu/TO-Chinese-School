@@ -99,6 +99,10 @@ class SchoolYear < ActiveRecord::Base
     self.all :conditions => ["end_date >= ?", Date.today], :order => 'start_date ASC'
   end
 
+  def self.find_active_registration_school_years
+    self.all :conditions => ['registration_start_date <= ? AND registration_end_date >= ?', Date.today, Date.today], :order => 'start_date ASC'
+  end
+
   private
 
   def date_order

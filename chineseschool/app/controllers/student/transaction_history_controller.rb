@@ -1,7 +1,7 @@
 class Student::TransactionHistoryController < ApplicationController
   
   def index
-    @registration_payments = RegistrationPayment.find_paid_transactions @user.person.id
+    @registration_payments = RegistrationPayment.find_paid_payments_paid_by @user.person
   end
 
   def show

@@ -29,4 +29,10 @@
 <br/>
 <%= link_to 'Manage School Years', {:controller => '/admin/school_years', :action => 'index'}, {:class => 'button'} %>
 <br/>
+<br/>
+<% @active_registration_school_years.each do |registration_year| %>
+  <%= link_to "Daily Registration Summary For #{registration_year.name} School Year", {:controller => '/registration/report', :action => 'daily_registration_summary', :id => registration_year}, {:class => 'button'} %>
+  <br/>
+<% end %>
+<br/>
 <hr/>
