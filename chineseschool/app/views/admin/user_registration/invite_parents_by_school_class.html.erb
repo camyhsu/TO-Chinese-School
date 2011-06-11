@@ -18,16 +18,18 @@
             <%=h family.address.email %>
           </td>
           <td>
-            <%= check_box_tag "parent_one[#{family.id}]", true %>
-            <% if (not family.parent_one.user.nil?) %>
-              <span style="color: red; font-weight: bold;">
-            <% elsif TimedToken.has_unexpired_token_for?(family.parent_one.id) %>
-              <span style="color: goldenrod; font-weight: bold;">
-            <% else %>
-              <span>
+            <% unless family.parent_one.nil? %>
+              <%= check_box_tag "parent_one[#{family.id}]", true %>
+              <% if (not family.parent_one.user.nil?) %>
+                <span style="color: red; font-weight: bold;">
+              <% elsif TimedToken.has_unexpired_token_for?(family.parent_one.id) %>
+                <span style="color: goldenrod; font-weight: bold;">
+              <% else %>
+                <span>
+              <% end %>
+                <%=h family.parent_one.name %>
+              </span>
             <% end %>
-              <%=h family.parent_one.name %>
-            </span>
           </td>
           <td>
             <% unless family.parent_two.nil? %>
