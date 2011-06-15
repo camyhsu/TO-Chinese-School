@@ -1,8 +1,10 @@
 <% @title = 'Transaction History' %>
 
 <p>
-  This payment was processed on <%= display_utc_time_in_pacific(@gateway_transaction.updated_at) %><br/>
-  <%= number_to_currency(@gateway_transaction.amount_in_cents / 100.0) %>  has been charged to
+  This <% if @gateway_transaction.credit? -%>refund<% else %>payment<% end %>
+  was processed on <%= display_utc_time_in_pacific(@gateway_transaction.updated_at) %><br/>
+  <%= display_price(@gateway_transaction.amount_in_cents / 100.0) %>  has been
+  <% if @gateway_transaction.credit? -%>refunded<% else %>charged<% end %> to
   <%= @gateway_transaction.credit_card_type.capitalize %> Card ending <%= @gateway_transaction.credit_card_last_digits %><br/>
   Payment Reference Number is
   <span style="font-weight: bold;"><%=h @gateway_transaction.reference_number %></span><br/>

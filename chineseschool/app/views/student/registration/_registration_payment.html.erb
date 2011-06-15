@@ -14,15 +14,15 @@
 <table class="tuition-detail" border="0px">
   <tr>
     <td class="label">Registration Fee:</td>
-    <td><%=number_to_currency student_fee_payment.registration_fee %></td>
+    <td><%= display_price student_fee_payment.registration_fee %></td>
   </tr>
   <tr>
     <td class="label">Tuition:</td>
-    <td><%=number_to_currency student_fee_payment.tuition %></td>
+    <td><%= display_price student_fee_payment.tuition %></td>
   </tr>
   <tr>
     <td class="label">Books:</td>
-    <td><%=number_to_currency student_fee_payment.book_charge %></td>
+    <td><%= display_price student_fee_payment.book_charge %></td>
   </tr>
 </table>
 <hr/>
@@ -31,18 +31,18 @@
 <table class="tuition-detail" border="0px">
   <tr>
     <td class="label">PVA Annual Membership:</td>
-    <td><%=number_to_currency registration_payment.pva_due %></td>
+    <td><%= display_price registration_payment.pva_due %></td>
   </tr>
   <tr>
     <td class="label">CCCA Annual Membership:</td>
-    <td><%=number_to_currency registration_payment.ccca_due %></td>
+    <td><%= display_price registration_payment.ccca_due %></td>
   </tr>
 </table>
 <hr/>
 <table class="tuition-detail" border="0px">
   <tr>
     <td class="label">Grand Total:</td>
-    <td><%=number_to_currency registration_payment.grand_total %></td>
+    <td><%= display_price registration_payment.grand_total %></td>
   </tr>
 </table>
 <br/>

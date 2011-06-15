@@ -1,0 +1,23 @@
+<% @title = 'Refund Full Registration Payment' %>
+
+<div class="account-form">
+
+  <% form_tag do %>
+    <fieldset>
+      <legend>Refund Full Registration Payment</legend>
+      <span class="register">
+        <div>
+          <label for="reference_number">Reference Number:</label>
+          <%= text_field_tag :reference_number, params[:reference_number] %>
+        </div>
+        <div>
+          <label for="paid_by">Paid By (person_id):</label>
+          <%= text_field_tag :paid_by, params[:paid_by] %>
+        </div>
+        <div>
+          <%= submit_tag 'Refund', :class => 'submit' %>
+        </div>
+      </span>
+    </fieldset>
+  <% end %>
+</div>
