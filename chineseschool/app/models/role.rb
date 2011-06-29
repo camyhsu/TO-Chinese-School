@@ -2,6 +2,7 @@ class Role < ActiveRecord::Base
 
   ROLE_NAME_SUPER_USER = 'Super User'
   ROLE_NAME_REGISTRATION_OFFICER = 'Registration Officer'
+  ROLE_NAME_ACCOUNTING_OFFICER = 'Accounting Officer'
   ROLE_NAME_INSTRUCTOR = 'Instructor'
   ROLE_NAME_ROOM_PARENT = 'Room Parent'
   ROLE_NAME_STUDENT_PARENT = 'Student Parent'

@@ -17,6 +17,7 @@ end
 # Create roles
 #
 create_role(Role::ROLE_NAME_REGISTRATION_OFFICER)
+create_role(Role::ROLE_NAME_ACCOUNTING_OFFICER)
 create_role(Role::ROLE_NAME_INSTRUCTOR)
 create_role(Role::ROLE_NAME_ROOM_PARENT)
 create_role(Role::ROLE_NAME_STUDENT_PARENT)
@@ -143,6 +144,13 @@ registration_officer.rights << instructor_assignments_destroy
 registration_officer.rights << instruction_school_classes_show
 
 registration_officer.rights << report_daily_registration_summary
+
+
+#
+# Assign rights to Accounting Officer
+#
+accounting_officer = Role.find_by_name(Role::ROLE_NAME_ACCOUNTING_OFFICER)
+accounting_officer.rights << report_daily_registration_summary
 
 
 #

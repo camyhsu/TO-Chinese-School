@@ -1,0 +1,10 @@
+<h3>Accounting Officer Resources</h3>
+
+<br/>
+<% @active_registration_school_years.each do |registration_year| %>
+  <%= link_to "Daily Registration Summary For #{registration_year.name} School Year", {:controller => '/registration/report', :action => 'daily_registration_summary', :id => registration_year}, {:class => 'button'} %>
+  <br/>
+<% end %>
+
+<br/>
+<hr/>

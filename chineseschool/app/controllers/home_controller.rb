@@ -7,6 +7,7 @@ class HomeController < ApplicationController
   def index
     @home_templates = []
     @home_templates << 'registration_officer' if registration_resources_enabled?
+    @home_templates << 'accounting_officer' if accounting_resources_enabled?
     @home_templates << 'instructor' if instructor_resources_enabled?
     @active_registration_school_years = SchoolYear.find_active_registration_school_years
     if student_parent_resources_enabled?
@@ -38,6 +39,12 @@ class HomeController < ApplicationController
   def registration_resources_enabled?
     return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
     return true if @user.has_role? Role::ROLE_NAME_REGISTRATION_OFFICER
+    false
+  end
+
+  def accounting_resources_enabled?
+    return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
+    return true if @user.has_role? Role::ROLE_NAME_ACCOUNTING_OFFICER
     false
   end
 
