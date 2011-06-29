@@ -9,6 +9,12 @@ class Registration::ReportController < ApplicationController
       add_payment_to summary_entry, paid_payment
     end
     @registration_summaries = registration_summary_hash.sort { |a, b| b[0] <=> a[0]}
+    @student_count_total = 0
+    @payment_total_in_cents = 0
+    @registration_summaries.each do |summary|
+      @student_count_total += summary[1][:student_count]
+      @payment_total_in_cents += summary[1][:total_amount_in_cents]
+    end
   end
 
   private
@@ -27,7 +33,12 @@ class Registration::ReportController < ApplicationController
   end
 
   def add_payment_to(summary_entry, paid_payment)
-    summary_entry[:student_count] += paid_payment.student_fee_payments.size
     summary_entry[:total_amount_in_cents] += paid_payment.grand_total_in_cents
+    # This assumes that there are no mixed pay / refund payments
+    if paid_payment.grand_total_in_cents < 0
+      summary_entry[:student_count] -= paid_payment.student_fee_payments.size
+    else
+      summary_entry[:student_count] += paid_payment.student_fee_payments.size
+    end
   end
 end

@@ -21,6 +21,12 @@
           <td><%=number_to_currency(summary[1][:total_amount_in_cents] / 100.0) %></td>
         </tr>
       <% end %>
+        <tr><td colspan="3"><hr/></td></tr>
+        <tr>
+          <td>Total</td>
+          <td><%= @student_count_total %></td>
+          <td><%=number_to_currency(@payment_total_in_cents / 100.0) %></td>
+        </tr>
     </tbody>
   </table>
 <% end %>
