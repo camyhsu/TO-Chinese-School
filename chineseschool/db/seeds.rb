@@ -16,6 +16,7 @@ end
 #
 # Create roles
 #
+create_role(Role::ROLE_NAME_PRINCIPAL)
 create_role(Role::ROLE_NAME_REGISTRATION_OFFICER)
 create_role(Role::ROLE_NAME_ACCOUNTING_OFFICER)
 create_role(Role::ROLE_NAME_INSTRUCTOR)
@@ -92,6 +93,13 @@ student_registration_payment_confirmation = Right.create(:name => 'Show Payment 
 student_transaction_history_index = Right.create(:name => 'List Transaction History', :controller => 'student/transaction_history', :action => 'index')
 student_transaction_history_show = Right.create(:name => 'Show Transaction Detail', :controller => 'student/transaction_history', :action => 'show')
 
+
+
+#
+# Assign rights to Principal
+#
+principal = Role.find_by_name(Role::ROLE_NAME_PRINCIPAL)
+principal.rights << report_daily_registration_summary
 
 
 #
