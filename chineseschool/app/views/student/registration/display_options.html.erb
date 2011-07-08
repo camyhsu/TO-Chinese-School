@@ -115,7 +115,7 @@
             </td>
             <td>
               <%= select "#{student.id}_school_class_type", :school_class_type,
-                  registration_preference.find_available_school_class_types %>
+                  registration_preference.find_available_school_class_type_options %>
             </td>
             <td>
               <% unless registration_preference.grade.below_first_grade? %>
