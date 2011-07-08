@@ -99,6 +99,7 @@ student_transaction_history_show = Right.create(:name => 'Show Transaction Detai
 # Assign rights to Principal
 #
 principal = Role.find_by_name(Role::ROLE_NAME_PRINCIPAL)
+principal.rights << active_school_classes_student_count
 principal.rights << report_daily_registration_summary
 
 

@@ -1,6 +1,9 @@
 <h3>Principal Resources</h3>
 
 <br/>
+<%= link_to '班級人數清單', {:controller => '/registration/active_school_classes', :action => 'student_count'}, {:class => 'button'} %>
+<br/>
+<br/>
 <% @active_registration_school_years.each do |registration_year| %>
   <%= link_to "Daily Registration Summary For #{registration_year.name} School Year", {:controller => '/registration/report', :action => 'daily_registration_summary', :id => registration_year}, {:class => 'button'} %>
   <br/>
