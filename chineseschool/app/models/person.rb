@@ -100,7 +100,7 @@ class Person < ActiveRecord::Base
 
   def phone_number_correct?(phone_number)
     if self.address
-      self.address.phone_number_correct?
+      self.address.phone_number_correct? phone_number
     else
       self.families.detect do |family|
         family.address.phone_number_correct? phone_number
