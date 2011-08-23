@@ -19,10 +19,6 @@ class Registration::ReportController < ApplicationController
 
   private
 
-  def extract_pacific_date_from(utc_time)
-    utc_time.in_time_zone('Pacific Time (US & Canada)').to_date
-  end
-
   def find_or_create_summary_entry(payment_date, registration_summary_hash)
     summary_entry = registration_summary_hash[payment_date]
     if summary_entry.nil?
