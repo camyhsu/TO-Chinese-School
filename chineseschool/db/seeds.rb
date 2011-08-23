@@ -41,7 +41,8 @@ school_classes_edit = Right.create(:name => 'Edit School Class', :controller => 
 school_classes_toggle_active = Right.create(:name => 'Toggle School Class Active Status', :controller => 'admin/school_classes', :action => 'toggle_active')
 
 active_school_classes_index = Right.create(:name => 'List Active School Classes', :controller => 'registration/active_school_classes', :action => 'index')
-active_school_classes_student_count = Right.create(:name => '班級人數清單', :controller => 'registration/active_school_classes', :action => 'student_count')
+active_school_classes_grade_class_student_count = Right.create(:name => '班級人數清單', :controller => 'registration/active_school_classes', :action => 'grade_class_student_count')
+active_school_classes_elective_class_student_count = Right.create(:name => 'Elective Class 人數清單', :controller => 'registration/active_school_classes', :action => 'elective_class_student_count')
 
 people_index = Right.create(:name => 'List People', :controller => 'registration/people', :action => 'index')
 people_show = Right.create(:name => 'Show Person Details', :controller => 'registration/people', :action => 'show')
@@ -99,7 +100,8 @@ student_transaction_history_show = Right.create(:name => 'Show Transaction Detai
 # Assign rights to Principal
 #
 principal = Role.find_by_name(Role::ROLE_NAME_PRINCIPAL)
-principal.rights << active_school_classes_student_count
+principal.rights << active_school_classes_grade_class_student_count
+principal.rights << active_school_classes_elective_class_student_count
 principal.rights << report_daily_registration_summary
 
 
@@ -120,7 +122,7 @@ registration_officer.rights << school_classes_edit
 registration_officer.rights << school_classes_toggle_active
 
 registration_officer.rights << active_school_classes_index
-registration_officer.rights << active_school_classes_student_count
+registration_officer.rights << active_school_classes_grade_class_student_count
 
 registration_officer.rights << people_index
 registration_officer.rights << people_show

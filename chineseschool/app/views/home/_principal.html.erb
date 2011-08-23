@@ -1,7 +1,8 @@
 <h3>Principal Resources</h3>
 
 <br/>
-<%= link_to '班級人數清單', {:controller => '/registration/active_school_classes', :action => 'student_count'}, {:class => 'button'} %>
+<%= link_to '班級人數清單', {:controller => '/registration/active_school_classes', :action => 'grade_class_student_count'}, {:class => 'button'} %>
+<%= link_to 'Elective Class 人數清單', {:controller => '/registration/active_school_classes', :action => 'elective_class_student_count'}, {:class => 'button'} %>
 <br/>
 <br/>
 <% @active_registration_school_years.each do |registration_year| %>

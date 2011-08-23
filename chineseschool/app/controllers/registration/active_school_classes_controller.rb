@@ -5,9 +5,15 @@ class Registration::ActiveSchoolClassesController < ApplicationController
     render :layout => 'jquery_datatable'
   end
 
-  def student_count
+  def grade_class_student_count
     @current_school_year = SchoolYear.current_school_year
     @active_grade_classes = SchoolClass.find_all_active_school_classes.reject { |school_class| school_class.elective? }
     @active_grade_classes.sort! { |x, y| x.grade_id <=> y.grade_id }
+  end
+  
+  def elective_class_student_count
+    @current_school_year = SchoolYear.current_school_year
+    @active_elective_classes = SchoolClass.find_all_active_school_classes.reject { |school_class| !school_class.elective? }
+    @active_elective_classes.sort! { |x, y| x.english_name <=> y.english_name }
   end
 end

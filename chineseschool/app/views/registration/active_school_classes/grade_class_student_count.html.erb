@@ -1,0 +1,5 @@
+<% @title = '班級人數清單' %>
+
+<h2>千橡中文學校  <%=h @current_school_year.name %>學年度  班級人數清單</h2>
+
+<%= render :partial => 'student_counts', :object => @active_grade_classes %>
