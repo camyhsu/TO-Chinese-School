@@ -6,6 +6,7 @@ module ApplicationHelper
   end
 
   def display_utc_time_in_pacific(utc_time)
+    return nil if utc_time.nil?
     utc_time.in_time_zone('Pacific Time (US & Canada)').to_formatted_s(:long)
   end
 

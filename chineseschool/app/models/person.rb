@@ -133,4 +133,10 @@ class Person < ActiveRecord::Base
       registration_preference.save!
     end
   end
+  
+  def current_year_registration_time
+    current_year_completed_registration = self.registration_preferences.first :conditions => ['school_year_id = ? AND registration_completed = true', SchoolYear.current_school_year.id]
+    return nil if current_year_completed_registration.nil?
+    current_year_completed_registration.updated_at
+  end
 end
