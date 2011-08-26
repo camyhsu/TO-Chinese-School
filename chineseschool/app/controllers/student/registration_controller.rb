@@ -104,7 +104,9 @@ class Student::RegistrationController < ApplicationController
         previous_school_year_class_assignment = student.student_class_assignment_for @registration_school_year.previous_school_year
         if previous_school_year_class_assignment.nil?
           # No class assignment in the previous school year - go for age-based grade assignment
-          age_based_grade = Grade.find_by_school_age(student.school_age_for(@registration_school_year))
+          # Temporarily close PreK registration
+          #age_based_grade = Grade.find_by_school_age(student.school_age_for(@registration_school_year))
+          age_based_grade = Grade.find_by_school_age_without_prek(student.school_age_for(@registration_school_year))
           unless age_based_grade.nil?
             new_registration_preference.grade = age_based_grade.snap_down_to_first_active_grade @registration_school_year
             @registration_preferences << new_registration_preference
