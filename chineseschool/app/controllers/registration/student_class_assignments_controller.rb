@@ -13,9 +13,9 @@ class Registration::StudentClassAssignmentsController < ApplicationController
     @current_school_year = SchoolYear.current_school_year
     @active_student_class_assignments = StudentClassAssignment.all(:conditions => ['school_class_id is not null AND school_year_id = ?', SchoolYear.current_school_year.id])
     @active_student_class_assignments.sort! do |a, b|
-      last_name_order = a.student.english_last_name <=> b.student.english_last_name
+      last_name_order = a.student.english_last_name.strip.downcase <=> b.student.english_last_name.strip.downcase
       if last_name_order == 0
-        a.student.english_first_name <=> b.student.english_first_name
+        a.student.english_first_name.strip.downcase <=> b.student.english_first_name.strip.downcase
       else
         last_name_order
       end
