@@ -19,6 +19,7 @@ end
 create_role(Role::ROLE_NAME_PRINCIPAL)
 create_role(Role::ROLE_NAME_REGISTRATION_OFFICER)
 create_role(Role::ROLE_NAME_ACCOUNTING_OFFICER)
+create_role(Role::ROLE_NAME_INSTRUCTION_OFFICER)
 create_role(Role::ROLE_NAME_INSTRUCTOR)
 create_role(Role::ROLE_NAME_ROOM_PARENT)
 create_role(Role::ROLE_NAME_STUDENT_PARENT)
@@ -123,6 +124,7 @@ registration_officer.rights << school_classes_toggle_active
 
 registration_officer.rights << active_school_classes_index
 registration_officer.rights << active_school_classes_grade_class_student_count
+registration_officer.rights << active_school_classes_elective_class_student_count
 
 registration_officer.rights << people_index
 registration_officer.rights << people_show
@@ -162,6 +164,14 @@ registration_officer.rights << report_daily_registration_summary
 #
 accounting_officer = Role.find_by_name(Role::ROLE_NAME_ACCOUNTING_OFFICER)
 accounting_officer.rights << report_daily_registration_summary
+
+
+#
+# Assign rights to Instruction Officer
+#
+instruction_officer = Role.find_by_name(Role::ROLE_NAME_INSTRUCTION_OFFICER)
+instruction_officer.rights << active_school_classes_grade_class_student_count
+instruction_officer.rights << active_school_classes_elective_class_student_count
 
 
 #
