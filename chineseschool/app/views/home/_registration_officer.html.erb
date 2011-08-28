@@ -8,10 +8,11 @@
 <br/>
 <br/>
 <%= link_to 'List All School Classes', {:controller => '/admin/school_classes', :action => 'index'}, {:class => 'button'} %>
-<br/>
-<br/>
 <%= link_to 'List Active School Classes', {:controller => '/registration/active_school_classes', :action => 'index'}, {:class => 'button'} %>
+<br/>
+<br/>
 <%= link_to '班級人數清單', {:controller => '/registration/active_school_classes', :action => 'grade_class_student_count'}, {:class => 'button'} %>
+<%= link_to 'Elective Class 人數清單', {:controller => '/registration/active_school_classes', :action => 'elective_class_student_count'}, {:class => 'button'} %>
 <br/>
 <br/>
 <%= link_to 'List Active Students By Name', {:controller => '/registration/student_class_assignments', :action => 'list_active_students_by_name'}, {:class => 'button'} %>
