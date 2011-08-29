@@ -23,7 +23,8 @@ class Instruction::SchoolClassesController < ApplicationController
   def skip_instructor_assignment_verification
     @user.roles.any? do |role|
       role.name == Role::ROLE_NAME_SUPER_USER or 
-      role.name == Role::ROLE_NAME_REGISTRATION_OFFICER
+      role.name == Role::ROLE_NAME_REGISTRATION_OFFICER or 
+      role.name == Role::ROLE_NAME_INSTRUCTION_OFFICER
     end
   end
 end

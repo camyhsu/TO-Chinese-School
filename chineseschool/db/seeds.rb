@@ -77,6 +77,8 @@ report_daily_registration_summary = Right.create(:name => 'Daily Registration Su
 
 
 instruction_school_classes_show = Right.create(:name => 'Student List For One School Class', :controller => 'instruction/school_classes', :action => 'show')
+instruction_active_school_classes_index = Right.create(:name => 'List Active School Classes For Instruction Officer', :controller => 'instruction/active_school_classes', :action => 'index')
+
 
 student_families_add_child = Right.create(:name => 'Add Child To Family By Parent', :controller => 'student/families', :action => 'add_child')
 student_families_edit_address = Right.create(:name => 'Edit Family Address By Parent', :controller => 'student/families', :action => 'edit_address')
@@ -172,6 +174,8 @@ accounting_officer.rights << report_daily_registration_summary
 instruction_officer = Role.find_by_name(Role::ROLE_NAME_INSTRUCTION_OFFICER)
 instruction_officer.rights << active_school_classes_grade_class_student_count
 instruction_officer.rights << active_school_classes_elective_class_student_count
+instruction_officer.rights << instruction_active_school_classes_index
+instruction_officer.rights << instruction_school_classes_show
 
 
 #

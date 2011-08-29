@@ -1,0 +1,28 @@
+      <td><%=h active_school_class.chinese_name %></td>
+      <td><%=h active_school_class.english_name %></td>
+      <td><%=h active_school_class.location %></td>
+      <% assignment_hash = active_school_class.current_instructor_assignments %>
+      <td>
+        <% assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].each do |instructor| %>
+        <%=h instructor.name %>&nbsp;
+        <% end %>
+      </td>
+      <td>
+        <% assignment_hash[InstructorAssignment::ROLE_ROOM_PARENT].each do |instructor| %>
+        <%=h instructor.name %>&nbsp;
+        <% end %>
+      </td>
+      <td>
+        <% assignment_hash[InstructorAssignment::ROLE_SECONDARY_INSTRUCTOR].each do |instructor| %>
+        <%=h instructor.name %>&nbsp;
+        <% end %>
+      </td>
+      <td>
+        <% assignment_hash[InstructorAssignment::ROLE_TEACHING_ASSISTANT].each do |instructor| %>
+        <%=h instructor.name %>&nbsp;
+        <% end %>
+      </td>
+      <td>
+        <%= link_to 'Student List', :controller => '/instruction/school_classes', :action => 'show', :id => active_school_class.id %>
+      </td>
+      
