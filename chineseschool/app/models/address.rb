@@ -1,5 +1,8 @@
 class Address < ActiveRecord::Base
-
+  
+  has_one :person
+  has_one :family
+  
   validates_presence_of :street, :city, :state, :zipcode, :home_phone
 
   validates_numericality_of :zipcode, :only_integer => true, :less_than => 100000

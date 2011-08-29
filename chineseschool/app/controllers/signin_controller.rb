@@ -28,6 +28,25 @@ class SigninController < ApplicationController
       redirect_to :action => 'index'
     end
   end
+  
+  def forgot_username
+    if request.post?
+      @matched_users = []
+      return if params[:email].blank?
+      addresses_found = Address.find_all_by_email params[:email]
+      return if addresses_found.empty?
+      addresses_found.each do |address|
+        if address.person
+          collect_user_from address.person
+        elsif address.family
+          family = address.family
+          collect_user_from family.parent_one unless family.parent_one.nil?
+          collect_user_from family.parent_two unless family.parent_two.nil?
+        end
+      end
+      @matched_users.uniq!
+    end
+  end
 
   def reset_password
     timed_token = TimedToken.find_by_token params[:id]
@@ -114,5 +133,12 @@ class SigninController < ApplicationController
 
   def ping
     render :text => "Pong - #{Time.now}"
+  end
+  
+  
+  private
+  
+  def collect_user_from(person)
+    @matched_users << person.user unless person.user.nil?
   end
 end
