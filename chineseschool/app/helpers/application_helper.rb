@@ -9,6 +9,10 @@ module ApplicationHelper
     return nil if utc_time.nil?
     utc_time.in_time_zone('Pacific Time (US & Canada)').to_formatted_s(:long)
   end
+  
+  def display_now_in_pacific
+    Time.now.in_time_zone('Pacific Time (US & Canada)').to_formatted_s(:long)
+  end
 
   def display_price(price)
     if price < 0

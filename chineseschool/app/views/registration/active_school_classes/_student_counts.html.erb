@@ -33,4 +33,4 @@
 <br/>
 Total Student Count: <%= student_counts.collect(&:class_size).inject(0, &:+) %>
 <br/>
-Today's Date: <%= Date.today.to_s %>
+Current Time: <%= display_now_in_pacific %>
