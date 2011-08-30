@@ -30,8 +30,8 @@ class SigninController < ApplicationController
   end
   
   def forgot_username
+    @matched_users = []
     if request.post?
-      @matched_users = []
       return if params[:email].blank?
       addresses_found = Address.find_all_by_email params[:email]
       return if addresses_found.empty?
