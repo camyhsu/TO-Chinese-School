@@ -17,7 +17,7 @@ class Student::PeopleController < ApplicationController
     @person = Person.find_by_id params[:id].to_i
     if request.post?
       @address = Address.new params[:address]
-      return unless @address.valid?
+      render :template => '/registration/people/new_address' and return unless @address.valid?
       @address.save!
       @person.address = @address
       @person.save!
