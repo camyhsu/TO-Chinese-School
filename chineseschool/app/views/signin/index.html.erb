@@ -8,10 +8,13 @@
         <div>
           <label for="username">Username:</label>
           <%= text_field_tag :username, params[:username] %>
+          &nbsp;<%= link_to 'Forgot username?  Try to find username here', :action => 'forgot_username' %>
         </div>
+        
         <div>
           <label for="password">Password:</label>
           <%= password_field_tag :password %>
+          &nbsp;<%= link_to 'Forgot password?  Request password reset here', :action => 'forgot_password' %>
         </div>
         <div>
           <%= submit_tag 'Sign In', :class => 'submit' %>
@@ -20,16 +23,6 @@
     </fieldset>
   <% end %>
 </div>
-<br/>
-<span class="register-link">
-  <%= link_to 'Forgot password?  Request password reset here', :action => 'forgot_password' %>
-</span>
-<br/>
-<br/>
-<span class="register-link">
-  <%= link_to 'Forgot username?  Try to find username here', :action => 'forgot_username' %>
-</span>
-<br/>
 <br/>
 <span class="register-link">
   <%= link_to 'New to Thousand Oaks Chinese School?  Register here', :action => 'register' %>
