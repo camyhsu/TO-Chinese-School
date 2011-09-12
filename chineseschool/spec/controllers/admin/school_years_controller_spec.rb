@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Admin::SchoolYearsController, 'setting date if original in future' do
   before(:each) do
     stub_check_authentication_and_authorization_in @controller
-    @tomorrow = Date.today + 1
-    @yesterday = Date.today - 1
+    @tomorrow = PacificDate.tomorrow
+    @yesterday = PacificDate.today - 1
     @parameters = {}
     @parameters[:school_year] = {}
     @parameters[:id] = 3
@@ -15,7 +15,7 @@ describe Admin::SchoolYearsController, 'setting date if original in future' do
 
   it 'should set date to new value if original date is in the future' do
     @parameters[:school_year][:start_date] = @tomorrow.to_s
-    @fake_school_year.start_date = Date.today
+    @fake_school_year.start_date = PacificDate.today
     
     post :edit, @parameters
     assigns[:school_year].start_date.should == @tomorrow

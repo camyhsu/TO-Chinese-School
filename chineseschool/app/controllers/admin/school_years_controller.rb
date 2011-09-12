@@ -63,7 +63,7 @@ class Admin::SchoolYearsController < ApplicationController
 
   def set_date_if_original_in_future(date_attribute_symbol)
     original_value = @school_year.send date_attribute_symbol
-    return unless original_value.nil? or original_value >= Date.today
+    return unless original_value.nil? or original_value >= PacificDate.today
     @school_year.send((date_attribute_symbol.to_s + '=').to_sym, parse_date(params[:school_year][date_attribute_symbol]))
   end
 

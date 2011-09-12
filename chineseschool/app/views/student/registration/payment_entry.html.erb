@@ -21,7 +21,7 @@
             <label><span style="color:red">*&nbsp;</span>Valid Through:</label>
             <%= form.select :month, (1..12) %>
             &nbsp;/
-            <%= form.select :year, (Date.today.year..(Date.today.year + 5)) %>
+            <%= form.select :year, (PacificDate.today.year..(PacificDate.today.year + 5)) %>
           </div>
           <div>
             <label for="verification_value"><span style="color:red">*&nbsp;</span>Card Code:</label>

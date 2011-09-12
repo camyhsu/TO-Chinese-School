@@ -96,11 +96,11 @@ class SchoolYear < ActiveRecord::Base
   end
   
   def self.find_current_and_future_school_years
-    self.all :conditions => ["end_date >= ?", Date.today], :order => 'start_date ASC'
+    self.all :conditions => ["end_date >= ?", PacificDate.today], :order => 'start_date ASC'
   end
 
   def self.find_active_registration_school_years
-    self.all :conditions => ['registration_start_date <= ? AND registration_end_date >= ?', Date.today, Date.today], :order => 'start_date ASC'
+    self.all :conditions => ['registration_start_date <= ? AND registration_end_date >= ?', PacificDate.today, PacificDate.today], :order => 'start_date ASC'
   end
 
   private

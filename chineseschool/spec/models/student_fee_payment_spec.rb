@@ -46,7 +46,7 @@ describe StudentFeePayment, 'calculating tuition' do
     @student_fee_payment = StudentFeePayment.new
 
     @fake_school_year = SchoolYear.new
-    @fake_school_year.pre_registration_end_date = Date.today
+    @fake_school_year.pre_registration_end_date = PacificDate.today
     @tuition_in_cents = rand 100000
     @fake_school_year.tuition_in_cents = @tuition_in_cents
     @pre_registration_tuition_in_cents = rand 100000
