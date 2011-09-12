@@ -46,11 +46,21 @@
 <table class="person-detail" border="0px">
   <tr>
     <td class="label">Parent One:</td>
-    <td><%=h family.parent_one.try(:name) %></td>
+    <td>
+      <%=h family.parent_one.try(:name) %>
+      <% unless family.parent_one.try(:user).nil? %>
+      &nbsp;<span style="font-weight: bold;">username:</span>&nbsp;<%=h family.parent_one.user.username %>
+      <% end %>
+    </td>
   </tr>
   <tr>
     <td class="label">Parent Two:</td>
-    <td><%=h family.parent_two.try(:name) %></td>
+    <td>
+      <%=h family.parent_two.try(:name) %>
+      <% unless family.parent_two.try(:user).nil? %>
+      &nbsp;<span style="font-weight: bold;">username:</span>&nbsp;<%=h family.parent_two.user.username %>
+      <% end %>
+    </td>
   </tr>
   <tr>
     <td class="label">Children:</td>
