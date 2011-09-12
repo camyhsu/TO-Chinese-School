@@ -8,17 +8,17 @@
         <div>
           <label for="username">Username:</label>
           <%= text_field_tag :username, params[:username] %>
-          &nbsp;<%= link_to 'Forgot username?  Try to find username here', :action => 'forgot_username' %>
         </div>
         
         <div>
           <label for="password">Password:</label>
           <%= password_field_tag :password %>
-          &nbsp;<%= link_to 'Forgot password?  Request password reset here', :action => 'forgot_password' %>
         </div>
         <div>
           <%= submit_tag 'Sign In', :class => 'submit' %>
         </div>
+        <br/><%= link_to 'Forgot username?  Try to find username here', :action => 'forgot_username' %>
+        <br/><%= link_to 'Forgot password?  Request password reset here', :action => 'forgot_password' %>
       </span>
     </fieldset>
   <% end %>
