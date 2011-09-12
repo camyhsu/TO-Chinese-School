@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110603202449) do
+ActiveRecord::Schema.define(:version => 20110912032508) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -215,6 +215,8 @@ ActiveRecord::Schema.define(:version => 20110603202449) do
     t.boolean  "pre_k_discount",            :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "prorate_75",                :default => false, :null => false
+    t.boolean  "prorate_50",                :default => false, :null => false
   end
 
   create_table "timed_tokens", :force => true do |t|

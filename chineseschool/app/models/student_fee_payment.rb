@@ -41,6 +41,7 @@ class StudentFeePayment < ActiveRecord::Base
     end
     apply_pre_k_discount school_year, grade
     apply_multiple_child_discount school_year, registration_count_before_this_student
+    apply_late_registration_prorate school_year
   end
 
   def apply_pre_k_discount(school_year, grade)
@@ -55,6 +56,16 @@ class StudentFeePayment < ActiveRecord::Base
     if registration_count_before_this_student >= 2
       self.multiple_child_discount = true
       self.tuition_in_cents -= school_year.tuition_discount_for_three_or_more_child_in_cents
+    end
+  end
+  
+  def apply_late_registration_prorate(school_year)
+    if Date.today > school_year.registration_50_percent_date
+      self.prorate_50 = true
+      self.tuition_in_cents = (self.tuition_in_cents * 0.5).to_i
+    elsif Date.today > school_year.registration_75_percent_date
+      self.prorate_75 = true
+      self.tuition_in_cents = (self.tuition_in_cents * 0.75).to_i
     end
   end
 end
