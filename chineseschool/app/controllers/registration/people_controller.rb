@@ -67,7 +67,7 @@ class Registration::PeopleController < ApplicationController
       end
       @student_class_assignment.grade = Grade.find_by_id params[:selected_grade_id]
       @student_class_assignment.school_class = nil
-      @student_class_assignment.elective_class = nil
+      @student_class_assignment.elective_class = nil if @student_class_assignment.grade.below_first_grade?
       @student_class_assignment.save!
       @student_id = @student_class_assignment.student.id
     end
