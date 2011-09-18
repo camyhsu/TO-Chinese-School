@@ -79,6 +79,41 @@
   <%= render :partial => 'student_class_assignment', :object => @person.student_class_assignment_for(SchoolYear.current_school_year), :locals => {:student_id => @person.id} %>
 </table>
 <hr/>
+<h3>Transation History as Student for <%=h @person.name %></h3>
+<% completed_registration_payments = @person.find_completed_registration_payments_as_students %>
+<% if completed_registration_payments.empty? %>
+  <p style="font-weight: bold;">No Transaction History</p>
+<% else %>
+  <table class="transaction-history-table" border="0px">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Transaction Type</th>
+        <th>Payment Method</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% completed_registration_payments.each do |registration_payment| %>
+      <tr>
+        <td>
+          <%= link_to display_utc_time_in_pacific(registration_payment.updated_at), :controller => '/student/transaction_history', :action => 'show_for_staff', :id => registration_payment %>
+        </td>
+        <td>
+          <% if registration_payment.grand_total_in_cents < 0 %>
+            Withdraw
+          <% else %>
+            Registration
+          <% end %>
+        </td>
+        <td>
+          Credit Card
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+<hr/>
 <h3>Instructor Assignments for <%=h @person.name %></h3>
 <% @person.instructor_assignments_for(SchoolYear.current_school_year).each do |instructor_assignment| %>
 <table class="person-detail" border="0px">

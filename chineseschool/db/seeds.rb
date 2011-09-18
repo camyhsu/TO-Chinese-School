@@ -96,6 +96,7 @@ student_registration_payment_confirmation = Right.create(:name => 'Show Payment 
 
 student_transaction_history_index = Right.create(:name => 'List Transaction History', :controller => 'student/transaction_history', :action => 'index')
 student_transaction_history_show = Right.create(:name => 'Show Transaction Detail', :controller => 'student/transaction_history', :action => 'show')
+student_transaction_history_show_for_staff = Right.create(:name => 'Show Transaction Detail For Staff', :controller => 'student/transaction_history', :action => 'show_for_staff')
 
 
 
@@ -159,6 +160,8 @@ registration_officer.rights << instructor_assignments_destroy
 registration_officer.rights << instruction_school_classes_show
 
 registration_officer.rights << report_daily_registration_summary
+
+registration_officer.rights << student_transaction_history_show_for_staff
 
 
 #

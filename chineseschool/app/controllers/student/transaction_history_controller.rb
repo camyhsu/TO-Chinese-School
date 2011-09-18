@@ -12,4 +12,9 @@ class Student::TransactionHistoryController < ApplicationController
     end
     @gateway_transaction = @registration_payment.find_first_approved_gateway_transaction
   end
+  
+  def show_for_staff
+    @registration_payment = RegistrationPayment.find_by_id params[:id].to_i
+    @gateway_transaction = @registration_payment.find_first_approved_gateway_transaction
+  end
 end

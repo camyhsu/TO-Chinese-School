@@ -107,6 +107,15 @@ class Person < ActiveRecord::Base
       end
     end
   end
+  
+  def find_completed_registration_payments_as_students
+    student_fee_payments = StudentFeePayment.all :conditions => ["student_id = ?", self.id]
+    registration_payments = student_fee_payments.collect do |student_fee_payment|
+      return nil unless student_fee_payment.registration_payment.paid
+      student_fee_payment.registration_payment
+    end
+    registration_payments.compact
+  end
 
   def self.find_people_on_record(english_first_name, english_last_name, email, phone_number)
     people_found_by_name = self.find_all_by_english_first_name_and_english_last_name english_first_name, english_last_name
