@@ -114,7 +114,8 @@ class Person < ActiveRecord::Base
       return nil unless student_fee_payment.registration_payment.paid
       student_fee_payment.registration_payment
     end
-    registration_payments.compact
+    registration_payments.compact!
+    registration_payments.sort { |a, b| b.updated_at <=> a.updated_at}
   end
 
   def self.find_people_on_record(english_first_name, english_last_name, email, phone_number)
