@@ -16,7 +16,13 @@
     <tbody>
       <% @registration_summaries.each do |summary| -%>
         <tr>
-          <td><%= summary[0].to_s %></td>
+          <td>
+            <% if @user.has_role? Role::ROLE_NAME_ACCOUNTING_OFFICER %>
+              <%= link_to summary[0].to_s, {:controller => '/accounting/registration_report', :action => 'registration_payments_by_date', :date => summary[0].to_s}, {:class => 'button'} %>
+            <% else %>
+              <%= summary[0].to_s %>
+            <% end %>
+          </td>
           <td><%= summary[1][:student_count] %></td>
           <td><%=number_to_currency(summary[1][:total_amount_in_cents] / 100.0) %></td>
         </tr>

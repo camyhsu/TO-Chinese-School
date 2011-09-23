@@ -29,6 +29,9 @@ create_role(Role::ROLE_NAME_STUDENT_PARENT)
 # Create rights
 #
 Right.delete_all
+
+accounting_registration_report_payments_by_date = Right.create(:name => 'Accounting Registration Report Payments By Date', :controller => 'accounting/registration_report', :action => 'registration_payments_by_date')
+
 grades_index = Right.create(:name => 'List Grades', :controller => 'admin/grades', :action => 'index')
 
 school_years_index = Right.create(:name => 'List School Years', :controller => 'admin/school_years', :action => 'index')
@@ -168,6 +171,7 @@ registration_officer.rights << student_transaction_history_show_for_staff
 # Assign rights to Accounting Officer
 #
 accounting_officer = Role.find_by_name(Role::ROLE_NAME_ACCOUNTING_OFFICER)
+accounting_officer.rights << accounting_registration_report_payments_by_date
 accounting_officer.rights << report_daily_registration_summary
 
 
