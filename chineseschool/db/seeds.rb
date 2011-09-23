@@ -19,6 +19,7 @@ end
 create_role(Role::ROLE_NAME_PRINCIPAL)
 create_role(Role::ROLE_NAME_REGISTRATION_OFFICER)
 create_role(Role::ROLE_NAME_ACCOUNTING_OFFICER)
+create_role(Role::ROLE_NAME_ACTIVITY_OFFICER)
 create_role(Role::ROLE_NAME_INSTRUCTION_OFFICER)
 create_role(Role::ROLE_NAME_INSTRUCTOR)
 create_role(Role::ROLE_NAME_ROOM_PARENT)
@@ -43,6 +44,8 @@ school_classes_index = Right.create(:name => 'List School Classes', :controller 
 school_classes_new = Right.create(:name => 'Create New School Class', :controller => 'admin/school_classes', :action => 'new')
 school_classes_edit = Right.create(:name => 'Edit School Class', :controller => 'admin/school_classes', :action => 'edit')
 school_classes_toggle_active = Right.create(:name => 'Toggle School Class Active Status', :controller => 'admin/school_classes', :action => 'toggle_active')
+
+activity_forms_fire_drill_form = Right.create(:name => 'Activity Forms Fire Drill Form', :controller => 'activity/forms', :action => 'fire_drill_form')
 
 active_school_classes_index = Right.create(:name => 'List Active School Classes', :controller => 'registration/active_school_classes', :action => 'index')
 active_school_classes_grade_class_student_count = Right.create(:name => '班級人數清單', :controller => 'registration/active_school_classes', :action => 'grade_class_student_count')
@@ -173,6 +176,13 @@ registration_officer.rights << student_transaction_history_show_for_staff
 accounting_officer = Role.find_by_name(Role::ROLE_NAME_ACCOUNTING_OFFICER)
 accounting_officer.rights << accounting_registration_report_payments_by_date
 accounting_officer.rights << report_daily_registration_summary
+
+
+#
+# Assign rights to Accounting Officer
+#
+activity_officer = Role.find_by_name(Role::ROLE_NAME_ACTIVITY_OFFICER)
+activity_officer.rights << activity_forms_fire_drill_form
 
 
 #
