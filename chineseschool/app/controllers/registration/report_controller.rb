@@ -3,7 +3,7 @@ class Registration::ReportController < ApplicationController
   def daily_registration_summary
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
     registration_summary_hash = {}
-    RegistrationPayment.find_paid_payments_for(@registration_school_year).each do |paid_payment|
+    RegistrationPayment.find_paid_payments_for_school_year(@registration_school_year).each do |paid_payment|
       payment_date = extract_pacific_date_from(paid_payment.updated_at)
       summary_entry = find_or_create_summary_entry payment_date, registration_summary_hash
       add_payment_to summary_entry, paid_payment

@@ -41,11 +41,15 @@ class RegistrationPayment < ActiveRecord::Base
   end
 
   def self.find_paid_payments_paid_by(paid_by)
-    self.all :conditions => ['paid_by_id = ? and paid = true', paid_by.id], :order => 'updated_at DESC'
+    self.all :conditions => ['paid_by_id = ? AND paid = true', paid_by.id], :order => 'updated_at DESC'
   end
 
-  def self.find_paid_payments_for(school_year)
-    self.all :conditions => ['school_year_id = ? and paid = true', school_year.id], :order => 'updated_at DESC'
+  def self.find_paid_payments_for_school_year(school_year)
+    self.all :conditions => ['school_year_id = ? AND paid = true', school_year.id], :order => 'updated_at DESC'
+  end
+  
+  def self.find_paid_payments_for_date(date)
+    self.all :conditions => ['paid = true AND updated_at >= ? AND updated_at < ?', PacificDate.start_time_utc_for(date), PacificDate.start_time_utc_for(date + 1)], :order => 'updated_at DESC'
   end
   
   private
