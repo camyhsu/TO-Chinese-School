@@ -110,11 +110,17 @@ class Person < ActiveRecord::Base
   
   def find_completed_registration_payments_as_students
     student_fee_payments = StudentFeePayment.all :conditions => ["student_id = ?", self.id]
+    puts student_fee_payments.inspect
     registration_payments = student_fee_payments.collect do |student_fee_payment|
-      return nil unless student_fee_payment.registration_payment.paid
-      student_fee_payment.registration_payment
+      if student_fee_payment.registration_payment.paid
+        student_fee_payment.registration_payment
+      else
+        nil
+      end
     end
+    puts registration_payments.inspect
     registration_payments.compact!
+    puts registration_payments.inspect
     registration_payments.sort { |a, b| b.updated_at <=> a.updated_at}
   end
 
