@@ -176,6 +176,7 @@ registration_officer.rights << student_transaction_history_show_for_staff
 accounting_officer = Role.find_by_name(Role::ROLE_NAME_ACCOUNTING_OFFICER)
 accounting_officer.rights << accounting_registration_report_payments_by_date
 accounting_officer.rights << report_daily_registration_summary
+accounting_officer.rights << student_transaction_history_show_for_staff
 
 
 #
