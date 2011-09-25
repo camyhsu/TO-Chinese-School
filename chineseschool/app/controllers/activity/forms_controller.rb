@@ -17,6 +17,7 @@ class Activity::FormsController < ApplicationController
         end
       end
     end
+    @sorted_school_classes = @class_lists.keys.sort { |a, b| a.short_name <=> b.short_name }
     prawnto :filename => 'fire_drill_roster_forms.pdf'
     render :layout => false
   end

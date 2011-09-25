@@ -4,7 +4,7 @@ pdf.font "#{RAILS_ROOT}/lib/data/fonts/ArialUnicode.ttf"
 
 header = [ 'No', '姓名', 'First Name', 'Last Name', '當日出席/class check-in', '參與演習/event check-in' ]
 
-@class_lists.each_pair do |school_class, class_list|
+@sorted_school_classes.each do |school_class|
   pdf.font_size 9 do
     pdf.text "#{@current_school_year.name} Thousand Oaks Chinese School Fire Drill Form", :align => :right
   end
@@ -29,7 +29,7 @@ header = [ 'No', '姓名', 'First Name', 'Last Name', '當日出席/class check-
   pdf.move_down 10
   
   data = [ header ]
-  class_list.each_with_index do |student, i|
+  @class_lists[school_class].each_with_index do |student, i|
     row = []
     row << i
     row << student.chinese_name
@@ -53,6 +53,6 @@ header = [ 'No', '姓名', 'First Name', 'Last Name', '當日出席/class check-
 end
 
 pdf.font_size 9 do
-  pdf.number_pages "Date: #{PacificDate.today}", :at => [pdf.bounds.left, 0], :align => :left, :page_filter => :all
+  pdf.number_pages "Date: #{PacificDate.tomorrow}", :at => [pdf.bounds.left, 0], :align => :left, :page_filter => :all
   pdf.number_pages "Roster Form", :at => [pdf.bounds.left, 0], :align => :right, :page_filter => :all
 end
