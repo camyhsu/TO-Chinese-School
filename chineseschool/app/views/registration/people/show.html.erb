@@ -96,11 +96,11 @@
       <% completed_registration_payments.each do |registration_payment| %>
       <tr>
         <td>
-          <%= link_to display_utc_time_in_pacific(registration_payment.updated_at), :controller => '/student/transaction_history', :action => 'show_for_staff', :id => registration_payment %>
+          <%= link_to display_utc_time_in_pacific(registration_payment.updated_at), {:controller => '/student/transaction_history', :action => 'show_for_staff', :id => registration_payment}, {:class => 'button'} %>
         </td>
         <td>
           <% if registration_payment.grand_total_in_cents < 0 %>
-            Withdraw
+            System Adjustment
           <% else %>
             Registration
           <% end %>

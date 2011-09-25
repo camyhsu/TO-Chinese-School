@@ -6,7 +6,7 @@
   <%= display_price(@gateway_transaction.amount_in_cents / 100.0) %>  has been
   <% if @gateway_transaction.credit? -%>refunded<% else %>charged<% end %> to
   <%= @gateway_transaction.credit_card_type.capitalize %> Card ending <%= @gateway_transaction.credit_card_last_digits %><br/>
-  Paid by <%=h @registration_payment.paid_by.name %><br/>
+  <% if @gateway_transaction.credit? -%>Refunded to<% else %>Paid by<% end %>&nbsp;<%=h @registration_payment.paid_by.name %><br/>
   Payment Reference Number is
   <span style="font-weight: bold;"><%=h @gateway_transaction.reference_number %></span><br/>
 </p>
