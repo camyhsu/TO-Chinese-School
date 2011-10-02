@@ -277,3 +277,15 @@ select {
     padding-left: 1em;
     padding-right: 1em;
 }
+
+.manual-transaction-edit label {
+    width: 12em;
+    float: left;
+    text-align: right;
+    margin-right: 0.4em;
+    display: block;
+}
+
+.manual-transaction-edit .submit {
+    margin-left: 18em;
+}

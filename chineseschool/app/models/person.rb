@@ -75,6 +75,15 @@ class Person < ActiveRecord::Base
   def find_families_as_child
     Family.all :from => 'families, families_children', :conditions => ["families.id = families_children.family_id and families_children.child_id = ?", self.id]
   end
+  
+  def find_parents
+    parents = []
+    find_families_as_child.each do |family|
+      parents << family.parent_one unless family.parent_one.nil?
+      parents << family.parent_two unless family.parent_two.nil?
+    end
+    parents
+  end
 
   def personal_email_address
     if self.address

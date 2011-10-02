@@ -113,6 +113,9 @@
     </tbody>
   </table>
 <% end %>
+<br/>
+<%= link_to 'Enter Manual Transaction', {:controller => '/accounting/manual_transactions', :action => 'new', :student_id => @person}, {:class => 'button'} %>
+        
 <hr/>
 <h3>Instructor Assignments for <%=h @person.name %></h3>
 <% @person.instructor_assignments_for(SchoolYear.current_school_year).each do |instructor_assignment| %>
