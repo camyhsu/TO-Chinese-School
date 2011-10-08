@@ -19,7 +19,7 @@
           </div>
           <div>
             <label for="transaction_by"><span style="color:red">*&nbsp;</span>Transaction By:</label>
-            <%= form.collection_select :transaction_by, @manual_transaction.student.find_parents, :id, :name, :include_blank => true %>
+            <%= form.collection_select :transaction_by, @manual_transaction.student.find_parents, :id, :name, :selected => @manual_transaction.transaction_by.try(:id), :include_blank => true %>
           </div>
           <div>
             <label for="payment_method"><span style="color:red">*&nbsp;</span>Payment Method:</label>
