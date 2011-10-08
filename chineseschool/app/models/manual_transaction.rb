@@ -5,7 +5,6 @@ class ManualTransaction < ActiveRecord::Base
   TRANSACTION_TYPE_TEXTBOOK_PURCHASE = 'Textbook Purchase'
   TRANSACTION_TYPE_OTHER_PAYMENT = 'Other Payment'
   TRANSACTION_TYPE_OTHER_REFUND = 'Other Refund'
-  TRANSACTION_TYPES = [TRANSACTION_TYPE_REGISTRATION, TRANSACTION_TYPE_TEXTBOOK_PURCHASE, TRANSACTION_TYPE_OTHER_PAYMENT, TRANSACTION_TYPE_OTHER_REFUND]
   
   PAYMENT_METHOD_CHECK = 'Check'
   PAYMENT_METHOD_CASH = 'Cash'
@@ -28,4 +27,17 @@ class ManualTransaction < ActiveRecord::Base
     self.amount_in_cents = (amount.to_f * 100).to_i
   end
   
+  def find_available_transaction_types
+    available_transaction_types = []
+    student_status_flag = self.student.student_status_flag_for SchoolYear.current_school_year
+    if student_status_flag.nil? or !student_status_flag.registered?
+      available_transaction_types << TRANSACTION_TYPE_REGISTRATION
+    else
+      available_transaction_types << TRANSACTION_TYPE_WITHDRAWAL
+    end
+    available_transaction_types << TRANSACTION_TYPE_TEXTBOOK_PURCHASE
+    available_transaction_types << TRANSACTION_TYPE_OTHER_PAYMENT
+    available_transaction_types << TRANSACTION_TYPE_OTHER_REFUND
+    available_transaction_types
+  end
 end

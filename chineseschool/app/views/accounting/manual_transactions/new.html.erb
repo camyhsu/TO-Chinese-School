@@ -11,7 +11,7 @@
           <%= form.hidden_field :student_id %>
           <div>
             <label for="transaction_type"><span style="color:red">*&nbsp;</span>Transaction Type:</label>
-            <%= form.select :transaction_type, ManualTransaction::TRANSACTION_TYPES, :include_blank => true %>
+            <%= form.select :transaction_type, @manual_transaction.find_available_transaction_types, :include_blank => true %>
           </div>
           <div>
             <label for="transaction_date"><span style="color:red">*&nbsp;</span>Transaction Date:</label>
