@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110925053932) do
+ActiveRecord::Schema.define(:version => 20111008174427) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -119,7 +119,6 @@ ActiveRecord::Schema.define(:version => 20110925053932) do
     t.integer  "grade_id"
     t.string   "school_class_type"
     t.integer  "elective_class_id"
-    t.boolean  "registration_completed", :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -230,6 +229,14 @@ ActiveRecord::Schema.define(:version => 20110925053932) do
     t.datetime "updated_at"
     t.boolean  "prorate_75",                :default => false, :null => false
     t.boolean  "prorate_50",                :default => false, :null => false
+  end
+
+  create_table "student_status_flags", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "school_year_id"
+    t.boolean  "registered",     :default => false, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "timed_tokens", :force => true do |t|

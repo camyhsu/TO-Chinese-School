@@ -11,6 +11,7 @@ class Person < ActiveRecord::Base
   has_many :instructor_assignments, :foreign_key => 'instructor_id', :dependent => :destroy
 
   has_many :registration_preferences, :foreign_key => 'student_id'
+  has_many :student_status_flags, :foreign_key => 'student_id'
 
   validates_presence_of :gender, :english_first_name, :english_last_name
   validates_presence_of :birth_year, :if => Proc.new { |person| person.is_a_child? }
@@ -59,9 +60,13 @@ class Person < ActiveRecord::Base
   def student_class_assignment_for(school_year)
     self.student_class_assignments.first :conditions => ['school_year_id = ?', school_year.id]
   end
-
+  
   def registration_preference_for(school_year)
     self.registration_preferences.first :conditions => ['school_year_id = ?', school_year.id]
+  end
+  
+  def student_status_flag_for(school_year)
+    self.student_status_flags.first :conditions => ['school_year_id = ?', school_year.id]
   end
   
   def families
@@ -141,27 +146,28 @@ class Person < ActiveRecord::Base
   end
 
   def create_student_class_assignment_based_on_registration_preference(school_year)
-    registration_preference = registration_preference_for school_year
-    return if registration_preference.registration_completed?
+    student_status_flag = student_status_flag_for school_year
+    return if student_status_flag.registered?
     student_class_assignment = student_class_assignment_for school_year
     if student_class_assignment.nil?
       student_class_assignment = StudentClassAssignment.new
       student_class_assignment.school_year = school_year
       student_class_assignment.student = self
     end
+    registration_preference = registration_preference_for school_year
     student_class_assignment.grade = registration_preference.grade
     student_class_assignment.set_school_class_based_on registration_preference
     student_class_assignment.elective_class = registration_preference.elective_class
     StudentClassAssignment.transaction do
       student_class_assignment.save!
-      registration_preference.registration_completed = true
-      registration_preference.save!
+      student_status_flag.registered = true
+      student_status_flag.save!
     end
   end
   
   def current_year_registration_time
-    current_year_completed_registration = self.registration_preferences.first :conditions => ['school_year_id = ? AND registration_completed = true', SchoolYear.current_school_year.id]
-    return nil if current_year_completed_registration.nil?
-    current_year_completed_registration.updated_at
+    current_year_student_status_flag = student_status_flag_for SchoolYear.current_school_year
+    return nil if (current_year_student_status_flag.nil? or !current_year_student_status_flag.registered?)
+    current_year_student_status_flag.updated_at
   end
 end

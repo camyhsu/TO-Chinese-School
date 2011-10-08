@@ -93,9 +93,9 @@ class Student::RegistrationController < ApplicationController
     @completed_registraions = []
     @registration_preferences = []
     find_possible_students.each do |student|
-      existing_registration_preference = student.registration_preference_for @registration_school_year
-      if (not existing_registration_preference.nil?) and existing_registration_preference.registration_completed?
-        @completed_registraions << existing_registration_preference
+      student_status_flag = student.student_status_flag_for @registration_school_year
+      if (not student_status_flag.nil?) and student_status_flag.registered?
+        @completed_registraions << student.registration_preference_for(@registration_school_year)
       else
         # New registration preferences created here are not saved
         # they are only used to help rendering display options view
@@ -195,8 +195,8 @@ class Student::RegistrationController < ApplicationController
   def count_completed_registration_in_family_for(school_year)
     counter = 0
     find_possible_students.each do |student|
-      existing_registration_preference = student.registration_preference_for school_year
-      if (not existing_registration_preference.nil?) and existing_registration_preference.registration_completed?
+      student_status_flag = student.student_status_flag_for school_year
+      if (not student_status_flag.nil?) and student_status_flag.registered?
         counter += 1
       end
     end
