@@ -24,7 +24,8 @@ class Instruction::SchoolClassesController < ApplicationController
     @user.roles.any? do |role|
       role.name == Role::ROLE_NAME_SUPER_USER or 
       role.name == Role::ROLE_NAME_REGISTRATION_OFFICER or 
-      role.name == Role::ROLE_NAME_INSTRUCTION_OFFICER
+      role.name == Role::ROLE_NAME_INSTRUCTION_OFFICER or 
+      role.name == Role::ROLE_NAME_ACTIVITY_OFFICER
     end
   end
 end
