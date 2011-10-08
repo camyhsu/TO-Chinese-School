@@ -32,12 +32,13 @@ create_role(Role::ROLE_NAME_STUDENT_PARENT)
 Right.delete_all
 
 accounting_registration_report_payments_by_date = Right.create(:name => 'Accounting Registration Report Payments By Date', :controller => 'accounting/registration_report', :action => 'registration_payments_by_date')
+accounting_manual_transactions_new = Right.create(:name => 'Create Manual Transaction', :controller => 'accounting/manual_transactions', :action => 'new')
 
 grades_index = Right.create(:name => 'List Grades', :controller => 'admin/grades', :action => 'index')
 
 school_years_index = Right.create(:name => 'List School Years', :controller => 'admin/school_years', :action => 'index')
 school_years_show = Right.create(:name => 'Show School Year Details', :controller => 'admin/school_years', :action => 'show')
-school_years_new = Right.create(:name => 'Edit School Year Details', :controller => 'admin/school_years', :action => 'new')
+school_years_new = Right.create(:name => 'Create School Year', :controller => 'admin/school_years', :action => 'new')
 school_years_edit = Right.create(:name => 'Edit School Year Details', :controller => 'admin/school_years', :action => 'edit')
 
 school_classes_index = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
@@ -168,6 +169,8 @@ registration_officer.rights << instruction_school_classes_show
 registration_officer.rights << report_daily_registration_summary
 
 registration_officer.rights << student_transaction_history_show_for_staff
+
+registration_officer.rights << accounting_manual_transactions_new
 
 
 #
