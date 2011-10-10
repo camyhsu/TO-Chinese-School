@@ -147,6 +147,11 @@ class Person < ActiveRecord::Base
 
   def create_student_class_assignment_based_on_registration_preference(school_year)
     student_status_flag = student_status_flag_for school_year
+    if student_status_flag.nil?
+      student_status_flag = StudentStatusFlag.new
+      student_status_flag.school_year = school_year
+      student_status_flag.student = self
+    end
     return if student_status_flag.registered?
     student_class_assignment = student_class_assignment_for school_year
     if student_class_assignment.nil?
