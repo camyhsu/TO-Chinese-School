@@ -1,6 +1,7 @@
 class CreateManualTransactions < ActiveRecord::Migration
   def self.up
     create_table :manual_transactions do |t|
+      t.integer :recorded_by_id
       t.integer :student_id
       t.integer :transaction_by_id
       t.integer :amount_in_cents, :null => false, :default => 0

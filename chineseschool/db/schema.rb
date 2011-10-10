@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(:version => 20111008174427) do
   end
 
   create_table "manual_transactions", :force => true do |t|
+    t.integer  "recorded_by_id"
     t.integer  "student_id"
     t.integer  "transaction_by_id"
     t.integer  "amount_in_cents",   :default => 0, :null => false
