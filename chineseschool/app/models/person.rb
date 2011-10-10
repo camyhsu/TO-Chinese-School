@@ -166,13 +166,14 @@ class Person < ActiveRecord::Base
     StudentClassAssignment.transaction do
       student_class_assignment.save!
       student_status_flag.registered = true
+      student_status_flag.last_status_change_date = PacificDate.today
       student_status_flag.save!
     end
   end
   
-  def current_year_registration_time
-    current_year_student_status_flag = student_status_flag_for SchoolYear.current_school_year
-    return nil if (current_year_student_status_flag.nil? or !current_year_student_status_flag.registered?)
-    current_year_student_status_flag.updated_at
+  def current_year_registration_date
+    student_status_flag = student_status_flag_for SchoolYear.current_school_year
+    return nil if (student_status_flag.nil? or !student_status_flag.registered?)
+    student_status_flag.last_status_change_date
   end
 end

@@ -6,8 +6,8 @@ class CreateWithdrawalRecords < ActiveRecord::Migration
       t.integer  :grade_id
       t.integer  :school_class_id
       t.integer  :elective_class_id
-      t.datetime :registration_time
-      t.datetime :withdrawal_time
+      t.date :registration_date
+      t.date :withdrawal_date
 
       t.timestamps
     end

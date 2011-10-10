@@ -3,6 +3,7 @@ class CreateStudentStatusFlags < ActiveRecord::Migration
     create_table :student_status_flags do |t|
       t.integer :student_id
       t.integer :school_year_id
+      t.date :last_status_change_date
       t.boolean :registered, :null => false, :default => false
 
       t.timestamps
@@ -13,8 +14,7 @@ class CreateStudentStatusFlags < ActiveRecord::Migration
       student_status_flag.student_id = registration_preference.student_id
       student_status_flag.school_year_id = registration_preference.school_year_id
       student_status_flag.registered = registration_preference.registration_completed
-      student_status_flag.created_at = registration_preference.updated_at
-      student_status_flag.updated_at = registration_preference.updated_at
+      student_status_flag.last_status_change_date = PacificDate.for_utc registration_preference.updated_at
       student_status_flag.save!
     end
     

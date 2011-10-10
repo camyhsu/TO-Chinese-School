@@ -235,7 +235,8 @@ ActiveRecord::Schema.define(:version => 20111008231147) do
   create_table "student_status_flags", :force => true do |t|
     t.integer  "student_id"
     t.integer  "school_year_id"
-    t.boolean  "registered",     :default => false, :null => false
+    t.date     "last_status_change_date"
+    t.boolean  "registered",              :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -263,8 +264,8 @@ ActiveRecord::Schema.define(:version => 20111008231147) do
     t.integer  "grade_id"
     t.integer  "school_class_id"
     t.integer  "elective_class_id"
-    t.datetime "registration_time"
-    t.datetime "withdrawal_time"
+    t.date     "registration_date"
+    t.date     "withdrawal_date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

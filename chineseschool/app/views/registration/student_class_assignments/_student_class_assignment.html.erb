@@ -1,7 +1,7 @@
       <% student = student_class_assignment.student %>
       <td><%=h "#{student.english_first_name} #{student.english_last_name}" %></td>
       <td><%=h student.chinese_name %></td>
-      <td><%=h display_utc_time_in_pacific_iso_no_zone(student.current_year_registration_time) %></td>
+      <td><%=h student.current_year_registration_date %></td>
       <td><%=h student_class_assignment.grade.chinese_name %></td>
       <td>
         <%=h student_class_assignment.school_class.try(:chinese_name) %>

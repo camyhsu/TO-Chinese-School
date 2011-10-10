@@ -81,7 +81,7 @@ class ManualTransaction < ActiveRecord::Base
       student_status_flag.student = self.student
     end
     student_status_flag.registered = true
-    student_status_flag.updated_at = PacificDate.start_time_utc_for self.transaction_date
+    student_status_flag.last_status_change_date = self.transaction_date
     student_status_flag.save!
   end
   
@@ -90,14 +90,14 @@ class ManualTransaction < ActiveRecord::Base
     withdrawal_record = WithdrawalRecord.new
     withdrawal_record.school_year = current_school_year
     withdrawal_record.student = self.student
-    withdrawal_record.withdrawal_time = PacificDate.start_time_utc_for self.transaction_date
+    withdrawal_record.withdrawal_date = self.transaction_date
     
     # Grab the registration time and set the student status to NOT registered
     student_status_flag = self.student.student_status_flag_for current_school_year
     unless student_status_flag.nil?
-      withdrawal_record.registration_time = student_status_flag.updated_at
+      withdrawal_record.registration_date = student_status_flag.last_status_change_date
       student_status_flag.registered = false
-      student_status_flag.updated_at = PacificDate.start_time_utc_for self.transaction_date
+      student_status_flag.last_status_change_date = self.transaction_date
       student_status_flag.save!
     end
     
