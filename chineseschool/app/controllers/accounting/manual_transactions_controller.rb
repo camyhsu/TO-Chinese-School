@@ -7,7 +7,7 @@ class Accounting::ManualTransactionsController < ApplicationController
       @manual_transaction = ManualTransaction.new params[:manual_transaction]
       @manual_transaction.transaction_by_id = selected_transaction_by_id.to_i unless selected_transaction_by_id.blank?
       @manual_transaction.recorded_by = @user.person
-      if @manual_transaction.save#_with_side_effects
+      if @manual_transaction.save_with_side_effects
         flash[:notice] = 'Manual Transaction added successfully'
         redirect_to :controller => 'registration/people', :action => :show, :id => @manual_transaction.student_id
       end

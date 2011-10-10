@@ -41,4 +41,35 @@ class ManualTransaction < ActiveRecord::Base
     available_transaction_types << TRANSACTION_TYPE_OTHER_REFUND
     available_transaction_types
   end
+  
+  def save_with_side_effects
+    if self.transaction_type == TRANSACTION_TYPE_REGISTRATION
+      begin
+        ManualTransaction.transaction do
+          save!
+          set_student_status_to_registered
+        end
+        true
+      rescue => e
+        puts "Saving manual transaction failed - Exception => #{e.inspect}"
+        errors.add_to_base 'System Transaction Failed' if errors.empty?
+        false
+      end
+    elsif self.transaction_type == TRANSACTION_TYPE_WITHDRAWAL
+      
+    else
+      save
+    end
+  end
+  
+  def set_student_status_to_registered
+    student_status_flag = self.student.student_status_flag_for SchoolYear.current_school_year
+    if student_status_flag.nil?
+      student_status_flag = StudentStatusFlag.new
+      student_status_flag.school_year = SchoolYear.current_school_year
+      student_status_flag.student = self.student
+    end
+    student_status_flag.registered = true
+    student_status_flag.save!
+  end
 end
