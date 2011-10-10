@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111008174427) do
+ActiveRecord::Schema.define(:version => 20111008231147) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -253,6 +253,18 @@ ActiveRecord::Schema.define(:version => 20111008174427) do
     t.string   "password_hash"
     t.string   "password_salt"
     t.integer  "person_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "withdrawal_records", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "school_year_id"
+    t.integer  "grade_id"
+    t.integer  "school_class_id"
+    t.integer  "elective_class_id"
+    t.datetime "registration_time"
+    t.datetime "withdrawal_time"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
