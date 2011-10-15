@@ -1,4 +1,4 @@
-class Registration::RefundController < ApplicationController
+class Admin::RefundController < ApplicationController
 
   def refund_full_registration_payment
     if request.post?
