@@ -81,7 +81,8 @@
 <hr/>
 <h3>Transation History as Student for <%=h @person.name %></h3>
 <% completed_registration_payments = @person.find_completed_registration_payments_as_students %>
-<% if completed_registration_payments.empty? %>
+<% manual_transactions = @person.find_manual_transactions_as_students %>
+<% if completed_registration_payments.empty? and manual_transactions.empty? %>
   <p style="font-weight: bold;">No Transaction History</p>
 <% else %>
   <table class="transaction-history-table" border="0px">
@@ -107,6 +108,22 @@
         </td>
         <td>
           Credit Card
+        </td>
+      </tr>
+      <% end %>
+      <tr>
+        <td colspan="3"><hr/></td>
+      </tr>
+      <% manual_transactions.each do |manual_transaction| %>
+      <tr>
+        <td>
+          <%= link_to display_utc_time_in_pacific(manual_transaction.updated_at), {:controller => '/accounting/manual_transactions', :action => 'show', :id => manual_transaction}, {:class => 'button'} %>
+        </td>
+        <td>
+          <%= manual_transaction.transaction_type %>
+        </td>
+        <td>
+          <%= manual_transaction.payment_method %>
         </td>
       </tr>
       <% end %>

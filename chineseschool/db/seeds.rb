@@ -33,6 +33,7 @@ Right.delete_all
 
 accounting_registration_report_payments_by_date = Right.create(:name => 'Accounting Registration Report Payments By Date', :controller => 'accounting/registration_report', :action => 'registration_payments_by_date')
 accounting_manual_transactions_new = Right.create(:name => 'Create Manual Transaction', :controller => 'accounting/manual_transactions', :action => 'new')
+accounting_manual_transactions_show = Right.create(:name => 'Show Manual Transaction', :controller => 'accounting/manual_transactions', :action => 'show')
 
 grades_index = Right.create(:name => 'List Grades', :controller => 'admin/grades', :action => 'index')
 
@@ -171,6 +172,7 @@ registration_officer.rights << report_daily_registration_summary
 registration_officer.rights << student_transaction_history_show_for_staff
 
 registration_officer.rights << accounting_manual_transactions_new
+registration_officer.rights << accounting_manual_transactions_show
 
 
 #

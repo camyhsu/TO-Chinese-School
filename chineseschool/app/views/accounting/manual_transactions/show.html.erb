@@ -1,0 +1,35 @@
+<% @title = 'Manual Transaction Details' %>
+
+<h3>Manual Transaction for <%=h @manual_transaction.student.name %></h3>
+<p>
+  This transaction is executed by <%=h @manual_transaction.transaction_by.name %><br/>
+  and recorded by <%=h @manual_transaction.recorded_by.name %> at <%=display_utc_time_in_pacific @manual_transaction.updated_at %>
+</p>
+<table class="manual-transaction-detail" border="0px">
+  <tr>
+    <td class="label">Transaction Type:</td>
+    <td><%=h @manual_transaction.transaction_type %></td>
+  </tr>
+  <tr>
+    <td class="label">Transaction Date:</td>
+    <td><%=h @manual_transaction.transaction_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Payment Method:</td>
+    <td><%=h @manual_transaction.payment_method %></td>
+  </tr>
+  <% if @manual_transaction.payment_method == ManualTransaction::PAYMENT_METHOD_CHECK %>
+    <tr>
+      <td class="label">Check Number:</td>
+      <td><%=h @manual_transaction.check_number %></td>
+    </tr>
+  <% end %>
+  <tr>
+    <td class="label">Amount:</td>
+    <td><%=display_price(@manual_transaction.amount_in_cents / 100.0) %></td>
+  </tr>
+  <tr>
+    <td class="label">Note:</td>
+    <td><%=h @manual_transaction.note %></td>
+  </tr>
+</table>

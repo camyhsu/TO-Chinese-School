@@ -17,4 +17,8 @@ class Accounting::ManualTransactionsController < ApplicationController
       @manual_transaction.transaction_date = PacificDate.today
     end
   end
+  
+  def show
+    @manual_transaction = ManualTransaction.find_by_id params[:id].to_i
+  end
 end

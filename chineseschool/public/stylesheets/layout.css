@@ -289,3 +289,17 @@ select {
 .manual-transaction-edit .submit {
     margin-left: 18em;
 }
+
+.manual-transaction-detail td {
+    width: 10em;
+    float: left;
+    text-align: right;
+}
+
+.manual-transaction-detail .label {
+    width: 13em;
+    float: left;
+    font-weight: bold;
+    text-align: right;
+    margin-right: 0.5em;
+}
