@@ -1,5 +1,10 @@
 class Accounting::ManualTransactionsController < ApplicationController
   
+  def index
+    @manual_transactions = ManualTransaction.all
+    @manual_transactions.sort! {|a, b| b.updated_at <=> a.updated_at}
+  end
+  
   def new
     if request.post?
       # Remove transaction_by from params before creating the new ManualTransaction object due to type incompatibility (string v.s. integer)

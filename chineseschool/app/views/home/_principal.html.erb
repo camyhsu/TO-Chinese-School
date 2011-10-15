@@ -6,7 +6,7 @@
 <br/>
 <br/>
 <% @active_registration_school_years.each do |registration_year| %>
-  <%= link_to "Daily Registration Summary For #{registration_year.name} School Year", {:controller => '/registration/report', :action => 'daily_registration_summary', :id => registration_year}, {:class => 'button'} %>
+  <%= link_to "Daily Online Registration Summary For #{registration_year.name} School Year", {:controller => '/registration/report', :action => 'daily_online_registration_summary', :id => registration_year}, {:class => 'button'} %>
   <br/>
 <% end %>
 

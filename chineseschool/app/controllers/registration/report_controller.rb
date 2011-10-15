@@ -1,6 +1,6 @@
 class Registration::ReportController < ApplicationController
 
-  def daily_registration_summary
+  def daily_online_registration_summary
     @registration_school_year = SchoolYear.find_by_id params[:id].to_i
     registration_summary_hash = {}
     RegistrationPayment.find_paid_payments_for_school_year(@registration_school_year).each do |paid_payment|

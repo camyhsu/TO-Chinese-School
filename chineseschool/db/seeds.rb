@@ -32,8 +32,9 @@ create_role(Role::ROLE_NAME_STUDENT_PARENT)
 Right.delete_all
 
 accounting_registration_report_payments_by_date = Right.create(:name => 'Accounting Registration Report Payments By Date', :controller => 'accounting/registration_report', :action => 'registration_payments_by_date')
-accounting_manual_transactions_new = Right.create(:name => 'Create Manual Transaction', :controller => 'accounting/manual_transactions', :action => 'new')
+accounting_manual_transactions_index = Right.create(:name => 'List Manual Transaction', :controller => 'accounting/manual_transactions', :action => 'index')
 accounting_manual_transactions_show = Right.create(:name => 'Show Manual Transaction', :controller => 'accounting/manual_transactions', :action => 'show')
+accounting_manual_transactions_new = Right.create(:name => 'Create Manual Transaction', :controller => 'accounting/manual_transactions', :action => 'new')
 
 grades_index = Right.create(:name => 'List Grades', :controller => 'admin/grades', :action => 'index')
 
@@ -81,7 +82,7 @@ instructor_assignments_select_end_date = Right.create(:name => 'Select End Date 
 instructor_assignments_select_role = Right.create(:name => 'Select Role For Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'select_role')
 instructor_assignments_destroy = Right.create(:name => 'Destroy Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'destroy')
 
-report_daily_registration_summary = Right.create(:name => 'Daily Registration Summary Report', :controller => 'registration/report', :action => 'daily_registration_summary')
+report_daily_online_registration_summary = Right.create(:name => 'Daily Online Registration Summary Report', :controller => 'registration/report', :action => 'daily_online_registration_summary')
 
 
 instruction_school_classes_show = Right.create(:name => 'Student List For One School Class', :controller => 'instruction/school_classes', :action => 'show')
@@ -114,7 +115,7 @@ student_transaction_history_show_for_staff = Right.create(:name => 'Show Transac
 principal = Role.find_by_name(Role::ROLE_NAME_PRINCIPAL)
 principal.rights << active_school_classes_grade_class_student_count
 principal.rights << active_school_classes_elective_class_student_count
-principal.rights << report_daily_registration_summary
+principal.rights << report_daily_online_registration_summary
 
 
 #
@@ -167,7 +168,7 @@ registration_officer.rights << instructor_assignments_destroy
 
 registration_officer.rights << instruction_school_classes_show
 
-registration_officer.rights << report_daily_registration_summary
+registration_officer.rights << report_daily_online_registration_summary
 
 registration_officer.rights << student_transaction_history_show_for_staff
 
@@ -181,9 +182,12 @@ registration_officer.rights << accounting_manual_transactions_show
 accounting_officer = Role.find_by_name(Role::ROLE_NAME_ACCOUNTING_OFFICER)
 accounting_officer.rights << active_school_classes_grade_class_student_count
 accounting_officer.rights << active_school_classes_elective_class_student_count
-accounting_officer.rights << report_daily_registration_summary
+accounting_officer.rights << report_daily_online_registration_summary
 accounting_officer.rights << accounting_registration_report_payments_by_date
 accounting_officer.rights << student_transaction_history_show_for_staff
+
+accounting_officer.rights << accounting_manual_transactions_index
+accounting_officer.rights << accounting_manual_transactions_show
 
 
 #
