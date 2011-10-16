@@ -104,9 +104,9 @@ student_registration_submit_payment = Right.create(:name => 'Submit Payment', :c
 student_registration_payment_confirmation = Right.create(:name => 'Show Payment Confirmation', :controller => 'student/registration', :action => 'payment_confirmation')
 
 student_transaction_history_index = Right.create(:name => 'List Transaction History', :controller => 'student/transaction_history', :action => 'index')
-student_transaction_history_show = Right.create(:name => 'Show Transaction Detail', :controller => 'student/transaction_history', :action => 'show')
-student_transaction_history_show_for_staff = Right.create(:name => 'Show Transaction Detail For Staff', :controller => 'student/transaction_history', :action => 'show_for_staff')
-
+student_transaction_history_show_registration_payment = Right.create(:name => 'Show Registration Payment Detail', :controller => 'student/transaction_history', :action => 'show_registration_payment')
+student_transaction_history_show_registration_payment_for_staff = Right.create(:name => 'Show Registration Payment Detail For Staff', :controller => 'student/transaction_history', :action => 'show_registration_payment_for_staff')
+student_transaction_history_show_manual_transaction = Right.create(:name => 'Show Manual Transaction Detail', :controller => 'student/transaction_history', :action => 'show_manual_transaction')
 
 
 #
@@ -170,7 +170,7 @@ registration_officer.rights << instruction_school_classes_show
 
 registration_officer.rights << report_daily_online_registration_summary
 
-registration_officer.rights << student_transaction_history_show_for_staff
+registration_officer.rights << student_transaction_history_show_registration_payment_for_staff
 
 registration_officer.rights << accounting_manual_transactions_new
 registration_officer.rights << accounting_manual_transactions_show
@@ -184,7 +184,7 @@ accounting_officer.rights << active_school_classes_grade_class_student_count
 accounting_officer.rights << active_school_classes_elective_class_student_count
 accounting_officer.rights << report_daily_online_registration_summary
 accounting_officer.rights << accounting_registration_report_payments_by_date
-accounting_officer.rights << student_transaction_history_show_for_staff
+accounting_officer.rights << student_transaction_history_show_registration_payment_for_staff
 
 accounting_officer.rights << accounting_manual_transactions_index
 accounting_officer.rights << accounting_manual_transactions_show
@@ -242,4 +242,5 @@ student_parent.rights << student_registration_submit_payment
 student_parent.rights << student_registration_payment_confirmation
 
 student_parent.rights << student_transaction_history_index
-student_parent.rights << student_transaction_history_show
+student_parent.rights << student_transaction_history_show_registration_payment
+student_parent.rights << student_transaction_history_show_manual_transaction

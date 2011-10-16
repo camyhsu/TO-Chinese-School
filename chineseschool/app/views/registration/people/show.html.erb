@@ -82,7 +82,7 @@
 <h3>Transation History as Student for <%=h @person.name %></h3>
 <% completed_registration_payments = @person.find_completed_registration_payments_as_students %>
 <% manual_transactions = @person.find_manual_transactions_as_students %>
-<% if completed_registration_payments.empty? and manual_transactions.empty? %>
+<% if (completed_registration_payments.empty? and manual_transactions.empty?) %>
   <p style="font-weight: bold;">No Transaction History</p>
 <% else %>
   <table class="transaction-history-table" border="0px">
@@ -97,7 +97,7 @@
       <% completed_registration_payments.each do |registration_payment| %>
       <tr>
         <td>
-          <%= link_to display_utc_time_in_pacific(registration_payment.updated_at), {:controller => '/student/transaction_history', :action => 'show_for_staff', :id => registration_payment}, {:class => 'button'} %>
+          <%= link_to display_utc_time_in_pacific(registration_payment.updated_at), {:controller => '/student/transaction_history', :action => 'show_registration_payment_for_staff', :id => registration_payment}, {:class => 'button'} %>
         </td>
         <td>
           <% if registration_payment.grand_total_in_cents < 0 %>

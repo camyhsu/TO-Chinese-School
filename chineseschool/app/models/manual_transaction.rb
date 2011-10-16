@@ -28,6 +28,14 @@ class ManualTransaction < ActiveRecord::Base
     self.amount_in_cents = (amount.to_f * 100).to_i
   end
   
+  def amount_with_sign
+    if (self.transaction_type == TRANSACTION_TYPE_WITHDRAWAL or self.transaction_type == TRANSACTION_TYPE_OTHER_REFUND)
+      -1 * self.amount
+    else
+      self.amount
+    end
+  end
+  
   def find_available_transaction_types
     available_transaction_types = []
     student_status_flag = self.student.student_status_flag_for SchoolYear.current_school_year

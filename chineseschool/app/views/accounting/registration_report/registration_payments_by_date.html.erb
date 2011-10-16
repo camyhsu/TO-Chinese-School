@@ -18,7 +18,7 @@
       <% @paid_registration_payments.each do |registration_payment| -%>
         <tr>
           <td>
-            <%= link_to display_utc_time_in_pacific(registration_payment.updated_at), {:controller => '/student/transaction_history', :action => 'show_for_staff', :id => registration_payment}, {:class => 'button'} %>
+            <%= link_to display_utc_time_in_pacific(registration_payment.updated_at), {:controller => '/student/transaction_history', :action => 'show_registration_payment_for_staff', :id => registration_payment}, {:class => 'button'} %>
           </td>
           <td><%=h registration_payment.paid_by.name %></td>
           <td>

@@ -2,33 +2,64 @@
 
 <h3>Transaction History</h3>
 
-<% if @registration_payments.empty? %>
-<p style="font-weight: bold;">No Transaction History</p>
+<% if (@registration_payments.empty? and @manual_transactions.empty?) %>
+  <p style="font-weight: bold;">No Transaction History</p>
 <% else %>
-  <table class="transaction-history-table" border="0px">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Type</th>
-        <th>Amount Paid</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @registration_payments.each do |registration_payment| -%>
+  <% unless @registration_payments.empty? %>
+    <br/>
+    <h4>Online Transactions</h4>
+    <table class="transaction-history-table" border="0px">
+      <thead>
         <tr>
-          <td>
-            <%= link_to display_utc_time_in_pacific(registration_payment.updated_at), :action => :show, :id => registration_payment %>
-          </td>
-          <td>
-            <% if registration_payment.grand_total_in_cents < 0 %>
-              System Adjustment
-            <% else %>
-              Registration
-            <% end %>
-          </td>
-          <td><%= display_price registration_payment.grand_total %></td>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Amount</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @registration_payments.each do |registration_payment| -%>
+          <tr>
+            <td>
+              <%= link_to display_utc_time_in_pacific(registration_payment.updated_at), {:action => :show_registration_payment, :id => registration_payment}, {:class => 'button'} %>
+            </td>
+            <td>
+              <% if registration_payment.grand_total_in_cents < 0 %>
+                System Adjustment
+              <% else %>
+                Registration
+              <% end %>
+            </td>
+            <td><%= display_price registration_payment.grand_total %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br/>
+  <% end %>
+  <% unless @manual_transactions.empty? %>
+    <br/>
+    <h4>In Person Transactions</h4>
+    <table class="transaction-history-table" border="0px">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @manual_transactions.each do |manual_transaction| -%>
+          <tr>
+            <td>
+              <%= link_to manual_transaction.transaction_date, {:action => :show_manual_transaction, :id => manual_transaction}, {:class => 'button'} %>
+            </td>
+            <td>
+              <%=h manual_transaction.transaction_type %>
+            </td>
+            <td><%= display_price manual_transaction.amount_with_sign %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
 <% end %>

@@ -1,4 +1,4 @@
-<% @title = 'Transaction History' %>
+<% @title = 'Online Transaction Detail' %>
 
 <p>
   This <% if @gateway_transaction.credit? -%>refund<% else %>payment<% end %>
@@ -12,4 +12,3 @@
 <%= render :partial => '/student/registration/registration_payment', :object => @registration_payment %>
 <br/>
 <%= link_to 'Return to Transaction History', {:action => :index}, {:class => 'button'} %>
-
