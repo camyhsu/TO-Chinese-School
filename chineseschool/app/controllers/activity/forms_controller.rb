@@ -2,7 +2,22 @@ class Activity::FormsController < ApplicationController
   
   def fire_drill_form
     @current_school_year = SchoolYear.current_school_year
-    active_student_class_assignments = StudentClassAssignment.all(:conditions => ['school_class_id is not null AND school_year_id = ?', @current_school_year.id])
+    retrieve_sorted_class_lists
+    prawnto :filename => 'fire_drill_roster_forms.pdf'
+    render :layout => false
+  end
+  
+  def students_by_class
+    retrieve_sorted_class_lists
+    headers["Content-Type"] = 'text/csv'
+    headers["Content-Disposition"] = 'attachment; filename="students_by_class.csv"'
+    render :layout => false
+  end
+  
+  private
+  
+  def retrieve_sorted_class_lists
+    active_student_class_assignments = StudentClassAssignment.all(:conditions => ['school_class_id is not null AND school_year_id = ?', SchoolYear.current_school_year.id])
     @class_lists = Hash.new { |hash, key| hash[key] = [] }
     active_student_class_assignments.each do |student_class_assignment|
       @class_lists[student_class_assignment.school_class] << student_class_assignment.student
@@ -18,8 +33,5 @@ class Activity::FormsController < ApplicationController
       end
     end
     @sorted_school_classes = @class_lists.keys.sort { |a, b| a.short_name <=> b.short_name }
-    prawnto :filename => 'fire_drill_roster_forms.pdf'
-    render :layout => false
   end
-  
 end

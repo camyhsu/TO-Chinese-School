@@ -6,6 +6,9 @@
 <br/>
 <%= link_to 'List Active School Classes', {:controller => '/instruction/active_school_classes', :action => 'index'}, {:class => 'button'} %>
 <br/>
+<br/>
+<%= link_to "Download Student List CSV", {:controller => '/activity/forms', :action => 'students_by_class', :format => 'csv'}, {:class => 'button'} %>
+<br/>
 
 <br/>
 <hr/>
