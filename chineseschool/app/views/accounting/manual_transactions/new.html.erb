@@ -6,7 +6,7 @@
 
   <% form_for :manual_transaction do |form| %>
     <fieldset>
-        <legend>New Manual Transaction</legend>
+        <legend>New Manual Transaction for <%=h @manual_transaction.student.name %> as Student</legend>
         <span class="manual-transaction-edit">
           <%= form.hidden_field :student_id %>
           <div>
