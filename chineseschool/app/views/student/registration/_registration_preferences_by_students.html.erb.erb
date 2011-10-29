@@ -1,0 +1,29 @@
+  <table class="registration-options-table" border="0px">
+    <thead>
+      <tr>
+        <th></th>
+        <th><%=h @previous_school_year.name %> Grade</th>
+        <th><%=h @registration_school_year.name %> Grade</th>
+        <th>Preferred School Class Type</th>
+        <th>Preferred Elective Class</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @registered_students.each do |registered_student| -%>
+        <% registration_preference = registered_student.registration_preference_for(@registration_school_year) %>
+        <tr>
+          <td><%=h registered_student.name %></td>
+          <td>
+            <% if registration_preference.try(:previous_grade).nil? -%>
+              Not In Record
+            <% else %>
+              <%=h registration_preference.try(:previous_grade).name %>
+            <% end %>
+          </td>
+          <td><%=h registration_preference.try(:grade).try(:name) %></td>
+          <td><%=h registration_preference.try(:school_class_type) %></td>
+          <td><%=h registration_preference.try(:elective_class).try(:name) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>

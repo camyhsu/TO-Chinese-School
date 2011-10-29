@@ -90,12 +90,12 @@ class Student::RegistrationController < ApplicationController
   private
 
   def create_registration_preferences_for_display_optioins
-    @completed_registraions = []
+    @registered_students = []
     @registration_preferences = []
     find_possible_students.each do |student|
       student_status_flag = student.student_status_flag_for @registration_school_year
       if (not student_status_flag.nil?) and student_status_flag.registered?
-        @completed_registraions << student.registration_preference_for(@registration_school_year)
+        @registered_students << student#.registration_preference_for(@registration_school_year)
       else
         # New registration preferences created here are not saved
         # they are only used to help rendering display options view

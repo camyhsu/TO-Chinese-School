@@ -42,41 +42,18 @@
   </li>
 </ul>
 <br/>
-<% unless @completed_registraions.empty? %>
+<% unless @registered_students.empty? %>
   <h3>Students Already Registered For <%=h @registration_school_year.name %> School Year</h3>
-  <table class="registration-options-table" border="0px">
-    <thead>
-      <tr>
-        <th></th>
-        <th><%=h @previous_school_year.name %> Grade</th>
-        <th><%=h @registration_school_year.name %> Grade</th>
-        <th>Preferred School Class Type</th>
-        <th>Preferred Elective Class</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @completed_registraions.each do |completed_registration_preference| -%>
-        <tr>
-          <td><%=h completed_registration_preference.student.name %></td>
-          <td>
-            <% if completed_registration_preference.previous_grade.nil? -%>
-              Not In Record
-            <% else %>
-              <%=h completed_registration_preference.previous_grade.name %>
-            <% end %>
-          </td>
-          <td><%=h completed_registration_preference.grade.name %></td>
-          <td><%=h completed_registration_preference.school_class_type %></td>
-          <td><%=h completed_registration_preference.elective_class.try(:name) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <% if PacificDate.today >= @registration_school_year.start_date %>
+    <%= render :partial => 'class_assignments_by_students' %>
+  <% else %>
+    <%= render :partial => 'registration_preferences_by_students' %>
+  <% end %>
   <br/>
 <% end %>
 
 <% if @registration_preferences.empty? %>
-  <% if @completed_registraions.empty? %>
+  <% if @registered_students.empty? %>
     <p style="font-weight: bold; color: red;">
       No eligible students to register - please contact registration@to-cs.org for special case registration
     </p>

@@ -303,3 +303,11 @@ select {
     text-align: right;
     margin-right: 0.5em;
 }
+
+.registration-options-class-assignment-table td {
+    width: 12em;
+    height: 2em;
+    text-align: center;
+    padding-left: 1em;
+    padding-right: 1em;
+}
