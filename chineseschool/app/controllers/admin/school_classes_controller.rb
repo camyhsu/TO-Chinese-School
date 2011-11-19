@@ -38,6 +38,7 @@ class Admin::SchoolClassesController < ApplicationController
       @school_class.short_name = params[:school_class][:short_name]
       @school_class.description = params[:school_class][:description]
       @school_class.location = params[:school_class][:location]
+      @school_class.school_class_type = params[:school_class][:school_class_type]
       @school_class.max_size = params[:school_class][:max_size]
       @school_class.min_age = params[:school_class][:min_age]
       @school_class.max_age = params[:school_class][:max_age]

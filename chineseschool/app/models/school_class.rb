@@ -1,10 +1,17 @@
 class SchoolClass < ActiveRecord::Base
   
+  SCHOOL_CLASS_TYPE_ELECTIVE = 'ELECTIVE'
+  SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION = 'SE'
+  SCHOOL_CLASS_TYPE_SIMPLIFIED = 'S'
+  SCHOOL_CLASS_TYPE_TRADITIONAL = 'T'
+  
+  SCHOOL_CLASS_TYPES = [SCHOOL_CLASS_TYPE_SIMPLIFIED, SCHOOL_CLASS_TYPE_TRADITIONAL, SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION, SCHOOL_CLASS_TYPE_ELECTIVE]
+  
   belongs_to :grade
 
   has_many :school_class_active_flags
 
-  validates_presence_of :english_name, :chinese_name
+  validates_presence_of :english_name, :chinese_name, :school_class_type
   validates_uniqueness_of :english_name, :chinese_name
 
   validates_numericality_of :max_size, :only_integer => true, :greater_than => 0, :allow_nil => false
@@ -17,7 +24,7 @@ class SchoolClass < ActiveRecord::Base
   end
 
   def elective?
-    self.grade.nil?
+    self.school_class_type == SCHOOL_CLASS_TYPE_ELECTIVE
   end
 
   def active_in?(school_year)
@@ -81,11 +88,11 @@ class SchoolClass < ActiveRecord::Base
   end
 
   def self.find_all_active_elective_classes
-    self.all(:conditions => ['grade_id is null']).reject { |elective_class| !elective_class.active_in?(SchoolYear.current_school_year) }
+    self.all(:conditions => ['school_class_type = ?', SCHOOL_CLASS_TYPE_ELECTIVE]).reject { |elective_class| !elective_class.active_in?(SchoolYear.current_school_year) }
   end
 
   def self.find_available_elective_classes_for_registration(scchool_age, school_year)
-    self.all(:conditions => ['grade_id is null']).reject do |elective_class|
+    self.all(:conditions => ['school_class_type = ?', SCHOOL_CLASS_TYPE_ELECTIVE]).reject do |elective_class|
       !elective_class.active_in?(school_year) or
           !elective_class.allow_school_age?(scchool_age) or
           elective_class.elective_is_full_for?(school_year)

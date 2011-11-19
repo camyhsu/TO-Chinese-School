@@ -5,7 +5,7 @@ describe StudentClassAssignment, 'setting school class based on registration pre
 
   it 'should set school class to english instruction class if registration preference demands english instruction' do
     registration_preference = RegistrationPreference.new
-    registration_preference.school_class_type = RegistrationPreference::SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION
+    registration_preference.school_class_type = SchoolClass::SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION
     student_class_assignment = StudentClassAssignment.new
     student_class_assignment.grade = grades(:first_grade)
     student_class_assignment.set_school_class_based_on registration_preference
@@ -14,7 +14,7 @@ describe StudentClassAssignment, 'setting school class based on registration pre
 
   it 'should set school class to traditional class if registration preference demands traditional' do
     registration_preference = RegistrationPreference.new
-    registration_preference.school_class_type = RegistrationPreference::SCHOOL_CLASS_TYPE_TRADITIONAL
+    registration_preference.school_class_type = SchoolClass::SCHOOL_CLASS_TYPE_TRADITIONAL
     student_class_assignment = StudentClassAssignment.new
     student_class_assignment.grade = grades(:first_grade)
     student_class_assignment.set_school_class_based_on registration_preference
@@ -23,7 +23,7 @@ describe StudentClassAssignment, 'setting school class based on registration pre
 
   it 'should set school class to default simplified class if registration preference demands simplified' do
     registration_preference = RegistrationPreference.new
-    registration_preference.school_class_type = RegistrationPreference::SCHOOL_CLASS_TYPE_SIMPLIFIED
+    registration_preference.school_class_type = SchoolClass::SCHOOL_CLASS_TYPE_SIMPLIFIED
     student_class_assignment = StudentClassAssignment.new
     student_class_assignment.grade = grades(:first_grade)
     student_class_assignment.set_school_class_based_on registration_preference

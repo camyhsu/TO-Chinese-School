@@ -19,6 +19,10 @@
             <%= school_class_form.text_field :location, :size => 20 %>
           </div>
           <div>
+            <label for="school_class_type">Type:</label>
+            <%= school_class_form.select :school_class_type, SchoolClass::SCHOOL_CLASS_TYPES, {:include_blank => true} %>
+          </div>
+          <div>
             <label for="max_size"><span style="color:red">*&nbsp;</span>Max Size:</label>
             <%= school_class_form.text_field :max_size, :size => 4 %>
           </div>

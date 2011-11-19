@@ -1,9 +1,5 @@
 class RegistrationPreference < ActiveRecord::Base
   
-  SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION = 'SE'
-  SCHOOL_CLASS_TYPE_SIMPLIFIED = 'S'
-  SCHOOL_CLASS_TYPE_TRADITIONAL = 'T'
-
   belongs_to :school_year
   belongs_to :student, :class_name => 'Person', :foreign_key => 'student_id'
   belongs_to :entered_by, :class_name => 'Person', :foreign_key => 'entered_by_id'
@@ -15,10 +11,10 @@ class RegistrationPreference < ActiveRecord::Base
 
   def find_available_school_class_type_options
     available_school_class_types = []
-    available_school_class_types << ['S(簡)', SCHOOL_CLASS_TYPE_SIMPLIFIED]
-    available_school_class_types << ['T(繁)', SCHOOL_CLASS_TYPE_TRADITIONAL]
+    available_school_class_types << ['S(簡)', SchoolClass::SCHOOL_CLASS_TYPE_SIMPLIFIED]
+    available_school_class_types << ['T(繁)', SchoolClass::SCHOOL_CLASS_TYPE_TRADITIONAL]
     if ('K' == self.grade.short_name) or ('1' == self.grade.short_name) or ('2' == self.grade.short_name)
-      available_school_class_types << ['SE(雙語)', SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION]
+      available_school_class_types << ['SE(雙語)', SchoolClass::SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION]
     end
     available_school_class_types
   end
