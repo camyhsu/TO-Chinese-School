@@ -102,6 +102,10 @@ class SchoolYear < ActiveRecord::Base
   def self.find_active_registration_school_years
     self.all :conditions => ['registration_start_date <= ? AND registration_end_date >= ?', PacificDate.today, PacificDate.today], :order => 'start_date ASC'
   end
+  
+  def school_has_started?
+    PacificDate.today >= self.start_date
+  end
 
   private
 

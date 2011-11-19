@@ -44,7 +44,7 @@
 <br/>
 <% unless @registered_students.empty? %>
   <h3>Students Already Registered For <%=h @registration_school_year.name %> School Year</h3>
-  <% if PacificDate.today >= @registration_school_year.start_date %>
+  <% if @registration_school_year.school_has_started? %>
     <%= render :partial => 'class_assignments_by_students' %>
   <% else %>
     <%= render :partial => 'registration_preferences_by_students' %>
