@@ -133,26 +133,26 @@ describe Grade, 'finding grade by school age' do
   end
 end
 
-describe Grade, 'finding english instruction school class' do
+describe Grade, 'finding next assignable english instruction school class' do
   fixtures :grades, :school_classes
 
-  it 'should find school class with short name ended with C' do
-    grades(:first_grade).find_english_instruction_school_class.should == school_classes(:first_grade_class_c)
+  it 'should find school class of type english instruction' do
+    grades(:first_grade).find_next_assignable_school_class(SchoolClass::SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION).should == school_classes(:first_grade_class_c)
   end
 end
 
-describe Grade, 'finding traditional school class' do
+describe Grade, 'finding next assignable traditional school class' do
   fixtures :grades, :school_classes
 
-  it 'should find school class with short name ended with A' do
-    grades(:first_grade).find_traditional_school_class.should == school_classes(:first_grade)
+  it 'should find school class of type traditional' do
+    grades(:first_grade).find_next_assignable_school_class(SchoolClass::SCHOOL_CLASS_TYPE_TRADITIONAL).should == school_classes(:first_grade)
   end
 end
 
-describe Grade, 'finding default simplified school class' do
+describe Grade, 'finding next assignable simplified school class' do
   fixtures :grades, :school_classes
 
-  it 'should find school class with short name ended with B' do
-    grades(:first_grade).find_default_simplified_school_class.should == school_classes(:first_grade_class_b)
+  it 'should find school class of type simplified' do
+    grades(:first_grade).find_next_assignable_school_class(SchoolClass::SCHOOL_CLASS_TYPE_SIMPLIFIED).should == school_classes(:first_grade_class_b)
   end
 end

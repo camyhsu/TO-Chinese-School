@@ -9,16 +9,6 @@ class StudentClassAssignment < ActiveRecord::Base
   validates_presence_of :student, :grade, :school_year
 
   def set_school_class_based_on(registration_preference)
-    if SchoolClass::SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION == registration_preference.school_class_type
-      self.school_class = self.grade.find_english_instruction_school_class
-    elsif SchoolClass::SCHOOL_CLASS_TYPE_TRADITIONAL == registration_preference.school_class_type
-      self.school_class = self.grade.find_traditional_school_class
-    else
-      if SchoolYear.current_school_year.school_has_started?
-        
-      else
-        self.school_class = nil
-      end
-    end
+    self.school_class = self.grade.find_next_assignable_school_class registration_preference.school_class_type, self.school_year
   end
 end

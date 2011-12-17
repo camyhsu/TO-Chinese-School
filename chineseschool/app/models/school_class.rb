@@ -44,10 +44,10 @@ class SchoolClass < ActiveRecord::Base
     school_class_active_flag.save!
   end
 
-  def class_size
+  def class_size(school_year = SchoolYear.current_school_year)
     class_clause = 'school_class_id = ?'
     class_clause = 'elective_class_id = ?' if elective?
-    StudentClassAssignment.count(:conditions => ["#{class_clause} AND school_year_id = ?", self.id, SchoolYear.current_school_year.id])
+    StudentClassAssignment.count(:conditions => ["#{class_clause} AND school_year_id = ?", self.id, school_year.id])
   end
 
   def students

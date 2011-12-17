@@ -40,16 +40,13 @@ class Grade < ActiveRecord::Base
     false
   end
 
-  def find_english_instruction_school_class
-    self.school_classes.first :conditions => "short_name like '%C'"
-  end
-
-  def find_traditional_school_class
-    self.school_classes.first :conditions => "short_name like '%A'"
-  end
-
-  def find_default_simplified_school_class
-    self.school_classes.first :conditions => "short_name like '%B'"
+  def find_next_assignable_school_class(school_class_type, school_year)
+    assignable_school_classes = self.school_classes.all(:conditions => ['school_class_type = ?', school_class_type])
+    return nil if assignable_school_classes.empty?
+    return assignable_school_classes[0] if assignable_school_classes.size == 1
+    # If there are more than one school class assignable, but the school has not started yet, don't assign automatically
+    return nil unless school_year.school_has_started?
+    pick_school_class_with_lowest_head_count_from assignable_school_classes, school_year
   end
   
   def self.find_by_school_age(school_age)
@@ -72,5 +69,19 @@ class Grade < ActiveRecord::Base
       grade = grade.next_grade unless grade.nil?
     end
     grade
+  end
+  
+  
+  private
+  
+  def pick_school_class_with_lowest_head_count_from(school_classes, school_year)
+    current_school_class_picked = school_classes.shift
+    current_lowest_head_count = current_school_class_picked.class_size school_year
+    school_classes.each do |school_class|
+      if school_class.class_size < current_lowest_head_count
+        current_school_class_picked = school_class
+        current_lowest_head_count = current_school_class_picked.class_size school_year
+      end
+    end
   end
 end
