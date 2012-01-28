@@ -18,8 +18,8 @@ class Grade < ActiveRecord::Base
     self.student_class_assignments.all :conditions => ['school_year_id = ?', SchoolYear.current_school_year.id]
   end
 
-  def active_school_classes
-    self.school_classes.reject { |school_class| !school_class.active_in?(SchoolYear.current_school_year) }
+  def active_school_classes(school_year = SchoolYear.current_school_year)
+    self.school_classes.reject { |school_class| !school_class.active_in?(school_year) }
   end
 
   def has_active_school_classes_in?(school_year)
@@ -41,12 +41,17 @@ class Grade < ActiveRecord::Base
   end
 
   def find_next_assignable_school_class(school_class_type, school_year)
-    assignable_school_classes = self.school_classes.all(:conditions => ['school_class_type = ?', school_class_type])
+    assignable_school_classes = self.active_school_classes(school_year).select { |active_school_class| active_school_class.school_class_type == school_class_type }
     return nil if assignable_school_classes.empty?
     return assignable_school_classes[0] if assignable_school_classes.size == 1
     # If there are more than one school class assignable, but the school has not started yet, don't assign automatically
     return nil unless school_year.school_has_started?
     pick_school_class_with_lowest_head_count_from assignable_school_classes, school_year
+  end
+  
+  def find_available_school_class_types(school_year)
+    school_class_types = self.active_school_classes(school_year).collect { |active_school_class| active_school_class.school_class_type }
+    school_class_types.uniq.compact.sort
   end
   
   def self.find_by_school_age(school_age)

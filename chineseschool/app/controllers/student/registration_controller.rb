@@ -100,6 +100,7 @@ class Student::RegistrationController < ApplicationController
         # New registration preferences created here are not saved
         # they are only used to help rendering display options view
         new_registration_preference = RegistrationPreference.new
+        new_registration_preference.school_year = @registration_school_year
         new_registration_preference.student = student
         previous_school_year_class_assignment = student.student_class_assignment_for @registration_school_year.previous_school_year
         if previous_school_year_class_assignment.nil?
@@ -107,6 +108,7 @@ class Student::RegistrationController < ApplicationController
           # Temporarily close PreK registration
           #age_based_grade = Grade.find_by_school_age(student.school_age_for(@registration_school_year))
           age_based_grade = Grade.find_by_school_age_without_prek(student.school_age_for(@registration_school_year))
+          
           unless age_based_grade.nil?
             new_registration_preference.grade = age_based_grade.snap_down_to_first_active_grade @registration_school_year
             @registration_preferences << new_registration_preference
@@ -130,7 +132,7 @@ class Student::RegistrationController < ApplicationController
         registration_preference = find_or_create_registration_preference_for student
         registration_preference.previous_grade_id = extract_previous_grade_id_from_params student.id
         registration_preference.grade_id = extract_grade_id_from_params student.id
-        registration_preference.school_class_type = params["#{student.id}_school_class_type".to_sym][:school_class_type]
+        registration_preference.school_class_type = extract_school_class_type_from_params student.id
         registration_preference.elective_class_id = extract_elective_class_id_from_params student.id
         if registration_preference.save
           registration_preferences << registration_preference
@@ -161,6 +163,13 @@ class Student::RegistrationController < ApplicationController
     grade_id = params["#{student_id}_grade".to_sym]
     return nil if grade_id.blank?
     grade_id.to_i
+  end
+  
+  def extract_school_class_type_from_params(student_id)
+    school_class_type = params["#{student_id}_school_class_type".to_sym]
+    return nil if school_class_type.nil?
+    return school_class_type[:school_class_type] unless school_class_type[:school_class_type].nil?
+    school_class_type
   end
 
   def extract_elective_class_id_from_params(student_id)

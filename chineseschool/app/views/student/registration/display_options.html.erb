@@ -26,11 +26,11 @@
     </ol>
   </li>
   <li>
-    Please select the desired language class type:
+    Please select the desired language class type (available types may vary by grade):
     <ul>
       <li><b>S</b> - 簡體中文(Simplified Chinese)</li>
       <li><b>T</b> - 繁體中文(Traditional Chinese)</li>
-      <li><b>SE</b> - 雙語(Simplified Chinese with English Instructions) - only available for grade K, 1st, and 2nd</li>
+      <li><b>SE</b> - 雙語(Simplified Chinese with English Instructions)</li>
     </ul>
   </li>
   <li>
@@ -91,8 +91,7 @@
               <%= hidden_field_tag "#{student.id}_grade", registration_preference.grade.id %>
             </td>
             <td>
-              <%= select "#{student.id}_school_class_type", :school_class_type,
-                  registration_preference.find_available_school_class_type_options %>
+              <%= display_available_school_class_type_options student.id, registration_preference %>
             </td>
             <td>
               <% unless registration_preference.grade.below_first_grade? %>
