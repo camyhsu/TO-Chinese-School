@@ -13,7 +13,7 @@ class Registration::ActiveSchoolClassesController < ApplicationController
   
   def elective_class_student_count
     @current_school_year = SchoolYear.current_school_year
-    @active_elective_classes = SchoolClass.find_all_active_school_classes.reject { |school_class| !school_class.elective? }
+    @active_elective_classes = SchoolClass.find_all_active_elective_classes
     @active_elective_classes.sort! { |x, y| x.english_name <=> y.english_name }
   end
 end

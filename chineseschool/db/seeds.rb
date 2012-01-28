@@ -50,6 +50,8 @@ school_classes_toggle_active = Right.create(:name => 'Toggle School Class Active
 
 activity_forms_fire_drill_form = Right.create(:name => 'Activity Forms Fire Drill Form', :controller => 'activity/forms', :action => 'fire_drill_form')
 activity_forms_students_by_class = Right.create(:name => 'Activity Forms Students By Class', :controller => 'activity/forms', :action => 'students_by_class')
+activity_forms_grade_class_information = Right.create(:name => 'Activity Forms Grade Class Information', :controller => 'activity/forms', :action => 'grade_class_information')
+activity_forms_elective_class_information = Right.create(:name => 'Activity Forms Elective Class Information', :controller => 'activity/forms', :action => 'elective_class_information')
 
 active_school_classes_index = Right.create(:name => 'List Active School Classes', :controller => 'registration/active_school_classes', :action => 'index')
 active_school_classes_grade_class_student_count = Right.create(:name => '班級人數清單', :controller => 'registration/active_school_classes', :action => 'grade_class_student_count')
@@ -199,6 +201,8 @@ activity_officer.rights << activity_forms_fire_drill_form
 activity_officer.rights << instruction_active_school_classes_index
 activity_officer.rights << instruction_school_classes_show
 activity_officer.rights << activity_forms_students_by_class
+activity_officer.rights << activity_forms_grade_class_information
+activity_officer.rights << activity_forms_elective_class_information
 
 
 #

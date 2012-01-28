@@ -1,0 +1,15 @@
+<%- headers = ['Chinese Name', 'English Name', 'Location', 'Student Count', 'Primary Instructor', 'Room Parent', 'Secondary Instructor', 'Teaching Assistant'] -%>
+<%= CSV.generate_line headers %>
+<%- @active_classes.each do |school_class| -%>
+<%-   row = [] -%>
+<%-   row << school_class.chinese_name -%>
+<%-   row << school_class.english_name -%>
+<%-   row << school_class.location -%>
+<%-   row << school_class.class_size -%>
+<%-   assignment_hash = school_class.current_instructor_assignments -%>
+<%-   row << assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].collect { |instructor| instructor.name }.join(';') -%>
+<%-   row << assignment_hash[InstructorAssignment::ROLE_ROOM_PARENT].collect { |instructor| instructor.name }.join(';') -%>
+<%-   row << assignment_hash[InstructorAssignment::ROLE_SECONDARY_INSTRUCTOR].collect { |instructor| instructor.name }.join(';') -%>
+<%-   row << assignment_hash[InstructorAssignment::ROLE_TEACHING_ASSISTANT].collect { |instructor| instructor.name }.join(';') -%>
+<%=   CSV.generate_line row %>
+<%- end -%>
