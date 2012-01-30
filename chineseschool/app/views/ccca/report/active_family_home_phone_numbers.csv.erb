@@ -1,0 +1,7 @@
+<%- headers = ['Home Phone Number'] -%>
+<%= CSV.generate_line headers %>
+<%- @home_phone_numbers.each do |home_phone_number| -%>
+<%-   row = [] -%>
+<%-   row << home_phone_number -%>
+<%=   CSV.generate_line row %>
+<%- end -%>

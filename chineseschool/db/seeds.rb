@@ -21,9 +21,12 @@ create_role(Role::ROLE_NAME_REGISTRATION_OFFICER)
 create_role(Role::ROLE_NAME_ACCOUNTING_OFFICER)
 create_role(Role::ROLE_NAME_ACTIVITY_OFFICER)
 create_role(Role::ROLE_NAME_INSTRUCTION_OFFICER)
+
 create_role(Role::ROLE_NAME_INSTRUCTOR)
 create_role(Role::ROLE_NAME_ROOM_PARENT)
 create_role(Role::ROLE_NAME_STUDENT_PARENT)
+
+create_role(Role::ROLE_NAME_CCCA_STAFF)
 
 
 #
@@ -111,6 +114,8 @@ student_transaction_history_index = Right.create(:name => 'List Transaction Hist
 student_transaction_history_show_registration_payment = Right.create(:name => 'Show Registration Payment Detail', :controller => 'student/transaction_history', :action => 'show_registration_payment')
 student_transaction_history_show_registration_payment_for_staff = Right.create(:name => 'Show Registration Payment Detail For Staff', :controller => 'student/transaction_history', :action => 'show_registration_payment_for_staff')
 student_transaction_history_show_manual_transaction = Right.create(:name => 'Show Manual Transaction Detail', :controller => 'student/transaction_history', :action => 'show_manual_transaction')
+
+ccca_report_active_family_home_phone_numbers = Right.create(:name => 'Active Family Home Phone Numbers', :controller => 'ccca/report', :action => 'active_family_home_phone_numbers')
 
 
 #
@@ -252,3 +257,10 @@ student_parent.rights << student_registration_payment_confirmation
 student_parent.rights << student_transaction_history_index
 student_parent.rights << student_transaction_history_show_registration_payment
 student_parent.rights << student_transaction_history_show_manual_transaction
+
+
+#
+# Assign rights to CCCA Staff
+#
+ccca_staff = Role.find_by_name(Role::ROLE_NAME_CCCA_STAFF)
+ccca_staff.rights << ccca_report_active_family_home_phone_numbers

@@ -5,4 +5,7 @@ class StudentStatusFlag < ActiveRecord::Base
   
   validates_presence_of :student, :school_year
   
+  def self.find_all_registered_flags(school_year = SchoolYear.current_school_year)
+    self.all :conditions => ["school_year_id = ? AND registered = true", school_year.id]
+  end
 end
