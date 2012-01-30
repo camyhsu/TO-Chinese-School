@@ -86,6 +86,7 @@ instructor_assignments_select_role = Right.create(:name => 'Select Role For Inst
 instructor_assignments_destroy = Right.create(:name => 'Destroy Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'destroy')
 
 report_daily_online_registration_summary = Right.create(:name => 'Daily Online Registration Summary Report', :controller => 'registration/report', :action => 'daily_online_registration_summary')
+report_registration_integrity = Right.create(:name => 'Registration Integrity Report', :controller => 'registration/report', :action => 'registration_integrity')
 
 
 instruction_school_classes_show = Right.create(:name => 'Student List For One School Class', :controller => 'instruction/school_classes', :action => 'show')
@@ -172,6 +173,7 @@ registration_officer.rights << instructor_assignments_destroy
 registration_officer.rights << instruction_school_classes_show
 
 registration_officer.rights << report_daily_online_registration_summary
+registration_officer.rights << report_registration_integrity
 
 registration_officer.rights << student_transaction_history_show_registration_payment_for_staff
 

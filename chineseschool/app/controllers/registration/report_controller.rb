@@ -16,6 +16,12 @@ class Registration::ReportController < ApplicationController
       @payment_total_in_cents += summary[1][:total_amount_in_cents]
     end
   end
+  
+  def registration_integrity
+    # find students marked as registered by no class assignment object
+    # find students marked as registered by no class assignment in class assignment object
+    # find students with grade / class assignment without being registered
+  end
 
   private
 
