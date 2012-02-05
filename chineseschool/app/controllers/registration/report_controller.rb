@@ -18,9 +18,19 @@ class Registration::ReportController < ApplicationController
   end
   
   def registration_integrity
-    # find students marked as registered by no class assignment object
-    # find students marked as registered by no class assignment in class assignment object
-    # find students with grade / class assignment without being registered
+    @student_class_assignments_without_registration = StudentClassAssignment.find_by_sql [
+        'select sca.id, sca.student_id from student_class_assignments sca ' + 
+          'left outer join (select * from student_status_flags where school_year_id = ? and registered = true) ssf ' + 
+          'on ssf.student_id = sca.student_id ' + 
+          'where sca.school_year_id = ? and ssf.id is null', 
+        SchoolYear.current_school_year.id, SchoolYear.current_school_year.id ]
+    @student_status_flags_without_school_class_assignment = StudentClassAssignment.find_by_sql [
+        'select ssf.id, ssf.student_id from student_status_flags ssf ' + 
+          'left outer join (select * from student_class_assignments where school_year_id = ?) sca ' + 
+          'on ssf.student_id = sca.student_id ' + 
+          'where ssf.school_year_id = ? and registered = true and sca.id is null', 
+        SchoolYear.current_school_year.id, SchoolYear.current_school_year.id ]
+    @student_class_assignments_without_school_class = StudentClassAssignment.all :conditions => [ 'school_year_id = ? AND school_class_id is null', SchoolYear.current_school_year ]
   end
 
   private
