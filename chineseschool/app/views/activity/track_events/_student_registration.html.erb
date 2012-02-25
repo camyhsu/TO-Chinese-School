@@ -1,0 +1,8 @@
+      <% student = student_registration %>
+      <td><%=h student.name %></td>
+      <td><%=h student.gender %></td>
+      <td><%=h student.birth_info %></td>
+      <% @track_event_programs.each do |track_event_program| %>
+        <% select_program_handler = "selectProgram(this, #{student.id}, '#{url_for :action => :select_program, :id => school_class_id}')" %>
+        <td><%= check_box_tag 'select', "#{track_event_program.id}", false, {:onchange => select_program_handler} %></td>
+      <% end %>

@@ -13,13 +13,6 @@ class Instruction::SchoolClassesController < ApplicationController
 
   private
 
-  def instructor_assignment_verified?(requested_school_class_id)
-    return true if skip_instructor_assignment_verification
-    @user.person.instructor_assignments_for(SchoolYear.current_school_year).any? do |instructor_assignment|
-      instructor_assignment.school_class.id == requested_school_class_id
-    end
-  end
-
   def skip_instructor_assignment_verification
     @user.roles.any? do |role|
       role.name == Role::ROLE_NAME_SUPER_USER or 

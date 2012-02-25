@@ -11,4 +11,9 @@ class TrackEventProgram < ActiveRecord::Base
   belongs_to :school_year
   belongs_to :grade
   
+  
+  def self.find_by_grade(grade, school_year=SchoolYear.current_school_year)
+    self.all :conditions => ['grade_id = ? AND school_year_id = ?', grade.id, school_year.id], :order => 'id ASC'
+  end
+  
 end

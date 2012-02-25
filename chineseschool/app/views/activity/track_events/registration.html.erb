@@ -1,0 +1,22 @@
+<% @title = 'Track Event Registration' %>
+<% @page_javascript = 'activity/track_events/registration' %>
+
+<table border="1px">
+  <thead>
+    <tr>
+      <th>Student Name</th>
+      <th>Gender</th>
+      <th>Birth Month</th>
+      <% @track_event_programs.each do |track_event_program| %>
+        <th><%=h track_event_program.name %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_class.students.each do |student| -%>
+    <tr>
+      <%= render :partial => 'student_registration', :object => student, :locals => {:school_class_id => @school_class.id} %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
