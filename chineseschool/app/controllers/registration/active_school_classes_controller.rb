@@ -7,7 +7,7 @@ class Registration::ActiveSchoolClassesController < ApplicationController
 
   def grade_class_student_count
     @current_school_year = SchoolYear.current_school_year
-    @active_grade_classes = SchoolClass.find_all_active_school_classes.reject { |school_class| school_class.elective? }
+    @active_grade_classes = SchoolClass.find_all_active_grade_classes
     @active_grade_classes.sort! { |x, y| x.grade_id <=> y.grade_id }
   end
   

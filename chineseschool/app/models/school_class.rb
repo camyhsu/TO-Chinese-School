@@ -88,6 +88,10 @@ class SchoolClass < ActiveRecord::Base
   def self.find_all_active_school_classes
     self.all.reject { |school_class| !school_class.active_in?(SchoolYear.current_school_year) }
   end
+  
+  def self.find_all_active_grade_classes
+    self.all(:conditions => ['school_class_type <> ?', SCHOOL_CLASS_TYPE_ELECTIVE]).reject { |grade_class| !grade_class.active_in?(SchoolYear.current_school_year) }
+  end
 
   def self.find_all_active_elective_classes
     self.all(:conditions => ['school_class_type = ?', SCHOOL_CLASS_TYPE_ELECTIVE]).reject { |elective_class| !elective_class.active_in?(SchoolYear.current_school_year) }

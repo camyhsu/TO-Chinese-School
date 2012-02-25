@@ -253,6 +253,7 @@ ActiveRecord::Schema.define(:version => 20120211175536) do
   create_table "track_event_programs", :force => true do |t|
     t.string   "name"
     t.string   "description"
+    t.string   "event_type"
     t.string   "program_type"
     t.integer  "school_year_id"
     t.integer  "grade_id"
