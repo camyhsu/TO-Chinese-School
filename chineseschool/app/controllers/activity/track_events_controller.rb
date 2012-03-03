@@ -5,10 +5,10 @@ class Activity::TrackEventsController < ApplicationController
     @active_grade_classes.sort! { |x, y| x.grade_id <=> y.grade_id }
   end
   
-  def registration
+  def sign_up
     requested_school_class_id = params[:id].to_i
     unless instructor_assignment_verified? requested_school_class_id
-      flash[:notice] = "Access to requested track event registration not authorized"
+      flash[:notice] = "Access to requested track event sign up not authorized"
       redirect_to :controller => '/home', :action => :index
       return
     end
@@ -19,7 +19,7 @@ class Activity::TrackEventsController < ApplicationController
   def select_program
     requested_school_class_id = params[:id].to_i
     unless instructor_assignment_verified? requested_school_class_id
-      flash[:notice] = "Attempt to register track event not authorized"
+      flash[:notice] = "Attempt to sign up track event not authorized"
       redirect_to :controller => '/home', :action => :index
       return
     end

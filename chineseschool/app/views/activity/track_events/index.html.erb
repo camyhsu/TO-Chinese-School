@@ -21,7 +21,7 @@
       <td><%=h assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].collect { |instructor| instructor.name }.join(';') %></td>
       <td><%=h assignment_hash[InstructorAssignment::ROLE_ROOM_PARENT].collect { |instructor| instructor.name }.join(';') %></td>
       <td>
-        <%= link_to 'Registration', {:controller => '/activity/track_events', :action => 'registration', :id => active_grade_class}, {:class => 'button'} %>
+        <%= link_to 'Sign Up', {:controller => '/activity/track_events', :action => 'sign_up', :id => active_grade_class}, {:class => 'button'} %>
       </td>
     </tr>
     <% end %>

@@ -1,6 +1,5 @@
-      <% student = student_registration %>
+      <% student = student_sign_up %>
       <% existing_signups = student.find_all_track_event_signups_as_students %>
-      <% puts existing_signups.inspect %>
       <td><%=h student.name %></td>
       <td><%=h student.gender %></td>
       <td><%=h student.birth_info %></td>

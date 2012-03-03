@@ -1,5 +1,5 @@
-<% @title = 'Track Event Registration' %>
-<% @page_javascript = 'activity/track_events/registration' %>
+<% @title = 'Track Event Sign Up' %>
+<% @page_javascript = 'activity/track_events/sign_up' %>
 
 <table border="1px">
   <thead>
@@ -15,7 +15,7 @@
   <tbody>
     <% @school_class.students.each do |student| -%>
     <tr>
-      <%= render :partial => 'student_registration', :object => student, :locals => {:school_class_id => @school_class.id} %>
+      <%= render :partial => 'student_sign_up', :object => student, :locals => {:school_class_id => @school_class.id} %>
     </tr>
     <% end %>
   </tbody>
