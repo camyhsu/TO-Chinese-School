@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120211175536) do
+ActiveRecord::Schema.define(:version => 20120303173348) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -257,6 +257,15 @@ ActiveRecord::Schema.define(:version => 20120211175536) do
     t.string   "program_type"
     t.integer  "school_year_id"
     t.integer  "grade_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "track_event_signups", :force => true do |t|
+    t.integer  "track_event_program_id"
+    t.integer  "student_id"
+    t.integer  "parent_id"
+    t.string   "group_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

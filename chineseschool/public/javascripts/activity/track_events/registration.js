@@ -1,10 +1,11 @@
 
 function selectProgram(checkboxElement, studentId, url) {
     var jCheckboxElement = $(checkboxElement);
-    var selectedProgramId = jCheckboxElement.attr('value');
+    var programId = jCheckboxElement.attr('value');
+    var checkedFlag = jCheckboxElement.attr('checked');
     var jRowElement = jCheckboxElement.parent().parent();
     jRowElement.effect('highlight', {}, 2000);
-    $.post(url, {student_id : studentId, selected_program_id : selectedProgramId}, function(data) {
+    $.post(url, {student_id : studentId, program_id : programId, checked_flag : checkedFlag}, function(data) {
         jRowElement.html(data);
     });
 }

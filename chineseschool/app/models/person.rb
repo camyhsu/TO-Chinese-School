@@ -139,6 +139,10 @@ class Person < ActiveRecord::Base
     manual_transactions = ManualTransaction.all :conditions => ["student_id = ?", self.id]
     manual_transactions.sort { |a, b| b.updated_at <=> a.updated_at}
   end
+  
+  def find_all_track_event_signups_as_students(school_year=SchoolYear.current_school_year)
+    TrackEventSignup.all :from => 'track_event_signups, track_event_programs', :conditions => ['track_event_signups.track_event_program_id = track_event_programs.id AND track_event_signups.student_id = ? AND track_event_programs.school_year_id = ?', self.id, school_year.id]
+  end
 
   def self.find_people_on_record(english_first_name, english_last_name, email, phone_number)
     people_found_by_name = self.find_all_by_english_first_name_and_english_last_name english_first_name, english_last_name
