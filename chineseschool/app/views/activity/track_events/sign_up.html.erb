@@ -1,6 +1,10 @@
 <% @title = 'Track Event Sign Up' %>
 <% @page_javascript = 'activity/track_events/sign_up' %>
 
+<%= link_to 'Printable Form', {:controller => '/activity/track_events', :action => 'printable_sign_up_form', :id => @school_class}, {:class => 'button'} %>
+<br/>
+<br/>
+
 <table border="1px">
   <thead>
     <tr>
