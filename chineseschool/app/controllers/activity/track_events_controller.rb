@@ -36,7 +36,7 @@ class Activity::TrackEventsController < ApplicationController
       track_event_signup.destroy
     end
     @track_event_programs = TrackEventProgram.find_by_grade @school_class.grade
-    render :action => :one_student_registration, :layout => 'ajax_layout'
+    render :action => :one_student_sign_up, :layout => 'ajax_layout'
   end
   
   
