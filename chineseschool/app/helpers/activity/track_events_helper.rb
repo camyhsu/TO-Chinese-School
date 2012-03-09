@@ -2,8 +2,7 @@ module Activity::TrackEventsHelper
   
   def display_selector_based_on_program_type(track_event_program, student_id, school_class_id, existing_signups)
     if track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
-      # change to drop down
-      check_box_program_selector track_event_program.id, student_id, school_class_id, existing_signups
+      student_relay_program_selector track_event_program.id, student_id, school_class_id, existing_signups
     else
       check_box_program_selector track_event_program.id, student_id, school_class_id, existing_signups
     end
@@ -18,10 +17,24 @@ module Activity::TrackEventsHelper
     output
   end
   
+  def student_relay_program_selector(track_event_program_id, student_id, school_class_id, existing_signups)
+    current_relay_drop_down_value = determine_current_relay_drop_down_value track_event_program_id, existing_signups
+    select_relay_group_handler = "selectRelayGroup(this, #{student_id}, #{track_event_program_id}, '#{url_for :action => :select_relay_group, :id => school_class_id}')"
+    output = '<td>'
+    output << select('program', 'relay', TrackEventSignup::RELAY_GROUP_CHOICES, {:include_blank => 'Not Participate', :selected => current_relay_drop_down_value }, {:onchange => select_relay_group_handler})
+    output << '</td>'
+    output
+  end
+  
   
   private
   
   def determine_current_check_box_value(track_event_program_id, existing_signups)
     existing_signups.any? { |existing_signup| existing_signup.track_event_program.id == track_event_program_id }
+  end
+  
+  def determine_current_relay_drop_down_value(track_event_program_id, existing_signups)
+    signup_found = existing_signups.detect { |existing_signup| existing_signup.track_event_program.id == track_event_program_id }
+    signup_found.group_name unless signup_found.nil?
   end
 end

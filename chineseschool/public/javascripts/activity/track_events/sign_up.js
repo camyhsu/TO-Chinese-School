@@ -9,3 +9,13 @@ function selectProgram(checkboxElement, studentId, url) {
         jRowElement.html(data);
     });
 }
+
+function selectRelayGroup(selectElement, studentId, programId, url) {
+    var jSelectElement = $(selectElement);
+    var selectedRelayGroup = jSelectElement.children('option:selected').attr('value');
+    var jRowElement = jSelectElement.parent().parent();
+    jRowElement.effect('highlight', {}, 2000);
+    $.post(url, {student_id : studentId, program_id : programId, selected_relay_group : selectedRelayGroup}, function(data) {
+        jRowElement.html(data);
+    });
+}
