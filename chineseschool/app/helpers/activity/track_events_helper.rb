@@ -10,6 +10,15 @@ module Activity::TrackEventsHelper
     end
   end
   
+  def find_color_style(track_event_program)
+    return 'style="background-color:red;"' if track_event_program.event_type == TrackEventProgram::EVENT_TYPE_TOCS
+    return 'style="background-color:green;"' if track_event_program.event_type == TrackEventProgram::EVENT_TYPE_SOUTHERN_CA
+    ''
+  end
+  
+    
+  private
+  
   def check_box_program_selector(track_event_program_id, student_id, school_class_id, existing_signups)
     current_check_box_value = determine_current_check_box_value track_event_program_id, existing_signups
     select_program_handler = "selectProgram(this, #{student_id}, '#{url_for :action => :select_program, :id => school_class_id}')"
@@ -30,7 +39,7 @@ module Activity::TrackEventsHelper
   
   def parent_check_box_program_selector(track_event_program_id, student_id, school_class_id, existing_signups)
     student = Person.find_by_id student_id
-    output = '<td>'
+    output = '<td class="select-parent">'
     student.find_parents.each do |parent|
       current_parent_check_box_value = determine_current_parent_check_box_value track_event_program_id, parent.id, existing_signups
       select_parent_handler = "selectParent(this, #{student_id}, #{parent.id}, '#{url_for :action => :select_parent, :id => school_class_id}')"
@@ -40,9 +49,6 @@ module Activity::TrackEventsHelper
     output << '</td>'
     output
   end
-  
-  
-  private
   
   def determine_current_check_box_value(track_event_program_id, existing_signups)
     existing_signups.any? { |existing_signup| existing_signup.track_event_program.id == track_event_program_id }

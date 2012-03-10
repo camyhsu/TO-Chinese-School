@@ -311,3 +311,11 @@ select {
     padding-left: 1em;
     padding-right: 1em;
 }
+
+.track-event-sign-up td {
+    text-align: center;
+}
+
+.track-event-sign-up td.select-parent {
+    text-align: left;
+}

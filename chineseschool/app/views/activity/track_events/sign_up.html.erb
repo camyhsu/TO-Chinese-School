@@ -4,15 +4,19 @@
 <%= link_to 'Printable Form', {:controller => '/activity/track_events', :action => 'printable_sign_up_form', :id => @school_class}, {:class => 'button'} %>
 <br/>
 <br/>
+<div style="background-color:red;">TOCS Events (April 7th)</div>
+<br/>
+<div style="background-color:green;">HaiHua Events (April 28th)</div>
+<br/>
 
-<table border="1px">
+<table class="track-event-sign-up" border="1px">
   <thead>
     <tr>
       <th>Student Name</th>
       <th>Gender</th>
       <th>Birth Month</th>
       <% @track_event_programs.each do |track_event_program| %>
-        <th><%=h track_event_program.name %></th>
+        <th <%= find_color_style track_event_program %>><%=h track_event_program.name %></th>
       <% end %>
     </tr>
   </thead>
