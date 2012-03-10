@@ -29,7 +29,6 @@ module Activity::TrackEventsHelper
   end
   
   def parent_check_box_program_selector(track_event_program_id, student_id, school_class_id, existing_signups)
-    #current_parent_drop_down_value = determine_current_parent_drop_down_value track_event_program_id, existing_signups
     student = Person.find_by_id student_id
     output = '<td>'
     student.find_parents.each do |parent|
@@ -55,6 +54,6 @@ module Activity::TrackEventsHelper
   end
   
   def determine_current_parent_check_box_value(track_event_program_id, parent_id, existing_signups)
-    false
+    existing_signups.any? { |existing_signup| (existing_signup.track_event_program.id == track_event_program_id) and (existing_signup.parent_id == parent_id) }
   end
 end
