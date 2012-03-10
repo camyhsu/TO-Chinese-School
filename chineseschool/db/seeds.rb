@@ -56,6 +56,12 @@ activity_forms_students_by_class = Right.create(:name => 'Activity Forms Student
 activity_forms_grade_class_information = Right.create(:name => 'Activity Forms Grade Class Information', :controller => 'activity/forms', :action => 'grade_class_information')
 activity_forms_elective_class_information = Right.create(:name => 'Activity Forms Elective Class Information', :controller => 'activity/forms', :action => 'elective_class_information')
 
+activity_track_events_index = Right.create(:name => 'Manage Track Events', :controller => 'activity/track_events', :action => 'index')
+activity_track_events_sign_up = Right.create(:name => 'Sign Up Track Events', :controller => 'activity/track_events', :action => 'sign_up')
+activity_track_events_printable_sign_up_form = Right.create(:name => 'View Printable Track Events Sign Up Form', :controller => 'activity/track_events', :action => 'printable_sign_up_form')
+activity_track_events_select_program = Right.create(:name => 'Sign Up Student Track Event By Check Box', :controller => 'activity/track_events', :action => 'select_program')
+activity_track_events_select_relay_group = Right.create(:name => 'Sign Up Student Relay Track Event By Select Relay Group', :controller => 'activity/track_events', :action => 'select_relay_group')
+
 active_school_classes_index = Right.create(:name => 'List Active School Classes', :controller => 'registration/active_school_classes', :action => 'index')
 active_school_classes_grade_class_student_count = Right.create(:name => '班級人數清單', :controller => 'registration/active_school_classes', :action => 'grade_class_student_count')
 active_school_classes_elective_class_student_count = Right.create(:name => 'Elective Class 人數清單', :controller => 'registration/active_school_classes', :action => 'elective_class_student_count')
@@ -201,7 +207,7 @@ accounting_officer.rights << accounting_manual_transactions_show
 
 
 #
-# Assign rights to Accounting Officer
+# Assign rights to Activity Officer
 #
 activity_officer = Role.find_by_name(Role::ROLE_NAME_ACTIVITY_OFFICER)
 activity_officer.rights << activity_forms_fire_drill_form
@@ -210,6 +216,11 @@ activity_officer.rights << instruction_school_classes_show
 activity_officer.rights << activity_forms_students_by_class
 activity_officer.rights << activity_forms_grade_class_information
 activity_officer.rights << activity_forms_elective_class_information
+activity_officer.rights << activity_track_events_index
+activity_officer.rights << activity_track_events_sign_up
+activity_officer.rights << activity_track_events_printable_sign_up_form
+activity_officer.rights << activity_track_events_select_program
+activity_officer.rights << activity_track_events_select_relay_group
 
 
 #
