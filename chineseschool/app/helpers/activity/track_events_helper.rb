@@ -54,7 +54,7 @@ module Activity::TrackEventsHelper
     signup_found.group_name unless signup_found.nil?
   end
   
-  def determine_current_parent_drop_down_value(track_event_program_id, parent_id, existing_signups)
-    
+  def determine_current_parent_check_box_value(track_event_program_id, parent_id, existing_signups)
+    false
   end
 end
