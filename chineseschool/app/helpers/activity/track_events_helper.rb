@@ -3,8 +3,10 @@ module Activity::TrackEventsHelper
   def display_selector_based_on_program_type(track_event_program, student_id, school_class_id, existing_signups)
     if track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
       student_relay_program_selector track_event_program.id, student_id, school_class_id, existing_signups
-    else
+    elsif track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT
       check_box_program_selector track_event_program.id, student_id, school_class_id, existing_signups
+    else
+      parent_check_box_program_selector track_event_program.id, student_id, school_class_id, existing_signups
     end
   end
   
@@ -26,6 +28,20 @@ module Activity::TrackEventsHelper
     output
   end
   
+  def parent_check_box_program_selector(track_event_program_id, student_id, school_class_id, existing_signups)
+    #current_parent_drop_down_value = determine_current_parent_drop_down_value track_event_program_id, existing_signups
+    student = Person.find_by_id student_id
+    output = '<td>'
+    student.find_parents.each do |parent|
+      current_parent_check_box_value = determine_current_parent_check_box_value track_event_program_id, parent.id, existing_signups
+      select_parent_handler = "selectParent(this, #{student_id}, #{parent.id}, '#{url_for :action => :select_parent, :id => school_class_id}')"
+      output << check_box_tag('select', "#{track_event_program_id}", current_parent_check_box_value, {:onchange => select_parent_handler})
+      output << "&nbsp;#{parent.name}<br/>"
+    end
+    output << '</td>'
+    output
+  end
+  
   
   private
   
@@ -36,5 +52,9 @@ module Activity::TrackEventsHelper
   def determine_current_relay_drop_down_value(track_event_program_id, existing_signups)
     signup_found = existing_signups.detect { |existing_signup| existing_signup.track_event_program.id == track_event_program_id }
     signup_found.group_name unless signup_found.nil?
+  end
+  
+  def determine_current_parent_drop_down_value(track_event_program_id, parent_id, existing_signups)
+    
   end
 end
