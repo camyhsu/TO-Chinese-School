@@ -5,6 +5,11 @@
 <%= link_to "Student List For #{instructor_assignment.school_class.name}",
     {:controller => '/instruction/school_classes', :action => 'show', :id => instructor_assignment.school_class}, {:class => 'button'} %>
 <br/><br/>
+<% if PacificDate.today > Date.parse('2012-03-01') and PacificDate.today < Date.parse('2012-03-27') %>
+<%= link_to "Track Event Sign Up For #{instructor_assignment.school_class.name}",
+    {:controller => '/activity/track_events', :action => 'sign_up', :id => instructor_assignment.school_class}, {:class => 'button'} %>
+<br/><br/>
+<% end %>
 <% end %>
 
 <br/>

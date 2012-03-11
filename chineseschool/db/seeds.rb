@@ -240,6 +240,11 @@ instruction_officer.rights << instruction_school_classes_show
 #
 instructor = Role.find_by_name(Role::ROLE_NAME_INSTRUCTOR)
 instructor.rights << instruction_school_classes_show
+instructor.rights << activity_track_events_sign_up
+instructor.rights << activity_track_events_printable_sign_up_form
+instructor.rights << activity_track_events_select_program
+instructor.rights << activity_track_events_select_relay_group
+instructor.rights << activity_track_events_select_parent
 
 
 #
@@ -247,6 +252,11 @@ instructor.rights << instruction_school_classes_show
 #
 room_parent = Role.find_by_name(Role::ROLE_NAME_ROOM_PARENT)
 room_parent.rights << instruction_school_classes_show
+room_parent.rights << activity_track_events_sign_up
+room_parent.rights << activity_track_events_printable_sign_up_form
+room_parent.rights << activity_track_events_select_program
+room_parent.rights << activity_track_events_select_relay_group
+room_parent.rights << activity_track_events_select_parent
 
 
 #
