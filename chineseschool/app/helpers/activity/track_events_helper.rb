@@ -11,8 +11,8 @@ module Activity::TrackEventsHelper
   end
   
   def find_color_style(track_event_program)
-    return 'style="background-color:red;"' if track_event_program.event_type == TrackEventProgram::EVENT_TYPE_TOCS
-    return 'style="background-color:green;"' if track_event_program.event_type == TrackEventProgram::EVENT_TYPE_SOUTHERN_CA
+    return 'style="background-color:#7FFFD4;"' if track_event_program.event_type == TrackEventProgram::EVENT_TYPE_TOCS
+    return 'style="background-color:#B0E0E6;"' if track_event_program.event_type == TrackEventProgram::EVENT_TYPE_SOUTHERN_CA
     ''
   end
   
