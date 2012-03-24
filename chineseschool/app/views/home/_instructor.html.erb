@@ -5,7 +5,7 @@
   <%= link_to "Student List For #{instructor_assignment.school_class.name}",
       {:controller => '/instruction/school_classes', :action => 'show', :id => instructor_assignment.school_class}, {:class => 'button'} %>
   <br/><br/>
-  <% track_event_sign_up_end_date = Date.parse('2012-03-24') %>
+  <% track_event_sign_up_end_date = Date.parse('2012-03-29') %>
   <% if PacificDate.today > Date.parse('2012-03-01') and PacificDate.today < track_event_sign_up_end_date %>
     <%= link_to "Track Event Sign Up For #{instructor_assignment.school_class.name}",
         {:controller => '/activity/track_events', :action => 'sign_up', :id => instructor_assignment.school_class}, {:class => 'button'} %>
