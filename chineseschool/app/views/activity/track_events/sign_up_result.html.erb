@@ -1,0 +1,32 @@
+<% @title = 'Track Event Sign Up Result' %>
+
+<div style="background-color:#7FFFD4;">千橡 Events (April 7th)</div>
+<br/>
+<div style="background-color:#B0E0E6;">海華 Events (April 28th)</div>
+<br/>
+
+<table class="track-event-sign-up" border="1px">
+  <thead>
+    <tr>
+      <th>Student Name</th>
+      <th>Gender</th>
+      <th>Birth Month</th>
+      <% @track_event_programs.each do |track_event_program| %>
+        <th <%= find_color_style track_event_program %>><%=h track_event_program.name %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_class.students.each do |student| -%>
+    <tr>
+      <% existing_signups = student.find_all_track_event_signups_as_students %>
+      <td><%=h student.name %></td>
+      <td><%=h student.gender %></td>
+      <td><%=h student.birth_info %></td>
+      <% @track_event_programs.each do |track_event_program| %>
+        <%= display_sign_up_result_based_on_program_type track_event_program, student.id, @school_class.id, existing_signups %>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

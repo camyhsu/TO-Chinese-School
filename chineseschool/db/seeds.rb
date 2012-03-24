@@ -62,6 +62,7 @@ activity_track_events_printable_sign_up_form = Right.create(:name => 'View Print
 activity_track_events_select_program = Right.create(:name => 'Sign Up Student Track Event By Check Box', :controller => 'activity/track_events', :action => 'select_program')
 activity_track_events_select_relay_group = Right.create(:name => 'Sign Up Student Relay Track Event By Select Relay Group', :controller => 'activity/track_events', :action => 'select_relay_group')
 activity_track_events_select_parent = Right.create(:name => 'Sign Up Parent Track Event By Check Box', :controller => 'activity/track_events', :action => 'select_parent')
+activity_track_events_sign_up_result = Right.create(:name => 'Sign Up Track Events Result', :controller => 'activity/track_events', :action => 'sign_up_result')
 
 active_school_classes_index = Right.create(:name => 'List Active School Classes', :controller => 'registration/active_school_classes', :action => 'index')
 active_school_classes_grade_class_student_count = Right.create(:name => '班級人數清單', :controller => 'registration/active_school_classes', :action => 'grade_class_student_count')
@@ -245,6 +246,7 @@ instructor.rights << activity_track_events_printable_sign_up_form
 instructor.rights << activity_track_events_select_program
 instructor.rights << activity_track_events_select_relay_group
 instructor.rights << activity_track_events_select_parent
+instructor.rights << activity_track_events_sign_up_result
 
 
 #
@@ -257,6 +259,7 @@ room_parent.rights << activity_track_events_printable_sign_up_form
 room_parent.rights << activity_track_events_select_program
 room_parent.rights << activity_track_events_select_relay_group
 room_parent.rights << activity_track_events_select_parent
+room_parent.rights << activity_track_events_sign_up_result
 
 
 #

@@ -16,6 +16,29 @@ module Activity::TrackEventsHelper
     ''
   end
   
+  def display_sign_up_result_based_on_program_type(track_event_program, student_id, school_class_id, existing_signups)
+    output = '<td>'
+    if track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
+      current_relay_drop_down_value = determine_current_relay_drop_down_value track_event_program.id, existing_signups
+      unless current_relay_drop_down_value.nil?
+        output << current_relay_drop_down_value
+      end
+    elsif track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT
+      if determine_current_check_box_value(track_event_program.id, existing_signups)
+        output << '<input type="checkbox" checked="true" disabled="true">'
+      end
+    else
+      student = Person.find_by_id student_id
+      student.find_parents.each do |parent|
+        if determine_current_parent_check_box_value(track_event_program.id, parent.id, existing_signups)
+          output << "#{parent.name}<br/>"
+        end
+      end
+    end
+    output << '</td>'
+    output
+  end
+  
     
   private
   
