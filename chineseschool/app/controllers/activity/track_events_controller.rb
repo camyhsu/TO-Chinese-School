@@ -113,6 +113,16 @@ class Activity::TrackEventsController < ApplicationController
     render :action => :one_student_sign_up, :layout => 'ajax_layout'
   end
   
+  def tocs_lane_assignment_form
+    @lane_assignment_blocks = []
+    TrackEventProgram.find_tocs_programs.each do |tocs_program|
+      @lane_assignment_blocks << tocs_program.create_lane_assignment_blocks
+    end
+    @lane_assignment_blocks = @lane_assignment_blocks.flatten.uniq.compact
+    prawnto :filename => 'lane_assignment_forms.pdf'
+    render :layout => false
+  end
+  
   
   private
 

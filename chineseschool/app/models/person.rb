@@ -26,7 +26,11 @@ class Person < ActiveRecord::Base
   end
 
   def name
-    "#{chinese_name}(#{english_first_name} #{english_last_name})"
+    "#{chinese_name}(#{english_name})"
+  end
+  
+  def english_name
+    "#{english_first_name} #{english_last_name}"
   end
 
   def birth_info
