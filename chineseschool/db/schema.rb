@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120303173348) do
+ActiveRecord::Schema.define(:version => 20120331173722) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -72,6 +72,14 @@ ActiveRecord::Schema.define(:version => 20120303173348) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "role"
+  end
+
+  create_table "jersey_numbers", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "school_year_id"
+    t.integer  "number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "manual_transactions", :force => true do |t|
@@ -259,6 +267,8 @@ ActiveRecord::Schema.define(:version => 20120303173348) do
     t.integer  "grade_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "relay_team_size"
+    t.integer  "sort_key"
   end
 
   create_table "track_event_signups", :force => true do |t|
