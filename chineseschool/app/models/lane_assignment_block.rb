@@ -2,11 +2,10 @@ class LaneAssignmentBlock
   
   LANE_COUNT = 7
   
-  attr_reader :program_name, :grade, :gender, :lane_assignments
+  attr_reader :program_name, :gender, :program_type, :lane_assignments
   
-  def initialize(program_name, grade, gender, program_type)
+  def initialize(program_name, gender, program_type)
     @program_name = program_name
-    @grade = grade
     @gender = gender
     @program_type = program_type
     @lane_assignments = []
@@ -17,6 +16,8 @@ class LaneAssignmentBlock
       add_lane_for_student_program track_event_signup
     elsif @program_type == TrackEventProgram::PROGRAM_TYPE_PARENT
       add_lane_for_parent_program track_event_signup
+    elsif @program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
+      add_lane_for_student_relay_program track_event_signup
     end
   end
   

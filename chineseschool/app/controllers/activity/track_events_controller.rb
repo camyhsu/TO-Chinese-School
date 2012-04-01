@@ -49,14 +49,16 @@ class Activity::TrackEventsController < ApplicationController
     @school_class = SchoolClass.find_by_id requested_school_class_id
     @student = Person.find_by_id params[:student_id].to_i
     track_event_program = TrackEventProgram.find_by_id params[:program_id].to_i
+    track_event_signup = TrackEventSignup.find_by_student_id_and_track_event_program_id @student.id, track_event_program.id
     if params[:checked_flag] == 'true'
-      track_event_signup = TrackEventSignup.new
-      track_event_signup.track_event_program = track_event_program
-      track_event_signup.student = @student
-      track_event_signup.save!
+      if track_event_signup.nil?
+        track_event_signup = TrackEventSignup.new
+        track_event_signup.track_event_program = track_event_program
+        track_event_signup.student = @student
+        track_event_signup.save!
+      end
     else
-      track_event_signup = TrackEventSignup.find_by_student_id_and_track_event_program_id @student.id, track_event_program.id
-      track_event_signup.destroy
+      track_event_signup.destroy unless track_event_signup.nil?
     end
     @track_event_programs = TrackEventProgram.find_by_grade @school_class.grade
     render :action => :one_student_sign_up, :layout => 'ajax_layout'
@@ -99,15 +101,17 @@ class Activity::TrackEventsController < ApplicationController
     @school_class = SchoolClass.find_by_id requested_school_class_id
     @student = Person.find_by_id params[:student_id].to_i
     track_event_program = TrackEventProgram.find_by_id params[:program_id].to_i
+    track_event_signup = TrackEventSignup.find_by_student_id_and_parent_id_and_track_event_program_id @student.id, params[:parent_id].to_i, track_event_program.id
     if params[:checked_flag] == 'true'
-      track_event_signup = TrackEventSignup.new
-      track_event_signup.track_event_program = track_event_program
-      track_event_signup.student = @student
-      track_event_signup.parent = Person.find_by_id params[:parent_id].to_i
-      track_event_signup.save!
+      if track_event_signup.nil?
+        track_event_signup = TrackEventSignup.new
+        track_event_signup.track_event_program = track_event_program
+        track_event_signup.student = @student
+        track_event_signup.parent = Person.find_by_id params[:parent_id].to_i
+        track_event_signup.save!
+      end
     else
-      track_event_signup = TrackEventSignup.find_by_student_id_and_parent_id_and_track_event_program_id @student.id, params[:parent_id].to_i, track_event_program.id
-      track_event_signup.destroy
+      track_event_signup.destroy unless track_event_signup.nil?
     end
     @track_event_programs = TrackEventProgram.find_by_grade @school_class.grade
     render :action => :one_student_sign_up, :layout => 'ajax_layout'
@@ -115,8 +119,9 @@ class Activity::TrackEventsController < ApplicationController
   
   def tocs_lane_assignment_form
     @lane_assignment_blocks = []
-    TrackEventProgram.find_tocs_programs.each do |tocs_program|
-      @lane_assignment_blocks << tocs_program.create_lane_assignment_blocks
+    tocs_program_groups = TrackEventProgram.find_tocs_programs_group_by_sort_keys
+    tocs_program_groups.keys.sort.each do |sort_key|
+      @lane_assignment_blocks << create_lane_assignment_blocks(tocs_program_groups[sort_key])
     end
     @lane_assignment_blocks = @lane_assignment_blocks.flatten.uniq.compact
     prawnto :filename => 'lane_assignment_forms.pdf'
@@ -132,4 +137,68 @@ class Activity::TrackEventsController < ApplicationController
       role.name == Role::ROLE_NAME_ACTIVITY_OFFICER
     end
   end
+  
+  def create_lane_assignment_blocks(tocs_programs)
+    return [] if tocs_programs.empty?
+    
+    tocs_program_ids = tocs_programs.collect { |tocs_program| tocs_program.id }
+    track_event_signups = TrackEventSignup.all :conditions => ["track_event_program_id IN (#{tocs_program_ids.join(',')})"], :order => 'track_event_program_id ASC'
+    
+    # All programs in the same groupd should have the same type and name
+    sample_program = tocs_programs[0]
+    puts sample_program.name
+    puts track_event_signups.inspect
+    if sample_program.name.start_with? 'Tug'
+      create_lane_assignment_blocks_for_tug_of_war track_event_signups, sample_program
+    elsif (sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT) or (sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT)
+      create_lane_assignment_blocks_for_individual_program track_event_signups, sample_program
+    elsif sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
+      create_lane_assignment_blocks_for_student_relay_program track_event_signups, sample_program
+    end
+  end
+  
+  def create_lane_assignment_blocks_for_tug_of_war(track_event_signups, sample_program)
+    # temporary place holder
+    create_lane_assignment_blocks_for_individual_program track_event_signups, sample_program
+  end
+  
+  def create_lane_assignment_blocks_for_individual_program(track_event_signups, sample_program)
+    current_female_lane_assignment_block = nil
+    female_lane_assignment_blocks = []
+    current_male_lane_assignment_block = nil
+    male_lane_assignment_blocks = []
+    track_event_signups.each do |signup|
+      if sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT
+        participant = signup.parent
+      else
+        participant = signup.student
+      end
+      if participant.gender == Person::GENDER_FEMALE
+        if current_female_lane_assignment_block.nil?
+          current_female_lane_assignment_block = LaneAssignmentBlock.new(sample_program.name, Person::GENDER_FEMALE, sample_program.program_type)
+          female_lane_assignment_blocks << current_female_lane_assignment_block
+        end
+        current_female_lane_assignment_block.add_lane signup
+        if current_female_lane_assignment_block.full?
+          current_female_lane_assignment_block = nil
+        end
+      else
+        if current_male_lane_assignment_block.nil?
+          current_male_lane_assignment_block = LaneAssignmentBlock.new(sample_program.name, Person::GENDER_MALE, sample_program.program_type)
+          male_lane_assignment_blocks << current_male_lane_assignment_block
+        end
+        current_male_lane_assignment_block.add_lane signup
+        if current_male_lane_assignment_block.full?
+          current_male_lane_assignment_block = nil
+        end
+      end
+    end
+    [ female_lane_assignment_blocks, male_lane_assignment_blocks ]
+  end
+  
+  def create_lane_assignment_blocks_for_student_relay_program(track_event_signups, sample_program)
+    
+  end
+  
+  
 end

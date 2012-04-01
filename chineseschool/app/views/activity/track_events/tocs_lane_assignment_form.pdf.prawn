@@ -7,18 +7,26 @@ pdf.font "#{RAILS_ROOT}/lib/data/fonts/ArialUnicode.ttf"
 #    pdf.text "#{@current_school_year.name} Thousand Oaks Chinese School Fire Drill Form", :align => :right
 #  end
   
-#  pdf.move_down 8
   pdf.font_size 12 do
     pdf.text lane_assignment_block.program_name, :align => :left
-    pdf.move_up 12
-    pdf.text lane_assignment_block.grade.name, :align => :center
-    pdf.move_up 12
     if lane_assignment_block.gender == Person::GENDER_FEMALE
-      pdf.text 'Girls', :align => :right
-    else
-      pdf.text 'Boys', :align => :right
+      pdf.move_up 12
+      if (lane_assignment_block.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) or (lane_assignment_block.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY)
+        pdf.text 'Women', :align => :center
+      else
+        pdf.text 'Girls', :align => :center
+      end
+    elsif lane_assignment_block.gender == Person::GENDER_MALE
+      pdf.move_up 12
+      if (lane_assignment_block.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) or (lane_assignment_block.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY)
+        pdf.text 'Men', :align => :center
+      else
+        pdf.text 'Boys', :align => :center
+      end
     end
   end
+  
+  pdf.move_down 20
   
 #  pdf.text "Classroom #: #{school_class.location}", :align => :right
 #  pdf.move_up 10
