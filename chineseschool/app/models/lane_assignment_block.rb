@@ -22,12 +22,18 @@ class LaneAssignmentBlock
     @lane_assignments << RelayTeamLaneAssignment.new(relay_team)
   end
   
+  def add_tug_of_war_team(school_class, students)
+    @lane_assignments << TugOfWarLaneAssignment.new(school_class, students)
+  end
+  
   def full?
     @lane_assignments.size >= LANE_COUNT
   end
   
   def create_lane_block_data_for_pdf
-    if @sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
+    if @sample_track_event_program.name.start_with? 'Tug'
+      create_lane_block_data_for_pdf_for_tug_of_war
+    elsif @sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
       create_lane_block_data_for_pdf_for_student_relay_program
     else
       create_lane_block_data_for_pdf_for_individual_program
@@ -105,6 +111,32 @@ class LaneAssignmentBlock
     row
   end
   
+  def create_lane_block_data_for_pdf_for_tug_of_war
+    data = [ table_header_row ]
+    data << school_class_identifier_row
+    largest_tug_of_war_team_size.times { |i| data << tug_of_war_student_row(i) }
+    data
+  end
+  
+  def school_class_identifier_row
+    row = []
+    @lane_assignments.each { |lane_assignment| row << "#{lane_assignment.school_class.grade.chinese_name} #{lane_assignment.school_class.short_name}" }
+    fill_rest_of_row_with_empty_string(row)
+    row
+  end
+  
+  def largest_tug_of_war_team_size
+    largest_tug_of_war_team = @lane_assignments.max { |a, b| a.students.size <=> b.students.size }
+    largest_tug_of_war_team.students.size
+  end
+  
+  def tug_of_war_student_row(i)
+    row = []
+    @lane_assignments.each { |lane_assignment| row << lane_assignment.students[i].try(:english_name) }
+    fill_rest_of_row_with_empty_string(row)
+    row
+  end
+  
   private
   
   def add_lane_for_student_program(track_event_signup)
@@ -160,5 +192,14 @@ class RelayTeam
   
   def add_runner(runner)
     @runners << runner
+  end
+end
+
+class TugOfWarLaneAssignment
+  attr_reader :school_class, :students
+  
+  def initialize(school_class, students)
+    @school_class = school_class
+    @students = students
   end
 end

@@ -158,8 +158,33 @@ class Activity::TrackEventsController < ApplicationController
   end
   
   def create_lane_assignment_blocks_for_tug_of_war(track_event_signups, sample_program)
-    # temporary place holder
-    create_lane_assignment_blocks_for_individual_program track_event_signups, sample_program
+    tug_of_war_teams = Hash.new { |hash, key| hash[key] = [] }
+    track_event_signups.each do |signup|
+      student = signup.student
+      school_class = student.student_class_assignment_for(SchoolYear.current_school_year).school_class
+      tug_of_war_teams[school_class] << student
+    end
+    
+    sorted_school_class_key = tug_of_war_teams.keys.sort do |a, b|
+      grade_order = a.grade_id <=> b.grade_id
+      if grade_order == 0
+        a.short_name <=> b.short_name
+      else
+        grade_order
+      end
+    end
+    
+    current_lane_assignment_block = nil
+    lane_assignment_blocks = []
+    sorted_school_class_key.each do |school_class|
+      if current_lane_assignment_block.nil?
+        current_lane_assignment_block = LaneAssignmentBlock.new(sample_program, nil)
+        lane_assignment_blocks << current_lane_assignment_block
+      end
+      current_lane_assignment_block.add_tug_of_war_team school_class, tug_of_war_teams[school_class]
+      current_lane_assignment_block = nil if current_lane_assignment_block.full?
+    end
+    lane_assignment_blocks
   end
   
   def create_lane_assignment_blocks_for_individual_program(track_event_signups, sample_program)

@@ -37,7 +37,10 @@ top_of_page = true
     end
   end
   
-  if top_of_page
+  if lane_assignment_block.sample_track_event_program.name.start_with? 'Tug'
+    pdf.start_new_page
+    top_of_page = true
+  elsif top_of_page
     pdf.move_down 50
     top_of_page = false
   else
