@@ -3,22 +3,21 @@
 pdf.font "#{RAILS_ROOT}/lib/data/fonts/ArialUnicode.ttf"
 
 @lane_assignment_blocks.each do |lane_assignment_block|
-#  pdf.font_size 9 do
-#    pdf.text "#{@current_school_year.name} Thousand Oaks Chinese School Fire Drill Form", :align => :right
-#  end
   
   pdf.font_size 12 do
-    pdf.text lane_assignment_block.program_name, :align => :left
+    pdf.text lane_assignment_block.sample_track_event_program.name, :align => :left
     if lane_assignment_block.gender == Person::GENDER_FEMALE
       pdf.move_up 12
-      if (lane_assignment_block.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) or (lane_assignment_block.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY)
+      if (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) or 
+          (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY)
         pdf.text 'Women', :align => :center
       else
         pdf.text 'Girls', :align => :center
       end
     elsif lane_assignment_block.gender == Person::GENDER_MALE
       pdf.move_up 12
-      if (lane_assignment_block.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) or (lane_assignment_block.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY)
+      if (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) or 
+          (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY)
         pdf.text 'Men', :align => :center
       else
         pdf.text 'Boys', :align => :center
@@ -28,28 +27,7 @@ pdf.font "#{RAILS_ROOT}/lib/data/fonts/ArialUnicode.ttf"
   
   pdf.move_down 20
   
-#  pdf.text "Classroom #: #{school_class.location}", :align => :right
-#  pdf.move_up 10
-  
-#  pdf.font_size 10 do
-#    assignment_hash = school_class.current_instructor_assignments
-#    assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].each do |instructor|
-#      pdf.text "Teacher Name: #{instructor.name} 老師"
-#    end
-#    assignment_hash[InstructorAssignment::ROLE_ROOM_PARENT].each do |room_parent|
-#      pdf.text "Room Parent Name: #{room_parent.name}"
-#    end
-#  end
-#  pdf.move_down 10
-  
   data = lane_assignment_block.create_lane_block_data_for_pdf
-  data = [ lane_assignment_block.table_header_row ]
-  data << lane_assignment_block.chinese_name_row
-  data << lane_assignment_block.english_name_row
-  data << lane_assignment_block.school_class_name_row
-  data << lane_assignment_block.jersey_number_row
-  data << lane_assignment_block.empty_row
-  
   pdf.font_size 9 do
     pdf.table(data, :header => true) do |t|
       t.cells.style :width => 70, :height => 24, :align => :center
@@ -57,10 +35,6 @@ pdf.font "#{RAILS_ROOT}/lib/data/fonts/ArialUnicode.ttf"
     end
   end
   
-#  pdf.move_down 14
-#  pdf.text 'Teacher Name:'
-#  pdf.move_down 6
-#  pdf.text 'Teacher Signature:'
 #  pdf.start_new_page
 end
 

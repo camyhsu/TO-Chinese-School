@@ -2,23 +2,24 @@ class LaneAssignmentBlock
   
   LANE_COUNT = 7
   
-  attr_reader :program_name, :gender, :program_type, :lane_assignments
+  attr_reader :sample_track_event_program, :gender, :lane_assignments
   
-  def initialize(program_name, gender, program_type)
-    @program_name = program_name
+  def initialize(sample_track_event_program, gender)
+    @sample_track_event_program = sample_track_event_program
     @gender = gender
-    @program_type = program_type
     @lane_assignments = []
   end
   
   def add_lane(track_event_signup)
-    if @program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT
+    if @sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT
       add_lane_for_student_program track_event_signup
-    elsif @program_type == TrackEventProgram::PROGRAM_TYPE_PARENT
+    elsif @sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT
       add_lane_for_parent_program track_event_signup
-    elsif @program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
-      add_lane_for_student_relay_program track_event_signup
     end
+  end
+  
+  def add_relay_team(relay_team)
+    @lane_assignments << RelayTeamLaneAssignment.new(relay_team)
   end
   
   def full?
@@ -26,7 +27,11 @@ class LaneAssignmentBlock
   end
   
   def create_lane_block_data_for_pdf
-    create_lane_block_data_for_pdf_for_individual_program
+    if @sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
+      create_lane_block_data_for_pdf_for_student_relay_program
+    else
+      create_lane_block_data_for_pdf_for_individual_program
+    end
   end
   
   def create_lane_block_data_for_pdf_for_individual_program
@@ -36,6 +41,7 @@ class LaneAssignmentBlock
     data << school_class_name_row
     data << jersey_number_row
     data << empty_row
+    data
   end
   
   def table_header_row
@@ -78,6 +84,27 @@ class LaneAssignmentBlock
     row
   end
   
+  def create_lane_block_data_for_pdf_for_student_relay_program
+    data = [ table_header_row ]
+    data << relay_team_identifier_row
+    @sample_track_event_program.relay_team_size.times { |i| data << relay_runner_row(i) }
+    data
+  end
+  
+  def relay_team_identifier_row
+    row = []
+    @lane_assignments.each { |lane_assignment| row << lane_assignment.relay_team.identifier }
+    fill_rest_of_row_with_empty_string(row)
+    row
+  end
+  
+  def relay_runner_row(i)
+    row = []
+    @lane_assignments.each { |lane_assignment| row << lane_assignment.relay_team.runners[i].try(:english_name) }
+    fill_rest_of_row_with_empty_string(row)
+    row
+  end
+  
   private
   
   def add_lane_for_student_program(track_event_signup)
@@ -108,4 +135,30 @@ end
 
 class IndividualLaneAssignment
   attr_accessor :chinese_name, :english_name, :school_class, :jersey_number
+end
+
+class RelayTeamLaneAssignment
+  attr_reader :relay_team
+  
+  def initialize(relay_team)
+    @relay_team = relay_team
+  end
+end
+
+class RelayTeam
+  attr_accessor :school_class, :team_name, :runners
+  
+  def initialize(school_class, team_name)
+    @school_class = school_class
+    @team_name = team_name
+    @runners = []
+  end
+  
+  def identifier
+    "#{@school_class.short_name} #{@team_name}"
+  end
+  
+  def add_runner(runner)
+    @runners << runner
+  end
 end
