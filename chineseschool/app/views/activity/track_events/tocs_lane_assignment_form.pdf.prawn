@@ -2,6 +2,8 @@
 
 pdf.font "#{RAILS_ROOT}/lib/data/fonts/ArialUnicode.ttf"
 
+top_of_page = true
+
 @lane_assignment_blocks.each do |lane_assignment_block|
   
   pdf.font_size 12 do
@@ -35,7 +37,13 @@ pdf.font "#{RAILS_ROOT}/lib/data/fonts/ArialUnicode.ttf"
     end
   end
   
-#  pdf.start_new_page
+  if top_of_page
+    pdf.move_down 50
+    top_of_page = false
+  else
+    pdf.start_new_page
+    top_of_page = true
+  end
 end
 
 #pdf.font_size 9 do
