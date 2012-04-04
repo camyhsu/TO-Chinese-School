@@ -1,9 +1,11 @@
-<%- headers = ['Student Name', 'Gender', 'Birth Month', 'School Class Name', 'Location', 'Jersey Number', 'Program Name', 'Program Sort Key', 'Parent Name', 'Relay Team Group'] -%>
+<%- headers = ['Student Chinese Name', 'Student English First Name', 'Student English Last Name', 'Gender', 'Birth Month', 'School Class Name', 'Location', 'Jersey Number', 'Program Name', 'Program Sort Key', 'Parent Name', 'Relay Team Group'] -%>
 <%= CSV.generate_line headers %>
 <%- @track_event_signups.each do |track_event_signup| -%>
 <%-   row = [] -%>
 <%-   student = track_event_signup.student -%>
-<%-   row << student.name -%>
+<%-   row << student.chinese_name -%>
+<%-   row << student.english_first_name -%>
+<%-   row << student.english_last_name -%>
 <%-   row << student.gender -%>
 <%-   row << student.birth_info -%>
 <%-   school_class = student.student_class_assignment_for(SchoolYear.current_school_year).school_class -%>
