@@ -128,6 +128,13 @@ class Activity::TrackEventsController < ApplicationController
     render :layout => false
   end
   
+  def tocs_track_event_data
+    @track_event_signups = TrackEventSignup.find_tocs_track_event_signups
+    headers["Content-Type"] = 'text/csv'
+    headers["Content-Disposition"] = 'attachment; filename="tocs_track_event_data.csv"'
+    render :layout => false
+  end
+  
   
   private
 

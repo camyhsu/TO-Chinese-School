@@ -1,0 +1,18 @@
+<%- headers = ['Student Name', 'Gender', 'Birth Month', 'School Class Name', 'Location', 'Jersey Number', 'Program Name', 'Program Sort Key', 'Parent Name', 'Relay Team Group'] -%>
+<%= CSV.generate_line headers %>
+<%- @track_event_signups.each do |track_event_signup| -%>
+<%-   row = [] -%>
+<%-   student = track_event_signup.student -%>
+<%-   row << student.name -%>
+<%-   row << student.gender -%>
+<%-   row << student.birth_info -%>
+<%-   school_class = student.student_class_assignment_for(SchoolYear.current_school_year).school_class -%>
+<%-   row << school_class.name -%>
+<%-   row << school_class.location -%>
+<%-   row << JerseyNumber.find_jersey_number_for(student) -%>
+<%-   row << track_event_signup.track_event_program.name -%>
+<%-   row << track_event_signup.track_event_program.sort_key -%>
+<%-   row << track_event_signup.parent.try(:name) -%>
+<%-   row << track_event_signup.group_name -%>
+<%=   CSV.generate_line row %>
+<%- end -%>

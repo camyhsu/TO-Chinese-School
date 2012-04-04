@@ -3,7 +3,7 @@ class JerseyNumber < ActiveRecord::Base
   belongs_to :school_year
   belongs_to :person
   
-  def self.find_jersey_number_for(person, school_year=SchoolYear.current_school_year)
+  def self.find_or_create_jersey_number_for(person, school_year=SchoolYear.current_school_year)
     existing_jersey_number = self.first :conditions => ['person_id = ? AND school_year_id = ?', person.id, school_year.id]
     if existing_jersey_number.nil?
       new_jersey_number = JerseyNumber.new
@@ -15,6 +15,12 @@ class JerseyNumber < ActiveRecord::Base
     else
       existing_jersey_number.number
     end
+  end
+  
+  def self.find_jersey_number_for(person, school_year=SchoolYear.current_school_year)
+    existing_jersey_number = self.first :conditions => ['person_id = ? AND school_year_id = ?', person.id, school_year.id]
+    return '' if existing_jersey_number.nil?
+    existing_jersey_number.number
   end
   
   def self.find_next_available_number_for(school_year)
