@@ -63,6 +63,8 @@ activity_track_events_select_program = Right.create(:name => 'Sign Up Student Tr
 activity_track_events_select_relay_group = Right.create(:name => 'Sign Up Student Relay Track Event By Select Relay Group', :controller => 'activity/track_events', :action => 'select_relay_group')
 activity_track_events_select_parent = Right.create(:name => 'Sign Up Parent Track Event By Check Box', :controller => 'activity/track_events', :action => 'select_parent')
 activity_track_events_sign_up_result = Right.create(:name => 'Sign Up Track Events Result', :controller => 'activity/track_events', :action => 'sign_up_result')
+activity_track_events_tocs_lane_assignment_form = Right.create(:name => 'TOCS Track Event Lane Assignment Form', :controller => 'activity/track_events', :action => 'tocs_lane_assignment_form')
+activity_track_events_tocs_track_event_data = Right.create(:name => 'TOCS Track Event Data', :controller => 'activity/track_events', :action => 'tocs_track_event_data')
 
 active_school_classes_index = Right.create(:name => 'List Active School Classes', :controller => 'registration/active_school_classes', :action => 'index')
 active_school_classes_grade_class_student_count = Right.create(:name => '班級人數清單', :controller => 'registration/active_school_classes', :action => 'grade_class_student_count')
@@ -224,6 +226,8 @@ activity_officer.rights << activity_track_events_printable_sign_up_form
 activity_officer.rights << activity_track_events_select_program
 activity_officer.rights << activity_track_events_select_relay_group
 activity_officer.rights << activity_track_events_select_parent
+activity_officer.rights << activity_track_events_tocs_lane_assignment_form
+activity_officer.rights << activity_track_events_tocs_track_event_data
 
 
 #
