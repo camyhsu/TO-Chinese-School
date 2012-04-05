@@ -165,6 +165,8 @@ class Activity::TrackEventsController < ApplicationController
       else
         create_lane_assignment_blocks_for_student_relay_program track_event_signups, sample_program
       end
+    elsif sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY
+      create_lane_assignment_blocks_for_parent_relay_program track_event_signups, sample_program
     end
   end
   
@@ -241,7 +243,7 @@ class Activity::TrackEventsController < ApplicationController
       end
       team.add_runner student
     end
-    create_lane_assignment_blocks_for_relay(relay_teams, nil, sample_program)
+    create_lane_assignment_blocks_for_student_relay(relay_teams, nil, sample_program)
   end
   
   def create_lane_assignment_blocks_for_student_relay_program(track_event_signups, sample_program)
@@ -267,11 +269,11 @@ class Activity::TrackEventsController < ApplicationController
       team.add_runner student
     end
     
-    [ create_lane_assignment_blocks_for_relay(female_relay_teams, Person::GENDER_FEMALE, sample_program), 
-      create_lane_assignment_blocks_for_relay(male_relay_teams, Person::GENDER_MALE, sample_program) ]
+    [ create_lane_assignment_blocks_for_student_relay(female_relay_teams, Person::GENDER_FEMALE, sample_program), 
+      create_lane_assignment_blocks_for_student_relay(male_relay_teams, Person::GENDER_MALE, sample_program) ]
   end
   
-  def create_lane_assignment_blocks_for_relay(relay_teams, gender, sample_program)
+  def create_lane_assignment_blocks_for_student_relay(relay_teams, gender, sample_program)
     sorted_team_identifiers = relay_teams.keys.sort do |a, b|
       grade_order = relay_teams[a].school_class.grade_id <=> relay_teams[b].school_class.grade_id
       if grade_order == 0
@@ -289,6 +291,48 @@ class Activity::TrackEventsController < ApplicationController
         lane_assignment_blocks << current_lane_assignment_block
       end
       current_lane_assignment_block.add_relay_team relay_teams[team_identifier]
+      current_lane_assignment_block = nil if current_lane_assignment_block.full?
+    end
+    lane_assignment_blocks
+  end
+  
+  def create_lane_assignment_blocks_for_parent_relay_program(track_event_signups, sample_program)
+    current_female_relay_team = nil
+    female_relay_teams = []
+    current_male_relay_team = nil
+    male_relay_teams = []
+    track_event_signups.each do |signup|
+      parent = signup.parent
+      if parent.gender == Person::GENDER_FEMALE
+        if current_female_relay_team.nil?
+          current_female_relay_team = []
+          female_relay_teams << current_female_relay_team
+        end
+        current_female_relay_team << parent
+        current_female_relay_team = nil if current_female_relay_team.size >= sample_program.relay_team_size
+      else
+        if current_male_relay_team.nil?
+          current_male_relay_team = []
+          male_relay_teams << current_male_relay_team
+        end
+        current_male_relay_team << parent
+        current_male_relay_team = nil if current_male_relay_team.size >= sample_program.relay_team_size
+      end
+    end
+    
+    [ create_lane_assignment_blocks_for_parent_relay(female_relay_teams, Person::GENDER_FEMALE, sample_program), 
+      create_lane_assignment_blocks_for_parent_relay(male_relay_teams, Person::GENDER_MALE, sample_program) ]
+  end
+  
+  def create_lane_assignment_blocks_for_parent_relay(relay_teams, gender, sample_program)
+    current_lane_assignment_block = nil
+    lane_assignment_blocks = []
+    relay_teams.each do |relay_team|
+      if current_lane_assignment_block.nil?
+        current_lane_assignment_block = LaneAssignmentBlock.new(sample_program, gender)
+        lane_assignment_blocks << current_lane_assignment_block
+      end
+      current_lane_assignment_block.add_relay_team relay_team
       current_lane_assignment_block = nil if current_lane_assignment_block.full?
     end
     lane_assignment_blocks

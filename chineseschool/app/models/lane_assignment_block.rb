@@ -35,6 +35,8 @@ class LaneAssignmentBlock
       create_lane_block_data_for_pdf_for_tug_of_war
     elsif @sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
       create_lane_block_data_for_pdf_for_student_relay_program
+    elsif @sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY
+      create_lane_block_data_for_pdf_for_parent_relay_program
     else
       create_lane_block_data_for_pdf_for_individual_program
     end
@@ -133,6 +135,20 @@ class LaneAssignmentBlock
   def tug_of_war_student_row(i)
     row = []
     @lane_assignments.each { |lane_assignment| row << lane_assignment.students[i].try(:english_name) }
+    fill_rest_of_row_with_empty_string(row)
+    row
+  end
+  
+  def create_lane_block_data_for_pdf_for_parent_relay_program
+    data = [ table_header_row ]
+    @sample_track_event_program.relay_team_size.times { |i| data << parent_relay_runner_row(i) }
+    data << empty_row
+    data
+  end
+  
+  def parent_relay_runner_row(i)
+    row = []
+    @lane_assignments.each { |lane_assignment| row << lane_assignment.relay_team[i].try(:english_name) }
     fill_rest_of_row_with_empty_string(row)
     row
   end
