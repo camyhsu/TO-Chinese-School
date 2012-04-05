@@ -160,7 +160,11 @@ class Activity::TrackEventsController < ApplicationController
     elsif (sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT) or (sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT)
       create_lane_assignment_blocks_for_individual_program track_event_signups, sample_program
     elsif sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
-      create_lane_assignment_blocks_for_student_relay_program track_event_signups, sample_program
+      if sample_program.relay_team_size > 7
+        create_lane_assignment_blocks_for_unisex_student_relay_program track_event_signups, sample_program
+      else
+        create_lane_assignment_blocks_for_student_relay_program track_event_signups, sample_program
+      end
     end
   end
   
@@ -224,6 +228,22 @@ class Activity::TrackEventsController < ApplicationController
     [ female_lane_assignment_blocks, male_lane_assignment_blocks ]
   end
   
+  def create_lane_assignment_blocks_for_unisex_student_relay_program(track_event_signups, sample_program)
+    relay_teams = {}
+    track_event_signups.each do |signup|
+      student = signup.student
+      school_class = student.student_class_assignment_for(SchoolYear.current_school_year).school_class
+      team_identifier = "#{school_class.short_name} #{signup.group_name}"
+      team = relay_teams[team_identifier]
+      if team.nil?
+        team = RelayTeam.new school_class, signup.group_name
+        relay_teams[team.identifier] = team
+      end
+      team.add_runner student
+    end
+    create_lane_assignment_blocks_for_relay(relay_teams, nil, sample_program)
+  end
+  
   def create_lane_assignment_blocks_for_student_relay_program(track_event_signups, sample_program)
     female_relay_teams = {}
     male_relay_teams = {}
@@ -241,7 +261,7 @@ class Activity::TrackEventsController < ApplicationController
         team = male_relay_teams[team_identifier]
         if team.nil?
           team = RelayTeam.new school_class, signup.group_name
-          female_relay_teams[team.identifier] = team
+          male_relay_teams[team.identifier] = team
         end
       end
       team.add_runner student
