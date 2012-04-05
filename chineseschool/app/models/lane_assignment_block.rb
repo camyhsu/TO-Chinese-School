@@ -94,6 +94,7 @@ class LaneAssignmentBlock
     data = [ table_header_row ]
     data << relay_team_identifier_row
     @sample_track_event_program.relay_team_size.times { |i| data << relay_runner_row(i) }
+    data << empty_row
     data
   end
   
