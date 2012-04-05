@@ -113,8 +113,7 @@ class LaneAssignmentBlock
   end
   
   def create_lane_block_data_for_pdf_for_tug_of_war
-    data = [ table_header_row ]
-    data << school_class_identifier_row
+    data = [ school_class_identifier_row ]
     largest_tug_of_war_team_size.times { |i| data << tug_of_war_student_row(i) }
     data
   end
