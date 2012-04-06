@@ -31,8 +31,8 @@ top_of_page = true
   
   data = lane_assignment_block.create_lane_block_data_for_pdf
   pdf.font_size 9 do
-    pdf.table(data, :header => true) do |t|
-      t.cells.style :width => 70, :height => 24, :align => :center
+    pdf.table(data, :header => true, :width => 553) do |t|
+      t.cells.style :width => 79, :height => 24, :align => :center
       t.row(0).style(:background_color => 'cccccc')
     end
   end
@@ -48,8 +48,3 @@ top_of_page = true
     top_of_page = true
   end
 end
-
-#pdf.font_size 9 do
-#  pdf.number_pages "Date: #{PacificDate.tomorrow}", :at => [pdf.bounds.left, 0], :align => :left, :page_filter => :all
-#  pdf.number_pages "Roster Form", :at => [pdf.bounds.left, 0], :align => :right, :page_filter => :all
-#end
