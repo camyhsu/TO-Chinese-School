@@ -30,7 +30,7 @@ top_of_page = true
   pdf.move_down 20
   
   data = lane_assignment_block.create_lane_block_data_for_pdf
-  pdf.font_size 9 do
+  pdf.font_size 8 do
     pdf.table(data, :header => true, :width => 553) do |t|
       t.cells.style :width => 79, :height => 24, :align => :center
       t.row(0).style(:background_color => 'cccccc')
