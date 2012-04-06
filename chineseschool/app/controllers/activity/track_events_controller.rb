@@ -201,11 +201,27 @@ class Activity::TrackEventsController < ApplicationController
   end
   
   def create_lane_assignment_blocks_for_individual_program(track_event_signups, sample_program)
+    sorted_track_event_signups = track_event_signups.sort do |a, b|
+      school_class_a = a.student.student_class_assignment_for(SchoolYear.current_school_year).school_class
+      school_class_b = b.student.student_class_assignment_for(SchoolYear.current_school_year).school_class
+      grade_order = school_class_a.grade_id <=> school_class_b.grade_id
+      if grade_order == 0
+        class_order = school_class_a.short_name <=> school_class_b.short_name
+        if class_order == 0
+          a.student.english_last_name <=> b.student.english_last_name
+        else
+          class_order
+        end
+      else
+        grade_order
+      end
+    end
+    
     current_female_lane_assignment_block = nil
     female_lane_assignment_blocks = []
     current_male_lane_assignment_block = nil
     male_lane_assignment_blocks = []
-    track_event_signups.each do |signup|
+    sorted_track_event_signups.each do |signup|
       if sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT
         participant = signup.parent
       else
