@@ -6,23 +6,25 @@ top_of_page = true
 
 @lane_assignment_blocks.each do |lane_assignment_block|
   
-  pdf.font_size 12 do
-    pdf.text lane_assignment_block.sample_track_event_program.name, :align => :left
+  pdf.move_down 20
+  
+  pdf.font_size 14 do
+    pdf.text "#{lane_assignment_block.sample_track_event_program.sort_key}. #{lane_assignment_block.sample_track_event_program.name}", :align => :left
     if lane_assignment_block.gender == Person::GENDER_FEMALE
-      pdf.move_up 12
+      pdf.move_up 14
       if (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) or 
           (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY)
-        pdf.text 'Women', :align => :center
+        pdf.text 'Women', :align => :right
       else
-        pdf.text 'Girls', :align => :center
+        pdf.text 'Girls', :align => :right
       end
     elsif lane_assignment_block.gender == Person::GENDER_MALE
-      pdf.move_up 12
+      pdf.move_up 14
       if (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) or 
           (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY)
-        pdf.text 'Men', :align => :center
+        pdf.text 'Men', :align => :right
       else
-        pdf.text 'Boys', :align => :center
+        pdf.text 'Boys', :align => :right
       end
     end
   end
@@ -41,10 +43,15 @@ top_of_page = true
     pdf.start_new_page
     top_of_page = true
   elsif top_of_page
-    pdf.move_down 50
+    pdf.move_down 80
     top_of_page = false
   else
     pdf.start_new_page
     top_of_page = true
   end
+end
+
+
+pdf.font_size 7 do
+  pdf.number_pages "Page <page> of <total>", :at => [pdf.bounds.left, 0], :align => :right, :page_filter => :all
 end
