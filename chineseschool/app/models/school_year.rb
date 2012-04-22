@@ -10,7 +10,8 @@ class SchoolYear < ActiveRecord::Base
       :refund_end_date, :registration_fee_in_cents,
       :pre_registration_tuition_in_cents, :tuition_in_cents,
       :tuition_discount_for_three_or_more_child_in_cents, :tuition_discount_for_pre_k_in_cents,
-      :book_charge_in_cents, :pva_membership_due_in_cents, :ccca_membership_due_in_cents
+      :book_charge_in_cents, :pva_membership_due_in_cents, :ccca_membership_due_in_cents,
+      :previous_school_year
 
   validates_numericality_of :registration_fee_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
   validates_numericality_of :pre_registration_tuition_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
@@ -85,6 +86,10 @@ class SchoolYear < ActiveRecord::Base
 
   def ccca_membership_due=(ccca_membership_due)
     self.ccca_membership_due_in_cents = (ccca_membership_due * 100).to_i
+  end
+  
+  def wire_up_previous_school_year
+    self.previous_school_year = SchoolYear.first :conditions => ["end_date <= ?", self.start_date], :order => 'end_date DESC'
   end
 
   def self.current_school_year

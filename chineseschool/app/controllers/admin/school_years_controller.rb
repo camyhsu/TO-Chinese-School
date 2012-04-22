@@ -12,6 +12,7 @@ class Admin::SchoolYearsController < ApplicationController
     if request.post?
       @school_year = SchoolYear.new params[:school_year]
       set_fees_from_params
+      @school_year.wire_up_previous_school_year
       if @school_year.save
         initialize_school_class_active_flags_for @school_year
         flash[:notice] = 'School Year added successfully'
