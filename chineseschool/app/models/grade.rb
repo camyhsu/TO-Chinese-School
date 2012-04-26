@@ -64,18 +64,6 @@ class Grade < ActiveRecord::Base
     grade
   end
   
-  def self.find_by_school_age_without_prek(school_age)
-    return nil if school_age < 5
-    # Currently defined lowest grade is PreK for age 4
-    grade = GRADE_PRESCHOOL
-    # Skip PreK grade
-    grade = grade.next_grade unless grade.nil?
-    (school_age - 5).times do
-      grade = grade.next_grade unless grade.nil?
-    end
-    grade
-  end
-  
   
   private
   
