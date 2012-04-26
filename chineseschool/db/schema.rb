@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120331173722) do
+ActiveRecord::Schema.define(:version => 20120426021300) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -19,6 +19,14 @@ ActiveRecord::Schema.define(:version => 20120331173722) do
     t.string   "home_phone"
     t.string   "cell_phone"
     t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "book_charges", :force => true do |t|
+    t.integer  "grade_id",                               :null => false
+    t.integer  "school_year_id",                         :null => false
+    t.integer  "book_charge_in_cents", :default => 2000, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -204,7 +212,6 @@ ActiveRecord::Schema.define(:version => 20120331173722) do
     t.integer  "age_cutoff_month"
     t.integer  "registration_fee_in_cents",                         :default => 2000,  :null => false
     t.integer  "tuition_in_cents",                                  :default => 38000, :null => false
-    t.integer  "book_charge_in_cents",                              :default => 2000,  :null => false
     t.integer  "pva_membership_due_in_cents",                       :default => 1500,  :null => false
     t.integer  "ccca_membership_due_in_cents",                      :default => 2000,  :null => false
     t.date     "pre_registration_end_date"

@@ -28,7 +28,7 @@ class StudentFeePayment < ActiveRecord::Base
   
   def fill_in_tuition_and_fee(school_year, grade, registration_count_before_this_student)
     self.registration_fee_in_cents = school_year.registration_fee_in_cents
-    self.book_charge_in_cents = school_year.book_charge_in_cents
+    self.book_charge_in_cents = BookCharge.book_charge_in_cents_for school_year, grade
     calculate_tuition school_year, grade, registration_count_before_this_student
   end
 
@@ -48,7 +48,6 @@ class StudentFeePayment < ActiveRecord::Base
     if Grade::GRADE_PRESCHOOL == grade
       self.pre_k_discount = true
       self.tuition_in_cents -= school_year.tuition_discount_for_pre_k_in_cents
-      self.book_charge_in_cents = 0
     end
   end
 

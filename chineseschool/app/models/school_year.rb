@@ -10,7 +10,7 @@ class SchoolYear < ActiveRecord::Base
       :refund_end_date, :registration_fee_in_cents,
       :pre_registration_tuition_in_cents, :tuition_in_cents,
       :tuition_discount_for_three_or_more_child_in_cents, :tuition_discount_for_pre_k_in_cents,
-      :book_charge_in_cents, :pva_membership_due_in_cents, :ccca_membership_due_in_cents,
+      :pva_membership_due_in_cents, :ccca_membership_due_in_cents,
       :previous_school_year
 
   validates_numericality_of :registration_fee_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
@@ -18,7 +18,6 @@ class SchoolYear < ActiveRecord::Base
   validates_numericality_of :tuition_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
   validates_numericality_of :tuition_discount_for_three_or_more_child_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
   validates_numericality_of :tuition_discount_for_pre_k_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
-  validates_numericality_of :book_charge_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
   validates_numericality_of :pva_membership_due_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
   validates_numericality_of :ccca_membership_due_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
 
@@ -62,14 +61,6 @@ class SchoolYear < ActiveRecord::Base
 
   def tuition_discount_for_pre_k=(tuition_discount_for_pre_k)
     self.tuition_discount_for_pre_k_in_cents = (tuition_discount_for_pre_k * 100).to_i
-  end
-
-  def book_charge
-    self.book_charge_in_cents / 100.0
-  end
-
-  def book_charge=(book_charge)
-    self.book_charge_in_cents = (book_charge * 100).to_i
   end
 
   def pva_membership_due
