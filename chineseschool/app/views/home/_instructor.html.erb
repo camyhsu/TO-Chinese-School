@@ -6,9 +6,10 @@
   <%= link_to "Student List For #{school_class.name}",
       {:controller => '/instruction/school_classes', :action => 'show', :id => school_class}, {:class => 'button'} %>
   <br/><br/>
-  <% if instructor_assignment.role = InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR %>
-    <span style="font-weight: bold;">Room Parent For <%=h school_class.name %> :</span> <%=h school_class.current_room_parent.try(:name) %>&nbsp;
-    <!--<%= link_to 'Change', {:controller => '/instruction/school_classes', :action => 'show', :id => school_class}, {:class => 'button'} %>-->
+  <% if instructor_assignment.role_is_an_instructor? %>
+    <% display_room_parent_selection_handler = "displayRoomParentSelection(this, '#{url_for :controller => "/instruction/school_classes", :action => :display_room_parent_selection, :id => school_class}')"  %>
+    <span style="font-weight: bold;">Room Parent For <%=h school_class.name %> :</span> 
+    <span id="instructor_select_room_parent"><%=h school_class.current_room_parent.try(:name) %>&nbsp;<!--<input type="button" value="Change" onclick="<%= display_room_parent_selection_handler %>" class="button"/>--></span>
     <br/><br/>
   <% end %>
   <% track_event_sign_up_end_date = Date.parse('2012-03-29') %>

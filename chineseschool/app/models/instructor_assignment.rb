@@ -23,6 +23,10 @@ class InstructorAssignment < ActiveRecord::Base
   def end_date_string
     self.end_date.to_s
   end
+  
+  def role_is_an_instructor?
+    self.role == ROLE_PRIMARY_INSTRUCTOR or self.role == ROLE_SECONDARY_INSTRUCTOR
+  end
 
   
   private

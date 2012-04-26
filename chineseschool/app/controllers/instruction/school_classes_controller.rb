@@ -9,6 +9,19 @@ class Instruction::SchoolClassesController < ApplicationController
     end
     @school_class = SchoolClass.find_by_id requested_school_class_id
   end
+  
+  def display_room_parent_selection
+    requested_school_class_id = params[:id].to_i
+    unless instructor_assignment_verified? requested_school_class_id
+      unless user_is_an_instructor? requested_school_class_id
+        flash[:notice] = "Access to requested room parent selection not authorized"
+        redirect_to :controller => '/home', :action => :index
+        return
+      end
+    end
+    @school_class = SchoolClass.find_by_id requested_school_class_id
+    render :layout => 'ajax_layout'
+  end
 
 
   private
@@ -19,6 +32,16 @@ class Instruction::SchoolClassesController < ApplicationController
       role.name == Role::ROLE_NAME_REGISTRATION_OFFICER or 
       role.name == Role::ROLE_NAME_INSTRUCTION_OFFICER or 
       role.name == Role::ROLE_NAME_ACTIVITY_OFFICER
+    end
+  end
+  
+  def user_is_an_instructor?(school_class_id)
+    @user.person.instructor_assignments_for(SchoolYear.current_school_year).any? do |instructor_assignment|
+      if instructor_assignment.school_class.id == school_class_id
+        instructor_assignment.role_is_an_instructor?
+      else
+        false
+      end
     end
   end
 end

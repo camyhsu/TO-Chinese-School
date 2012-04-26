@@ -103,6 +103,7 @@ report_registration_integrity = Right.create(:name => 'Registration Integrity Re
 
 
 instruction_school_classes_show = Right.create(:name => 'Student List For One School Class', :controller => 'instruction/school_classes', :action => 'show')
+instruction_school_classes_display_room_parent_selection = Right.create(:name => 'Display Room Parent Selection', :controller => 'instruction/school_classes', :action => 'display_room_parent_selection')
 instruction_active_school_classes_index = Right.create(:name => 'List Active School Classes For Instruction Officer', :controller => 'instruction/active_school_classes', :action => 'index')
 
 
@@ -245,6 +246,7 @@ instruction_officer.rights << instruction_school_classes_show
 #
 instructor = Role.find_by_name(Role::ROLE_NAME_INSTRUCTOR)
 instructor.rights << instruction_school_classes_show
+instructor.rights << instruction_school_classes_display_room_parent_selection
 instructor.rights << activity_track_events_sign_up
 instructor.rights << activity_track_events_printable_sign_up_form
 instructor.rights << activity_track_events_select_program

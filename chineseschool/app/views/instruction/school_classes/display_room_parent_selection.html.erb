@@ -1,0 +1,4 @@
+<%=h @school_class.current_room_parent.try(:name) %>&nbsp;
+<%= collection_select :school_class, :room_parent, @school_class.find_room_parent_candidates, :id, :name, {:include_blank => true, :selected => @current_room_parent_id } %>&nbsp;
+<input type="button" value="Save" onclick="selectRoomParent(this, <%=h @school_class.id %>)" class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button"/>&nbsp;
+<input type="button" value="Cancel" onclick="cancelRoomParentSelection(this, <%=h @school_class.id %>)" class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button"/>

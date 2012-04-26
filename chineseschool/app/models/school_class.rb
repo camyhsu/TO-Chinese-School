@@ -80,6 +80,10 @@ class SchoolClass < ActiveRecord::Base
       SchoolYear.current_school_year.id, self.id, InstructorAssignment::ROLE_ROOM_PARENT, PacificDate.today, PacificDate.today ]
     room_parent_assignment.instructor
   end
+  
+  def find_room_parent_candidates
+    
+  end
 
   def allow_school_age?(school_age)
     return false if (!self.min_age.nil?) and (self.min_age > 0) and (school_age < self.min_age)
