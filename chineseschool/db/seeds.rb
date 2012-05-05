@@ -45,6 +45,7 @@ school_years_index = Right.create(:name => 'List School Years', :controller => '
 school_years_show = Right.create(:name => 'Show School Year Details', :controller => 'admin/school_years', :action => 'show')
 school_years_new = Right.create(:name => 'Create School Year', :controller => 'admin/school_years', :action => 'new')
 school_years_edit = Right.create(:name => 'Edit School Year Details', :controller => 'admin/school_years', :action => 'edit')
+school_years_edit_book_charge = Right.create(:name => 'Edit School Year Book Charges', :controller => 'admin/school_years', :action => 'edit_book_charge')
 
 school_classes_index = Right.create(:name => 'List School Classes', :controller => 'admin/school_classes', :action => 'index')
 school_classes_new = Right.create(:name => 'Create New School Class', :controller => 'admin/school_classes', :action => 'new')
@@ -148,6 +149,7 @@ registration_officer.rights << school_years_index
 registration_officer.rights << school_years_show
 registration_officer.rights << school_years_new
 registration_officer.rights << school_years_edit
+registration_officer.rights << school_years_edit_book_charge
 
 registration_officer.rights << school_classes_index
 registration_officer.rights << school_classes_new
