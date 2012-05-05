@@ -1,0 +1,22 @@
+<% @title = 'Edit Book Charge For School Year' %>
+
+<div class="account-form">
+  <% unless @book_charge_with_error.nil? %>
+    <%= error_messages_for :book_charge_with_error, :object_name => "Book Charge for #{@book_charge_with_error.grade.name}" %>
+  <% end %>
+  
+  <% form_tag do %>
+    <fieldset>
+        <legend>Edit Book Charge For School Year <%=h @school_year.name %></legend>
+        <span class="book-charge-edit">
+          <% @book_charges.each do |book_charge| %>
+            <%= render :partial => 'book_charge_form', :object => book_charge %>
+          <% end %>
+          <span style="color:red">*&nbsp;</span>Required Field
+          <div>
+            <%= submit_tag 'Save', :class => 'submit' %>
+          </div>
+        </span>
+    </fieldset>
+  <% end %>
+</div>

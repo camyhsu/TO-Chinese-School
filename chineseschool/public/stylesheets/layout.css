@@ -319,3 +319,15 @@ select {
 .track-event-sign-up td.select-parent {
     text-align: left;
 }
+
+.book-charge-edit label {
+    width: 22em;
+    float: left;
+    text-align: right;
+    margin-right: 0.1em;
+    display: block;
+}
+
+.book-charge-edit .submit {
+    margin-left: 27em;
+}

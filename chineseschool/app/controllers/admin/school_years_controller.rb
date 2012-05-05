@@ -15,6 +15,7 @@ class Admin::SchoolYearsController < ApplicationController
       @school_year.wire_up_previous_school_year
       if @school_year.save
         initialize_school_class_active_flags_for @school_year
+        initialize_book_charges_for @school_year
         flash[:notice] = 'School Year added successfully'
         redirect_to :action => :index
       end
@@ -49,6 +50,33 @@ class Admin::SchoolYearsController < ApplicationController
       @school_year = SchoolYear.find_by_id params[:id].to_i
     end
   end
+  
+  def edit_book_charge
+    @school_year = SchoolYear.find_by_id params[:id].to_i
+    @book_charges = BookCharge.find_all_for @school_year
+    if request.post?
+      @book_charges.each do |book_charge|
+        book_charge.book_charge = params[:book_charge][book_charge.id.to_s].to_f
+        unless book_charge.valid?
+          @book_charge_with_error = book_charge
+          return
+        end
+      end
+      begin
+        BookCharge.transaction do
+          @book_charges.each { |book_charge| book_charge.save! }
+        end
+      rescue => e
+        puts '======================================'
+        puts e.inspect
+        puts '======================================'
+        flash.now[:notice] = e.message
+        return
+      end
+      flash[:notice] = 'Book Charge updated successfully'
+      redirect_to :action => :show, :id => @school_year.id
+    end
+  end
 
   private
 
@@ -59,6 +87,16 @@ class Admin::SchoolYearsController < ApplicationController
       school_class_active_flag.school_year = school_year
       school_class_active_flag.active = true
       school_class_active_flag.save!
+    end
+  end
+  
+  def initialize_book_charges_for(school_year)
+    Grade.all.each do |grade|
+      book_charge = BookCharge.new
+      book_charge.school_year = school_year
+      book_charge.grade = grade
+      book_charge.book_charge_in_cents = 2000
+      book_charge.save!
     end
   end
 
@@ -74,7 +112,7 @@ class Admin::SchoolYearsController < ApplicationController
     @school_year.tuition = params[:school_year][:tuition].to_f
     @school_year.tuition_discount_for_three_or_more_child = params[:school_year][:tuition_discount_for_three_or_more_child].to_f
     @school_year.tuition_discount_for_pre_k = params[:school_year][:tuition_discount_for_pre_k].to_f
-    @school_year.book_charge = params[:school_year][:book_charge].to_f
+    #@school_year.book_charge = params[:school_year][:book_charge].to_f
     @school_year.pva_membership_due = params[:school_year][:pva_membership_due].to_f
     @school_year.ccca_membership_due = params[:school_year][:ccca_membership_due].to_f
   end
