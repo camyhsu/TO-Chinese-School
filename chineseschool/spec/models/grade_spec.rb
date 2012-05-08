@@ -56,16 +56,16 @@ describe Grade, 'checking if having active school classes in a school year' do
   end
 
   it 'should return true if having active school classes in the given school year' do
-    grades(:first_grade).has_active_school_classes_in?(@fake_school_year).should be_true
+    grades(:first_grade).has_active_grade_classes_in?(@fake_school_year).should be_true
   end
 
   it 'should return false if having no active school classes in the given school year' do
     @fake_school_year.id = 2
-    grades(:first_grade).has_active_school_classes_in?(@fake_school_year).should be_false
+    grades(:first_grade).has_active_grade_classes_in?(@fake_school_year).should be_false
   end
 
   it 'should return false if having no school classes in the grade' do
-    grades(:third_grade).has_active_school_classes_in?(@fake_school_year).should be_false
+    grades(:third_grade).has_active_grade_classes_in?(@fake_school_year).should be_false
   end
 end
 

@@ -22,7 +22,7 @@ class Grade < ActiveRecord::Base
     self.school_classes.reject { |school_class| !school_class.active_in?(school_year) }
   end
 
-  def has_active_school_classes_in?(school_year)
+  def has_active_grade_classes_in?(school_year)
     SchoolClassActiveFlag.count(
         :conditions => ["active = true AND school_year_id = ? AND school_class_id = school_classes.id AND school_classes.grade_id = ?", school_year.id, self.id],
         :include => :school_class) > 0
@@ -30,7 +30,7 @@ class Grade < ActiveRecord::Base
 
   def snap_down_to_first_active_grade(school_year)
     snapped_grade = self
-    snapped_grade = snapped_grade.previous_grade until snapped_grade.has_active_school_classes_in? school_year
+    snapped_grade = snapped_grade.previous_grade until snapped_grade.has_active_grade_classes_in? school_year
     snapped_grade
   end
 
