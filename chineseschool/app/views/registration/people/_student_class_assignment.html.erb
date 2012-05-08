@@ -19,7 +19,7 @@
     <td class="label">Select New School Class:</td>
     <td>
       <% select_school_class_handler = "selectClass(this, '#{url_for :action => :select_school_class, :id => student_class_assignment}')" %>
-      <%= collection_select :student_class_assignment, :school_class, student_class_assignment.grade.active_school_classes,
+      <%= collection_select :student_class_assignment, :school_class, student_class_assignment.grade.active_grade_classes,
           :id, :chinese_name, {:include_blank => true, :selected => student_class_assignment.try(:school_class).try(:id)},
           {:onchange => select_school_class_handler} %>
     </td>

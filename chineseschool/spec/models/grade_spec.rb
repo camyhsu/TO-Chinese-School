@@ -34,16 +34,16 @@ describe Grade do
   end
 end
 
-describe Grade, 'finding active school classes' do
+describe Grade, 'finding active grade classes' do
   fixtures :grades, :school_classes, :school_class_active_flags
 
-  it 'should find active school classes belonging to this grade' do
+  it 'should find active grade classes belonging to this grade' do
     stub_current_school_year
-    active_school_classes = grades(:first_grade).active_school_classes
-    active_school_classes.should have(2).school_classes
-    active_school_classes.should include(school_classes(:first_grade))
-    active_school_classes.should include(school_classes(:first_grade_class_b))
-    active_school_classes.should_not include(school_classes(:first_grade_class_inactive))
+    active_grade_classes = grades(:first_grade).active_grade_classes
+    active_grade_classes.should have(2).school_classes
+    active_grade_classes.should include(school_classes(:first_grade))
+    active_grade_classes.should include(school_classes(:first_grade_class_b))
+    active_grade_classes.should_not include(school_classes(:first_grade_class_inactive))
   end
 end
 
