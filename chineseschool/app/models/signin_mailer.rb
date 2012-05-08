@@ -1,7 +1,7 @@
 class SigninMailer < ActionMailer::Base
   
-  def registration_invitation(person, email_destination)
-    subject    'Thousand Oaks Chinese School - Registration Invitation'
+  def account_invitation(person, email_destination)
+    subject    'Thousand Oaks Chinese School - Account Invitation'
     recipients email_destination
     from       Contacts::WEB_SITE_SUPPORT
     sent_on    Time.now

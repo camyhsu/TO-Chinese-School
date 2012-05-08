@@ -33,7 +33,7 @@ class Admin::UserRegistrationController < ApplicationController
   private
 
   def send_invitation_to(person, email_destination)
-    email = SigninMailer.create_registration_invitation person, email_destination
+    email = SigninMailer.create_account_invitation person, email_destination
     SigninMailer.deliver email
   end
 end

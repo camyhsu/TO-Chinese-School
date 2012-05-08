@@ -95,7 +95,7 @@ class Student::RegistrationController < ApplicationController
     find_possible_students.each do |student|
       student_status_flag = student.student_status_flag_for @registration_school_year
       if (not student_status_flag.nil?) and student_status_flag.registered?
-        @registered_students << student#.registration_preference_for(@registration_school_year)
+        @registered_students << student
       else
         # New registration preferences created here are not saved
         # they are only used to help rendering display options view
@@ -106,7 +106,6 @@ class Student::RegistrationController < ApplicationController
         if previous_school_year_class_assignment.nil?
           # No class assignment in the previous school year - go for age-based grade assignment
           age_based_grade = Grade.find_by_school_age(student.school_age_for(@registration_school_year))
-          
           unless age_based_grade.nil?
             new_registration_preference.grade = age_based_grade.snap_down_to_first_active_grade @registration_school_year
             @registration_preferences << new_registration_preference
