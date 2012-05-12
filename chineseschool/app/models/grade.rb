@@ -55,7 +55,8 @@ class Grade < ActiveRecord::Base
   end
   
   def active_grade_classes_full?(school_year)
-    
+    allowed_max_student_count = self.active_grade_classes(school_year).inject(0) { |memo, grade_class| memo + grade_class.max_size }
+    StudentClassAssignment.count_by_sql("SELECT COUNT(1) FROM student_class_assignments WHERE grade_id = #{self.id} AND school_year_id = #{school_year.id}") >= allowed_max_student_count
   end
   
   def self.find_by_school_age(school_age)

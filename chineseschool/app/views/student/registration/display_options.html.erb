@@ -76,7 +76,11 @@
         <% @registration_preferences.each do |registration_preference| -%>
           <% student = registration_preference.student %>
           <tr>
-            <td class="checkbox"><%= check_box_tag "#{student.id}_register", true %></td>
+            <td class="checkbox">
+              <% unless registration_preference.grade_full? %>
+                <%= check_box_tag "#{student.id}_register", true %>
+              <% end %>
+            </td>
             <td><%=h student.name %></td>
             <td>
               <% if registration_preference.previous_grade.nil? -%>

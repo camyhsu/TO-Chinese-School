@@ -1,6 +1,7 @@
 module Student::RegistrationHelper
   
   def display_available_school_class_type_options(student_id, registration_preference)
+    return "<span style=\"font-weight: bold; color: red;\">#{registration_preference.grade.name} is FULL</span>" if registration_preference.grade_full?
     available_school_class_types = registration_preference.grade.find_available_school_class_types(registration_preference.school_year)
     if available_school_class_types.empty?
       ''
@@ -16,11 +17,24 @@ module Student::RegistrationHelper
       output_html += hidden_field_tag "#{student_id}_school_class_type", available_school_class_types[0]
       output_html
     else
-      options = []
+      output_html = '<select name="'
+      output_html += "#{student_id}_school_class_type[school_class_type]"
+      output_html += '">'
       available_school_class_types.each do |school_class_type|
-        options << [display_string_for(school_class_type), school_class_type]
+        output_html += '<option value="'
+        if registration_preference.full_for? school_class_type
+          output_html += '" disabled>'
+          output_html += display_string_for(school_class_type)
+          output_html += '&nbsp;(FULL)'
+        else
+          output_html += school_class_type
+          output_html += '">'
+          output_html += display_string_for(school_class_type)
+        end
+        output_html += '</option>'
       end
-      select "#{student_id}_school_class_type", :school_class_type, options
+      output_html += '</select>'
+      output_html
     end
   end
   

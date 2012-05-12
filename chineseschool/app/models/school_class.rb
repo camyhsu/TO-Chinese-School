@@ -90,6 +90,10 @@ class SchoolClass < ActiveRecord::Base
     return false if (!self.max_age.nil?) and (self.max_age > 0) and (school_age > self.max_age)
     true
   end
+  
+  def grade_class_is_full_for?(school_year)
+    StudentClassAssignment.count(:conditions => ["school_class_id = ? AND school_year_id = ?", self.id, school_year.id]) >= self.max_size
+  end
 
   def elective_is_full_for?(school_year)
     StudentClassAssignment.count(:conditions => ["elective_class_id = ? AND school_year_id = ?", self.id, school_year.id]) >= self.max_size
