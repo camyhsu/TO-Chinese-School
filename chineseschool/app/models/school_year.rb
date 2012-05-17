@@ -17,7 +17,7 @@ class SchoolYear < ActiveRecord::Base
   validates_numericality_of :pre_registration_tuition_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
   validates_numericality_of :tuition_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
   validates_numericality_of :tuition_discount_for_three_or_more_child_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
-  validates_numericality_of :tuition_discount_for_pre_k_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
+  validates_numericality_of :tuition_discount_for_pre_k_in_cents, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => false
   validates_numericality_of :pva_membership_due_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
   validates_numericality_of :ccca_membership_due_in_cents, :only_integer => true, :greater_than => 0, :allow_nil => false
 
