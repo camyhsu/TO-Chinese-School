@@ -78,7 +78,11 @@ class SchoolClass < ActiveRecord::Base
   def current_room_parent
     room_parent_assignment = InstructorAssignment.first :conditions => ["school_year_id = ? AND school_class_id = ? AND role = ? AND start_date <= ? AND end_date >= ?",
       SchoolYear.current_school_year.id, self.id, InstructorAssignment::ROLE_ROOM_PARENT, PacificDate.today, PacificDate.today ]
-    room_parent_assignment.instructor
+    if room_parent_assignment.nil?
+      nil
+    else
+      room_parent_assignment.instructor
+    end
   end
   
   def find_room_parent_candidates
