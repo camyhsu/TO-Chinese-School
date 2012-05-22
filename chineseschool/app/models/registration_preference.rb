@@ -25,7 +25,7 @@ class RegistrationPreference < ActiveRecord::Base
     end
     
     class_assigned_student_count = StudentClassAssignment.count_by_sql("SELECT COUNT(1) FROM student_class_assignments WHERE school_year_id = #{self.school_year.id} AND school_class_id IN (#{school_class_type_class_ids.join(',')})")
-    unassigned_student_count = StudentClassAssignment.count_by_sql("SELECT COUNT(1) FROM student_class_assignments sca, registration_preferences rp WHERE sca.school_year_id = #{self.school_year.id} AND sca.school_class_id IS NULL AND sca.student_id = rp.student_id AND rp.school_year_id = #{self.school_year.id} AND rp.school_class_type = '#{school_class_type}'")
+    unassigned_student_count = StudentClassAssignment.count_by_sql("SELECT COUNT(1) FROM student_class_assignments sca, registration_preferences rp WHERE sca.school_year_id = #{self.school_year.id} AND sca.grade_id = #{self.grade_id} AND sca.school_class_id IS NULL AND sca.student_id = rp.student_id AND rp.school_year_id = #{self.school_year.id} AND rp.school_class_type = '#{school_class_type}'")
     
     (class_assigned_student_count + unassigned_student_count) >= allowed_max_student_count
   end
