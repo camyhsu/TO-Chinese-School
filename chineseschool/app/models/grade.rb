@@ -69,11 +69,32 @@ class Grade < ActiveRecord::Base
     grade
   end
   
+  def random_assign_grade_class(school_year)
+    puts "#{Time.now} - Random assign grade class for Grade #{self.name}"
+    class_type_to_classes = Hash.new { |hash, key| hash[key] = [] }
+    self.active_grade_classes.each { |grade_class| class_type_to_classes[grade_class.school_class_type] << grade_class }
+    
+    class_assignments = self.student_class_assignments.all :conditions => ['school_year_id = ? AND school_class_id IS NULL', school_year.id]
+    class_assignments.each do |class_assignment|
+      desired_class_type = class_assignment.student.registration_preference_for(school_year).school_class_type
+      assignable_classes = class_type_to_classes[desired_class_type]
+      if assignable_classes.empty?
+        puts "ERROR - could not find assignable classes for student id => #{class_assignment.student.id} for class type <<#{desired_class_type}>>"
+      else
+        class_picked = pick_school_class_with_lowest_head_count_from assignable_classes, school_year
+        puts "Class picked for student id => #{class_assignment.student.id} is #{class_picked.name}"
+        class_assignment.school_class = class_picked
+        puts "ERROR - could not save school class assignment => #{class_assignment.id}" unless class_assignment.save
+      end
+    end
+  end
+  
   
   private
   
   def pick_school_class_with_lowest_head_count_from(school_classes, school_year)
-    current_school_class_picked = school_classes.shift
+    return school_classes[0] if school_classes.size == 1
+    current_school_class_picked = school_classes[0]
     current_lowest_head_count = current_school_class_picked.class_size school_year
     school_classes.each do |school_class|
       if school_class.class_size < current_lowest_head_count
@@ -81,5 +102,6 @@ class Grade < ActiveRecord::Base
         current_lowest_head_count = current_school_class_picked.class_size school_year
       end
     end
+    current_school_class_picked
   end
 end

@@ -1,6 +1,6 @@
 class Registration::StudentClassAssignmentsController < ApplicationController
 
-  verify :only => [:remove_from_grade, :select_school_class, :select_elective_class] , :method => :post,
+  verify :only => [:destroy, :select_school_class, :select_elective_class] , :method => :post,
       :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
 
 
@@ -48,5 +48,12 @@ class Registration::StudentClassAssignmentsController < ApplicationController
     @student_class_assignment.elective_class = selected_elective_class
     @student_class_assignment.save!
     render :action => :one_student_class_assignment, :layout => 'ajax_layout'
+  end
+  
+  def random_assign_grade_class
+    current_school_year = SchoolYear.current_school_year
+    Grade.all.each { |grade| grade.random_assign_grade_class current_school_year }
+    flash[:notice] = 'Random grade class assignment completed successfully'
+    redirect_to :controller => '/home', :action => :index
   end
 end

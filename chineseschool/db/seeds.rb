@@ -92,6 +92,7 @@ student_class_assignments_list_active_students_by_name = Right.create(:name => '
 student_class_assignments_select_school_class = Right.create(:name => 'Select School Class On Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'select_school_class')
 student_class_assignments_select_elective_class = Right.create(:name => 'Select Elective Class On Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'select_elective_class')
 student_class_assignments_destroy = Right.create(:name => 'Remove Student From Grade On Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'destroy')
+student_class_assignments_random_assign_class = Right.create(:name => 'Randomly Assign Students To Grade Class', :controller => 'registration/student_class_assignments', :action => 'random_assign_grade_class')
 
 instructor_assignments_select_school_class = Right.create(:name => 'Select School Class For Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'select_school_class')
 instructor_assignments_select_start_date = Right.create(:name => 'Select Start Date For Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'select_start_date')
@@ -181,6 +182,7 @@ registration_officer.rights << student_class_assignments_list_active_students_by
 registration_officer.rights << student_class_assignments_select_school_class
 registration_officer.rights << student_class_assignments_select_elective_class
 registration_officer.rights << student_class_assignments_destroy
+registration_officer.rights << student_class_assignments_random_assign_class
 
 registration_officer.rights << instructor_assignments_select_school_class
 registration_officer.rights << instructor_assignments_select_start_date

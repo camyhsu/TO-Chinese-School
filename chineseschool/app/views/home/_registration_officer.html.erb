@@ -25,6 +25,9 @@
 <% end %>
 <br/>
 <br/>
+<%= link_to 'Randomly Assign Students To Grade Class', {:controller => '/registration/student_class_assignments', :action => 'random_assign_grade_class'}, {:class => 'button', :confirm => 'WARNING - This action can not be reversed.  Are you sure you want to proceed?'} %>
+<br/>
+<br/>
 <%= link_to 'Create A New Family', {:controller => '/registration/families', :action => 'new'}, {:class => 'button'} %>
 <br/>
 <br/>
