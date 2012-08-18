@@ -10,8 +10,16 @@
             <td><%=h student_class_assignment.try(:school_class).try(:name) %></td>
           </tr>
           <tr>
+            <td class="label">School Class Location:</td>
+            <td><%=h student_class_assignment.try(:school_class).try(:location) %></td>
+          </tr>
+          <tr>
             <td class="label"><%=h school_year.name %> Elective Class:</td>
             <td><%=h student_class_assignment.try(:elective_class).try(:name) %></td>
+          </tr>
+          <tr>
+            <td class="label">Elective Class Location:</td>
+            <td><%=h student_class_assignment.try(:elective_class).try(:location) %></td>
           </tr>
         <% end %>
       <% end %>
