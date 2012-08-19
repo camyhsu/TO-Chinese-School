@@ -8,9 +8,7 @@
         <% end %>
       </td>
       <td>
-        <% assignment_hash[InstructorAssignment::ROLE_ROOM_PARENT].each do |instructor| %>
-        <%=h instructor.name %>&nbsp;
-        <% end %>
+        <%=h active_school_class.current_room_parent_name %>&nbsp;
       </td>
       <td>
         <% assignment_hash[InstructorAssignment::ROLE_SECONDARY_INSTRUCTOR].each do |instructor| %>
@@ -25,4 +23,3 @@
       <td>
         <%= link_to 'Student List', :controller => '/instruction/school_classes', :action => 'show', :id => active_school_class.id %>
       </td>
-      
