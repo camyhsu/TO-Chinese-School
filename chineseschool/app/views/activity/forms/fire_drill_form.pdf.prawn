@@ -22,9 +22,8 @@ header = [ 'No', '姓名', 'First Name', 'Last Name', '當日出席/class check-
     assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].each do |instructor|
       pdf.text "Teacher Name: #{instructor.name} 老師"
     end
-    assignment_hash[InstructorAssignment::ROLE_ROOM_PARENT].each do |room_parent|
-      pdf.text "Room Parent Name: #{room_parent.name}"
-    end
+    current_room_parent_name = school_class.current_room_parent_name
+    pdf.text "Room Parent Name: #{current_room_parent_name}" unless current_room_parent_name.nil?
   end
   pdf.move_down 10
   
