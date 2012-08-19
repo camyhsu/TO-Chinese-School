@@ -75,18 +75,24 @@ class SchoolClass < ActiveRecord::Base
     assignment_hash
   end
   
-  def current_room_parent
-    room_parent_assignment = InstructorAssignment.first :conditions => ["school_year_id = ? AND school_class_id = ? AND role = ? AND start_date <= ? AND end_date >= ?",
+  def current_room_parent_assignment
+    InstructorAssignment.first :conditions => ["school_year_id = ? AND school_class_id = ? AND role = ? AND start_date <= ? AND end_date >= ?",
       SchoolYear.current_school_year.id, self.id, InstructorAssignment::ROLE_ROOM_PARENT, PacificDate.today, PacificDate.today ]
-    if room_parent_assignment.nil?
-      nil
-    else
-      room_parent_assignment.instructor
-    end
+  end
+
+  def current_room_parent_name
+    current_room_parent_assignment.try(:instructor).try(:name)
   end
   
   def find_room_parent_candidates
-    
+    room_parent_candidates = []
+    students.each do |student|
+      student.find_families_as_child.each do |family|
+        room_parent_candidates << family.parent_one
+        room_parent_candidates << family.parent_two
+      end
+    end
+    room_parent_candidates.uniq.compact
   end
 
   def allow_school_age?(school_age)

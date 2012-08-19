@@ -17,4 +17,8 @@ class PacificDate
   def self.tomorrow
     self.today + 1
   end
+
+  def self.yesterday
+    self.today - 1
+  end
 end

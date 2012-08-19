@@ -28,6 +28,29 @@ class InstructorAssignment < ActiveRecord::Base
     self.role == ROLE_PRIMARY_INSTRUCTOR or self.role == ROLE_SECONDARY_INSTRUCTOR
   end
 
+  def self.change_room_parent(school_class, new_room_parent_id)
+    old_room_parent_assignment = school_class.current_room_parent_assignment
+    unless old_room_parent_assignment.nil?
+      if old_room_parent_assignment.start_date > PacificDate.yesterday
+        old_room_parent_assignment.destroy
+      else
+        old_room_parent_assignment.end_date = PacificDate.yesterday
+        old_room_parent_assignment.end_date = old_room_parent_assignment.start_date if old_room_parent_assignment.start_date > old_room_parent_assignment.end_date
+        old_room_parent_assignment.save!
+        puts old_room_parent_assignment.inspect
+      end
+    end
+    new_room_parent_assignment = InstructorAssignment.new
+    new_room_parent_assignment.school_year = SchoolYear.current_school_year
+    new_room_parent_assignment.school_class = school_class
+    new_room_parent_assignment.instructor_id = new_room_parent_id
+    new_room_parent_assignment.role = ROLE_ROOM_PARENT
+    new_room_parent_assignment.start_date = PacificDate.today
+    new_room_parent_assignment.end_date = SchoolYear.current_school_year.end_date
+    puts new_room_parent_assignment.inspect
+    new_room_parent_assignment.save!
+  end
+
   
   private
 

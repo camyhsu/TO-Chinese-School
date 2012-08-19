@@ -23,6 +23,35 @@ class Instruction::SchoolClassesController < ApplicationController
     render :layout => 'ajax_layout'
   end
 
+  def save_room_parent_selection
+    requested_school_class_id = params[:id].to_i
+    unless instructor_assignment_verified? requested_school_class_id
+      unless user_is_an_instructor? requested_school_class_id
+        flash[:notice] = "Access to requested room parent selection not authorized"
+        redirect_to :controller => '/home', :action => :index
+        return
+      end
+    end
+    @school_class = SchoolClass.find_by_id requested_school_class_id
+
+
+    InstructorAssignment.change_room_parent @school_class, params[:room_parent_id].to_i
+    render :action => 'current_room_parent_display', :layout => 'ajax_layout'
+  end
+
+  def cancel_room_parent_selection
+    requested_school_class_id = params[:id].to_i
+    unless instructor_assignment_verified? requested_school_class_id
+      unless user_is_an_instructor? requested_school_class_id
+        flash[:notice] = "Access to requested room parent selection not authorized"
+        redirect_to :controller => '/home', :action => :index
+        return
+      end
+    end
+    @school_class = SchoolClass.find_by_id requested_school_class_id
+    render :action => 'current_room_parent_display', :layout => 'ajax_layout'
+  end
+
 
   private
 
