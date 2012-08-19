@@ -11,10 +11,7 @@
     <td><%=h @school_class.chinese_name %></td>
     <td><%=h "教室: #{@school_class.location}" %></td>
     <td class="room-parent-cell">
-      Room Parent: 
-      <% assignment_hash[InstructorAssignment::ROLE_ROOM_PARENT].each do |instructor| %>
-      <%=h "#{instructor.name}"%>&nbsp;
-      <% end %>
+      Room Parent: <%=h @school_class.current_room_parent_name %>
     </td>
   </tr>
 </table>
