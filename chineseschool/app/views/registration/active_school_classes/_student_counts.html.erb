@@ -24,10 +24,9 @@
         <% end %>
       </td>
       <td>
-        <% assignment_hash[InstructorAssignment::ROLE_ROOM_PARENT].each do |instructor| %>
-        <%=h instructor.name %>&nbsp;
-        <%=h instructor.personal_email_address %>&nbsp;
-        <% end %>
+        <% room_parent = school_class.current_room_parent_assignment.try(:instructor) %>
+        <%=h room_parent.try(:name) %>&nbsp;
+        <%=h room_parent.try(:personal_email_address) %>&nbsp;
       </td>
       <td><%=h school_class.max_size %></td>
       <td><%=h school_class.min_age %></td>
