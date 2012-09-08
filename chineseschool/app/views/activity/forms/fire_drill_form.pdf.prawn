@@ -5,8 +5,8 @@ pdf.font "#{RAILS_ROOT}/lib/data/fonts/ArialUnicode.ttf"
 header = [ 'No', '姓名', 'First Name', 'Last Name', '當日出席/class check-in', '參與演習/event check-in' ]
 
 @sorted_school_classes.each do |school_class|
-  pdf.font_size 9 do
-    pdf.text "#{@current_school_year.name} Thousand Oaks Chinese School Fire Drill Form", :align => :right
+  pdf.font_size 11 do
+    pdf.text "#{@current_school_year.name} Thousand Oaks Chinese School Fire Drill Form", :align => :center
   end
   
   pdf.move_down 8
@@ -22,15 +22,13 @@ header = [ 'No', '姓名', 'First Name', 'Last Name', '當日出席/class check-
     assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].each do |instructor|
       pdf.text "Teacher Name: #{instructor.name} 老師"
     end
-    current_room_parent_name = school_class.current_room_parent_name
-    pdf.text "Room Parent Name: #{current_room_parent_name}" unless current_room_parent_name.nil?
   end
   pdf.move_down 10
   
   data = [ header ]
   @class_lists[school_class].each_with_index do |student, i|
     row = []
-    row << i
+    row << (i + 1)
     row << student.chinese_name
     row << student.english_first_name
     row << student.english_last_name
@@ -38,6 +36,22 @@ header = [ 'No', '姓名', 'First Name', 'Last Name', '當日出席/class check-
     row << ''
     data << row
   end
+
+  student_count = @class_lists[school_class].size
+  extra_line_count = 31 - student_count
+  extra_line_count = 0 if extra_line_count < 0
+  extra_line_count = 3 if extra_line_count > 3
+  extra_line_count.times do |i|
+    row = []
+    row << (i + 1 + student_count)
+    row << ''
+    row << ''
+    row << ''
+    row << ''
+    row << ''
+    data << row
+  end
+
   pdf.font_size 9 do
     pdf.table(data, :header => true) do
       row(0).style(:background_color => 'cccccc')
@@ -45,8 +59,6 @@ header = [ 'No', '姓名', 'First Name', 'Last Name', '當日出席/class check-
   end
   
   pdf.move_down 14
-  pdf.text 'Teacher Name:'
-  pdf.move_down 6
   pdf.text 'Teacher Signature:'
   pdf.start_new_page
 end
