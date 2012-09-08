@@ -1,6 +1,6 @@
 /* Global styles */
 
-body { background-color: #fff; color: #333; }
+body { background-color: #e2e2e2; color: #333; }
 
 body, p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
@@ -33,7 +33,7 @@ select {
     padding-left: 1em;
     padding-bottom: 1em;
     width: 12em;
-    background: #141;
+    background: #00853f;
 }
 
 #side-bar .welcome-text {
@@ -48,7 +48,7 @@ select {
 #main {
     margin-left: 13em;
     padding-left: 2em;
-    background: white;
+    background: #f4f0e9;
 }
 
 #flash-notice {
@@ -105,7 +105,7 @@ select {
 
 .account-form legend {
     color: #dfd;
-    background: #141;
+    background: #00853f;
     font-family: sans-serif;
     padding: 0.2em 1em;
 }
