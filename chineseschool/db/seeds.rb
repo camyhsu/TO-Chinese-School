@@ -139,6 +139,9 @@ ccca_report_active_family_home_phone_numbers = Right.create(:name => 'Active Fam
 principal = Role.find_by_name(Role::ROLE_NAME_PRINCIPAL)
 principal.rights << active_school_classes_grade_class_student_count
 principal.rights << active_school_classes_elective_class_student_count
+principal.rights << instruction_active_school_classes_index
+principal.rights << instruction_school_classes_show
+
 principal.rights << report_daily_online_registration_summary
 
 
