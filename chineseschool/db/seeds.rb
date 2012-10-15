@@ -21,6 +21,7 @@ create_role(Role::ROLE_NAME_REGISTRATION_OFFICER)
 create_role(Role::ROLE_NAME_ACCOUNTING_OFFICER)
 create_role(Role::ROLE_NAME_ACTIVITY_OFFICER)
 create_role(Role::ROLE_NAME_INSTRUCTION_OFFICER)
+create_role(Role::ROLE_NAME_LIBRARIAN)
 
 create_role(Role::ROLE_NAME_INSTRUCTOR)
 create_role(Role::ROLE_NAME_ROOM_PARENT)
@@ -248,6 +249,12 @@ instruction_officer.rights << active_school_classes_grade_class_student_count
 instruction_officer.rights << active_school_classes_elective_class_student_count
 instruction_officer.rights << instruction_active_school_classes_index
 instruction_officer.rights << instruction_school_classes_show
+
+
+#
+# Assign rights to Librarian
+#
+librarian = Role.find_by_name(Role::ROLE_NAME_LIBRARIAN)
 
 
 #

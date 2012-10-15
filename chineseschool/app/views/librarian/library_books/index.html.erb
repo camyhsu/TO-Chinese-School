@@ -1,0 +1,39 @@
+<% @title = 'All Library Books' %>
+
+<div>
+  <%= link_to 'Create New Library Book', {:action => :new}, {:class => 'button'} %>
+</div>
+<br/>
+
+<table id="jquery-datatable" border="1px">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Book Id</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Publisher</th>
+    <th>Book Type</th>
+    <th>Checked Out?</th>
+    <th>Checked Out By</th>
+    <th>Note</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @library_books.each do |library_book| -%>
+      <tr>
+        <td></td>
+        <td><%= library_book.id %></td>
+        <td><%=h library_book.title %></td>
+        <td><%=h library_book.description %></td>
+        <td><%=h library_book.publisher %></td>
+        <td><%=h library_book.book_type %></td>
+        <td></td>
+        <td></td>
+        <td><%=h library_book.note %></td>
+        <td></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

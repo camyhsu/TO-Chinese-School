@@ -11,6 +11,7 @@ class HomeController < ApplicationController
     @home_templates << 'accounting_officer' if accounting_resources_enabled?
     @home_templates << 'activity_officer' if activity_resources_enabled?
     @home_templates << 'instruction_officer' if instruction_resources_enabled?
+    @home_templates << 'librarian' if librarian_resources_enabled?
     @home_templates << 'ccca_staff' if ccca_staff_resources_enabled?
     @home_templates << 'instructor' if instructor_resources_enabled?
     @active_registration_school_years = SchoolYear.find_active_registration_school_years
@@ -67,6 +68,12 @@ class HomeController < ApplicationController
   def instruction_resources_enabled?
     return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
     return true if @user.has_role? Role::ROLE_NAME_INSTRUCTION_OFFICER
+    false
+  end
+
+  def librarian_resources_enabled?
+    return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
+    return true if @user.has_role? Role::ROLE_NAME_LIBRARIAN
     false
   end
   

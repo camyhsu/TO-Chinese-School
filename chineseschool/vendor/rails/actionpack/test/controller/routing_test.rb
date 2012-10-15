@@ -1342,20 +1342,20 @@ class LegacyRouteSetTests < ActiveSupport::TestCase
   %w(GET POST PUT DELETE).each do |request_method|
     define_method("test_request_method_recognized_with_#{request_method}") do
       begin
-        Object.const_set(:BooksController, Class.new(ActionController::Base))
+        Object.const_set(:LibraryBooksController, Class.new(ActionController::Base))
 
         setup_request_method_routes_for(request_method)
 
         assert_nothing_raised { rs.recognize(@request) }
         assert_equal request_method.downcase, @request.path_parameters[:action]
       ensure
-        Object.send(:remove_const, :BooksController) rescue nil
+        Object.send(:remove_const, :LibraryBooksController) rescue nil
       end
     end
   end
 
   def test_recognize_array_of_methods
-    Object.const_set(:BooksController, Class.new(ActionController::Base))
+    Object.const_set(:LibraryBooksController, Class.new(ActionController::Base))
     rs.draw do |r|
       r.connect '/match', :controller => 'books', :action => 'get_or_post', :conditions => { :method => [:get, :post] }
       r.connect '/match', :controller => 'books', :action => 'not_get_or_post'
@@ -1374,7 +1374,7 @@ class LegacyRouteSetTests < ActiveSupport::TestCase
     assert_nothing_raised { rs.recognize(@request) }
     assert_equal 'not_get_or_post', @request.path_parameters[:action]
   ensure
-    Object.send(:remove_const, :BooksController) rescue nil
+    Object.send(:remove_const, :LibraryBooksController) rescue nil
   end
 
   def test_subpath_recognized
