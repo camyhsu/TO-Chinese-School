@@ -134,6 +134,11 @@ student_transaction_history_show_manual_transaction = Right.create(:name => 'Sho
 
 ccca_report_active_family_home_phone_numbers = Right.create(:name => 'Active Family Home Phone Numbers', :controller => 'ccca/report', :action => 'active_family_home_phone_numbers')
 
+library_book_index = Right.create(:name => 'List Library Books', :controller => 'librarian/library_books', :action => 'index')
+library_book_new = Right.create(:name => 'Create Library Book', :controller => 'librarian/library_books', :action => 'new')
+library_book_edit = Right.create(:name => 'Change Library Books', :controller => 'librarian/library_books', :action => 'edit')
+
+
 
 #
 # Assign rights to Principal
@@ -258,6 +263,9 @@ instruction_officer.rights << instruction_school_classes_show
 # Assign rights to Librarian
 #
 librarian = Role.find_by_name(Role::ROLE_NAME_LIBRARIAN)
+librarian.rights << library_book_index
+librarian.rights << library_book_new
+librarian.rights << library_book_edit
 
 
 #

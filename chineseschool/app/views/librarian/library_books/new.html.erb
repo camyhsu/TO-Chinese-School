@@ -1,0 +1,18 @@
+<% @title = 'Create New Library Book' %>
+
+<div class="account-form">
+  <%= error_messages_for :library_book %>
+
+  <% form_for :library_book do |form| %>
+      <fieldset>
+        <legend>Create New Library Book</legend>
+      <span class="library-book-edit">
+        <%= render :partial => 'library_book_form', :object => form %>
+        <span style="color:red">*&nbsp;</span>Required Field
+        <div>
+          <%= submit_tag 'Create', :class => 'submit' %>
+        </div>
+      </span>
+      </fieldset>
+  <% end %>
+</div>

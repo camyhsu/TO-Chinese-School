@@ -200,6 +200,19 @@ select {
     margin-left: 18em;
 }
 
+
+.library-book-edit label {
+    width: 7em;
+    float: left;
+    text-align: right;
+    margin-right: 0.1em;
+    display: block;
+}
+
+.library-book-edit .submit {
+    margin-left: 10em;
+}
+
 .details-table td {
     text-align: center;
 }

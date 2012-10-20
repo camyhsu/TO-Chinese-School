@@ -1,0 +1,20 @@
+    <div>
+      <label for="title"><span style="color:red">*&nbsp;</span>Title:</label>
+      <%= library_book_form.text_field :title, :size => 40 %>
+    </div>
+    <div>
+      <label for="description">Description:</label>
+      <%= library_book_form.text_field :description, :size => 60 %>
+    </div>
+    <div>
+      <label for="publisher"><span style="color:red">*&nbsp;</span>Publisher:</label>
+      <%= library_book_form.text_field :publisher, :size => 40 %>
+    </div>
+    <div>
+      <label for="book_type"><span style="color:red">*&nbsp;</span>Book Type:</label>
+      <%= library_book_form.select :book_type, LibraryBook::LIBRARY_BOOK_TYPES, {:include_blank => true} %>
+    </div>
+    <div>
+      <label for="note">Note:</label>
+      <%= library_book_form.text_area :note %>
+    </div>
