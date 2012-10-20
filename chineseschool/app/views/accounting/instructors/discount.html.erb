@@ -1,0 +1,24 @@
+<% @title = 'Instructor Discount Information' %>
+
+<table border="1px">
+  <thead>
+  <tr>
+    <th>Class Name</th>
+    <th>Instructor Name</th>
+    <th>Child One Name</th>
+    <th>Child Two Name</th>
+    <th>Discount</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @instructor_discounts.each do |instructor_discount| -%>
+      <tr>
+        <td><%=h instructor_discount.school_class_name %></td>
+        <td><%=h instructor_discount.instructor_name %></td>
+        <td><%=h instructor_discount.child_one_name %></td>
+        <td><%=h instructor_discount.child_two_name %></td>
+        <td><%=display_price instructor_discount.discount_amount %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

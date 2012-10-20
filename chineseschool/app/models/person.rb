@@ -94,6 +94,14 @@ class Person < ActiveRecord::Base
     parents
   end
 
+  def find_children
+    children = []
+    find_families_as_parent.each do |family|
+      children << family.children
+    end
+    children.flatten.compact.uniq
+  end
+
   def personal_email_address
     if self.address
       self.address.email

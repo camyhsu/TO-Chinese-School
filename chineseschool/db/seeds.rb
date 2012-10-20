@@ -39,6 +39,7 @@ accounting_registration_report_payments_by_date = Right.create(:name => 'Account
 accounting_manual_transactions_index = Right.create(:name => 'List Manual Transaction', :controller => 'accounting/manual_transactions', :action => 'index')
 accounting_manual_transactions_show = Right.create(:name => 'Show Manual Transaction', :controller => 'accounting/manual_transactions', :action => 'show')
 accounting_manual_transactions_new = Right.create(:name => 'Create Manual Transaction', :controller => 'accounting/manual_transactions', :action => 'new')
+accounting_instructors_discount = Right.create(:name => 'List Instructor Discount', :controller => 'accounting/instructors', :action => 'discount')
 
 grades_index = Right.create(:name => 'List Grades', :controller => 'admin/grades', :action => 'index')
 
@@ -219,6 +220,8 @@ accounting_officer.rights << student_transaction_history_show_registration_payme
 
 accounting_officer.rights << accounting_manual_transactions_index
 accounting_officer.rights << accounting_manual_transactions_show
+
+accounting_officer.rights << accounting_instructors_discount
 
 
 #
