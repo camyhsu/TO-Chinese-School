@@ -3,8 +3,8 @@ class CreateLibraryBookCheckouts < ActiveRecord::Migration
     create_table :library_book_checkouts do |t|
       t.integer :library_book_id, :null => false
       t.integer :checked_out_by_id, :null => false
-      t.date :transaction_date, :null => false
-      t.boolean :checked_out_transaction, :null => false
+      t.date :checked_out_date, :null => false
+      t.date :return_date
       t.text :note
 
       t.timestamps
