@@ -35,6 +35,29 @@
 </table>
 
 <% if @library_book.checked_out? %>
+    <h4>Returning This Book</h4>
+    <% form_tag({ :action => 'return_library_book', :id => @library_book.id }) do %>
+        <table>
+          <tr>
+            <td>Return Date:</td>
+            <td>
+              <%= text_field_tag 'return_date', Time.now.strftime('%Y-%m-%d'), :size => 10, :class => 'jquery-datepicker' %>
+            </td>
+          </tr>
+          <tr>
+            <td>Note:</td>
+            <td>
+              <%= text_area_tag 'note', nil, :size => '25x10' %>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <%= submit_tag 'Return', :class => 'submit' %>
+            </td>
+          </tr>
+        </table>
+    <% end %>
 <% else %>
     <h4>Checking Out This Book</h4>
     <% form_tag({ :action => 'check_out_library_book', :id => @library_book.id }) do %>

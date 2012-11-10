@@ -51,4 +51,20 @@ class Librarian::LibraryBooksController < ApplicationController
     end
     render :action => :checkout_history
   end
+
+  def return_library_book
+    @library_book = LibraryBook.find_by_id params[:id].to_i
+    current_checkout_record = @library_book.find_current_checkout_record
+    current_checkout_record.return_date = Date.parse params[:return_date]
+    current_checkout_record.note += " -- "
+    current_checkout_record.note += params[:note]
+    if current_checkout_record.valid?
+      LibraryBook.transaction do
+        current_checkout_record.save!
+        @library_book.checked_out = false
+        @library_book.save!
+      end
+    end
+    render :action => :checkout_history
+  end
 end

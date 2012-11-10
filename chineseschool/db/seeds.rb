@@ -137,7 +137,9 @@ ccca_report_active_family_home_phone_numbers = Right.create(:name => 'Active Fam
 library_book_index = Right.create(:name => 'List Library Books', :controller => 'librarian/library_books', :action => 'index')
 library_book_new = Right.create(:name => 'Create Library Book', :controller => 'librarian/library_books', :action => 'new')
 library_book_edit = Right.create(:name => 'Change Library Books', :controller => 'librarian/library_books', :action => 'edit')
-
+library_book_checkout_history = Right.create(:name => 'Library Book Checkout History', :controller => 'librarian/library_books', :action => 'checkout_history')
+library_book_check_out = Right.create(:name => 'Library Book Check Out', :controller => 'librarian/library_books', :action => 'check_out_library_book')
+library_book_return = Right.create(:name => 'Library Book Return', :controller => 'librarian/library_books', :action => 'return_library_book')
 
 
 #
@@ -266,6 +268,9 @@ librarian = Role.find_by_name(Role::ROLE_NAME_LIBRARIAN)
 librarian.rights << library_book_index
 librarian.rights << library_book_new
 librarian.rights << library_book_edit
+librarian.rights << library_book_checkout_history
+librarian.rights << library_book_check_out
+librarian.rights << library_book_return
 
 
 #
