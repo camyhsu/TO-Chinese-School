@@ -10,6 +10,7 @@ class HomeController < ApplicationController
     @home_templates << 'registration_officer' if registration_resources_enabled?
     @home_templates << 'accounting_officer' if accounting_resources_enabled?
     @home_templates << 'activity_officer' if activity_resources_enabled?
+    @home_templates << 'communication_officer' if communication_resources_enabled?
     @home_templates << 'instruction_officer' if instruction_resources_enabled?
     @home_templates << 'librarian' if librarian_resources_enabled?
     @home_templates << 'ccca_staff' if ccca_staff_resources_enabled?
@@ -62,6 +63,12 @@ class HomeController < ApplicationController
   def activity_resources_enabled?
     return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
     return true if @user.has_role? Role::ROLE_NAME_ACTIVITY_OFFICER
+    false
+  end
+
+  def communication_resources_enabled?
+    return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
+    return true if @user.has_role? Role::ROLE_NAME_COMMUNICATION_OFFICER
     false
   end
   

@@ -5,6 +5,7 @@ class Role < ActiveRecord::Base
   ROLE_NAME_REGISTRATION_OFFICER = 'Registration Officer'
   ROLE_NAME_ACCOUNTING_OFFICER = 'Accounting Officer'
   ROLE_NAME_ACTIVITY_OFFICER = 'Activity Officer'
+  ROLE_NAME_COMMUNICATION_OFFICER = 'Communication Officer'
   ROLE_NAME_INSTRUCTION_OFFICER = 'Instruction Officer'
   ROLE_NAME_LIBRARIAN = 'Librarian'
   

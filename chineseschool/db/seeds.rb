@@ -20,6 +20,7 @@ create_role(Role::ROLE_NAME_PRINCIPAL)
 create_role(Role::ROLE_NAME_REGISTRATION_OFFICER)
 create_role(Role::ROLE_NAME_ACCOUNTING_OFFICER)
 create_role(Role::ROLE_NAME_ACTIVITY_OFFICER)
+create_role(Role::ROLE_NAME_COMMUNICATION_OFFICER)
 create_role(Role::ROLE_NAME_INSTRUCTION_OFFICER)
 create_role(Role::ROLE_NAME_LIBRARIAN)
 
@@ -249,6 +250,12 @@ activity_officer.rights << activity_track_events_select_relay_group
 activity_officer.rights << activity_track_events_select_parent
 activity_officer.rights << activity_track_events_tocs_lane_assignment_form
 activity_officer.rights << activity_track_events_tocs_track_event_data
+
+
+#
+# Assign rights to Communication Officer
+#
+communication_officer = Role.find_by_name(Role::ROLE_NAME_COMMUNICATION_OFFICER)
 
 
 #
