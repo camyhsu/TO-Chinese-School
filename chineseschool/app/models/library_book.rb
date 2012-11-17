@@ -12,4 +12,12 @@ class LibraryBook < ActiveRecord::Base
   def find_current_checkout_record
     LibraryBookCheckout.first :conditions => ['library_book_id = ? AND return_date IS NULL', self.id]
   end
+
+  def self.find_eligible_checkout_people
+    people = InstructorAssignment.find_instructors
+    people << Role.find_people_with_role(Role::ROLE_NAME_PRINCIPAL)
+    people << Role.find_people_with_role(Role::ROLE_NAME_LIBRARIAN)
+    people << Role.find_people_with_role(Role::ROLE_NAME_INSTRUCTION_OFFICER)
+    people.flatten.uniq.sort { |x, y| x.english_name <=> y.english_name }
+  end
 end

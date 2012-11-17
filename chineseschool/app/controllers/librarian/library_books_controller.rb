@@ -1,6 +1,6 @@
 class Librarian::LibraryBooksController < ApplicationController
 
-  verify :only => [:check_out_library_book], :method => :post,
+  verify :only => [:check_out_library_book, :return_library_book], :method => :post,
          :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
 
   def index
@@ -38,7 +38,7 @@ class Librarian::LibraryBooksController < ApplicationController
   def check_out_library_book
     @library_book = LibraryBook.find_by_id params[:id].to_i
     library_book_checkout = LibraryBookCheckout.new
-    library_book_checkout.checked_out_by = Person.find_by_id params[:instructor][:id]
+    library_book_checkout.checked_out_by = Person.find_by_id params[:checked_out_by][:id]
     library_book_checkout.checked_out_date = Date.parse params[:check_out_date]
     library_book_checkout.note = params[:note]
     library_book_checkout.library_book = @library_book

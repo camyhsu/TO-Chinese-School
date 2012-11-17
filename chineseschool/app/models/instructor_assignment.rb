@@ -53,8 +53,7 @@ class InstructorAssignment < ActiveRecord::Base
 
   def self.find_instructors(school_year=SchoolYear.current_school_year)
     instructor_assignments = InstructorAssignment.all :conditions => ["role IN ('#{ROLE_PRIMARY_INSTRUCTOR}', '#{ROLE_SECONDARY_INSTRUCTOR}') AND school_year_id = ?", school_year.id]
-    instructors = instructor_assignments.collect { |instructor_assignment| instructor_assignment.instructor }
-    instructors.uniq.sort { |x, y| x.english_name <=> y.english_name }
+    instructor_assignments.collect { |instructor_assignment| instructor_assignment.instructor }
   end
   
   private

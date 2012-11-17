@@ -32,6 +32,12 @@
     <td>Checked Out?</td>
     <td><%= convert_to_yes_no @library_book.checked_out? %></td>
   </tr>
+  <% if @library_book.checked_out? %>
+  <tr>
+    <td>Checked Out By</td>
+    <td><%= display_checked_out_by @library_book %></td>
+  </tr>
+  <% end %>
 </table>
 
 <% if @library_book.checked_out? %>
@@ -65,7 +71,7 @@
           <tr>
             <td>Checked Out By:</td>
             <td>
-              <%= collection_select :instructor, :id, InstructorAssignment.find_instructors, :id, :name %>
+              <%= collection_select :checked_out_by, :id, LibraryBook.find_eligible_checkout_people, :id, :name %>
             </td>
           </tr>
           <tr>

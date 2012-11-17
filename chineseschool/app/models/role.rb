@@ -25,4 +25,13 @@ class Role < ActiveRecord::Base
     return true if self.name == ROLE_NAME_SUPER_USER
     self.rights.any? { |right| right.authorized?(controller_path, action_name) }
   end
+
+  def self.find_people_with_role(role_name)
+    # Protect against searching for superuser
+    return nil if role_name == ROLE_NAME_SUPER_USER
+    # Not searching for student parent since that will return too many people
+    return nil if role_name == ROLE_NAME_STUDENT_PARENT
+    role = Role.first :conditions => ['name = ?', role_name]
+    role.users.collect { |user| user.person }
+  end
 end
