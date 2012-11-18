@@ -67,4 +67,9 @@ class Librarian::LibraryBooksController < ApplicationController
     end
     render :action => :checkout_history
   end
+
+  def read_only_view
+    @library_books = LibraryBook.all
+    render :layout => 'jquery_datatable'
+  end
 end

@@ -141,6 +141,7 @@ library_book_edit = Right.create(:name => 'Change Library Books', :controller =>
 library_book_checkout_history = Right.create(:name => 'Library Book Checkout History', :controller => 'librarian/library_books', :action => 'checkout_history')
 library_book_check_out = Right.create(:name => 'Library Book Check Out', :controller => 'librarian/library_books', :action => 'check_out_library_book')
 library_book_return = Right.create(:name => 'Library Book Return', :controller => 'librarian/library_books', :action => 'return_library_book')
+library_book_read_only_view = Right.create(:name => 'Library Book Read Only View', :controller => 'librarian/library_books', :action => 'read_only_view')
 
 
 #
@@ -153,6 +154,7 @@ principal.rights << instruction_active_school_classes_index
 principal.rights << instruction_school_classes_show
 
 principal.rights << report_daily_online_registration_summary
+principal.rights << library_book_read_only_view
 
 
 #
@@ -266,6 +268,7 @@ instruction_officer.rights << active_school_classes_grade_class_student_count
 instruction_officer.rights << active_school_classes_elective_class_student_count
 instruction_officer.rights << instruction_active_school_classes_index
 instruction_officer.rights << instruction_school_classes_show
+instruction_officer.rights << library_book_read_only_view
 
 
 #
@@ -294,6 +297,7 @@ instructor.rights << activity_track_events_select_program
 instructor.rights << activity_track_events_select_relay_group
 instructor.rights << activity_track_events_select_parent
 instructor.rights << activity_track_events_sign_up_result
+instructor.rights << library_book_read_only_view
 
 
 #
