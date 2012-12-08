@@ -9,6 +9,13 @@ class Registration::StudentClassAssignmentsController < ApplicationController
     render :layout => 'jquery_datatable'
   end
 
+  def student_list_by_class
+    @current_school_year = SchoolYear.current_school_year
+    retrieve_sorted_class_lists
+    prawnto :filename => 'student_list_by_class.pdf'
+    render :layout => false
+  end
+
   def list_active_students_by_name
     @current_school_year = SchoolYear.current_school_year
     @active_student_class_assignments = StudentClassAssignment.all(:conditions => ['school_class_id is not null AND school_year_id = ?', SchoolYear.current_school_year.id])

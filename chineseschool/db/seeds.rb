@@ -96,6 +96,7 @@ student_class_assignments_select_school_class = Right.create(:name => 'Select Sc
 student_class_assignments_select_elective_class = Right.create(:name => 'Select Elective Class On Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'select_elective_class')
 student_class_assignments_destroy = Right.create(:name => 'Remove Student From Grade On Manage Students By Grade', :controller => 'registration/student_class_assignments', :action => 'destroy')
 student_class_assignments_random_assign_class = Right.create(:name => 'Randomly Assign Students To Grade Class', :controller => 'registration/student_class_assignments', :action => 'random_assign_grade_class')
+student_class_assignments_student_list_by_class = Right.create(:name => 'Randomly Assign Students To Grade Class', :controller => 'registration/student_class_assignments', :action => 'student_list_by_class')
 
 instructor_assignments_select_school_class = Right.create(:name => 'Select School Class For Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'select_school_class')
 instructor_assignments_select_start_date = Right.create(:name => 'Select Start Date For Instructor Assignment', :controller => 'registration/instructor_assignments', :action => 'select_start_date')
@@ -200,6 +201,7 @@ registration_officer.rights << student_class_assignments_select_school_class
 registration_officer.rights << student_class_assignments_select_elective_class
 registration_officer.rights << student_class_assignments_destroy
 registration_officer.rights << student_class_assignments_random_assign_class
+registration_officer.rights << student_class_assignments_student_list_by_class
 
 registration_officer.rights << instructor_assignments_select_school_class
 registration_officer.rights << instructor_assignments_select_start_date
@@ -258,6 +260,7 @@ activity_officer.rights << activity_track_events_tocs_track_event_data
 # Assign rights to Communication Officer
 #
 communication_officer = Role.find_by_name(Role::ROLE_NAME_COMMUNICATION_OFFICER)
+communication_officer.rights << student_class_assignments_student_list_by_class
 
 
 #

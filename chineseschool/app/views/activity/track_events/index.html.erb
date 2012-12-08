@@ -17,8 +17,7 @@
       <td><%=h active_grade_class.chinese_name %></td>
       <td><%=h active_grade_class.english_name %></td>
       <td><%=h active_grade_class.location %></td>
-      <%- assignment_hash = active_grade_class.current_instructor_assignments -%>
-      <td><%=h assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].collect { |instructor| instructor.name }.join(';') %></td>
+      <td><%=h active_grade_class.current_primary_instructor.try(:name) %></td>
       <td><%=h active_grade_class.current_room_parent_name %></td>
       <td>
         <%= link_to 'Sign Up', {:controller => '/activity/track_events', :action => 'sign_up', :id => active_grade_class}, {:class => 'button'} %>

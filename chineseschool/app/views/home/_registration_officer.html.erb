@@ -15,8 +15,11 @@
 <%= link_to 'Elective Class 人數清單', {:controller => '/registration/active_school_classes', :action => 'elective_class_student_count'}, {:class => 'button'} %>
 <br/>
 <br/>
+<%= link_to 'Download Printable Student List By Class', {:controller => '/registration/student_class_assignments', :action => 'student_list_by_class', :format => 'pdf'}, {:class => 'button'} %>
+<br/>
+<br/>
 <%= link_to 'List Active Students By Name', {:controller => '/registration/student_class_assignments', :action => 'list_active_students_by_name'}, {:class => 'button'} %>
-<%= link_to 'Download Active Students By Name', {:controller => '/registration/student_class_assignments', :action => 'list_active_students_by_name', :format => 'pdf'}, {:class => 'button'} %>
+<%= link_to 'Download Printable Student List By Name', {:controller => '/registration/student_class_assignments', :action => 'list_active_students_by_name', :format => 'pdf'}, {:class => 'button'} %>
 <br/>
 <br/>
 <% form_tag :controller => '/registration/student_class_assignments', :action => 'list_by_grade' do %>

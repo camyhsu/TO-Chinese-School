@@ -18,10 +18,8 @@ header = [ 'No', '姓名', 'First Name', 'Last Name', '當日出席/class check-
   pdf.move_up 10
   
   pdf.font_size 10 do
-    assignment_hash = school_class.current_instructor_assignments
-    assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].each do |instructor|
-      pdf.text "Teacher Name: #{instructor.name} 老師"
-    end
+    instructor = school_class.current_primary_instructor
+    pdf.text "Teacher Name: #{instructor.name} 老師"
   end
   pdf.move_down 10
   
