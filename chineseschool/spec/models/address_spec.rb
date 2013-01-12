@@ -72,11 +72,11 @@ describe Address, 'cleaning and formating phone number' do
   end
 
   it 'should clean phone number by removing non-digit characters' do
-    @address.clean_phone_number('a12d 3c 4ss5').should == '12345'
+    Address.clean_phone_number('a12d 3c 4ss5').should == '12345'
   end
 
   it 'should return nil for cleaning phone number if given nil' do
-    @address.clean_phone_number(nil).should be_nil
+    Address.clean_phone_number(nil).should be_nil
   end
 
   it 'should format phone number the format (xxx) xxx-xxxx' do

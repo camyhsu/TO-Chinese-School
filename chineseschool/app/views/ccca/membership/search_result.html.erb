@@ -1,0 +1,24 @@
+<% @title = 'CCCA Membership Search Result' %>
+
+<table border="1px">
+  <thead>
+  <tr>
+    <th>Parent One</th>
+    <th>Parent Two</th>
+    <th>Address</th>
+  </tr>
+  </thead>
+  <tbody>
+    <% @families.each do |family| %>
+      <tr>
+        <td>
+          <%=h family.parent_one.try(:name) %>
+        </td>
+        <td>
+          <%=h family.parent_two.try(:name) %>
+        </td>
+        <td><%=h @family.address.street_address %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

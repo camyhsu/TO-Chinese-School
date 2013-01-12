@@ -13,7 +13,7 @@ class Address < ActiveRecord::Base
   end
 
   def home_phone=(phone)
-    write_attribute(:home_phone, clean_phone_number(phone))
+    write_attribute(:home_phone, Address.clean_phone_number(phone))
   end
 
   def cell_phone
@@ -21,7 +21,7 @@ class Address < ActiveRecord::Base
   end
 
   def cell_phone=(phone)
-    write_attribute(:cell_phone, clean_phone_number(phone))
+    write_attribute(:cell_phone, Address.clean_phone_number(phone))
   end
 
 
@@ -34,7 +34,7 @@ class Address < ActiveRecord::Base
   end
 
   def phone_number_correct?(phone_number_to_check)
-    cleaned_phone_number = clean_phone_number phone_number_to_check
+    cleaned_phone_number = Address.clean_phone_number phone_number_to_check
     logger.info "Cleaning phone number #{phone_number_to_check} => #{cleaned_phone_number}"
     (read_attribute(:home_phone) == cleaned_phone_number) or (read_attribute(:cell_phone) == cleaned_phone_number)
   end
@@ -44,8 +44,13 @@ class Address < ActiveRecord::Base
     "(#{phone_number[0..2]}) #{phone_number[3..5]}-#{phone_number[6..-1]}"
   end
 
-  def clean_phone_number(phone_number_to_clean)
+  def self.clean_phone_number(phone_number_to_clean)
     return nil if phone_number_to_clean.nil?
     phone_number_to_clean.gsub /\D/, ''
+  end
+
+  def self.search_by_phone(phone_number)
+    cleaned_phone_number = Address.clean_phone_number phone_number
+    Address.all :conditions => ['home_phone = ? OR cell_phone = ?', cleaned_phone_number, cleaned_phone_number]
   end
 end
