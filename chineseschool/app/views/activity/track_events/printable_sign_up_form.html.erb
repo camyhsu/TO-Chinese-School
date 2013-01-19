@@ -15,7 +15,7 @@
           <th colspan="3"><%= @school_class.name %></th>
           <%- tocs_column_count = 5 -%>
           <%- tocs_column_count = 7 if @school_class.grade.id > 6 -%>
-          <th colspan="<%= tocs_column_count %>">千橡 Events (March 16th)</th>
+          <th colspan="<%= tocs_column_count %>">千橡 Events (<%= SchoolYear::TRACK_EVENT_DATE.to_s %>)</th>
         </tr>
         <tr>
           <th>Student Name</th>

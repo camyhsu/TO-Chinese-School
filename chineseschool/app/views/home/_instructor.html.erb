@@ -15,12 +15,11 @@
     <br/>
     <br/>
   <% end %>
-  <% track_event_sign_up_end_date = Date.parse('2013-02-23') %>
-  <% if PacificDate.today > Date.parse('2013-02-01') and PacificDate.today < track_event_sign_up_end_date %>
+  <% if PacificDate.today >= SchoolYear::TRACK_EVENT_SIGN_UP_START_DATE and PacificDate.today <= SchoolYear::TRACK_EVENT_SIGN_UP_END_DATE %>
     <%= link_to "Track Event Sign Up For #{school_class.name}",
         {:controller => '/activity/track_events', :action => 'sign_up', :id => school_class}, {:class => 'button'} %>
     <br/><br/>
-  <% elsif PacificDate.today >= track_event_sign_up_end_date and PacificDate.today < Date.parse('2013-03-17') %>
+  <% elsif PacificDate.today > SchoolYear::TRACK_EVENT_SIGN_UP_END_DATE and PacificDate.today <= SchoolYear::TRACK_EVENT_DATE %>
     <%= link_to "Track Event Sign Up Result For #{school_class.name}",
         {:controller => '/activity/track_events', :action => 'sign_up_result', :id => school_class}, {:class => 'button'} %>
     <br/><br/>
