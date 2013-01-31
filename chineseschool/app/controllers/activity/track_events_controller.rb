@@ -52,10 +52,15 @@ class Activity::TrackEventsController < ApplicationController
     track_event_signup = TrackEventSignup.find_by_student_id_and_track_event_program_id @student.id, track_event_program.id
     if params[:checked_flag] == 'true'
       if track_event_signup.nil?
-        track_event_signup = TrackEventSignup.new
-        track_event_signup.track_event_program = track_event_program
-        track_event_signup.student = @student
-        track_event_signup.save!
+        if track_event_program.max_sign_up_reached?(@school_class)
+          render :text => "Error:This program only allows 8 sign-ups per class"
+          return
+        else
+          track_event_signup = TrackEventSignup.new
+          track_event_signup.track_event_program = track_event_program
+          track_event_signup.student = @student
+          track_event_signup.save!
+        end
       end
     else
       track_event_signup.destroy unless track_event_signup.nil?

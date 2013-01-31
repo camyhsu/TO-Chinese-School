@@ -6,7 +6,12 @@ function selectProgram(checkboxElement, studentId, url) {
     var jRowElement = jCheckboxElement.parent().parent();
     jRowElement.effect('highlight', {}, 2000);
     $.post(url, {student_id : studentId, program_id : programId, checked_flag : checkedFlag}, function(data) {
-        jRowElement.html(data);
+        if (data.indexOf("Error:") == 0) {
+            alert(data.slice(6));
+            jCheckboxElement.attr('checked', false)
+        } else {
+            jRowElement.html(data);
+        }
     });
 }
 

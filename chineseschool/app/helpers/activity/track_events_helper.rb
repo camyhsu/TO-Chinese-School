@@ -2,7 +2,11 @@ module Activity::TrackEventsHelper
   
   def display_selector_based_on_program_type(track_event_program, student_id, school_class_id, existing_signups)
     if track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
-      student_relay_program_selector track_event_program.id, student_id, school_class_id, existing_signups
+      if track_event_program.relay_team_size > 7
+        check_box_program_selector track_event_program.id, student_id, school_class_id, existing_signups
+      else
+        student_relay_program_selector track_event_program.id, student_id, school_class_id, existing_signups
+      end
     elsif track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT
       check_box_program_selector track_event_program.id, student_id, school_class_id, existing_signups
     else
