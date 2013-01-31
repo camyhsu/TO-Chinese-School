@@ -144,6 +144,8 @@ library_book_check_out = Right.create(:name => 'Library Book Check Out', :contro
 library_book_return = Right.create(:name => 'Library Book Return', :controller => 'librarian/library_books', :action => 'return_library_book')
 library_book_read_only_view = Right.create(:name => 'Library Book Read Only View', :controller => 'librarian/library_books', :action => 'read_only_view')
 
+communication_forms_picture_taking_form = Right.create(:name => 'Picture Taking Form', :controller => 'communication/forms', :action => 'picture_taking_form')
+
 
 #
 # Assign rights to Principal
@@ -260,7 +262,7 @@ activity_officer.rights << activity_track_events_tocs_track_event_data
 # Assign rights to Communication Officer
 #
 communication_officer = Role.find_by_name(Role::ROLE_NAME_COMMUNICATION_OFFICER)
-communication_officer.rights << student_class_assignments_student_list_by_class
+communication_officer.rights << communication_forms_picture_taking_form
 
 
 #
