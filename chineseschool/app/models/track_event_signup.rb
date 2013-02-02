@@ -1,6 +1,6 @@
 class TrackEventSignup < ActiveRecord::Base
   
-  RELAY_GROUP_CHOICES = ['Group 1', 'Group 2', 'Group 3', 'Group 4']
+  RELAY_GROUP_CHOICES = ['Team 1', 'Team 2', 'Team 3', 'Team 4']
   
   belongs_to :track_event_program
   belongs_to :student, :class_name => 'Person', :foreign_key => 'student_id'
