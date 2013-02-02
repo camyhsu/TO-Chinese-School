@@ -34,7 +34,6 @@ class Instruction::SchoolClassesController < ApplicationController
     end
     @school_class = SchoolClass.find_by_id requested_school_class_id
 
-
     InstructorAssignment.change_room_parent @school_class, params[:room_parent_id].to_i
     render :action => 'current_room_parent_display', :layout => 'ajax_layout'
   end

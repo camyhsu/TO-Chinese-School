@@ -37,8 +37,8 @@ class InstructorAssignment < ActiveRecord::Base
         old_room_parent_assignment.end_date = PacificDate.yesterday
         old_room_parent_assignment.end_date = old_room_parent_assignment.start_date if old_room_parent_assignment.start_date > old_room_parent_assignment.end_date
         old_room_parent_assignment.save!
-        puts old_room_parent_assignment.inspect
       end
+      old_room_parent_assignment.instructor.user.try(:adjust_instructor_roles)
     end
     new_room_parent_assignment = InstructorAssignment.new
     new_room_parent_assignment.school_year = SchoolYear.current_school_year
@@ -47,8 +47,8 @@ class InstructorAssignment < ActiveRecord::Base
     new_room_parent_assignment.role = ROLE_ROOM_PARENT
     new_room_parent_assignment.start_date = PacificDate.today
     new_room_parent_assignment.end_date = SchoolYear.current_school_year.end_date
-    puts new_room_parent_assignment.inspect
     new_room_parent_assignment.save!
+    new_room_parent_assignment.instructor.user.try(:adjust_instructor_roles)
   end
 
   def self.find_instructors(school_year=SchoolYear.current_school_year)
