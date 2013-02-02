@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
     room_parent_role = Role.find_by_name Role::ROLE_NAME_ROOM_PARENT
     self.roles.delete instructor_role
     self.roles.delete room_parent_role
-    self.person.instructor_assignments.each do |instructor_assignment|
+    self.person.instructor_assignments_for(SchoolYear.current_school_year).each do |instructor_assignment|
       if instructor_assignment.role == InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR or
           instructor_assignment.role == InstructorAssignment::ROLE_SECONDARY_INSTRUCTOR
         self.roles << instructor_role unless self.roles.include?(instructor_role)
