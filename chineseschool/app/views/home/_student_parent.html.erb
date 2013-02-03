@@ -69,6 +69,14 @@
       <%= link_to 'Edit Family Address', {:controller => '/student/families', :action => 'edit_address', :id => family}, {:class => 'button'} %>
     </td>
   </tr>
+  <% if family.parent_two.nil? %>
+      <tr>
+        <td></td>
+        <td>
+          <%= link_to 'Add Parent', {:controller => '/student/families', :action => :add_parent, :id => family}, {:class => 'button'} %>
+        </td>
+      </tr>
+  <% end %>
   <tr>
     <td></td>
     <td>

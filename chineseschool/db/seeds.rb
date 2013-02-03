@@ -115,6 +115,7 @@ instruction_school_classes_cancel_room_parent_selection = Right.create(:name => 
 instruction_active_school_classes_index = Right.create(:name => 'List Active School Classes For Instruction Officer', :controller => 'instruction/active_school_classes', :action => 'index')
 
 
+student_families_add_parent = Right.create(:name => 'Add Parent To Family By Parent', :controller => 'student/families', :action => 'add_parent')
 student_families_add_child = Right.create(:name => 'Add Child To Family By Parent', :controller => 'student/families', :action => 'add_child')
 student_families_edit_address = Right.create(:name => 'Edit Family Address By Parent', :controller => 'student/families', :action => 'edit_address')
 
@@ -322,6 +323,7 @@ room_parent.rights << activity_track_events_sign_up_result
 # Assign rights to Student Parent
 #
 student_parent = Role.find_by_name(Role::ROLE_NAME_STUDENT_PARENT)
+student_parent.rights << student_families_add_parent
 student_parent.rights << student_families_add_child
 student_parent.rights << student_families_edit_address
 
