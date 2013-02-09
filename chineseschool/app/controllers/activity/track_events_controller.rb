@@ -156,7 +156,7 @@ class Activity::TrackEventsController < ApplicationController
     tocs_program_ids = tocs_programs.collect { |tocs_program| tocs_program.id }
     track_event_signups = TrackEventSignup.all :conditions => ["track_event_program_id IN (#{tocs_program_ids.join(',')})"], :order => 'track_event_program_id ASC'
     
-    # All programs in the same groupd should have the same type and name
+    # All programs in the same group should have the same type and name
     sample_program = tocs_programs[0]
     puts sample_program.name
     puts track_event_signups.inspect
@@ -256,10 +256,11 @@ class Activity::TrackEventsController < ApplicationController
     track_event_signups.each do |signup|
       student = signup.student
       school_class = student.student_class_assignment_for(SchoolYear.current_school_year).school_class
-      team_identifier = "#{school_class.short_name} #{signup.group_name}"
+      # Starting 2013, these kind of program only allows one team per school class
+      team_identifier = "#{school_class.short_name}"
       team = relay_teams[team_identifier]
       if team.nil?
-        team = RelayTeam.new school_class, signup.group_name
+        team = RelayTeam.new school_class, nil
         relay_teams[team.identifier] = team
       end
       team.add_runner student

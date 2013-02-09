@@ -208,7 +208,11 @@ class RelayTeam
   end
   
   def identifier
-    "#{@school_class.short_name} #{@team_name}"
+    if @team_name.nil?
+      "#{@school_class.short_name}"
+    else
+      "#{@school_class.short_name} #{@team_name}"
+    end
   end
   
   def add_runner(runner)
