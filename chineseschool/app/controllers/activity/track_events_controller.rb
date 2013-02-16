@@ -52,15 +52,10 @@ class Activity::TrackEventsController < ApplicationController
     track_event_signup = TrackEventSignup.find_by_student_id_and_track_event_program_id @student.id, track_event_program.id
     if params[:checked_flag] == 'true'
       if track_event_signup.nil?
-        if track_event_program.max_sign_up_reached?(@school_class)
-          render :text => "Error:This program only allows 8 sign-ups per class"
-          return
-        else
-          track_event_signup = TrackEventSignup.new
-          track_event_signup.track_event_program = track_event_program
-          track_event_signup.student = @student
-          track_event_signup.save!
-        end
+        track_event_signup = TrackEventSignup.new
+        track_event_signup.track_event_program = track_event_program
+        track_event_signup.student = @student
+        track_event_signup.save!
       end
     else
       track_event_signup.destroy unless track_event_signup.nil?
@@ -256,11 +251,10 @@ class Activity::TrackEventsController < ApplicationController
     track_event_signups.each do |signup|
       student = signup.student
       school_class = student.student_class_assignment_for(SchoolYear.current_school_year).school_class
-      # Starting 2013, these kind of program only allows one team per school class
-      team_identifier = "#{school_class.short_name}"
+      team_identifier = "#{school_class.short_name} #{signup.group_name}"
       team = relay_teams[team_identifier]
       if team.nil?
-        team = RelayTeam.new school_class, nil
+        team = RelayTeam.new school_class, signup.group_name
         relay_teams[team.identifier] = team
       end
       team.add_runner student

@@ -2,7 +2,7 @@ class SchoolYear < ActiveRecord::Base
 
   TRACK_EVENT_DATE = Date.parse('2013-03-16')
   TRACK_EVENT_SIGN_UP_START_DATE = Date.parse('2013-02-02')
-  TRACK_EVENT_SIGN_UP_END_DATE = Date.parse('2013-02-23')
+  TRACK_EVENT_SIGN_UP_END_DATE = Date.parse('2013-02-15')
 
   belongs_to :previous_school_year, :class_name => 'SchoolYear', :foreign_key => 'previous_school_year_id'
 
