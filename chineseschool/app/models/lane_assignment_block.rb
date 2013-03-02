@@ -53,8 +53,9 @@ class LaneAssignmentBlock
   end
   
   def table_header_row
+    # Lane markings start from Lane 2 per request from activity officers
     header = []
-    LANE_COUNT.times { |i| header << "Lane #{i + 1}" }
+    LANE_COUNT.times { |i| header << "Lane #{i + 2}" }
     header
   end
   
