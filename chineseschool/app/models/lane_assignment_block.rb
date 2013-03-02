@@ -96,19 +96,18 @@ class LaneAssignmentBlock
   def create_lane_block_data_for_pdf_for_student_relay_program
     data = [ table_header_row ]
     data << relay_team_identifier_row
-    if @sample_track_event_program.relay_team_size > 7
-      @sample_track_event_program.relay_team_size.times { |i| data << empty_row }
-    else
-      @sample_track_event_program.relay_team_size.times { |i| data << relay_runner_row(i) }
-    end
-    
+    @sample_track_event_program.relay_team_size.times { |i| data << relay_runner_row(i) }
     data << empty_row
     data
   end
   
   def relay_team_identifier_row
     row = []
-    @lane_assignments.each { |lane_assignment| row << lane_assignment.relay_team.identifier }
+    @lane_assignments.each do |lane_assignment|
+      team_identifier = lane_assignment.relay_team.identifier
+      team_identifier = team_identifier + ' **' if lane_assignment.relay_team.overbooked?
+      row << team_identifier
+    end
     fill_rest_of_row_with_empty_string(row)
     row
   end
