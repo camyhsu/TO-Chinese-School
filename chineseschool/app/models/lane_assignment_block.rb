@@ -201,9 +201,10 @@ end
 class RelayTeam
   attr_accessor :school_class, :team_name, :runners
   
-  def initialize(school_class, team_name)
+  def initialize(school_class, team_name, relay_team_size)
     @school_class = school_class
     @team_name = team_name
+    @relay_team_size = relay_team_size
     @runners = []
   end
   
@@ -217,6 +218,10 @@ class RelayTeam
   
   def add_runner(runner)
     @runners << runner
+  end
+
+  def overbooked?
+    @runners.size > @relay_team_size
   end
 end
 

@@ -254,7 +254,7 @@ class Activity::TrackEventsController < ApplicationController
       team_identifier = "#{school_class.short_name} #{signup.group_name}"
       team = relay_teams[team_identifier]
       if team.nil?
-        team = RelayTeam.new school_class, signup.group_name
+        team = RelayTeam.new school_class, signup.group_name, sample_program.relay_team_size
         relay_teams[team.identifier] = team
       end
       team.add_runner student
@@ -272,13 +272,13 @@ class Activity::TrackEventsController < ApplicationController
       if student.gender == Person::GENDER_FEMALE
         team = female_relay_teams[team_identifier]
         if team.nil?
-          team = RelayTeam.new school_class, signup.group_name
+          team = RelayTeam.new school_class, signup.group_name, sample_program.relay_team_size
           female_relay_teams[team.identifier] = team
         end
       else
         team = male_relay_teams[team_identifier]
         if team.nil?
-          team = RelayTeam.new school_class, signup.group_name
+          team = RelayTeam.new school_class, signup.group_name, sample_program.relay_team_size
           male_relay_teams[team.identifier] = team
         end
       end
