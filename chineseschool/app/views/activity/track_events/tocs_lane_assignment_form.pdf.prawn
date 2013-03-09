@@ -10,8 +10,8 @@ top_of_page = true
   
   pdf.font_size 14 do
     pdf.text "#{lane_assignment_block.sample_track_event_program.sort_key}. #{lane_assignment_block.sample_track_event_program.name}", :align => :left
+    pdf.move_up 14
     if lane_assignment_block.gender == Person::GENDER_FEMALE
-      pdf.move_up 14
       if (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) or 
           (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY)
         pdf.text 'Women', :align => :right
@@ -19,7 +19,6 @@ top_of_page = true
         pdf.text 'Girls', :align => :right
       end
     elsif lane_assignment_block.gender == Person::GENDER_MALE
-      pdf.move_up 14
       if (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) or 
           (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY)
         pdf.text 'Men', :align => :right

@@ -48,7 +48,6 @@ class LaneAssignmentBlock
     data << english_name_row
     data << school_class_name_row
     data << jersey_number_row
-    data << empty_row
     data
   end
   
@@ -97,7 +96,6 @@ class LaneAssignmentBlock
     data = [ table_header_row ]
     data << relay_team_identifier_row
     @sample_track_event_program.relay_team_size.times { |i| data << relay_runner_row(i) }
-    data << empty_row
     data
   end
   
@@ -147,7 +145,6 @@ class LaneAssignmentBlock
   def create_lane_block_data_for_pdf_for_parent_relay_program
     data = [ table_header_row ]
     @sample_track_event_program.relay_team_size.times { |i| data << parent_relay_runner_row(i) }
-    data << empty_row
     data
   end
   
