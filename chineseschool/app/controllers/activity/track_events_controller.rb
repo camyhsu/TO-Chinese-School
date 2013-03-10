@@ -201,6 +201,8 @@ class Activity::TrackEventsController < ApplicationController
   end
   
   def create_lane_assignment_blocks_for_individual_program(track_event_signups, sample_program)
+
+    # Get all sign-ups sorted into correct order
     sorted_track_event_signups = track_event_signups.sort do |a, b|
       school_class_a = a.student.student_class_assignment_for(SchoolYear.current_school_year).school_class
       school_class_b = b.student.student_class_assignment_for(SchoolYear.current_school_year).school_class
@@ -208,7 +210,12 @@ class Activity::TrackEventsController < ApplicationController
       if grade_order == 0
         class_order = school_class_a.short_name <=> school_class_b.short_name
         if class_order == 0
-          a.student.english_last_name <=> b.student.english_last_name
+          last_name_order = a.student.english_last_name <=> b.student.english_last_name
+          if last_name_order == 0
+            a.student.english_first_name <=> b.student.english_first_name
+          else
+            last_name_order
+          end
         else
           class_order
         end
@@ -216,11 +223,9 @@ class Activity::TrackEventsController < ApplicationController
         grade_order
       end
     end
-    
-    current_female_lane_assignment_block = nil
-    female_lane_assignment_blocks = []
-    current_male_lane_assignment_block = nil
-    male_lane_assignment_blocks = []
+
+    female_program_heats = LaneAssignmentBlock::ProgramHeats.new sample_program, Person::GENDER_FEMALE
+    male_program_heats = LaneAssignmentBlock::ProgramHeats.new sample_program, Person::GENDER_MALE
     sorted_track_event_signups.each do |signup|
       if sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT
         participant = signup.parent
@@ -228,22 +233,42 @@ class Activity::TrackEventsController < ApplicationController
         participant = signup.student
       end
       if participant.gender == Person::GENDER_FEMALE
-        if current_female_lane_assignment_block.nil?
-          current_female_lane_assignment_block = LaneAssignmentBlock.new(sample_program, Person::GENDER_FEMALE)
-          female_lane_assignment_blocks << current_female_lane_assignment_block
-        end
-        current_female_lane_assignment_block.add_lane signup
-        current_female_lane_assignment_block = nil if current_female_lane_assignment_block.full?
+        female_program_heats.add_signup signup
       else
-        if current_male_lane_assignment_block.nil?
-          current_male_lane_assignment_block = LaneAssignmentBlock.new(sample_program, Person::GENDER_MALE)
-          male_lane_assignment_blocks << current_male_lane_assignment_block
-        end
-        current_male_lane_assignment_block.add_lane signup
-        current_male_lane_assignment_block = nil if current_male_lane_assignment_block.full?
+        male_program_heats.add_signup signup
       end
     end
-    [ female_lane_assignment_blocks, male_lane_assignment_blocks ]
+
+    [female_program_heats.create_lane_assignment_blocks, male_program_heats.create_lane_assignment_blocks]
+
+    #current_female_lane_assignment_block = nil
+    #female_lane_assignment_blocks = []
+    #current_male_lane_assignment_block = nil
+    #male_lane_assignment_blocks = []
+    #sorted_track_event_signups.each do |signup|
+    #  if sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT
+    #    participant = signup.parent
+    #  else
+    #    participant = signup.student
+    #  end
+    #  if participant.gender == Person::GENDER_FEMALE
+    #    if current_female_lane_assignment_block.nil?
+    #      current_female_lane_assignment_block = LaneAssignmentBlock.new(sample_program, Person::GENDER_FEMALE)
+    #      female_lane_assignment_blocks << current_female_lane_assignment_block
+    #    end
+    #    current_female_lane_assignment_block.add_lane signup
+    #    current_female_lane_assignment_block = nil if current_female_lane_assignment_block.full?
+    #  else
+    #    if current_male_lane_assignment_block.nil?
+    #      current_male_lane_assignment_block = LaneAssignmentBlock.new(sample_program, Person::GENDER_MALE)
+    #      male_lane_assignment_blocks << current_male_lane_assignment_block
+    #    end
+    #    current_male_lane_assignment_block.add_lane signup
+    #    current_male_lane_assignment_block = nil if current_male_lane_assignment_block.full?
+    #  end
+    #end
+    #
+    #[ female_lane_assignment_blocks, male_lane_assignment_blocks ]
   end
   
   def create_lane_assignment_blocks_for_unisex_student_relay_program(track_event_signups, sample_program)
@@ -254,7 +279,7 @@ class Activity::TrackEventsController < ApplicationController
       team_identifier = "#{school_class.short_name} #{signup.group_name}"
       team = relay_teams[team_identifier]
       if team.nil?
-        team = RelayTeam.new school_class, signup.group_name, sample_program.relay_team_size
+        team = LaneAssignmentBlock::RelayTeam.new school_class, signup.group_name, sample_program.relay_team_size
         relay_teams[team.identifier] = team
       end
       team.add_runner student
@@ -272,13 +297,13 @@ class Activity::TrackEventsController < ApplicationController
       if student.gender == Person::GENDER_FEMALE
         team = female_relay_teams[team_identifier]
         if team.nil?
-          team = RelayTeam.new school_class, signup.group_name, sample_program.relay_team_size
+          team = LaneAssignmentBlock::RelayTeam.new school_class, signup.group_name, sample_program.relay_team_size
           female_relay_teams[team.identifier] = team
         end
       else
         team = male_relay_teams[team_identifier]
         if team.nil?
-          team = RelayTeam.new school_class, signup.group_name, sample_program.relay_team_size
+          team = LaneAssignmentBlock::RelayTeam.new school_class, signup.group_name, sample_program.relay_team_size
           male_relay_teams[team.identifier] = team
         end
       end

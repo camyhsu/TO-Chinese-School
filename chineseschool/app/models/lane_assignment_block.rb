@@ -181,52 +181,122 @@ class LaneAssignmentBlock
   def fill_rest_of_row_with_empty_string(row)
     (LANE_COUNT - @lane_assignments.size).times { |i| row << '' }
   end
-end
 
-class IndividualLaneAssignment
-  attr_accessor :chinese_name, :english_name, :school_class, :jersey_number
-end
 
-class RelayTeamLaneAssignment
-  attr_reader :relay_team
-  
-  def initialize(relay_team)
-    @relay_team = relay_team
-  end
-end
+  class ProgramHeats
 
-class RelayTeam
-  attr_accessor :school_class, :team_name, :runners
-  
-  def initialize(school_class, team_name, relay_team_size)
-    @school_class = school_class
-    @team_name = team_name
-    @relay_team_size = relay_team_size
-    @runners = []
-  end
-  
-  def identifier
-    if @team_name.nil?
-      "#{@school_class.short_name}"
-    else
-      "#{@school_class.short_name} #{@team_name}"
+    def initialize(sample_program, gender)
+      @sample_program = sample_program
+      @gender = gender
+      @heats = []
+    end
+
+    def add_signup(signup)
+      last_heat = @heats[-1]
+      if last_heat.nil? || (last_heat.size >= LANE_COUNT)
+        @heats << []
+        last_heat = @heats[-1]
+      end
+      last_heat << signup
+    end
+
+    def create_lane_assignment_blocks
+      even_out_head_counts
+      lane_assignment_blocks = []
+      @heats.each do |heat|
+        lane_assignment_block = LaneAssignmentBlock.new(@sample_program, @gender)
+        heat.each { |signup| lane_assignment_block.add_lane signup}
+        lane_assignment_blocks << lane_assignment_block
+      end
+      lane_assignment_blocks
+    end
+
+    private
+
+    def even_out_head_counts
+      if @heats.size > 2
+        even_out_last_three_heats
+      elsif @heats.size == 2
+        even_out_two_heats
+      end
+    end
+
+    def even_out_two_heats
+      combined_size = @heats[0].size + @heats[1].size
+      new_heat_size = combined_size / 2
+      extra = combined_size - (new_heat_size * 2)
+      new_heat_size += 1 if extra > 0
+      moving_signups = @heats.flatten
+      @heats.clear
+      @heats << moving_signups[0, new_heat_size]
+      @heats << moving_signups[new_heat_size, LANE_COUNT]
+    end
+
+    def even_out_last_three_heats
+      combined_size = @heats[-1].size + @heats[-2].size + @heats[-3].size
+      new_heat_size = combined_size / 3
+      extra = combined_size - (new_heat_size * 3)
+      adjusted_heat_size_1 = new_heat_size
+      adjusted_heat_size_2 = new_heat_size
+      if extra == 2
+        adjusted_heat_size_1 += 1
+        adjusted_heat_size_2 += 1
+      elsif extra == 1
+        adjusted_heat_size_1 += 1
+      end
+      moving_signups = @heats[-3] + @heats[-2] + @heats[-1]
+      @heats[-3] = moving_signups[0, adjusted_heat_size_1]
+      @heats[-2] = moving_signups[adjusted_heat_size_1, adjusted_heat_size_2]
+      @heats[-1] = moving_signups[adjusted_heat_size_1 + adjusted_heat_size_2, LANE_COUNT]
     end
   end
-  
-  def add_runner(runner)
-    @runners << runner
+
+  class IndividualLaneAssignment
+    attr_accessor :chinese_name, :english_name, :school_class, :jersey_number
   end
 
-  def overbooked?
-    @runners.size > @relay_team_size
+  class RelayTeamLaneAssignment
+    attr_reader :relay_team
+
+    def initialize(relay_team)
+      @relay_team = relay_team
+    end
+  end
+
+  class RelayTeam
+    attr_accessor :school_class, :team_name, :runners
+
+    def initialize(school_class, team_name, relay_team_size)
+      @school_class = school_class
+      @team_name = team_name
+      @relay_team_size = relay_team_size
+      @runners = []
+    end
+
+    def identifier
+      if @team_name.nil?
+        "#{@school_class.short_name}"
+      else
+        "#{@school_class.short_name} #{@team_name}"
+      end
+    end
+
+    def add_runner(runner)
+      @runners << runner
+    end
+
+    def overbooked?
+      @runners.size > @relay_team_size
+    end
+  end
+
+  class TugOfWarLaneAssignment
+    attr_reader :school_class, :students
+
+    def initialize(school_class, students)
+      @school_class = school_class
+      @students = students
+    end
   end
 end
 
-class TugOfWarLaneAssignment
-  attr_reader :school_class, :students
-  
-  def initialize(school_class, students)
-    @school_class = school_class
-    @students = students
-  end
-end

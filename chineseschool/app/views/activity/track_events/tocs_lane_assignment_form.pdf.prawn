@@ -42,7 +42,7 @@ top_of_page = true
     pdf.start_new_page
     top_of_page = true
   elsif top_of_page
-    pdf.move_down 80
+    pdf.move_down 60
     top_of_page = false
   else
     pdf.start_new_page
