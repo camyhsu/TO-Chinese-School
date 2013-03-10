@@ -191,13 +191,13 @@ class LaneAssignmentBlock
       @heats = []
     end
 
-    def add_signup(signup)
+    def add_lane(lane_participant)
       last_heat = @heats[-1]
       if last_heat.nil? || (last_heat.size >= LANE_COUNT)
         @heats << []
         last_heat = @heats[-1]
       end
-      last_heat << signup
+      last_heat << lane_participant
     end
 
     def create_lane_assignment_blocks
@@ -205,7 +205,15 @@ class LaneAssignmentBlock
       lane_assignment_blocks = []
       @heats.each do |heat|
         lane_assignment_block = LaneAssignmentBlock.new(@sample_program, @gender)
-        heat.each { |signup| lane_assignment_block.add_lane signup}
+        heat.each do |lane_participant|
+          if @sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
+            # Relay program
+            lane_assignment_block.add_relay_team lane_participant
+          else
+            # Individual program
+            lane_assignment_block.add_lane lane_participant
+          end
+        end
         lane_assignment_blocks << lane_assignment_block
       end
       lane_assignment_blocks
@@ -274,11 +282,7 @@ class LaneAssignmentBlock
     end
 
     def identifier
-      if @team_name.nil?
-        "#{@school_class.short_name}"
-      else
-        "#{@school_class.short_name} #{@team_name}"
-      end
+      "#{@school_class.short_name} #{@team_name}"
     end
 
     def add_runner(runner)
