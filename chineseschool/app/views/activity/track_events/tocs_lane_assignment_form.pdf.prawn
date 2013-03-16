@@ -3,9 +3,13 @@
 pdf.font "#{RAILS_ROOT}/lib/data/fonts/ArialUnicode.ttf"
 
 top_of_page = true
+total_heat_count = @lane_assignment_blocks.size
+heat_counter = 0
 
 @lane_assignment_blocks.each do |lane_assignment_block|
-  
+  heat_counter += 1
+  heat_marker = "#{heat_counter} of #{total_heat_count}"
+
   pdf.move_down 20
   
   pdf.font_size 14 do
@@ -14,17 +18,19 @@ top_of_page = true
     if lane_assignment_block.gender == Person::GENDER_FEMALE
       if (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) or 
           (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY)
-        pdf.text 'Women', :align => :right
+        pdf.text "#{heat_marker}   Women", :align => :right
       else
-        pdf.text 'Girls', :align => :right
+        pdf.text "#{heat_marker}   Girls", :align => :right
       end
     elsif lane_assignment_block.gender == Person::GENDER_MALE
       if (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) or 
           (lane_assignment_block.sample_track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY)
-        pdf.text 'Men', :align => :right
+        pdf.text "#{heat_marker}   Men", :align => :right
       else
-        pdf.text 'Boys', :align => :right
+        pdf.text "#{heat_marker}   Boys", :align => :right
       end
+    else
+      pdf.text "#{heat_marker}", :align => :right
     end
   end
   
