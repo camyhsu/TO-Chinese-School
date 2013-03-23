@@ -8,7 +8,14 @@ class Registration::ActiveSchoolClassesController < ApplicationController
   def grade_class_student_count
     @current_school_year = SchoolYear.current_school_year
     @active_grade_classes = SchoolClass.find_all_active_grade_classes
-    @active_grade_classes.sort! { |x, y| x.grade_id <=> y.grade_id }
+    @active_grade_classes.sort! do |x, y|
+      grade_order = x.grade_id <=> y.grade_id
+      if grade_order == 0
+        x.short_name <=> y.short_name
+      else
+        grade_order
+      end
+    end
   end
   
   def elective_class_student_count
