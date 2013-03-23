@@ -1,6 +1,10 @@
 <h3>Communication Officer Resources</h3>
 
 <br/>
+<%= link_to '班級人數清單', {:controller => '/registration/active_school_classes', :action => 'grade_class_student_count'}, {:class => 'button'} %>
+<%= link_to 'Elective Class 人數清單', {:controller => '/registration/active_school_classes', :action => 'elective_class_student_count'}, {:class => 'button'} %>
+<br/>
+<br/>
 <%= link_to 'Download Picture Taking Form', {:controller => '/communication/forms', :action => 'picture_taking_form', :format => 'pdf'}, {:class => 'button'} %>
 <br/>
 <br/>

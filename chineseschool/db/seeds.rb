@@ -264,6 +264,8 @@ activity_officer.rights << activity_track_events_tocs_track_event_data
 # Assign rights to Communication Officer
 #
 communication_officer = Role.find_by_name(Role::ROLE_NAME_COMMUNICATION_OFFICER)
+communication_officer.rights << active_school_classes_grade_class_student_count
+communication_officer.rights << active_school_classes_elective_class_student_count
 communication_officer.rights << communication_forms_picture_taking_form
 communication_officer.rights << communication_student_list_for_yearbook
 
