@@ -59,16 +59,6 @@ class Grade < ActiveRecord::Base
     StudentClassAssignment.count_by_sql("SELECT COUNT(1) FROM student_class_assignments WHERE grade_id = #{self.id} AND school_year_id = #{school_year.id}") >= allowed_max_student_count
   end
   
-  def self.find_by_school_age(school_age)
-    return nil if school_age < 4
-    # Currently defined lowest grade is PreK for age 4
-    grade = GRADE_PRESCHOOL
-    (school_age - 4).times do
-      grade = grade.next_grade unless grade.nil?
-    end
-    grade
-  end
-  
   def random_assign_grade_class(school_year)
     puts "#{Time.now} - Random assign grade class for Grade #{self.name}"
     class_type_to_classes = Hash.new { |hash, key| hash[key] = [] }
@@ -88,8 +78,40 @@ class Grade < ActiveRecord::Base
       end
     end
   end
-  
-  
+
+  def assign_jersey_number_to_student
+    max_number_assigned = JerseyNumber.find_max_number_assigned_for self
+    sorted_student_class_assignments = current_year_student_class_assignments.sort do |x, y|
+      class_order = x.school_class.short_name <=> y.school_class.short_name
+      if class_order == 0
+        last_name_order = x.student.english_last_name <=> y.student.english_last_name
+        if last_name_order == 0
+          x.student.english_first_name <=> y.student.english_first_name
+        else
+          last_name_order
+        end
+      else
+        class_order
+      end
+    end
+    sorted_student_class_assignments.each do |student_class_assignment|
+      jersey_number = JerseyNumber.create_jersey_number_for_student student_class_assignment.student, self.jersey_number_prefix, max_number_assigned + 1
+      max_number_assigned = jersey_number.number if max_number_assigned < jersey_number.number
+    end
+  end
+
+
+  def self.find_by_school_age(school_age)
+    return nil if school_age < 4
+    # Currently defined lowest grade is PreK for age 4
+    grade = GRADE_PRESCHOOL
+    (school_age - 4).times do
+      grade = grade.next_grade unless grade.nil?
+    end
+    grade
+  end
+
+
   private
   
   def pick_school_class_with_lowest_head_count_from(school_classes, school_year)

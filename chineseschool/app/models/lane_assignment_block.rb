@@ -163,7 +163,7 @@ class LaneAssignmentBlock
     lane_assignment.chinese_name = student.chinese_name
     lane_assignment.english_name = student.english_name
     lane_assignment.school_class = student.student_class_assignment_for(SchoolYear.current_school_year).school_class
-    lane_assignment.jersey_number = JerseyNumber.find_or_create_jersey_number_for student
+    lane_assignment.jersey_number = JerseyNumber.find_jersey_number_for student
     @lane_assignments << lane_assignment
   end
   
@@ -174,7 +174,7 @@ class LaneAssignmentBlock
     lane_assignment.chinese_name = parent.chinese_name
     lane_assignment.english_name = parent.english_name
     lane_assignment.school_class = student.student_class_assignment_for(SchoolYear.current_school_year).school_class
-    lane_assignment.jersey_number = JerseyNumber.find_or_create_jersey_number_for parent
+    lane_assignment.jersey_number = JerseyNumber.find_jersey_number_for parent
     @lane_assignments << lane_assignment
   end
   

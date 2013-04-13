@@ -116,7 +116,14 @@ class Activity::TrackEventsController < ApplicationController
     @track_event_programs = TrackEventProgram.find_by_grade @school_class.grade
     render :action => :one_student_sign_up, :layout => 'ajax_layout'
   end
-  
+
+  def assign_jersey_numbers
+    Grade.all.each { |grade| grade.assign_jersey_number_to_student }
+    #JerseyNumber.assign_jersey_numbers_to_participating_parents
+    flash[:notice] = 'Jersey number assignment completed'
+    redirect_to :controller => '/home', :action => :index
+  end
+
   def tocs_lane_assignment_form
     @lane_assignment_blocks = []
     tocs_program_groups = TrackEventProgram.find_tocs_programs_group_by_sort_keys
