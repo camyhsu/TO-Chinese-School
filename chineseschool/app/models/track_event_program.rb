@@ -23,6 +23,10 @@ class TrackEventProgram < ActiveRecord::Base
     end
     false
   end
+
+  def self.find_current_year_parent_programs
+    self.all :conditions => { :school_year_id => SchoolYear.current_school_year.id, :program_type => [ PROGRAM_TYPE_PARENT, PROGRAM_TYPE_PARENT_RELAY ] }
+  end
   
   def self.find_by_grade(grade, school_year=SchoolYear.current_school_year)
     self.all :conditions => ['grade_id = ? AND school_year_id = ?', grade.id, school_year.id], :order => 'id ASC'

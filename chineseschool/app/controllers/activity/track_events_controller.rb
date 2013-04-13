@@ -119,7 +119,7 @@ class Activity::TrackEventsController < ApplicationController
 
   def assign_jersey_numbers
     Grade.all.each { |grade| grade.assign_jersey_number_to_student }
-    #JerseyNumber.assign_jersey_numbers_to_participating_parents
+    JerseyNumber.create_jersey_numbers_for_participating_parents
     flash[:notice] = 'Jersey number assignment completed'
     redirect_to :controller => '/home', :action => :index
   end
