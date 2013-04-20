@@ -40,13 +40,13 @@ class Grade < ActiveRecord::Base
     false
   end
 
-  def find_next_assignable_school_class(school_class_type, school_year)
+  def find_next_assignable_school_class(school_class_type, school_year, gender)
     assignable_school_classes = self.active_grade_classes(school_year).select { |active_school_class| active_school_class.school_class_type == school_class_type }
     return nil if assignable_school_classes.empty?
     return assignable_school_classes[0] if assignable_school_classes.size == 1
     # If there are more than one school class assignable, but the school has not started yet, don't assign automatically
     return nil unless school_year.school_has_started?
-    pick_school_class_with_lowest_head_count_from assignable_school_classes, school_year
+    pick_school_class_with_lowest_head_count_from assignable_school_classes, gender
   end
   
   def find_available_school_class_types(school_year)
@@ -66,13 +66,14 @@ class Grade < ActiveRecord::Base
     
     class_assignments = self.student_class_assignments.all :conditions => ['school_year_id = ? AND school_class_id IS NULL', school_year.id]
     class_assignments.each do |class_assignment|
-      desired_class_type = class_assignment.student.registration_preference_for(school_year).school_class_type
+      student = class_assignment.student
+      desired_class_type = student.registration_preference_for(school_year).school_class_type
       assignable_classes = class_type_to_classes[desired_class_type]
       if assignable_classes.empty?
-        puts "ERROR - could not find assignable classes for student id => #{class_assignment.student.id} for class type <<#{desired_class_type}>>"
+        puts "ERROR - could not find assignable classes for student id => #{student.id} for class type <<#{desired_class_type}>>"
       else
-        class_picked = pick_school_class_with_lowest_head_count_from assignable_classes, school_year
-        puts "Class picked for student id => #{class_assignment.student.id} is #{class_picked.name}"
+        class_picked = pick_school_class_with_lowest_head_count_from assignable_classes, student.gender
+        puts "Class picked for student id => #{student.id} is #{class_picked.name}"
         class_assignment.school_class = class_picked
         puts "ERROR - could not save school class assignment => #{class_assignment.id}" unless class_assignment.save
       end
@@ -115,14 +116,15 @@ class Grade < ActiveRecord::Base
 
   private
   
-  def pick_school_class_with_lowest_head_count_from(school_classes, school_year)
+  def pick_school_class_with_lowest_head_count_from(school_classes, gender)
     return school_classes[0] if school_classes.size == 1
     current_school_class_picked = school_classes[0]
-    current_lowest_head_count = current_school_class_picked.class_size school_year
+    current_lowest_head_count = current_school_class_picked.current_year_gender_based_class_size gender
     school_classes.each do |school_class|
-      if school_class.class_size < current_lowest_head_count
+      school_class_size = school_class.current_year_gender_based_class_size(gender)
+      if school_class_size < current_lowest_head_count
         current_school_class_picked = school_class
-        current_lowest_head_count = current_school_class_picked.class_size school_year
+        current_lowest_head_count = school_class_size
       end
     end
     current_school_class_picked

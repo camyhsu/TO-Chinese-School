@@ -9,6 +9,6 @@ class StudentClassAssignment < ActiveRecord::Base
   validates_presence_of :student, :grade, :school_year
 
   def set_school_class_based_on(registration_preference)
-    self.school_class = self.grade.find_next_assignable_school_class registration_preference.school_class_type, self.school_year
+    self.school_class = self.grade.find_next_assignable_school_class registration_preference.school_class_type, self.school_year, self.student.gender
   end
 end
