@@ -21,7 +21,7 @@
       <td><%=h manual_transaction.student.name %></td>
       <td><%=h manual_transaction.transaction_type %></td>
       <td><%=h manual_transaction.payment_method %></td>
-      <td><%= display_price(manual_transaction.amount_in_cents / 100.0) %></td>
+      <td><%= MoneyDisplay.display_price(manual_transaction.amount_in_cents / 100.0) %></td>
     </tr>
     <% end %>
   </tbody>

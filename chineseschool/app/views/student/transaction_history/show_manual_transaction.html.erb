@@ -21,7 +21,7 @@
   <% end %>
   <tr>
     <td class="label">Amount:</td>
-    <td><%= display_price @manual_transaction.amount_with_sign %></td>
+    <td><%= MoneyDisplay.display_price @manual_transaction.amount_with_sign %></td>
   </tr>
 </table>
 <br/>

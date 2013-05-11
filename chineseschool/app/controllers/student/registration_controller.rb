@@ -85,6 +85,8 @@ class Student::RegistrationController < ApplicationController
       redirect_to(:controller => '/home', :action => 'index') and return
     end
     @gateway_transaction = @registration_payment.find_first_approved_gateway_transaction
+    email = ReceiptMailer.create_payment_confirmation @gateway_transaction, @registration_payment
+    ReceiptMailer.deliver email
   end
 
   private

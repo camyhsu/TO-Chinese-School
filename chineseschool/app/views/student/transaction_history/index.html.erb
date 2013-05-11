@@ -20,7 +20,7 @@
         <% @registration_payments.each do |registration_payment| -%>
           <tr>
             <td>
-              <%= link_to display_utc_time_in_pacific(registration_payment.updated_at), {:action => :show_registration_payment, :id => registration_payment}, {:class => 'button'} %>
+              <%= link_to PacificTimeDisplay.display_utc_time_in_pacific(registration_payment.updated_at), {:action => :show_registration_payment, :id => registration_payment}, {:class => 'button'} %>
             </td>
             <td>
               <% if registration_payment.grand_total_in_cents < 0 %>
@@ -29,7 +29,7 @@
                 Registration
               <% end %>
             </td>
-            <td><%= display_price registration_payment.grand_total %></td>
+            <td><%= MoneyDisplay.display_price registration_payment.grand_total %></td>
           </tr>
         <% end %>
       </tbody>
@@ -56,7 +56,7 @@
             <td>
               <%=h manual_transaction.transaction_type %>
             </td>
-            <td><%= display_price manual_transaction.amount_with_sign %></td>
+            <td><%= MoneyDisplay.display_price manual_transaction.amount_with_sign %></td>
           </tr>
         <% end %>
       </tbody>

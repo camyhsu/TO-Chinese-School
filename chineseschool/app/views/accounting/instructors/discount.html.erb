@@ -17,7 +17,7 @@
         <td><%=h instructor_discount.instructor_name %></td>
         <td><%=h instructor_discount.child_one_name %></td>
         <td><%=h instructor_discount.child_two_name %></td>
-        <td><%=display_price instructor_discount.discount_amount %></td>
+        <td><%= MoneyDisplay.display_price instructor_discount.discount_amount %></td>
       </tr>
   <% end %>
   </tbody>

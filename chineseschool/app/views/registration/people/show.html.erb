@@ -97,7 +97,7 @@
       <% completed_registration_payments.each do |registration_payment| %>
       <tr>
         <td>
-          <%= link_to display_utc_time_in_pacific(registration_payment.updated_at), {:controller => '/student/transaction_history', :action => 'show_registration_payment_for_staff', :id => registration_payment}, {:class => 'button'} %>
+          <%= link_to PacificTimeDisplay.display_utc_time_in_pacific(registration_payment.updated_at), {:controller => '/student/transaction_history', :action => 'show_registration_payment_for_staff', :id => registration_payment}, {:class => 'button'} %>
         </td>
         <td>
           <% if registration_payment.grand_total_in_cents < 0 %>
@@ -117,7 +117,7 @@
       <% manual_transactions.each do |manual_transaction| %>
       <tr>
         <td>
-          <%= link_to display_utc_time_in_pacific(manual_transaction.updated_at), {:controller => '/accounting/manual_transactions', :action => 'show', :id => manual_transaction}, {:class => 'button'} %>
+          <%= link_to PacificTimeDisplay.display_utc_time_in_pacific(manual_transaction.updated_at), {:controller => '/accounting/manual_transactions', :action => 'show', :id => manual_transaction}, {:class => 'button'} %>
         </td>
         <td>
           <%= manual_transaction.transaction_type %>
