@@ -89,6 +89,12 @@ class Student::RegistrationController < ApplicationController
     ReceiptMailer.deliver email
   end
 
+  def request_in_person_payment
+    @registration_payment = RegistrationPayment.find_by_id params[:id].to_i
+    @registration_payment.request_in_person = TRUE
+    @registration_payment.save!
+  end
+
   private
 
   def create_registration_preferences_for_display_optioins

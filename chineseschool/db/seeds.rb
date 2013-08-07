@@ -128,6 +128,7 @@ student_registration_display_options = Right.create(:name => 'Display Registrati
 student_registration_save_registration_preferences = Right.create(:name => 'Save Registration Preferences', :controller => 'student/registration', :action => 'save_registration_preferences')
 student_registration_payment_entry = Right.create(:name => 'Payment Entry', :controller => 'student/registration', :action => 'payment_entry')
 student_registration_remove_pending_registration_payment = Right.create(:name => 'Remove Pending Registration Payment', :controller => 'student/registration', :action => 'remove_pending_registration_payment')
+student_registration_request_in_person_payment = Right.create(:name => 'Request In-person Registration Payment', :controller => 'student/registration', :action => 'request_in_person_payment')
 student_registration_submit_payment = Right.create(:name => 'Submit Payment', :controller => 'student/registration', :action => 'submit_payment')
 student_registration_payment_confirmation = Right.create(:name => 'Show Payment Confirmation', :controller => 'student/registration', :action => 'payment_confirmation')
 
@@ -341,6 +342,7 @@ student_parent.rights << student_registration_display_options
 student_parent.rights << student_registration_save_registration_preferences
 student_parent.rights << student_registration_payment_entry
 student_parent.rights << student_registration_remove_pending_registration_payment
+student_parent.rights << student_registration_request_in_person_payment
 student_parent.rights << student_registration_submit_payment
 student_parent.rights << student_registration_payment_confirmation
 

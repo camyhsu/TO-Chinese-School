@@ -36,4 +36,7 @@
   <% end %>
 </div>
 <br/>
+<%= link_to 'Request In-person Registration Payment', {:action => :request_in_person_payment, :id => @registration_payment}, {:class => 'button'} %>
+<br/>
+<br/>
 <%= link_to 'Cancel Registration', {:action => :remove_pending_registration_payment, :id => @registration_payment}, {:class => 'button'} %>
