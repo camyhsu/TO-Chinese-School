@@ -40,6 +40,10 @@ class RegistrationPayment < ActiveRecord::Base
     self.gateway_transactions.first :conditions => ['approval_status = ?', GatewayTransaction::APPROVAL_STATUS_APPROVED]
   end
 
+  def student_names
+    self.student_fee_payments.collect { |fee_payment| fee_payment.student.name }
+  end
+
   def self.find_paid_payments_paid_by(paid_by)
     self.all :conditions => ['paid_by_id = ? AND paid = true', paid_by.id], :order => 'updated_at DESC'
   end
@@ -55,6 +59,11 @@ class RegistrationPayment < ActiveRecord::Base
   def self.find_pending_payments_for(paid_by, school_year)
     self.all :conditions => ['paid_by_id = ? AND school_year_id = ? AND paid = false', paid_by.id, school_year.id], :order => 'updated_at DESC'
   end
+
+  def self.find_pending_in_person_payments_for(school_year)
+    self.all :conditions => ['school_year_id = ? AND paid = false AND request_in_person IS TRUE', school_year.id], :order => 'updated_at DESC'
+  end
+
   
   private
   
