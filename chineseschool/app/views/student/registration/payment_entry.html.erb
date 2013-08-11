@@ -36,7 +36,9 @@
   <% end %>
 </div>
 <br/>
-<%= link_to 'Request In-person Registration Payment', {:action => :request_in_person_payment, :id => @registration_payment}, {:class => 'button'} %>
-<br/>
-<br/>
+<% if PacificDate.today >= SchoolYear.current_school_year.start_date %>
+    <%= link_to 'Request In-person Registration Payment', {:action => :request_in_person_payment, :id => @registration_payment}, {:class => 'button'} %>
+    <br/>
+    <br/>
+<% end %>
 <%= link_to 'Cancel Registration', {:action => :remove_pending_registration_payment, :id => @registration_payment}, {:class => 'button'} %>
