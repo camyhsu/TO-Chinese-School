@@ -51,6 +51,10 @@ class RegistrationPayment < ActiveRecord::Base
   def self.find_paid_payments_for_date(date)
     self.all :conditions => ['paid = true AND updated_at >= ? AND updated_at < ?', PacificDate.start_time_utc_for(date), PacificDate.start_time_utc_for(date + 1)], :order => 'updated_at DESC'
   end
+
+  def self.find_pending_payments_for(paid_by, school_year)
+    self.all :conditions => ['paid_by_id = ? AND school_year_id = ? AND paid = false', paid_by.id, school_year.id], :order => 'updated_at DESC'
+  end
   
   private
   

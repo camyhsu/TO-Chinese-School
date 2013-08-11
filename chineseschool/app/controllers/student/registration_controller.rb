@@ -38,11 +38,7 @@ class Student::RegistrationController < ApplicationController
     if registration_payment.nil?
       logger.warn "Could not find registration payment with id => #{params[:id]}"
     else
-      if registration_payment.paid? or (not registration_payment.gateway_transactions.empty?)
-        logger.warn "Attempting to remove a processed registration #{registration_payment.id} by user #{@user.id}"
-      else
-        registration_payment.destroy
-      end
+      remove_incomplete registration_payment
     end
     redirect_to :controller => '/home', :action => 'index'
   end
@@ -188,6 +184,7 @@ class Student::RegistrationController < ApplicationController
   def create_and_save_registration_payment(registration_preference_ids, registration_school_year)
     # calculations here must be done in a specific order because
     # later calculations may depends on the result of earlier calculations
+    remove_previously_pending_registration_payments @user.person, registration_school_year
     completed_registration_count_in_family = count_completed_registration_in_family_for registration_school_year
     registration_payment = RegistrationPayment.new
     registration_payment.school_year = registration_school_year
@@ -204,6 +201,20 @@ class Student::RegistrationController < ApplicationController
     registration_payment.calculate_grand_total
     registration_payment.save!
     registration_payment
+  end
+
+  def remove_previously_pending_registration_payments(paid_by, school_year)
+    #RegistrationPayment.find_pending_payments_for paid_by, school_year
+    # TODO - delay the implementation due to complications with multiple possible paid_by and
+    # multiple possible student combinations
+  end
+
+  def remove_incomplete(registration_payment)
+    if registration_payment.paid? or (not registration_payment.gateway_transactions.empty?)
+      logger.warn "Attempting to remove a processed registration #{registration_payment.id} by user #{@user.id}"
+    else
+      registration_payment.destroy
+    end
   end
 
   def count_completed_registration_in_family_for(school_year)
