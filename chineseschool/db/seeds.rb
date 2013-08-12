@@ -43,6 +43,9 @@ accounting_manual_transactions_new = Right.create(:name => 'Create Manual Transa
 accounting_instructors_discount = Right.create(:name => 'List Instructor Discount', :controller => 'accounting/instructors', :action => 'discount')
 
 accounting_in_person_registration_payment_index = Right.create(:name => 'List Pending In-person Registration Payments', :controller => 'accounting/in_person_registration_payments', :action => 'index')
+accounting_in_person_registration_payment_entry = Right.create(:name => 'Record In-person Registration Payment', :controller => 'accounting/in_person_registration_payments', :action => 'payment_entry')
+accounting_in_person_registration_payment_remove_pending = Right.create(:name => 'Remove Pending In-person Registration Payment', :controller => 'accounting/in_person_registration_payments', :action => 'remove_pending_registration_payment')
+
 
 grades_index = Right.create(:name => 'List Grades', :controller => 'admin/grades', :action => 'index')
 
@@ -228,6 +231,8 @@ registration_officer.rights << accounting_manual_transactions_new
 registration_officer.rights << accounting_manual_transactions_show
 
 registration_officer.rights << accounting_in_person_registration_payment_index
+registration_officer.rights << accounting_in_person_registration_payment_entry
+registration_officer.rights << accounting_in_person_registration_payment_remove_pending
 
 
 #

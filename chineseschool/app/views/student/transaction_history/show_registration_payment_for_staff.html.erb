@@ -1,13 +1,26 @@
 <% @title = 'Transaction Details' %>
 
-<p>
-  This <% if @gateway_transaction.credit? -%>refund<% else %>payment<% end %>
-  was processed on <%= PacificTimeDisplay.display_utc_time_in_pacific(@gateway_transaction.updated_at) %><br/>
-  <%= MoneyDisplay.display_price(@gateway_transaction.amount_in_cents / 100.0) %>  has been
-  <% if @gateway_transaction.credit? -%>refunded<% else %>charged<% end %> to
-  <%= @gateway_transaction.credit_card_type.capitalize %> Card ending <%= @gateway_transaction.credit_card_last_digits %><br/>
-  <% if @gateway_transaction.credit? -%>Refunded to<% else %>Paid by<% end %>&nbsp;<%=h @registration_payment.paid_by.name %><br/>
-  Payment Reference Number is
-  <span style="font-weight: bold;"><%=h @gateway_transaction.reference_number %></span><br/>
-</p>
+<% if @gateway_transaction.nil? %>
+    <% transaction = @registration_payment.in_person_registration_transaction %>
+    <p>
+      This payment was processed in-person with <%=h transaction.recorded_by.name %><br/>
+      on <%= PacificTimeDisplay.display_utc_time_in_pacific(transaction.updated_at) %><br/>
+      <% if transaction.payment_method == InPersonRegistrationTransaction::PAYMENT_METHOD_CASH %>
+          Payment was made in CASH.
+      <% else %>
+          Payment was made with CHECK # <%=h transaction.check_number %>
+      <% end %>
+    </p>
+<% else %>
+    <p>
+      This <% if @gateway_transaction.credit? -%>refund<% else %>payment<% end %>
+      was processed on <%= PacificTimeDisplay.display_utc_time_in_pacific(@gateway_transaction.updated_at) %><br/>
+      <%= MoneyDisplay.display_price(@gateway_transaction.amount_in_cents / 100.0) %>  has been
+      <% if @gateway_transaction.credit? -%>refunded<% else %>charged<% end %> to
+      <%= @gateway_transaction.credit_card_type.capitalize %> Card ending <%= @gateway_transaction.credit_card_last_digits %><br/>
+      <% if @gateway_transaction.credit? -%>Refunded to<% else %>Paid by<% end %>&nbsp;<%=h @registration_payment.paid_by.name %><br/>
+      Payment Reference Number is
+      <span style="font-weight: bold;"><%=h @gateway_transaction.reference_number %></span><br/>
+    </p>
+<% end %>
 <%= render :partial => '/student/registration/registration_payment', :object => @registration_payment %>

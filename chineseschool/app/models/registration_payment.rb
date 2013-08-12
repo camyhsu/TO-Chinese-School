@@ -4,6 +4,7 @@ class RegistrationPayment < ActiveRecord::Base
   belongs_to :paid_by, :class_name => 'Person', :foreign_key => 'paid_by_id'
   has_many :student_fee_payments, :dependent => :destroy
   has_many :gateway_transactions
+  has_one :in_person_registration_transaction
 
   validates_presence_of :school_year, :paid_by, :pva_due_in_cents, :ccca_due_in_cents
 
