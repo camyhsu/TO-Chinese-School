@@ -22,7 +22,7 @@ class Accounting::InPersonRegistrationPaymentsController < ApplicationController
           @registration_payment.paid = true
           @registration_payment.save!
         end
-        create_student_class_assignments
+        @registration_payment.create_student_class_assignments
         email = ReceiptMailer.create_payment_confirmation @gateway_transaction, @registration_payment
         ReceiptMailer.deliver email
         flash[:notice] = 'In-person Registration Payment recorded successfully'
@@ -45,14 +45,5 @@ class Accounting::InPersonRegistrationPaymentsController < ApplicationController
       end
     end
     redirect_to :action => 'index'
-  end
-
-  private
-
-  def create_student_class_assignments
-    school_year = @registration_payment.school_year
-    @registration_payment.student_fee_payments.each do |student_fee_payment|
-      student_fee_payment.student.create_student_class_assignment_based_on_registration_preference school_year
-    end
   end
 end

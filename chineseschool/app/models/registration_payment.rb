@@ -52,6 +52,12 @@ class RegistrationPayment < ActiveRecord::Base
     end
   end
 
+  def create_student_class_assignments
+    self.student_fee_payments.each do |student_fee_payment|
+      student_fee_payment.student.create_student_class_assignment_based_on_registration_preference self.school_year
+    end
+  end
+
   def self.find_paid_payments_paid_by(paid_by)
     self.all :conditions => ['paid_by_id = ? AND paid = true', paid_by.id], :order => 'updated_at DESC'
   end

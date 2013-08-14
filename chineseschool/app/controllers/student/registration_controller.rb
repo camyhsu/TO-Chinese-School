@@ -66,7 +66,7 @@ class Student::RegistrationController < ApplicationController
     if GatewayTransaction::APPROVAL_STATUS_APPROVED == gateway_transaction.approval_status
       @registration_payment.paid = true
       @registration_payment.save!
-      create_student_class_assignments
+      @registration_payment.create_student_class_assignments
       email = ReceiptMailer.create_payment_confirmation @gateway_transaction, @registration_payment
       ReceiptMailer.deliver email
       redirect_to :action => :payment_confirmation, :id => @registration_payment
@@ -248,12 +248,5 @@ class Student::RegistrationController < ApplicationController
       gateway_transaction.error_message = response.params['error']
     end
     gateway_transaction.save!
-  end
-
-  def create_student_class_assignments
-    school_year = @registration_payment.school_year
-    @registration_payment.student_fee_payments.each do |student_fee_payment|
-      student_fee_payment.student.create_student_class_assignment_based_on_registration_preference school_year
-    end
   end
 end
