@@ -2,6 +2,8 @@ class Accounting::InPersonRegistrationPaymentsController < ApplicationController
 
   def index
     @registration_payments = RegistrationPayment.find_pending_in_person_payments_for SchoolYear.current_school_year
+    # Exclude payments related to student who has registered already
+    @registration_payments.reject! { |registration_payment| registration_payment.at_least_one_student_already_registered? }
   end
 
   def payment_entry

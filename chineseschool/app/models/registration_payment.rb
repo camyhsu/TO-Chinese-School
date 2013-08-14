@@ -45,6 +45,13 @@ class RegistrationPayment < ActiveRecord::Base
     self.student_fee_payments.collect { |fee_payment| fee_payment.student.name }
   end
 
+  def at_least_one_student_already_registered?
+    self.student_fee_payments.any? do |student_fee_payment|
+      student_status_flag = student_fee_payment.student.student_status_flag_for(self.school_year)
+      (not student_status_flag.nil?) && student_status_flag.registered?
+    end
+  end
+
   def self.find_paid_payments_paid_by(paid_by)
     self.all :conditions => ['paid_by_id = ? AND paid = true', paid_by.id], :order => 'updated_at DESC'
   end
