@@ -24,7 +24,7 @@ pdf.table(data, :header => true) do
   row(0).style(:background_color => 'cccccc')
 end
 
-pdf.number_pages "#{display_now_in_pacific}   Total Student Count: #{@active_student_class_assignments.size}", 
+pdf.number_pages "#{PacificTimeDisplay.display_now_in_pacific}   Total Student Count: #{@active_student_class_assignments.size}",
     :at => [pdf.bounds.left, 0], :align => :left, :page_filter => :all
 pdf.number_pages "#{@current_school_year.name} 學年度       Page <page>/<total>", 
     :at => [pdf.bounds.left, 0], :align => :right, :page_filter => :all

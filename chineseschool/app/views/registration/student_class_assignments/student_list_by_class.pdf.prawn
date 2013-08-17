@@ -13,7 +13,7 @@ header = [ 'No', '姓名', 'First Name', 'Last Name' ]
 
   pdf.font_size 10 do
     instructor = school_class.current_primary_instructor
-    pdf.text "Teacher Name: #{instructor.name} 老師"
+    pdf.text "Teacher Name: #{instructor.try(:name)} 老師"
   end
   pdf.move_down 10
 
