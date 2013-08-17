@@ -9,4 +9,13 @@ class ReceiptMailer < ActionMailer::Base
 
     body       :registration_payment => registration_payment, :gateway_transaction => gateway_transaction
   end
+
+  def text_book_notification(students)
+    subject    'TOCS - text books for new students'
+    recipients Contacts::TEXT_BOOK_MANAGER
+    from       Contacts::WEB_SITE_SUPPORT
+    sent_on    Time.now
+
+    body       :students => students
+  end
 end

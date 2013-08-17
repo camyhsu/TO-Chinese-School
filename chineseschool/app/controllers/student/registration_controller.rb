@@ -67,8 +67,7 @@ class Student::RegistrationController < ApplicationController
       @registration_payment.paid = true
       @registration_payment.save!
       @registration_payment.create_student_class_assignments
-      email = ReceiptMailer.create_payment_confirmation @gateway_transaction, @registration_payment
-      ReceiptMailer.deliver email
+      @registration_payment.send_email_notification gateway_transaction
       redirect_to :action => :payment_confirmation, :id => @registration_payment
     else
       flash.now[:notice] = "Payment DECLINED by bank.  Please use a different credit card to try again or contact #{Contacts::WEB_SITE_SUPPORT}"

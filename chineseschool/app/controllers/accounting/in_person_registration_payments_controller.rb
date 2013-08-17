@@ -23,8 +23,7 @@ class Accounting::InPersonRegistrationPaymentsController < ApplicationController
           @registration_payment.save!
         end
         @registration_payment.create_student_class_assignments
-        email = ReceiptMailer.create_payment_confirmation @gateway_transaction, @registration_payment
-        ReceiptMailer.deliver email
+        @registration_payment.send_email_notification
         flash[:notice] = 'In-person Registration Payment recorded successfully'
         redirect_to :action => :index
       end
