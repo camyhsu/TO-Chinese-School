@@ -4,7 +4,7 @@ The following students have registered for classes on <%= PacificDate.today %>:
 
 <% @students.each do |student| %>
 Student Name: <%=h student.name %>
-Class Registrered: <%=h student.student_class_assignment_for(SchoolYear.current_school_year).try(:school_class).name %>
+Class Registrered: <%=h student.student_class_assignment_for(SchoolYear.current_school_year).try(:school_class).try(:name) %>
 
 <% end %>
 

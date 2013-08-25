@@ -66,8 +66,12 @@ class Student::RegistrationController < ApplicationController
     if GatewayTransaction::APPROVAL_STATUS_APPROVED == gateway_transaction.approval_status
       @registration_payment.paid = true
       @registration_payment.save!
-      @registration_payment.create_student_class_assignments
-      @registration_payment.send_email_notification gateway_transaction
+      begin
+        @registration_payment.create_student_class_assignments
+        @registration_payment.send_email_notification gateway_transaction
+      rescue => e
+        logger.error "Error during post-payment operations => #{e.inspect}"
+      end
       redirect_to :action => :payment_confirmation, :id => @registration_payment
     else
       flash.now[:notice] = "Payment DECLINED by bank.  Please use a different credit card to try again or contact #{Contacts::WEB_SITE_SUPPORT}"
