@@ -11,8 +11,13 @@ class Registration::StudentClassAssignmentsController < ApplicationController
 
   def student_list_by_class
     @current_school_year = SchoolYear.current_school_year
-    retrieve_sorted_class_lists
-    prawnto :filename => 'student_list_by_class.pdf'
+    if params[:elective]
+      retrieve_sorted_elective_class_lists
+      prawnto :filename => 'student_list_by_elective_class.pdf'
+    else
+      retrieve_sorted_class_lists
+      prawnto :filename => 'student_list_by_class.pdf'
+    end
     render :layout => false
   end
 

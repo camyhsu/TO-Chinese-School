@@ -82,11 +82,26 @@ class ApplicationController < ActionController::Base
   end
 
   def retrieve_sorted_class_lists
-    active_student_class_assignments = StudentClassAssignment.all(:conditions => ['school_class_id is not null AND school_year_id = ?', SchoolYear.current_school_year.id])
+    active_student_class_assignments = StudentClassAssignment.all(:conditions => ['school_class_id IS NOT NULL AND school_year_id = ?', SchoolYear.current_school_year.id])
     @class_lists = Hash.new { |hash, key| hash[key] = [] }
     active_student_class_assignments.each do |student_class_assignment|
       @class_lists[student_class_assignment.school_class] << student_class_assignment.student
     end
+    sort_class_name_lists
+    @sorted_school_classes = @class_lists.keys.sort { |a, b| a.short_name <=> b.short_name }
+  end
+
+  def retrieve_sorted_elective_class_lists
+    active_student_class_assignments = StudentClassAssignment.all(:conditions => ['elective_class_id IS NOT NULL AND school_year_id = ?', SchoolYear.current_school_year.id])
+    @class_lists = Hash.new { |hash, key| hash[key] = [] }
+    active_student_class_assignments.each do |student_class_assignment|
+      @class_lists[student_class_assignment.elective_class] << student_class_assignment.student
+    end
+    sort_class_name_lists
+    @sorted_school_classes = @class_lists.keys.sort { |a, b| a.english_name <=> b.english_name }
+  end
+
+  def sort_class_name_lists
     @class_lists.each_value do |class_list|
       class_list.sort! do |a, b|
         last_name_order = a.english_last_name.strip.downcase <=> b.english_last_name.strip.downcase
@@ -97,6 +112,5 @@ class ApplicationController < ActionController::Base
         end
       end
     end
-    @sorted_school_classes = @class_lists.keys.sort { |a, b| a.short_name <=> b.short_name }
   end
 end

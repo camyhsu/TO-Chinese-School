@@ -21,6 +21,9 @@
 <%= link_to 'Download Printable Student List By Class', {:controller => '/registration/student_class_assignments', :action => 'student_list_by_class', :format => 'pdf'}, {:class => 'button'} %>
 <br/>
 <br/>
+<%= link_to 'Download Printable Student List By Elective Class', {:controller => '/registration/student_class_assignments', :action => 'student_list_by_class', :elective => true, :format => 'pdf'}, {:class => 'button'} %>
+<br/>
+<br/>
 <%= link_to 'List Active Students By Name', {:controller => '/registration/student_class_assignments', :action => 'list_active_students_by_name'}, {:class => 'button'} %>
 <%= link_to 'Download Printable Student List By Name', {:controller => '/registration/student_class_assignments', :action => 'list_active_students_by_name', :format => 'pdf'}, {:class => 'button'} %>
 <br/>
