@@ -48,6 +48,10 @@ class Student::RegistrationController < ApplicationController
     if @registration_payment.paid?
       redirect_to(:action => :payment_confirmation, :id => @registration_payment) and return
     end
+    if @registration_payment.at_least_one_student_already_registered?
+      flash[:notice] = 'At least one student in the attempted payment has already registered.'
+      redirect_to(:action => :display_options, :id => @registration_payment.school_year) and return
+    end
     @credit_card = CreditCard.new params[:credit_card]
     unless @credit_card.valid?
       render :template => '/student/registration/payment_entry' and return
