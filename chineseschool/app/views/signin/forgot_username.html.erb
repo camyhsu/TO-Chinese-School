@@ -1,0 +1,42 @@
+<% @title = 'Search for Username' %>
+
+<% unless @initial_form_load %>
+    <% if @matched_users.empty? %>
+      No username found to be associated with the given email address
+    <% else %>
+      Found the following username(s) associated with the given email address:<br/>
+      <ul>
+        <% @matched_users.each do |user| %>
+        <li>
+          '<%=h user.username %>'  for  <%=h user.person.name %>
+        </li>
+        <% end %>
+      </ul>
+    <% end %>
+<% end %>
+
+<br/>
+<br/>
+
+<div class="account-form">
+
+  <%= form_tag do %>
+    <fieldset>
+      <legend>Search for Username</legend>
+      <span class="signin">
+        Please enter the email address on record with Chinese School
+        <div>
+          <label for="username">Email:</label>
+          <%= text_field_tag :email, params[:email] %>
+        </div>
+        <div>
+          <%= submit_tag 'Submit', class: 'submit' %>
+        </div>
+      </span>
+    </fieldset>
+  <% end %>
+</div>
+<br/>
+<span class="register-link">
+  <%= link_to 'Back to Sign In', action: 'index' %>
+</span>
