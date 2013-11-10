@@ -19,13 +19,18 @@ class SigninController < ApplicationController
   def forgot_password
     if request.post?
       user_found = User.find_by_username params[:username]
-      flash.now[:notice] = 'Username does not exist' and return unless user_found
+      unless user_found
+        flash.now[:notice] = 'Username does not exist'
+        return
+      end
       email_destination = user_found.person.personal_email_address
-      flash.now[:notice] = 'Unable to find email address for the user' and return unless email_destination
-      email = SigninMailer.create_forgot_password user_found.person, email_destination
-      SigninMailer.deliver email
+      unless email_destination
+        flash.now[:notice] = 'Unable to find email address for the user'
+        return
+      end
+      SigninMailer.forgot_password(user_found.person, email_destination).deliver
       flash[:notice] = 'Password Reset Request sent to email address on record'
-      redirect_to :action => 'index'
+      redirect_to action: 'index'
     end
   end
   
@@ -52,22 +57,30 @@ class SigninController < ApplicationController
 
   def reset_password
     timed_token = TimedToken.find_by_token params[:id]
-    redirect_to :action => 'invalid_token' and return if timed_token.nil? or timed_token.expired?
+    if timed_token.nil? || timed_token.expired?
+      redirect_to action: 'invalid_password_token'
+      return
+    end
     
     @user = timed_token.person.user
-    redirect_to :action => 'invalid_token' and return if @user.nil?
+    if @user.nil?
+      redirect_to action: 'invalid_password_token'
+      return
+    end
 
     if request.post?
       if params[:password] != params[:password_confirmation]
-        flash.now[:notice] = 'Password does not match confirmation re-typed' and return
+        flash.now[:notice] = 'Password does not match confirmation re-typed'
+        return
       end
       unless timed_token.person.phone_number_correct? params[:phone_number]
-        flash.now[:notice] = 'Unable to match phone number with existing records - please try again' and return
+        flash.now[:notice] = 'Unable to match phone number with existing records - please try again'
+        return
       end
       @user.password = params[:password]
       if @user.save
         flash[:notice] = 'Password successfully updated'
-        redirect_to :action => 'index'
+        redirect_to action: 'index'
       end
     end
   end
