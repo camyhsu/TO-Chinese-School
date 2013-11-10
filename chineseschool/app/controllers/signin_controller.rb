@@ -9,7 +9,7 @@ class SigninController < ApplicationController
         session[:user_id] = user_found.id
         original_uri = session[:original_uri]
         session[:original_uri] = nil
-        redirect_to(original_uri || {:controller => 'home', :action => 'index'})
+        redirect_to(original_uri || {controller: 'home', action: 'index'})
       else
         flash.now[:notice] = "Invalid username / password combination - For technical support, please email #{Contacts::WEB_SITE_SUPPORT}"
       end
@@ -147,7 +147,7 @@ class SigninController < ApplicationController
   end
 
   def ping
-    render :text => "Pong - #{Time.now}"
+    render text: "Pong - #{Time.now}"
   end
   
   

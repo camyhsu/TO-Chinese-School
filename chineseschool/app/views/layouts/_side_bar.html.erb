@@ -1,0 +1,24 @@
+<!-- Side Bar -->
+<span class="welcome-text">Welcome, <br/>
+<%=h @user.person.name %></span>
+<br/>
+<br/>
+<%= link_to 'Home', controller: '/home', action: 'index' %>
+<br/>
+<br/>
+<%= link_to 'Change Password', controller: '/home', action: 'change_password' %>
+<br/>
+<br/>
+<%= link_to 'Transaction History', controller: '/student/transaction_history', action: 'index' %>
+<br/>
+<br/>
+<a href="/chineseschool/contact_us.html">Contact Us</a>
+<br/>
+<br/>
+<a href="/chineseschool/privacy.html">Privacy Policy</a>
+<br/>
+<br/>
+<a href="/chineseschool/consent_sample.html">Waiver</a>
+<br/>
+<br/>
+<%= link_to 'Sign Out', controller: '/signout', action: 'index' %>

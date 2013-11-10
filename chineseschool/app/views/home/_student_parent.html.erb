@@ -1,0 +1,132 @@
+
+<% if @possible_students.size > 0 -%>
+  <% @active_registration_school_years.each do |registration_year| %>
+    <%= link_to "Register For #{registration_year.name} School Year", {controller: '/student/registration', action: :display_options, id: registration_year}, {class: 'button'} %>
+    <br/>
+  <% end %>
+<% end %>
+
+<br/>
+<h3>Person</h3>
+<table class="person-detail" border="0px">
+  <tr>
+    <td class="label">Chinese Name:</td>
+    <td><%=h @person.chinese_name %></td>
+  </tr>
+  <tr>
+    <td class="label">English Name:</td>
+    <td><%=h "#{@person.english_first_name} #{@person.english_last_name}" %></td>
+  </tr>
+  <tr>
+    <td class="label">Gender:</td>
+    <td><%=h @person.gender %></td>
+  </tr>
+  <tr>
+    <td class="label">Birth Month/Year:</td>
+    <td><%=h @person.birth_info %></td>
+  </tr>
+  <tr>
+    <td class="label">Native Language:</td>
+    <td><%=h @person.native_language %></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><%= link_to 'Edit Person Details', {controller: '/student/people', action: :edit, id: @person}, {class: 'button'} %></td>
+  </tr>
+  <% if @person.address.nil? %>
+  <tr>
+    <td></td>
+    <td><%= link_to 'Create Personal Address', {controller: '/student/people', action: :new_address, id: @person}, {class: 'button'} %></td>
+  </tr>
+  <% else %>
+  <%= render partial: '/registration/addresses/address', object: @person.address %>
+  <tr>
+    <td></td>
+    <td><%= link_to 'Edit Personal Address', {controller: '/student/people', action: :edit_address, id: @person}, {class: 'button'} %></td>
+  </tr>
+  <% end %>
+</table>
+<hr/>
+<h3>Family for <%=h @person.name %></h3>
+<% @person.families.each do |family| -%>
+<table class="person-detail" border="0px">
+  <tr>
+    <td class="label">Parent One:</td>
+    <td><%=h family.parent_one.try(:name) %></td>
+  </tr>
+  <tr>
+    <td class="label">Parent Two:</td>
+    <td><%=h family.parent_two.try(:name) %></td>
+  </tr>
+  <tr>
+    <td class="label">Children:</td>
+    <td><%=h family.children_names %></td>
+  </tr>
+  <%= render :partial => '/registration/addresses/address', :object => family.address %>
+  <tr>
+    <td></td>
+    <td>
+      <%= link_to 'Edit Family Address', {:controller => '/student/families', :action => 'edit_address', :id => family}, {:class => 'button'} %>
+    </td>
+  </tr>
+  <% if family.parent_two.nil? %>
+      <tr>
+        <td></td>
+        <td>
+          <%= link_to 'Add Parent', {:controller => '/student/families', :action => :add_parent, :id => family}, {:class => 'button'} %>
+        </td>
+      </tr>
+  <% end %>
+  <tr>
+    <td></td>
+    <td>
+      <%= link_to 'Add Child', {:controller => '/student/families', :action => :add_child, :id => family}, {:class => 'button'} %>
+    </td>
+  </tr>
+</table>
+<% end %>
+<hr/>
+<% if @possible_students.size > 0 -%>
+  <h3>Student Information</h3>
+  <% @possible_students.each do |student| -%>
+    <table class="person-detail" border="0px">
+      <tr>
+        <td class="label">Chinese Name:</td>
+        <td><%=h student.chinese_name %></td>
+      </tr>
+      <tr>
+        <td class="label">English Name:</td>
+        <td><%=h "#{student.english_first_name} #{student.english_last_name}" %></td>
+      </tr>
+      <tr>
+        <td class="label">Gender:</td>
+        <td><%=h student.gender %></td>
+      </tr>
+      <tr>
+        <td class="label">Birth Month/Year:</td>
+        <td><%=h student.birth_info %></td>
+      </tr>
+      <tr>
+        <td class="label">Native Language:</td>
+        <td><%=h student.native_language %></td>
+      </tr>
+      <%= render partial: 'student_class_assignment_display', object: nil, locals: {student: student, school_year: SchoolYear.current_school_year} %>
+      <% unless SchoolYear.next_school_year.nil? -%>
+        <%= render partial: 'student_class_assignment_display', object: nil, locals: {student: student, school_year: SchoolYear.next_school_year} %>
+      <% end %>
+      <tr>
+        <td></td>
+        <td><%= link_to 'Edit Student Details', {controller: '/student/people', action: :edit, id: student}, {class: 'button'} %></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><hr/></td>
+      </tr>
+    </table>
+  <% end %>
+  <% @active_registration_school_years.each do |registration_year| %>
+    <%= link_to "Register For #{registration_year.name} School Year", {controller: '/student/registration', action: :display_options, id: registration_year}, {class: 'button'} %>
+    <br/>
+  <% end %>
+  <hr/>
+<% end %>
