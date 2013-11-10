@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   def check_authentication
     return true if session[:user_id]
-    session[:original_uri] = request.request_uri
+    session[:original_uri] = request.fullpath
     redirect_to controller: '/signin', action: 'index'
     false
   end
