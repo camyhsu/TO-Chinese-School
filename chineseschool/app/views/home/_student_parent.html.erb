@@ -1,10 +1,10 @@
 
-<% if @possible_students.size > 0 -%>
+<!--<% if @possible_students.size > 0 -%>
   <% @active_registration_school_years.each do |registration_year| %>
     <%= link_to "Register For #{registration_year.name} School Year", {controller: '/student/registration', action: :display_options, id: registration_year}, {class: 'button'} %>
     <br/>
   <% end %>
-<% end %>
+<% end %>-->
 
 <br/>
 <h3>Person</h3>
@@ -124,9 +124,9 @@
       </tr>
     </table>
   <% end %>
-  <% @active_registration_school_years.each do |registration_year| %>
+  <!--<% @active_registration_school_years.each do |registration_year| %>
     <%= link_to "Register For #{registration_year.name} School Year", {controller: '/student/registration', action: :display_options, id: registration_year}, {class: 'button'} %>
     <br/>
-  <% end %>
+  <% end %>-->
   <hr/>
 <% end %>
