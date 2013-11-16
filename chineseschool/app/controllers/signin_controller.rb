@@ -84,67 +84,67 @@ class SigninController < ApplicationController
       end
     end
   end
-
-  def register
-    if request.post?
-      @address = Address.new params[:address]
-      @parent_one = Person.new params[:parent_one]
-      @user = User.new(:username => params[:user][:username], :person => @parent_one)
-      @user.password = params[:password]
-      @user.roles << Role.find_by_name(Role::ROLE_NAME_STUDENT_PARENT)
-
-      if params[:password] != params[:password_confirmation]
-        flash.now[:password_not_match] = 'Password does not match confirmation re-typed' and return
-      end
-      valid_address = @address.valid?
-      valid_parent_one = @parent_one.valid?
-      valid_user = @user.valid?
-      return unless valid_address and valid_parent_one and valid_user
-      
-      new_family = Family.new
-      new_family.address = @address
-      new_family.parent_one = @parent_one
-      Family.transaction do
-        new_family.save!
-        @user.save!
-      end
-
-      flash[:notice] = 'Account successfully created'
-      redirect_to :action => 'index'
-    else
-      @address = Address.new
-      @parent_one = Person.new
-      @user = User.new
-    end
-  end
-
-  def register_with_invitation
-    timed_token = TimedToken.find_by_token params[:id]
-    redirect_to :action => 'invalid_token' and return if timed_token.nil? or timed_token.expired?
-    person = timed_token.person
-    unless person.user.nil?
-      flash.now[:notice] = "This person already have an account with username #{person.user.username}" and return
-    end
-    
-    if request.post?
-      if params[:password] != params[:password_confirmation]
-        flash.now[:notice] = 'Password does not match confirmation re-typed' and return
-      end
-      unless person.phone_number_correct? params[:phone_number]
-        flash.now[:notice] = 'Unable to match phone number with existing records - please try again' and return
-      end
-
-      @user = User.new(:username => params[:username], :person => person)
-      @user.password = params[:password]
-      @user.roles << Role.find_by_name(Role::ROLE_NAME_STUDENT_PARENT)
-      @user.adjust_instructor_roles
-      
-      if @user.save
-        flash[:notice] = 'Account successfully created'
-        redirect_to :action => 'index'
-      end
-    end
-  end
+  #
+  #def register
+  #  if request.post?
+  #    @address = Address.new params[:address]
+  #    @parent_one = Person.new params[:parent_one]
+  #    @user = User.new(:username => params[:user][:username], :person => @parent_one)
+  #    @user.password = params[:password]
+  #    @user.roles << Role.find_by_name(Role::ROLE_NAME_STUDENT_PARENT)
+  #
+  #    if params[:password] != params[:password_confirmation]
+  #      flash.now[:password_not_match] = 'Password does not match confirmation re-typed' and return
+  #    end
+  #    valid_address = @address.valid?
+  #    valid_parent_one = @parent_one.valid?
+  #    valid_user = @user.valid?
+  #    return unless valid_address and valid_parent_one and valid_user
+  #
+  #    new_family = Family.new
+  #    new_family.address = @address
+  #    new_family.parent_one = @parent_one
+  #    Family.transaction do
+  #      new_family.save!
+  #      @user.save!
+  #    end
+  #
+  #    flash[:notice] = 'Account successfully created'
+  #    redirect_to :action => 'index'
+  #  else
+  #    @address = Address.new
+  #    @parent_one = Person.new
+  #    @user = User.new
+  #  end
+  #end
+  #
+  #def register_with_invitation
+  #  timed_token = TimedToken.find_by_token params[:id]
+  #  redirect_to :action => 'invalid_token' and return if timed_token.nil? or timed_token.expired?
+  #  person = timed_token.person
+  #  unless person.user.nil?
+  #    flash.now[:notice] = "This person already have an account with username #{person.user.username}" and return
+  #  end
+  #
+  #  if request.post?
+  #    if params[:password] != params[:password_confirmation]
+  #      flash.now[:notice] = 'Password does not match confirmation re-typed' and return
+  #    end
+  #    unless person.phone_number_correct? params[:phone_number]
+  #      flash.now[:notice] = 'Unable to match phone number with existing records - please try again' and return
+  #    end
+  #
+  #    @user = User.new(:username => params[:username], :person => person)
+  #    @user.password = params[:password]
+  #    @user.roles << Role.find_by_name(Role::ROLE_NAME_STUDENT_PARENT)
+  #    @user.adjust_instructor_roles
+  #
+  #    if @user.save
+  #      flash[:notice] = 'Account successfully created'
+  #      redirect_to :action => 'index'
+  #    end
+  #  end
+  #end
 
   def ping
     render text: "Pong - #{Time.now}"
