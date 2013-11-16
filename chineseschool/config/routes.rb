@@ -1,10 +1,8 @@
 Chineseschool::Application.routes.draw do
-  resources :products
 
-
-  get "say/hello"
-
-  get "say/goodbye"
+  #resources :products
+  #get "say/hello"
+  #get "say/goodbye"
 
   #match 'signin/' => 'signin#index'
   #match 'signin/:action'
