@@ -4,6 +4,9 @@ class Person < ActiveRecord::Base
   GENDER_FEMALE = 'F'
   AVAILABLE_NATIVE_LANGUAGE = ['Mandarin', 'English', 'Cantonese', 'Other']
 
+  attr_accessible :english_first_name, :english_last_name, :chinese_name, :gender,
+                  :birth_year, :birth_month, :native_language
+
   has_one :user
   belongs_to :address
 

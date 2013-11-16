@@ -1,0 +1,26 @@
+<% @title = 'Edit Person' %>
+
+<div class="account-form">
+  <% if @person.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@person.errors.count, 'error') %> prohibited this update:</h2>
+        <ul>
+          <% @person.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li> <% end %>
+        </ul>
+      </div>
+  <% end %>
+
+  <%= form_for @person, url: { action: :edit } do |form| %>
+    <fieldset>
+        <legend>Edit Person</legend>
+        <span class="person-edit">
+          <%= render :partial => '/registration/people/person_form', :object => form %>
+          <span style="color:red">*&nbsp;</span>Required Field
+          <div>
+            <%= submit_tag 'Save', :class => 'submit' %>
+          </div>
+        </span>
+    </fieldset>
+  <% end %>
+</div>
