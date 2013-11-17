@@ -16,20 +16,21 @@ class Student::FamiliesController < ApplicationController
   end
 
   def add_parent
-    if request.post?
-      @parent_two = Person.new params[:parent_two]
+    if request.post? || request.put?
+      @parent_two = Person.new params[:person]
       if @parent_two.valid?
-        family = Family.find_by_id params[:id].to_i
+        family = Family.find params[:id].to_i
         family.parent_two = @parent_two
         if family.save
           flash[:notice] = 'New parent added successfully'
-          redirect_to :controller => '/home', :action => :index and return
+          redirect_to controller: '/home'
+          return
         end
       end
     else
       @parent_two = Person.new
     end
-    render :template => '/registration/families/add_parent'
+    render template: '/registration/families/add_parent'
   end
 
   def add_child

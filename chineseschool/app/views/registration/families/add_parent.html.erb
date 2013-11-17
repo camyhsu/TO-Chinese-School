@@ -1,0 +1,26 @@
+<% @title = 'Add Parent To Family' %>
+
+<div class="account-form">
+  <% if @parent_two.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@parent_two.errors.count, 'error') %> prohibited creating this new parent:</h2>
+        <ul>
+          <% @parent_two.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li> <% end %>
+        </ul>
+      </div>
+  <% end %>
+
+  <%= form_for @parent_two, url: { action: :add_parent } do |form| %>
+    <fieldset>
+      <legend>Add Parent To Family</legend>
+      <span class="person-edit">
+        <%= render partial: '/registration/people/person_form', object: form %>
+        <span style="color:red">*&nbsp;</span>Required Field
+        <div>
+          <%= submit_tag 'Add', class: 'submit' %>
+        </div>
+      </span>
+    </fieldset>
+  <% end %>
+</div>
