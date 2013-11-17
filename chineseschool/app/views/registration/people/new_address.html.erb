@@ -3,7 +3,7 @@
 <div class="account-form">
   <% if @address.errors.any? %>
       <div id="error_explanation">
-        <h2><%= pluralize(@address.errors.count, 'error') %> prohibited this update:</h2>
+        <h2><%= pluralize(@address.errors.count, 'error') %> prohibited creating this new address:</h2>
         <ul>
           <% @address.errors.full_messages.each do |msg| %>
               <li><%= msg %></li> <% end %>
