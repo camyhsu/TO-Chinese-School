@@ -15,31 +15,38 @@ class Student::PeopleController < ApplicationController
   end
 
   def new_address
-    @person = Person.find_by_id params[:id].to_i
-    if request.post?
+    @person = Person.find params[:id].to_i
+    if request.post? || request.put?
       @address = Address.new params[:address]
-      render :template => '/registration/people/new_address' and return unless @address.valid?
-      @address.save!
-      @person.address = @address
-      @person.save!
+      unless @address.valid?
+        render template: '/registration/people/new_address'
+        return
+      end
+      Person.transaction do
+        @address.save!
+        @person.address = @address
+        @person.save!
+      end
       flash[:notice] = 'Personal address created successfully'
-      redirect_to :controller => '/home', :action => :index and return
+      redirect_to controller: '/home'
+      return
     else
       @address = @person.families.first.address
     end
-    render :template => '/registration/people/new_address'
+    render template: '/registration/people/new_address'
   end
 
   def edit_address
-    @person = Person.find_by_id params[:id].to_i
+    @person = Person.find params[:id].to_i
     @address = @person.address
-    if request.post?
+    if request.post? || request.put?
       if @address.update_attributes params[:address]
         flash[:notice] = 'Personal address updated successfully'
-        redirect_to :controller => '/home', :action => :index and return
+        redirect_to controller: '/home'
+        return
       end
     end
-    render :template => '/registration/people/edit_address'
+    render template: '/registration/people/edit_address'
   end
 
   private
@@ -49,7 +56,7 @@ class Student::PeopleController < ApplicationController
       true
     else
       flash[:notice] = 'Access to requested personal data not authorized'
-      redirect_to controller: '/home', action: :index
+      redirect_to controller: '/home'
       false
     end
   end

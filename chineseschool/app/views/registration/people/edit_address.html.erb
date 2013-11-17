@@ -1,0 +1,26 @@
+<% @title = 'Edit Personal Address' %>
+
+<div class="account-form">
+  <% if @address.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@address.errors.count, 'error') %> prohibited this update:</h2>
+        <ul>
+          <% @address.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li> <% end %>
+        </ul>
+      </div>
+  <% end %>
+
+  <%= form_for @address, url: { action: :edit_address } do |form| %>
+    <fieldset>
+        <legend>Edit Personal Address for <%=h @person.name %></legend>
+        <span class="person-edit">
+          <%= render partial: '/registration/addresses/address_form', object: form %>
+          <span style="color:red">*&nbsp;</span>Required Field
+          <div>
+            <%= submit_tag 'Save', class: 'submit' %>
+          </div>
+        </span>
+    </fieldset>
+  <% end %>
+</div>

@@ -1,0 +1,28 @@
+<div>
+          <label for="street"><span style="color:red">*&nbsp;</span>Street:</label>
+          <%= address_form.text_field :street, size: 60 %>
+        </div>
+        <div>
+          <label for="city"><span style="color:red">*&nbsp;</span>City:</label>
+          <%= address_form.text_field :city, size: 25 %>
+        </div>
+        <div>
+          <label for="state">State:</label>
+          <%= address_form.select :state, %w{CA} %>
+        </div>
+        <div>
+          <label for="zipcode"><span style="color:red">*&nbsp;</span>Zipcode:</label>
+          <%= address_form.text_field :zipcode, size: 5 %>
+        </div>
+        <div>
+          <label for="home_phone"><span style="color:red">*&nbsp;</span>Home Phone:</label>
+          <%= address_form.text_field :home_phone, size: 15 %>
+        </div>
+        <div>
+          <label for="cell_phone">Cell Phone:</label>
+          <%= address_form.text_field :cell_phone, size: 15 %>
+        </div>
+        <div>
+          <label for="email"><span style="color:red">*&nbsp;</span>Email:</label>
+          <%= address_form.text_field :email, size: 40 %>
+        </div>

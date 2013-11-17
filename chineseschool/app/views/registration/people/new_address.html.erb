@@ -1,0 +1,30 @@
+<% @title = 'Create Personal Address' %>
+
+<div class="account-form">
+  <% if @address.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@address.errors.count, 'error') %> prohibited this update:</h2>
+        <ul>
+          <% @address.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li> <% end %>
+        </ul>
+      </div>
+  <% end %>
+
+  <%= form_for @address, url: { action: :new_address } do |form| %>
+    <fieldset>
+      <legend>New Personal Address for <%=h @person.name %></legend>
+      <span class="person-edit">
+        <div>
+          Personal Address:
+        </div>
+        <%= render partial: '/registration/addresses/address_form', object: form %>
+        <br/>
+        <span style="color:red">*&nbsp;</span>Required Field
+        <div>
+          <%= submit_tag 'Create', class: 'submit' %>
+        </div>
+      </span>
+    </fieldset>
+  <% end %>
+</div>

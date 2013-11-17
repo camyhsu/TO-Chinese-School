@@ -1,5 +1,7 @@
 class Address < ActiveRecord::Base
-  
+
+  attr_accessible :street, :city, :state, :zipcode, :home_phone, :cell_phone, :email
+
   has_one :person
   has_one :family
   
