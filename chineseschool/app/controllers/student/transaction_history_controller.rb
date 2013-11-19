@@ -21,10 +21,10 @@ class Student::TransactionHistoryController < ApplicationController
   end
   
   def show_manual_transaction
-    @manual_transaction = ManualTransaction.find_by_id params[:id].to_i
+    @manual_transaction = ManualTransaction.find params[:id].to_i
     unless @manual_transaction.transaction_by == @user.person
       flash[:notice] = 'Access to requested payment information not authorized'
-      redirect_to(:controller => '/home', :action => 'index') and return
+      redirect_to controller: '/home'
     end
   end
 end

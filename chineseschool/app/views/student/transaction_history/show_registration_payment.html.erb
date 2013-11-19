@@ -15,7 +15,7 @@
     <p>
       This <% if @gateway_transaction.credit? -%>refund<% else %>payment<% end %>
       was processed on <%= PacificTimeDisplay.display_utc_time_in_pacific(@gateway_transaction.updated_at) %><br/>
-      <%= MoneyDisplay.display_price(@gateway_transaction.amount_in_cents / 100.0) %>  has been
+      <%= number_to_currency(@gateway_transaction.amount_in_cents / 100.0) %>  has been
       <% if @gateway_transaction.credit? -%>refunded<% else %>charged<% end %> to
       <%= @gateway_transaction.credit_card_type.capitalize %> Card ending <%= @gateway_transaction.credit_card_last_digits %><br/>
       Payment Reference Number is

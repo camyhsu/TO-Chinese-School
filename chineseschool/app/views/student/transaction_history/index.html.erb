@@ -29,7 +29,7 @@
                 Registration
               <% end %>
             </td>
-            <td><%= MoneyDisplay.display_price registration_payment.grand_total %></td>
+            <td><%= number_to_currency registration_payment.grand_total %></td>
           </tr>
         <% end %>
       </tbody>
@@ -56,7 +56,7 @@
             <td>
               <%=h manual_transaction.transaction_type %>
             </td>
-            <td><%= MoneyDisplay.display_price manual_transaction.amount_with_sign %></td>
+            <td><%= number_to_currency manual_transaction.amount_with_sign %></td>
           </tr>
         <% end %>
       </tbody>
