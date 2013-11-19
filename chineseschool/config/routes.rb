@@ -7,6 +7,10 @@ Chineseschool::Application.routes.draw do
   #match 'signin/' => 'signin#index'
   #match 'signin/:action'
 
+  namespace :student do
+    match 'transaction_history' => 'transaction_history#index'
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

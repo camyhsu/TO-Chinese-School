@@ -1,0 +1,28 @@
+<% @title = 'In Person Transaction Detail' %>
+
+<table class="manual-transaction-detail" border="0px">
+  <tr>
+    <td class="label">Transaction Type:</td>
+    <td><%=h @manual_transaction.transaction_type %></td>
+  </tr>
+  <tr>
+    <td class="label">Transaction Date:</td>
+    <td><%=h @manual_transaction.transaction_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Payment Method:</td>
+    <td><%=h @manual_transaction.payment_method %></td>
+  </tr>
+  <% if @manual_transaction.payment_method == ManualTransaction::PAYMENT_METHOD_CHECK %>
+    <tr>
+      <td class="label">Check Number:</td>
+      <td><%=h @manual_transaction.check_number %></td>
+    </tr>
+  <% end %>
+  <tr>
+    <td class="label">Amount:</td>
+    <td><%= MoneyDisplay.display_price @manual_transaction.amount_with_sign %></td>
+  </tr>
+</table>
+<br/>
+<%= link_to 'Return to Transaction History', {action: :index}, {class: 'button'} %>
