@@ -1,0 +1,58 @@
+<% @title = "Student List For #{@school_class.name}" %>
+
+<table class="student-list-header">
+  <tr>
+    <% assignment_hash = @school_class.current_instructor_assignments %>
+    <td class="instructor-cell">
+      <% assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].each do |instructor| %>
+      <%=h "#{instructor.name} 老師"%>&nbsp;
+      <% end %>
+    </td>
+    <td><%=h @school_class.chinese_name %></td>
+    <td><%=h "教室: #{@school_class.location}" %></td>
+    <td class="room-parent-cell">
+      Room Parent: <%=h @school_class.current_room_parent_name %>
+    </td>
+  </tr>
+</table>
+<table class="details-table" border="1px">
+  <thead>
+    <tr>
+      <th>學生</th>
+      <% if @school_class.elective? %>
+      <th>班級</th>
+      <% end %>
+      <th>Last Name</th>
+      <th>First Name</th>
+      <th>生年月</th>
+      <th>性别</th>
+      <th>父親</th>
+      <th>母親</th>
+      <th>Email</th>
+      <th>電話</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_class.students.each do |student| -%>
+    <tr>
+      <td><%=h student.chinese_name %></td>
+      <% if @school_class.elective? %>
+      <td><%=h student.student_class_assignment_for(SchoolYear.current_school_year).try(:school_class).try(:short_name) %></td>
+      <% end %>
+      <td><%=h student.english_last_name %></td>
+      <td><%=h student.english_first_name %></td>
+      <td><%=h student.birth_info %></td>
+      <td><%=h student.gender %></td>
+      <% family_fields = format_family_fields student %>
+      <td><%=h family_fields[:father_field] %></td>
+      <td><%=h family_fields[:mother_field] %></td>
+      <td><%=h family_fields[:email_field] %></td>
+      <td><%=h family_fields[:phone_field] %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<br/>
+Total Student Count: <%= @school_class.students.size %>
+<br/>
+Current Time: <%= PacificTimeDisplay.display_now_in_pacific %>

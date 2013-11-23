@@ -1,0 +1,30 @@
+<h3>Instructor Resources</h3>
+
+<br/>
+<% @person.instructor_assignments_for(SchoolYear.current_school_year).each do |instructor_assignment| %>
+  <% school_class = instructor_assignment.school_class %>
+  <%= link_to "Student List For #{school_class.name}",
+      {controller: '/instruction/school_classes', action: 'show', id: school_class}, {class: 'button'} %>
+  <br/><br/>
+  <% if instructor_assignment.role_is_an_instructor? %>
+    <span style="font-weight: bold;">Room Parent For <%=h school_class.name %> :</span> 
+    <span id="instructor_select_room_parent"><%= render partial: '/instruction/school_classes/show_current_room_parent', object: school_class %></span>
+    <br/>
+    <br/>
+    <%= link_to 'View Library Books', {controller: '/librarian/library_books', action: 'read_only_view'}, {class: 'button'} %>
+    <br/>
+    <br/>
+  <% end %>
+  <% if PacificDate.today >= SchoolYear::TRACK_EVENT_SIGN_UP_START_DATE and PacificDate.today <= SchoolYear::TRACK_EVENT_SIGN_UP_END_DATE %>
+    <%= link_to "Track Event Sign Up For #{school_class.name}",
+        {controller: '/activity/track_events', action: 'sign_up', id: school_class}, {class: 'button'} %>
+    <br/><br/>
+  <% elsif PacificDate.today > SchoolYear::TRACK_EVENT_SIGN_UP_END_DATE and PacificDate.today <= SchoolYear::TRACK_EVENT_DATE %>
+    <%= link_to "Track Event Sign Up Result For #{school_class.name}",
+        {controller: '/activity/track_events', action: 'sign_up_result', id: school_class}, {class: 'button'} %>
+    <br/><br/>
+  <% end %>
+<% end %>
+
+<br/>
+<hr/>

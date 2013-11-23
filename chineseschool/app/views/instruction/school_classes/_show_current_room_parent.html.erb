@@ -1,0 +1,3 @@
+<% school_class = show_current_room_parent %>
+<% display_room_parent_selection_handler = "displayRoomParentSelection(this, '#{url_for controller: "/instruction/school_classes", action: :display_room_parent_selection, id: school_class}')"  %>
+<%=h school_class.current_room_parent_name %>&nbsp;<input type="button" value="Change" onclick="<%= display_room_parent_selection_handler %>" class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"/>
