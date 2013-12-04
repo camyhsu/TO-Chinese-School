@@ -4,7 +4,7 @@ class Instruction::SchoolClassesController < ApplicationController
     requested_school_class_id = params[:id].to_i
     unless instructor_assignment_verified? requested_school_class_id
       flash[:notice] = 'Access to requested school class list not authorized'
-      redirect_to controller: '/home', action: :index
+      redirect_to controller: '/home'
       return
     end
     @school_class = SchoolClass.find requested_school_class_id
@@ -12,43 +12,24 @@ class Instruction::SchoolClassesController < ApplicationController
   
   def display_room_parent_selection
     requested_school_class_id = params[:id].to_i
-    unless instructor_assignment_verified? requested_school_class_id
-      unless user_is_an_instructor? requested_school_class_id
-        flash[:notice] = "Access to requested room parent selection not authorized"
-        redirect_to :controller => '/home', :action => :index
-        return
-      end
-    end
-    @school_class = SchoolClass.find_by_id requested_school_class_id
-    render :layout => 'ajax_layout'
+    return if not_authorized_instructor_for? requested_school_class_id
+    @school_class = SchoolClass.find requested_school_class_id
+    render layout: 'ajax_layout'
   end
 
   def save_room_parent_selection
     requested_school_class_id = params[:id].to_i
-    unless instructor_assignment_verified? requested_school_class_id
-      unless user_is_an_instructor? requested_school_class_id
-        flash[:notice] = "Access to requested room parent selection not authorized"
-        redirect_to :controller => '/home', :action => :index
-        return
-      end
-    end
-    @school_class = SchoolClass.find_by_id requested_school_class_id
-
+    return if not_authorized_instructor_for? requested_school_class_id
+    @school_class = SchoolClass.find requested_school_class_id
     InstructorAssignment.change_room_parent @school_class, params[:room_parent_id].to_i
-    render :action => 'current_room_parent_display', :layout => 'ajax_layout'
+    render action: 'current_room_parent_display', layout: 'ajax_layout'
   end
 
   def cancel_room_parent_selection
     requested_school_class_id = params[:id].to_i
-    unless instructor_assignment_verified? requested_school_class_id
-      unless user_is_an_instructor? requested_school_class_id
-        flash[:notice] = "Access to requested room parent selection not authorized"
-        redirect_to :controller => '/home', :action => :index
-        return
-      end
-    end
-    @school_class = SchoolClass.find_by_id requested_school_class_id
-    render :action => 'current_room_parent_display', :layout => 'ajax_layout'
+    return if not_authorized_instructor_for? requested_school_class_id
+    @school_class = SchoolClass.find requested_school_class_id
+    render action: 'current_room_parent_display', layout: 'ajax_layout'
   end
 
 
@@ -62,6 +43,17 @@ class Instruction::SchoolClassesController < ApplicationController
       role.name == Role::ROLE_NAME_INSTRUCTION_OFFICER or 
       role.name == Role::ROLE_NAME_ACTIVITY_OFFICER
     end
+  end
+
+  def not_authorized_instructor_for?(school_class_id)
+    unless instructor_assignment_verified? school_class_id
+      unless user_is_an_instructor? school_class_id
+        flash[:notice] = 'Access to requested room parent selection not authorized'
+        redirect_to :controller => '/home'
+        return true
+      end
+    end
+    false
   end
   
   def user_is_an_instructor?(school_class_id)
