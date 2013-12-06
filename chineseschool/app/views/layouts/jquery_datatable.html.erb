@@ -4,6 +4,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <%= render partial: 'layouts/html_head_section', locals: { page_title: @title } %>
+
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        window.jQueryDataTable = $('#jquery-datatable').dataTable({
+          "bJQueryUI": true,
+          "bProcessing": true,
+          "iDisplayLength": 25,
+          "sPaginationType": "full_numbers"
+        });
+      });
+    </script>
   </head>
   <body>
     <%= render 'layouts/top_bar' %>

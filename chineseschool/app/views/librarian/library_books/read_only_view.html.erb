@@ -1,0 +1,30 @@
+<% @title = 'Library Books' %>
+
+<table id="jquery-datatable" border="1px">
+  <thead>
+  <tr>
+    <th>Book Id</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Publisher</th>
+    <th>Book Type</th>
+    <th>Checked Out?</th>
+    <th>Checked Out By</th>
+    <th>Note</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @library_books.each do |library_book| -%>
+      <tr>
+        <td><%= library_book.id %></td>
+        <td><%=h library_book.title %></td>
+        <td><%=h library_book.description %></td>
+        <td><%=h library_book.publisher %></td>
+        <td><%=h library_book.book_type %></td>
+        <td><%= convert_to_yes_no library_book.checked_out? %></td>
+        <td><%= display_checked_out_by library_book %></td>
+        <td><%=h library_book.note %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

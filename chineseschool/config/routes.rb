@@ -11,6 +11,10 @@ Chineseschool::Application.routes.draw do
     match 'transaction_history' => 'transaction_history#index'
   end
 
+  namespace :librarian do
+    get 'library_books/read_only_view' => 'library_books#read_only_view'
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
