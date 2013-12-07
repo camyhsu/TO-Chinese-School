@@ -36,10 +36,6 @@ class ApplicationController < ActionController::Base
     Date.parse input
   end
 
-  def extract_pacific_date_from(utc_time)
-    utc_time.in_time_zone('Pacific Time (US & Canada)').to_date
-  end
-
   def find_possible_students
     possible_students = []
     @user.person.families.each do |family|

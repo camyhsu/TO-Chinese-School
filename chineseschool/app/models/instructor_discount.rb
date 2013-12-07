@@ -3,10 +3,12 @@ class InstructorDiscount
   DISCOUNT_AMOUNT_PER_CHILD = 60
 
   attr_reader :school_class_name, :instructor_name, :child_one_name, :child_two_name, :discount_amount
+  attr_reader :school_class_english_name
 
-  def initialize(school_class_name, instructor_name)
+  def initialize(school_class_name, instructor_name, school_class_english_name)
     @school_class_name = school_class_name
     @instructor_name = instructor_name
+    @school_class_english_name = school_class_english_name  # used for sorting
   end
 
   def fill_in_discount_amount_for(instructor)
@@ -37,7 +39,7 @@ class InstructorDiscount
   end
 
   def self.create_discount_for(instructor, school_class)
-    discount = InstructorDiscount.new school_class.name, instructor.name
+    discount = InstructorDiscount.new school_class.name, instructor.name, school_class.english_name
     discount.fill_in_discount_amount_for instructor
     discount
   end

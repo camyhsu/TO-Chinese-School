@@ -16,7 +16,7 @@ class Student::TransactionHistoryController < ApplicationController
   end
   
   def show_registration_payment_for_staff
-    @registration_payment = RegistrationPayment.find_by_id params[:id].to_i
+    @registration_payment = RegistrationPayment.find params[:id].to_i
     @gateway_transaction = @registration_payment.find_first_approved_gateway_transaction
   end
   

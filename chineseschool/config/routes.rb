@@ -7,12 +7,24 @@ Chineseschool::Application.routes.draw do
   #match 'signin/' => 'signin#index'
   #match 'signin/:action'
 
-  namespace :student do
-    match 'transaction_history' => 'transaction_history#index'
+  namespace :accounting do
+    get 'instructors/discount' => 'instructors#discount'
+    get 'manual_transactions' => 'manual_transactions#index'
+    get 'manual_transactions/show' => 'manual_transactions#show'
+    get 'registration_report/registration_payments_by_date' => 'registration_report#registration_payments_by_date'
   end
 
   namespace :librarian do
     get 'library_books/read_only_view' => 'library_books#read_only_view'
+  end
+
+  namespace :registration do
+    get 'active_school_classes/grade_class_student_count' => 'active_school_classes#grade_class_student_count'
+    get 'active_school_classes/elective_class_student_count' => 'active_school_classes#elective_class_student_count'
+  end
+
+  namespace :student do
+    get 'transaction_history' => 'transaction_history#index'
   end
 
   # The priority is based upon order of creation:

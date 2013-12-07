@@ -1,0 +1,19 @@
+<h3>Accounting Officer Resources</h3>
+
+<br/>
+<%= link_to '班級人數清單', {controller: '/registration/active_school_classes', action: 'grade_class_student_count'}, {class: 'button'} %>
+<%= link_to 'Elective Class 人數清單', {controller: '/registration/active_school_classes', action: 'elective_class_student_count'}, {class: 'button'} %>
+<br/>
+<br/>
+<% @active_registration_school_years.each do |registration_year| %>
+  <%= link_to "Daily Online Registration Summary For #{registration_year.name} School Year", {controller: '/registration/report', action: 'daily_online_registration_summary', id: registration_year}, {class: 'button'} %>
+  <br/>
+<% end %>
+<br/>
+<%= link_to 'List All Manual Transactions', {controller: '/accounting/manual_transactions', action: 'index'}, {class: 'button'} %>
+<br/>
+<br/>
+<%= link_to 'List Instructor Discount Information', {controller: '/accounting/instructors', action: 'discount'}, {class: 'button'} %>
+<br/>
+<br/>
+<hr/>

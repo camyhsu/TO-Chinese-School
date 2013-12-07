@@ -1,0 +1,41 @@
+<table class="details-table" border="1px">
+  <thead>
+    <tr>
+      <th>班級</th>
+      <th>人數</th>
+      <th>教室</th>
+      <th>老師</th>
+      <th>Room Parent and Email</th>
+      <th>Maximum Size</th>
+      <th>Minimum Age</th>
+      <th>Maximum Age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% student_counts.each do |school_class| -%>
+    <tr>
+      <td><%=h school_class.name %></td>
+      <td><%= school_class.class_size %></td>
+      <td><%=h school_class.location %></td>
+      <% assignment_hash = school_class.current_instructor_assignments %>
+      <td>
+        <% assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].each do |instructor| %>
+        <%=h instructor.name %>&nbsp;
+        <% end %>
+      </td>
+      <td>
+        <% room_parent = school_class.current_room_parent_assignment.try(:instructor) %>
+        <%=h room_parent.try(:name) %>&nbsp;
+        <%=h room_parent.try(:personal_email_address) %>&nbsp;
+      </td>
+      <td><%=h school_class.max_size %></td>
+      <td><%=h school_class.min_age %></td>
+      <td><%=h school_class.max_age %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<br/>
+Total Student Count: <%= student_counts.collect(&:class_size).inject(0, &:+) %>
+<br/>
+Current Time: <%= PacificTimeDisplay.display_now_in_pacific %>

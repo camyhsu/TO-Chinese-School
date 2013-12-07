@@ -1,0 +1,40 @@
+<% @title = "Registration Payments on #{@registration_date}" %>
+
+<h3>Registration Payments on <%= @registration_date %></h3>
+
+<% if @paid_registration_payments.empty? %>
+  <p style="font-weight: bold;">No Registration Payments For <%= @registration_date %></p>
+<% else %>
+  <table class="transaction-history-table" border="1px">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Paid By</th>
+        <th>Students</th>
+        <th>Amount Paid</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @paid_registration_payments.each do |registration_payment| -%>
+        <tr>
+          <td>
+            <%= link_to PacificTimeDisplay.display_utc_time_in_pacific(registration_payment.updated_at), {controller: '/student/transaction_history', action: 'show_registration_payment_for_staff', id: registration_payment}, {class: 'button'} %>
+          </td>
+          <td><%=h registration_payment.paid_by.name %></td>
+          <td>
+            <% registration_payment.student_fee_payments.each do |student_fee_payment| %>
+              <%=h student_fee_payment.student.name %>&nbsp;
+            <% end %>
+          </td>
+          <td><%=number_to_currency(registration_payment.grand_total_in_cents / 100.0) %></td>
+        </tr>
+      <% end %>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>Total</td>
+          <td><%=number_to_currency(@paid_registration_payments.collect(&:grand_total_in_cents).inject(0, &:+) / 100.0) %></td>
+        </tr>
+    </tbody>
+  </table>
+<% end %>

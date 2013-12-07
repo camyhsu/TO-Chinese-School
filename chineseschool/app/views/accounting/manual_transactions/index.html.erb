@@ -1,0 +1,28 @@
+<% @title = 'Manual Transactions' %>
+
+<table border="1px">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Executed By</th>
+      <th>Student</th>
+      <th>Transaction Type</th>
+      <th>Payment Method</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @manual_transactions.each do |manual_transaction| -%>
+    <tr>
+      <td>
+        <%= link_to manual_transaction.transaction_date, {action: 'show', id: manual_transaction}, {class: 'button'} %>
+      </td>
+      <td><%=h manual_transaction.transaction_by.name %></td>
+      <td><%=h manual_transaction.student.name %></td>
+      <td><%=h manual_transaction.transaction_type %></td>
+      <td><%=h manual_transaction.payment_method %></td>
+      <td><%= number_to_currency(manual_transaction.amount_in_cents / 100.0) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
