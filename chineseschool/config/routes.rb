@@ -14,6 +14,10 @@ Chineseschool::Application.routes.draw do
     get 'registration_report/registration_payments_by_date' => 'registration_report#registration_payments_by_date'
   end
 
+  namespace :instruction do
+    get 'active_school_classes' => 'active_school_classes#index'
+  end
+
   namespace :librarian do
     get 'library_books/read_only_view' => 'library_books#read_only_view'
   end

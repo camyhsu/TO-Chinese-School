@@ -6,7 +6,7 @@ class HomeController < ApplicationController
 
   def index
     @home_templates = []
-    #@home_templates << 'principal' if principal_resources_enabled?
+    @home_templates << 'principal' if principal_resources_enabled?
     #@home_templates << 'registration_officer' if registration_resources_enabled?
     @home_templates << 'accounting_officer' if accounting_resources_enabled?
     #@home_templates << 'activity_officer' if activity_resources_enabled?
