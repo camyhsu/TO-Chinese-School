@@ -19,6 +19,8 @@ Chineseschool::Application.routes.draw do
   end
 
   namespace :librarian do
+    get 'library_books' => 'library_books#index'
+    match 'library_books/new' => 'library_books#new'
     get 'library_books/read_only_view' => 'library_books#read_only_view'
   end
 

@@ -1,0 +1,26 @@
+<% @title = 'Change Library Book' %>
+
+<div class="account-form">
+  <% if @library_book.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@library_book.errors.count, 'error') %> prohibited updating this library book:</h2>
+        <ul>
+          <% @library_book.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li> <% end %>
+        </ul>
+      </div>
+  <% end %>
+
+  <%= form_for :library_book do |form| %>
+      <fieldset>
+        <legend>Change Library Book</legend>
+        <span class="library-book-edit">
+          <%= render partial: 'library_book_form', object: form %>
+          <span style="color:red">*&nbsp;</span>Required Field
+          <div>
+            <%= submit_tag 'Save', class: 'submit' %>
+          </div>
+        </span>
+      </fieldset>
+  <% end %>
+</div>

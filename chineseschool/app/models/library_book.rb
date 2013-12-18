@@ -6,6 +6,8 @@ class LibraryBook < ActiveRecord::Base
 
   LIBRARY_BOOK_TYPES = [LIBRARY_BOOK_TYPE_MIXED, LIBRARY_BOOK_TYPE_SIMPLIFIED, LIBRARY_BOOK_TYPE_TRADITIONAL]
 
+  attr_accessible :title, :description, :publisher, :book_type, :note
+
   has_many :library_book_checkouts, order: 'checked_out_date DESC'
   validates :title, :publisher, :book_type, presence: true
 

@@ -1,0 +1,132 @@
+<% @title = 'Library Book Checkout History' %>
+
+<br/>
+<%= link_to 'Back to Library Books', {action: 'index'}, {class: 'button'} %>
+<br/>
+
+<h3>Library Book Checkout History</h3>
+
+<table>
+  <tr>
+    <td>Book Id</td>
+    <td><%= @library_book.id %></td>
+  </tr>
+  <tr>
+    <td>Title</td>
+    <td><%=h @library_book.title %></td>
+  </tr>
+  <tr>
+    <td>Description</td>
+    <td><%=h @library_book.description %></td>
+  </tr>
+  <tr>
+    <td>Publisher</td>
+    <td><%=h @library_book.publisher %></td>
+  </tr>
+  <tr>
+    <td>Book Type</td>
+    <td><%=h @library_book.book_type %></td>
+  </tr>
+  <tr>
+    <td>Checked Out?</td>
+    <td><%= convert_to_yes_no @library_book.checked_out? %></td>
+  </tr>
+  <% if @library_book.checked_out? %>
+  <tr>
+    <td>Checked Out By</td>
+    <td><%= display_checked_out_by @library_book %></td>
+  </tr>
+  <% end %>
+</table>
+
+<% if @library_book.checked_out? %>
+    <h4>Returning This Book</h4>
+    <%= form_tag({action: 'return_library_book', id: @library_book.id }) do %>
+        <table>
+          <tr>
+            <td>Return Date:</td>
+            <td>
+              <%= text_field_tag 'return_date', Time.now.strftime('%Y-%m-%d'), size: 10, class: 'jquery-datepicker' %>
+            </td>
+          </tr>
+          <tr>
+            <td>Note:</td>
+            <td>
+              <%= text_area_tag 'note', nil, size: '25x10' %>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <%= submit_tag 'Return', class: 'submit' %>
+            </td>
+          </tr>
+        </table>
+    <% end %>
+<% else %>
+    <h4>Checking Out This Book</h4>
+    <%= form_tag({action: 'check_out_library_book', id: @library_book.id }) do %>
+        <table>
+          <tr>
+            <td>Checked Out By:</td>
+            <td>
+              <%= collection_select :checked_out_by, :id, LibraryBook.find_eligible_checkout_people, :id, :name %>
+            </td>
+          </tr>
+          <tr>
+            <td>Check Out Date:</td>
+            <td>
+              <%= text_field_tag 'check_out_date', Time.now.strftime('%Y-%m-%d'), size: 10, class: 'jquery-datepicker' %>
+            </td>
+          </tr>
+          <tr>
+            <td>Note:</td>
+            <td>
+              <%= text_area_tag 'note', nil, size: '25x10' %>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <%= submit_tag 'Check Out', class: 'submit' %>
+            </td>
+          </tr>
+        </table>
+    <% end %>
+<% end %>
+
+<% if @library_book.library_book_checkouts.empty? %>
+    <p style="font-weight: bold;">No Checkout History</p>
+<% else %>
+    <br/>
+    <h4>Checkout History</h4>
+    <table class="transaction-history-table" border="0px">
+      <thead>
+      <tr>
+        <th>Checked Out Date</th>
+        <th>Checked Out By</th>
+        <th>Return Date</th>
+        <th>Note</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @library_book.library_book_checkouts.each do |library_book_checkout| -%>
+          <tr>
+            <td>
+              <%=h library_book_checkout.checked_out_date %>
+            </td>
+            <td>
+              <%=h library_book_checkout.checked_out_by.name %>
+            </td>
+            <td>
+              <%=h library_book_checkout.return_date %>
+            </td>
+            <td>
+              <%=h library_book_checkout.note %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <br/>
+<% end %>
