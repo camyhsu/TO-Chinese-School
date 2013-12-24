@@ -1,0 +1,40 @@
+  <tr>
+    <td class="label">Grade:</td>
+    <td><%=h student_class_assignment.try(:grade).try(:chinese_name) %></td>
+  </tr>
+  <tr>
+    <td class="label">Select New Grade:</td>
+    <td>
+      <% select_grade_handler = "registrationSelectGrade(this, '#{url_for action: :select_grade, id: student_class_assignment}', #{student_id})" %>
+      <%= collection_select :student_class_assignment, :grade, Grade.all, :id, :chinese_name,
+          {include_blank: true, selected: student_class_assignment.try(:grade).try(:id)},
+          {onchange: select_grade_handler} %></td>
+  </tr>
+  <% unless student_class_assignment.try(:grade).nil? -%>
+  <tr>
+    <td class="label">School Class:</td>
+    <td><%=h student_class_assignment.try(:school_class).try(:chinese_name) %></td>
+  </tr>
+  <tr>
+    <td class="label">Select New School Class:</td>
+    <td>
+      <% select_school_class_handler = "registrationSelectClass(this, '#{url_for action: :select_school_class, id: student_class_assignment}')" %>
+      <%= collection_select :student_class_assignment, :school_class, student_class_assignment.grade.active_grade_classes,
+          :id, :chinese_name, {include_blank: true, selected: student_class_assignment.try(:school_class).try(:id)},
+          {onchange: select_school_class_handler} %>
+    </td>
+  </tr>
+  
+  <tr>
+    <td class="label">Elective Class:</td>
+    <td><%=h student_class_assignment.try(:elective_class).try(:chinese_name) %></td>
+  </tr>
+  <tr>
+    <td class="label">Select New Elective Class:</td>
+    <td>
+      <% select_elective_class_handler = "registrationSelectClass(this, '#{url_for action: :select_elective_class, id: student_class_assignment}')" %>
+      <%= collection_select :student_class_assignment, :elective_class, SchoolClass.find_all_active_elective_classes,
+          :id, :chinese_name, {include_blank: true, selected: student_class_assignment.try(:elective_class).try(:id)},
+          {onchange: select_elective_class_handler} %></td>
+  </tr>
+  <% end %>

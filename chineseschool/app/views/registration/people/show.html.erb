@@ -1,0 +1,147 @@
+<% @title = 'Person Details' %>
+
+<h3>Person</h3>
+<table class="person-detail" border="0px">
+  <tr>
+    <td class="label">Chinese Name:</td>
+    <td><%=h @person.chinese_name %></td>
+  </tr>
+  <tr>
+    <td class="label">English Name:</td>
+    <td><%=h "#{@person.english_first_name} #{@person.english_last_name}" %></td>
+  </tr>
+  <tr>
+    <td class="label">Gender:</td>
+    <td><%=h @person.gender %></td>
+  </tr>
+  <tr>
+    <td class="label">Birth Month/Year:</td>
+    <td><%=h @person.birth_info %></td>
+  </tr>
+  <tr>
+    <td class="label">Native Language:</td>
+    <td><%=h @person.native_language %></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><%= link_to 'Edit Person Details', {action: :edit, id: @person}, {class: 'button'} %></td>
+  </tr>
+  <% if @person.address.nil? %>
+  <tr>
+    <td></td>
+    <td><%= link_to 'Create Personal Address', {action: :new_address, id: @person}, {class: 'button'} %></td>
+  </tr>
+  <% else %>
+  <%= render partial: '/registration/addresses/address', object: @person.address %>
+  <tr>
+    <td></td>
+    <td><%= link_to 'Edit Personal Address', {action: :edit_address, id: @person}, {class: 'button'} %></td>
+  </tr>
+  <% end %>
+</table>
+<hr/>
+<h3>Family for <%=h @person.name %></h3>
+<% @person.families.each do |family| -%>
+<table class="person-detail" border="0px">
+  <tr>
+    <td class="label">Parent One:</td>
+    <td>
+      <%=h family.parent_one.try(:name) %>
+      <% unless family.parent_one.try(:user).nil? %>
+      &nbsp;<span style="font-weight: bold;">username:</span>&nbsp;<%=h family.parent_one.user.username %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">Parent Two:</td>
+    <td>
+      <%=h family.parent_two.try(:name) %>
+      <% unless family.parent_two.try(:user).nil? %>
+      &nbsp;<span style="font-weight: bold;">username:</span>&nbsp;<%=h family.parent_two.user.username %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">Children:</td>
+    <td><%=h family.children_names %></td>
+  </tr>
+  <%= render partial: '/registration/addresses/address', object: family.address %>
+  <tr>
+    <td></td>
+    <td><%= link_to 'Edit Family Data', {controller: 'registration/families', action: :show, id: family.id}, {class: 'button'} %></td>
+  </tr>
+</table>
+<% end %>
+<hr/>
+<h3>Grade And Class Assignments for <%=h @person.name %></h3>
+<table class="person-detail" border="0px">
+  <%= render partial: 'student_class_assignment', object: @person.student_class_assignment_for(SchoolYear.current_school_year), locals: {student_id: @person.id} %>
+</table>
+<hr/>
+<h3>Transation History as Student for <%=h @person.name %></h3>
+<% completed_registration_payments = @person.find_completed_registration_payments_as_students %>
+<% manual_transactions = @person.find_manual_transactions_as_students %>
+<% if (completed_registration_payments.empty? and manual_transactions.empty?) %>
+  <p style="font-weight: bold;">No Transaction History</p>
+<% else %>
+  <table class="transaction-history-table" border="0px">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Transaction Type</th>
+        <th>Payment Method</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% completed_registration_payments.each do |registration_payment| %>
+      <tr>
+        <td>
+          <%= link_to PacificTimeDisplay.display_utc_time_in_pacific(registration_payment.updated_at), {controller: '/student/transaction_history', action: 'show_registration_payment_for_staff', id: registration_payment}, {class: 'button'} %>
+        </td>
+        <td>
+          <% if registration_payment.grand_total_in_cents < 0 %>
+            System Adjustment
+          <% else %>
+            Registration
+          <% end %>
+        </td>
+        <td>
+          Credit Card
+        </td>
+      </tr>
+      <% end %>
+      <tr>
+        <td colspan="3"><hr/></td>
+      </tr>
+      <% manual_transactions.each do |manual_transaction| %>
+      <tr>
+        <td>
+          <%= link_to PacificTimeDisplay.display_utc_time_in_pacific(manual_transaction.updated_at), {controller: '/accounting/manual_transactions', action: 'show', id: manual_transaction}, {class: 'button'} %>
+        </td>
+        <td>
+          <%= manual_transaction.transaction_type %>
+        </td>
+        <td>
+          <%= manual_transaction.payment_method %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+<br/>
+<%= link_to 'Enter Manual Transaction', {controller: '/accounting/manual_transactions', action: 'new', student_id: @person}, {class: 'button'} %>
+        
+<hr/>
+<h3>Instructor Assignments for <%=h @person.name %></h3>
+<% @person.instructor_assignments_for(SchoolYear.current_school_year).each do |instructor_assignment| %>
+<table class="person-detail" border="0px">
+  <%= render partial: '/registration/instructor_assignments/instructor_assignment', object: instructor_assignment %>
+</table>
+<% end %>
+<div id="add-instructor-assignment">
+   <%= link_to 'Add Instructor Assignment', {action: :add_instructor_assignment, id: @person}, {class: 'button'} %>
+</div>
+
+
+

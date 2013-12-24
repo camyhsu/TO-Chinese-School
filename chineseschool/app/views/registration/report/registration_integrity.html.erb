@@ -1,0 +1,70 @@
+<% @title = 'Registration Integrity Report' %>
+
+<h3>Registration Integrity Report</h3>
+
+<hr/>
+<h4>Students with class assignment but not registered</h4>
+
+<% if @student_class_assignments_without_registration.empty? %>
+  <p style="font-weight: bold;">No students with class assignment but not registered</p>
+<% else %>
+  <table border="1px">
+    <thead>
+      <tr>
+        <th>Student Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @student_class_assignments_without_registration.each do |student_class_assignment| -%>
+        <tr>
+          <td><%= link_to student_class_assignment.student.name, controller: '/registration/people', action: :show, id: student_class_assignment.student.id %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<hr/>
+<h4>Students registered but without class assignment</h4>
+
+<% if @student_status_flags_without_school_class_assignment.empty? %>
+  <p style="font-weight: bold;">No students registered but without class assignment</p>
+<% else %>
+  <table border="1px">
+    <thead>
+      <tr>
+        <th>Student Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @student_status_flags_without_school_class_assignment.each do |student_status_flag| -%>
+        <tr>
+          <td><%= link_to student_status_flag.student.name, controller: '/registration/people', action: :show, id: student_status_flag.student.id %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+  
+<hr/>
+<h4>Students with grade but not school class assignment</h4>
+
+<% if @student_class_assignments_without_school_class.empty? %>
+  <p style="font-weight: bold;">No students with grade but not school class assignment</p>
+<% else %>
+  <table border="1px">
+    <thead>
+      <tr>
+        <th>Student Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @student_class_assignments_without_school_class.each do |student_class_assignment| -%>
+        <tr>
+          <td><%= link_to student_class_assignment.student.name, controller: '/registration/people', action: :show, id: student_class_assignment.student.id %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
