@@ -39,14 +39,14 @@ class Registration::FamiliesController < ApplicationController
   end
 
   def add_parent
-    if request.post?
-      @parent_two = Person.new params[:parent_two]
+    if request.post? || request.put?
+      @parent_two = Person.new params[:person]
       return unless @parent_two.valid?
-      family = Family.find_by_id params[:id].to_i
+      family = Family.find params[:id].to_i
       family.parent_two = @parent_two
       if family.save
         flash[:notice] = 'New parent added successfully'
-        redirect_to :action => :show, :id => family.id
+        redirect_to action: :show, id: family
       end
     else
       @parent_two = Person.new
@@ -54,15 +54,15 @@ class Registration::FamiliesController < ApplicationController
   end
   
   def add_child
-    if request.post?
-      @child = Person.new params[:child]
+    if request.post? || request.put?
+      @child = Person.new params[:person]
       @child.mark_as_new_child
       return unless @child.valid?
-      family = Family.find_by_id params[:id].to_i
+      family = Family.find params[:id].to_i
       family.children << @child
       if family.save
         flash[:notice] = 'New child added successfully'
-        redirect_to :action => :show, :id => family.id
+        redirect_to action: :show, id: family
       end
     else
       @child = Person.new
