@@ -27,6 +27,7 @@ Chineseschool::Application.routes.draw do
   namespace :registration do
     get 'active_school_classes/grade_class_student_count' => 'active_school_classes#grade_class_student_count'
     get 'active_school_classes/elective_class_student_count' => 'active_school_classes#elective_class_student_count'
+    match 'families/new' => 'families#new'
     get 'people/show' => 'people#show'
     get 'report/registration_integrity' => 'report#registration_integrity'
   end

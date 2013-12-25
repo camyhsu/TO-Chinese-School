@@ -5,7 +5,7 @@ class Registration::FamiliesController < ApplicationController
   end
 
   def new
-    if request.post?
+    if request.post? || request.put?
       @address = Address.new params[:address]
       @parent_one = Person.new params[:parent_one]
       valid_address = @address.valid?
@@ -17,7 +17,7 @@ class Registration::FamiliesController < ApplicationController
       new_family.parent_one = @parent_one
       if new_family.save
         flash[:notice] = 'New family created successfully'
-        redirect_to :action => :show, :id => new_family.id
+        redirect_to action: :show, id: new_family
       else
         flash.now[:notice] = "System Error!!  Please try again or contact #{Contacts::WEB_SITE_SUPPORT}"
       end
