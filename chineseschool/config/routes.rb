@@ -28,7 +28,11 @@ Chineseschool::Application.routes.draw do
     get 'active_school_classes/grade_class_student_count' => 'active_school_classes#grade_class_student_count'
     get 'active_school_classes/elective_class_student_count' => 'active_school_classes#elective_class_student_count'
     match 'families/new' => 'families#new'
+    post 'people/select_grade' => 'people#select_grade'
+    post 'people/select_school_class' => 'people#select_school_class'
+    post 'people/select_elective_class' => 'people#select_elective_class'
     get 'people/show' => 'people#show'
+
     get 'report/registration_integrity' => 'report#registration_integrity'
   end
 

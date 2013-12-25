@@ -63,37 +63,45 @@ class Registration::PeopleController < ApplicationController
         # selected a new grade without a previous student class assignment
         @student_class_assignment = StudentClassAssignment.new
         @student_class_assignment.school_year = SchoolYear.current_school_year
-        @student_class_assignment.student = Person.find_by_id params[:student_id].to_i
+        @student_class_assignment.student = Person.find params[:student_id].to_i
       else
-        @student_class_assignment = StudentClassAssignment.find_by_id params[:id].to_i
+        @student_class_assignment = StudentClassAssignment.find params[:id].to_i
       end
-      @student_class_assignment.grade = Grade.find_by_id params[:selected_grade_id]
+      @student_class_assignment.grade = Grade.find params[:selected_grade_id]
       @student_class_assignment.school_class = nil
       @student_class_assignment.elective_class = nil if @student_class_assignment.grade.below_first_grade?
       @student_class_assignment.save!
       @student_id = @student_class_assignment.student.id
     end
-    render :action => :one_student_class_assignment, :layout => 'ajax_layout'
+    render action: :one_student_class_assignment, layout: 'ajax_layout'
   end
 
   def select_school_class
     @student_id = params[:student_id]
-    @student_class_assignment = StudentClassAssignment.find_by_id params[:id].to_i
-    selected_school_class = SchoolClass.find_by_id params[:selected_class_id]
-    @student_class_assignment.school_class = selected_school_class
+    @student_class_assignment = StudentClassAssignment.find params[:id].to_i
+    if params[:selected_class_id].blank?
+      @student_class_assignment.school_class = nil
+    else
+      selected_school_class = SchoolClass.find params[:selected_class_id].to_i
+      @student_class_assignment.school_class = selected_school_class
+    end
     @student_class_assignment.save!
     @student_id = @student_class_assignment.student.id
-    render :action => :one_student_class_assignment, :layout => 'ajax_layout'
+    render action: :one_student_class_assignment, layout: 'ajax_layout'
   end
 
   def select_elective_class
     @student_id = params[:student_id]
-    @student_class_assignment = StudentClassAssignment.find_by_id params[:id].to_i
-    selected_elective_class = SchoolClass.find_by_id params[:selected_class_id]
-    @student_class_assignment.elective_class = selected_elective_class
+    @student_class_assignment = StudentClassAssignment.find params[:id].to_i
+    if params[:selected_class_id].blank?
+      @student_class_assignment.elective_class = nil
+    else
+      selected_elective_class = SchoolClass.find params[:selected_class_id].to_i
+      @student_class_assignment.elective_class = selected_elective_class
+    end
     @student_class_assignment.save!
     @student_id = @student_class_assignment.student.id
-    render :action => :one_student_class_assignment, :layout => 'ajax_layout'
+    render action: :one_student_class_assignment, layout: 'ajax_layout'
   end
 
   def add_instructor_assignment
