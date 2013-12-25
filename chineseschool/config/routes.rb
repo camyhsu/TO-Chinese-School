@@ -10,6 +10,7 @@ Chineseschool::Application.routes.draw do
   namespace :accounting do
     get 'instructors/discount' => 'instructors#discount'
     get 'manual_transactions' => 'manual_transactions#index'
+    match 'manual_transactions/new' => 'manual_transactions#new'
     get 'manual_transactions/show' => 'manual_transactions#show'
     get 'registration_report/registration_payments_by_date' => 'registration_report#registration_payments_by_date'
   end

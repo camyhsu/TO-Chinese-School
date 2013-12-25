@@ -6,7 +6,7 @@ class Accounting::ManualTransactionsController < ApplicationController
   end
   
   def new
-    if request.post?
+    if request.post? || request.put?
       # Remove transaction_by from params before creating the new ManualTransaction object due to type incompatibility (string v.s. integer)
       selected_transaction_by_id = params[:manual_transaction].delete :transaction_by
       @manual_transaction = ManualTransaction.new params[:manual_transaction]
@@ -14,11 +14,11 @@ class Accounting::ManualTransactionsController < ApplicationController
       @manual_transaction.recorded_by = @user.person
       if @manual_transaction.save_with_side_effects
         flash[:notice] = 'Manual Transaction added successfully'
-        redirect_to :controller => 'registration/people', :action => :show, :id => @manual_transaction.student_id
+        redirect_to controller: 'registration/people', action: :show, id: @manual_transaction.student_id
       end
     else
       @manual_transaction = ManualTransaction.new
-      @manual_transaction.student = Person.find_by_id params[:student_id].to_i
+      @manual_transaction.student = Person.find params[:student_id].to_i
       @manual_transaction.transaction_date = PacificDate.today
     end
   end

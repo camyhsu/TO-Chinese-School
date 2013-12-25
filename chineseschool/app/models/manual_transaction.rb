@@ -9,7 +9,10 @@ class ManualTransaction < ActiveRecord::Base
   PAYMENT_METHOD_CHECK = 'Check'
   PAYMENT_METHOD_CASH = 'Cash'
   PAYMENT_METHODS = [PAYMENT_METHOD_CHECK, PAYMENT_METHOD_CASH]
-  
+
+  attr_accessible :student_id, :transaction_type, :transaction_date, :payment_method,
+                  :check_number, :amount, :note
+
   belongs_to :recorded_by, class_name: 'Person', foreign_key: 'recorded_by_id'
   belongs_to :student, class_name: 'Person', foreign_key: 'student_id'
   belongs_to :transaction_by, class_name: 'Person', foreign_key: 'transaction_by_id'

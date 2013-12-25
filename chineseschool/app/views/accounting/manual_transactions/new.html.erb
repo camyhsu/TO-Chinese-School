@@ -1,0 +1,57 @@
+<% @title = 'New Manual Transaction' %>
+
+<div class="account-form">
+  <% if @manual_transaction.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@manual_transaction.errors.count, 'error') %> prohibited creating this new manual transaction:</h2>
+        <ul>
+          <% @manual_transaction.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li> <% end %>
+        </ul>
+      </div>
+  <% end %>
+
+  <%= form_for :manual_transaction do |form| %>
+    <fieldset>
+        <legend>New Manual Transaction for <%=h @manual_transaction.student.name %> as Student</legend>
+        <span class="manual-transaction-edit">
+          <%= form.hidden_field :student_id %>
+          <div>
+            <label for="transaction_type"><span style="color:red">*&nbsp;</span>Transaction Type:</label>
+            <%= form.select :transaction_type, @manual_transaction.find_available_transaction_types, include_blank: true %>
+          </div>
+          <div>
+            <label for="transaction_date"><span style="color:red">*&nbsp;</span>Transaction Date:</label>
+            <input class="jquery-datepicker" id="manual_transaction_transaction_date" name="manual_transaction[transaction_date]" size="10" type="text" value="<%= @manual_transaction.transaction_date %>" />
+          </div>
+          <div>
+            <label for="transaction_by"><span style="color:red">*&nbsp;</span>Transaction By:</label>
+            <%= form.collection_select :transaction_by, @manual_transaction.student.find_parents, :id, :name, selected: @manual_transaction.transaction_by.try(:id), include_blank: true %>
+          </div>
+          <div>
+            <label for="payment_method"><span style="color:red">*&nbsp;</span>Payment Method:</label>
+            <%= form.select :payment_method, ManualTransaction::PAYMENT_METHODS %>
+          </div>
+          <div>
+            <label for="check_number">Check Number:</label>
+            <%= form.text_field :check_number, size: 20 %>
+          </div>
+          <div>
+            <label for="amount"><span style="color:red">*&nbsp;</span>Amount:</label>
+            <%= form.text_field :amount, size: 20 %>
+          </div>
+          <div>
+            <label for="note">Note:</label>
+            <%= form.text_area :note %>
+          </div>
+          <span style="color:red">*&nbsp;</span>Required Field
+          <div>
+            <%= submit_tag 'Create', class: 'submit' %>
+          </div>
+        </span>
+    </fieldset>
+  <% end %>
+</div>
+
+<br/>
+<%= link_to "Back to #{@manual_transaction.student.name} Details", {controller: 'registration/people', action: :show, id: @manual_transaction.student_id}, {class: 'button'} %>
