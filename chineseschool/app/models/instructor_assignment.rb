@@ -61,7 +61,7 @@ class InstructorAssignment < ActiveRecord::Base
   def start_date_no_later_than_end_date
     return if self.start_date.nil? or self.end_date.nil?
     if self.start_date > self.end_date
-      errors.add_to_base('Start Date can not be later than End Date')
+      errors.add(:start_date, 'can not be later than end date')
     end
   end
 
@@ -71,7 +71,7 @@ class InstructorAssignment < ActiveRecord::Base
     existing_assignments.each do |existing_assignment|
       if duration_overlap? existing_assignment
         if existing_assignment.id != self.id  # skip self to allow self date adjustment
-          errors.add_to_base("Assginment can not overlap with existing assignment for #{existing_assignment.instructor.name}")
+          errors.add(:instructor_assignment, "can not overlap with existing assignment for #{existing_assignment.instructor.name}")
         end
       end
     end

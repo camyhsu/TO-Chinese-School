@@ -32,7 +32,7 @@ class SchoolClass < ActiveRecord::Base
   def active_in?(school_year)
     school_class_active_flag = self.school_class_active_flags.first :conditions => ['school_year_id = ?', school_year.id]
     return false if school_class_active_flag.nil?
-    school_class_active_flag.active == true
+    school_class_active_flag.active
   end
 
   def flip_active_to(active_flag, school_year_id)

@@ -8,7 +8,15 @@
   <tr>
     <td></td>
     <td>
-      <%= error_messages_for 'instructor_assignment' %>
+      <% if instructor_assignment.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(instructor_assignment.errors.count, 'error') %> prohibited updating this new instructor assignment:</h2>
+            <ul>
+              <% instructor_assignment.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li> <% end %>
+            </ul>
+          </div>
+      <% end %>
     </td>
   </tr>
   <tr>
@@ -32,26 +40,26 @@
     <td class="label">Start Date:</td>
     <td><%=h instructor_assignment.start_date_string %></td>
   </tr>
-  <tr>
+  <!--<tr>
     <td class="label">Select New Start Date:</td>
     <td>
       <% select_start_date_handler = "selectAssignmentDate(this, '#{url_for controller: 'registration/instructor_assignments',
           action: :select_start_date, id: instructor_assignment}')" %>
       <input class="jquery-datepicker" id="instructor_assignment_select_start_date_<%=h instructor_assignment.id %>" name="instructor_assignment_new_start_date" onchange="<%= select_start_date_handler  %> " size="10" type="text" />
     </td>
-  </tr>
+  </tr>-->
   <tr>
     <td class="label">End Date:</td>
     <td><%=h instructor_assignment.end_date_string %></td>
   </tr>
-  <tr>
+  <!--<tr>
     <td class="label">Select New End Date:</td>
     <td>
       <% select_end_date_handler = "selectAssignmentDate(this, '#{url_for controller: 'registration/instructor_assignments',
           action: :select_end_date, id: instructor_assignment}')" %>
       <input class="jquery-datepicker" id="instructor_assignment_select_end_date_<%=h instructor_assignment.id %>" name="instructor_assignment_new_end_date" onchange="<%= select_end_date_handler  %> " size="10" type="text" />
     </td>
-  </tr>
+  </tr>-->
   <tr>
     <td class="label">Role:</td>
     <td><%=h instructor_assignment.role %></td>

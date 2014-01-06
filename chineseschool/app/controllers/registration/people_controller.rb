@@ -106,10 +106,10 @@ class Registration::PeopleController < ApplicationController
 
   def add_instructor_assignment
     @instructor_assignment = InstructorAssignment.new
-    if request.post?
-      person = Person.find_by_id params[:id].to_i
-      @instructor_assignment.school_year = SchoolYear.find_by_id params[:instructor_assignment][:school_year].to_i
-      @instructor_assignment.school_class = SchoolClass.find_by_id params[:instructor_assignment][:school_class].to_i
+    if request.post? || request.put?
+      person = Person.find params[:id].to_i
+      @instructor_assignment.school_year = SchoolYear.find params[:instructor_assignment][:school_year].to_i
+      @instructor_assignment.school_class = SchoolClass.find params[:instructor_assignment][:school_class].to_i
       @instructor_assignment.instructor = person
       @instructor_assignment.start_date = find_start_date params[:instructor_assignment][:start_date_string], @instructor_assignment.school_year
       @instructor_assignment.end_date = find_end_date params[:instructor_assignment][:end_date_string], @instructor_assignment.school_year
@@ -117,7 +117,7 @@ class Registration::PeopleController < ApplicationController
       if @instructor_assignment.save
         person.user.adjust_instructor_roles if person.user
         flash[:notice] = 'Instructor Assignment added successfully'
-        redirect_to :action => :show, :id => @instructor_assignment.instructor
+        redirect_to action: :show, id: @instructor_assignment.instructor
       end
     else
       @instructor_assignment.instructor_id = params[:id]
