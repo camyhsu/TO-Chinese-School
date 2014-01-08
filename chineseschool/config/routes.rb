@@ -48,6 +48,8 @@ Chineseschool::Application.routes.draw do
     get 'people/show' => 'people#show'
 
     get 'report/registration_integrity' => 'report#registration_integrity'
+
+    get 'student_class_assignments/random_assign_grade_class' => 'student_class_assignments#random_assign_grade_class'
   end
 
   namespace :student do
