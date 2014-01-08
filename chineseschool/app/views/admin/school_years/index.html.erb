@@ -1,0 +1,30 @@
+<% @title = 'School Years' %>
+
+<table border="1px">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_years.each do |school_year| -%>
+    <tr>
+      <td><%=h school_year.name %></td>
+      <td><%=h school_year.description %></td>
+      <td><%=h school_year.start_date %></td>
+      <td><%=h school_year.end_date %></td>
+      <td>
+        <%= link_to 'Details', {action: 'show', id: school_year}, {class: 'button'} %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br/>
+<%= link_to 'Create New School Year', {action: 'new'}, {class: 'button'} %>
+<br/>

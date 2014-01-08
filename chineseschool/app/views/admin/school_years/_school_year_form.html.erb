@@ -1,0 +1,85 @@
+          <div>
+            <label for="name"><span style="color:red">*&nbsp;</span>Name:</label>
+            <%= school_year_form.text_field :name, size: 20 %>
+          </div>
+          <div>
+            <label for="description">Description:</label>
+            <%= school_year_form.text_field :description, size: 40 %>
+          </div>
+          <div>
+            <label for="start_date"><span style="color:red">*&nbsp;</span>Start Date:</label>
+            <%= school_year_form.text_field :start_date, future_date_html_options(@school_year.start_date) %>
+          </div>
+          <div>
+            <label for="end_date"><span style="color:red">*&nbsp;</span>End Date:</label>
+            <%= school_year_form.text_field :end_date, future_date_html_options(@school_year.end_date) %>
+          </div>
+          <div>
+            <label for="age_cutoff_month"><span style="color:red">*&nbsp;</span>Age Cutoff Month:</label>
+            <%= school_year_form.select :age_cutoff_month, (1..12) %>
+          </div>
+          <div>
+            <label for="registration_fee"><span style="color:red">*&nbsp;</span>Registration Fee:</label>
+            <%= school_year_form.text_field :registration_fee, size: 20 %>
+          </div>
+          <div>
+            <label for="tuition"><span style="color:red">*&nbsp;</span>Pre-registration Tuition:</label>
+            <%= school_year_form.text_field :pre_registration_tuition, size: 20 %>
+          </div>
+          <div>
+            <label for="tuition"><span style="color:red">*&nbsp;</span>Tuition:</label>
+            <%= school_year_form.text_field :tuition, size: 20 %>
+          </div>
+          <div>
+            <label for="tuition"><span style="color:red">*&nbsp;</span>Tuition Discount For 3 Or More Child:</label>
+            <%= school_year_form.text_field :tuition_discount_for_three_or_more_child, size: 20 %>
+          </div>
+          <div>
+            <label for="tuition"><span style="color:red">*&nbsp;</span>Tuition Discount For Pre-K:</label>
+            <%= school_year_form.text_field :tuition_discount_for_pre_k, size: 20 %>
+          </div>
+          <div>
+            <label for="pva_membership_due"><span style="color:red">*&nbsp;</span>PVA Membership Due:</label>
+            <%= school_year_form.text_field :pva_membership_due, size: 20 %>
+          </div>
+          <div>
+            <label for="ccca_membership_due"><span style="color:red">*&nbsp;</span>CCCA Membership Due:</label>
+            <%= school_year_form.text_field :ccca_membership_due, size: 20 %>
+          </div>
+          <div>
+            <label for="registration_start_date"><span style="color:red">*&nbsp;</span>Registration Start Date:</label>
+            <%= school_year_form.text_field :registration_start_date, future_date_html_options(@school_year.registration_start_date) %>
+          </div>
+          <div>
+            <label for="pre_registration_end_date"><span style="color:red">*&nbsp;</span>Pre-registration End Date:</label>
+            <%= school_year_form.text_field :pre_registration_end_date, future_date_html_options(@school_year.pre_registration_end_date) %>
+          </div>
+          <div>
+            <label for="registration_75_percent_date"><span style="color:red">*&nbsp;</span>Registration 75% Date:</label>
+            <%= school_year_form.text_field :registration_75_percent_date, future_date_html_options(@school_year.registration_75_percent_date) %>
+          </div>
+          <div>
+            <label for="registration_50_percent_date"><span style="color:red">*&nbsp;</span>Registration 50% Date:</label>
+            <%= school_year_form.text_field :registration_50_percent_date, future_date_html_options(@school_year.registration_50_percent_date) %>
+          </div>
+          <div>
+            <label for="registration_end_date"><span style="color:red">*&nbsp;</span>Registration End Date:</label>
+            <%= school_year_form.text_field :registration_end_date, future_date_html_options(@school_year.registration_end_date) %>
+          </div>
+          <div>
+            <label for="refund_75_percent_date"><span style="color:red">*&nbsp;</span>Refund 75% Date:</label>
+            <%= school_year_form.text_field :refund_75_percent_date, future_date_html_options(@school_year.refund_75_percent_date) %>
+          </div>
+          <div>
+            <label for="refund_50_percent_date"><span style="color:red">*&nbsp;</span>Refund 50% Date:</label>
+            <%= school_year_form.text_field :refund_50_percent_date, future_date_html_options(@school_year.refund_50_percent_date) %>
+          </div>
+          <div>
+            <label for="refund_25_percent_date"><span style="color:red">*&nbsp;</span>Refund 25% Date:</label>
+            <%= school_year_form.text_field :refund_25_percent_date, future_date_html_options(@school_year.refund_25_percent_date) %>
+          </div>
+          <div>
+            <label for="refund_end_date"><span style="color:red">*&nbsp;</span>Refund End Date:</label>
+            <%= school_year_form.text_field :refund_end_date, future_date_html_options(@school_year.refund_end_date) %>
+          </div>
+          <br/>

@@ -15,6 +15,14 @@ Chineseschool::Application.routes.draw do
     get 'registration_report/registration_payments_by_date' => 'registration_report#registration_payments_by_date'
   end
 
+  namespace :admin do
+    get 'school_years' => 'school_years#index'
+    get 'school_years/show' => 'school_years#show'
+    match 'school_years/new' => 'school_years#new'
+    match 'school_years/edit' => 'school_years#edit'
+    match 'school_years/edit_book_charge' => 'school_years#edit_book_charge'
+  end
+
   namespace :instruction do
     get 'active_school_classes' => 'active_school_classes#index'
   end

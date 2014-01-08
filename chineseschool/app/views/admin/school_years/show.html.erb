@@ -1,0 +1,137 @@
+<% @title = 'School Year' %>
+
+<h3>School Year</h3>
+<table border="0px">
+  <tr>
+    <td class="label">Name:</td>
+    <td><%=h @school_year.name %></td>
+  </tr>
+  <tr>
+    <td class="label">Description:</td>
+    <td><%=h @school_year.description %></td>
+  </tr>
+  <tr>
+    <td class="label">Start Date:</td>
+    <td><%=h @school_year.start_date %></td>
+  </tr>
+  <tr>
+    <td class="label">End Date:</td>
+    <td><%=h @school_year.end_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Age Cutoff Month:</td>
+    <td><%=h @school_year.age_cutoff_month %></td>
+  </tr>
+  <tr>
+    <td class="label">Registration Fee:</td>
+    <td><%=number_to_currency @school_year.registration_fee %></td>
+  </tr>
+  <tr>
+    <td class="label">Pre-registration Tuition:</td>
+    <td><%=number_to_currency @school_year.pre_registration_tuition %></td>
+  </tr>
+  <tr>
+    <td class="label">Tuition:</td>
+    <td><%=number_to_currency @school_year.tuition %></td>
+  </tr>
+  <tr>
+    <td class="label">Tuition Discount for 3 or more child:</td>
+    <td><%=number_to_currency @school_year.tuition_discount_for_three_or_more_child %></td>
+  </tr>
+  <tr>
+    <td class="label">Tuition Discount for PreK:</td>
+    <td><%=number_to_currency @school_year.tuition_discount_for_pre_k %></td>
+  </tr>
+  <tr>
+    <td class="label">Book Charge:</td>
+    <td>
+      <%= link_to 'Edit Book Charge', {controller: '/admin/school_years', action: 'edit_book_charge', id: @school_year}, {class: 'button'} %>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">PVA Membership Due:</td>
+    <td><%=number_to_currency @school_year.pva_membership_due %></td>
+  </tr>
+  <tr>
+    <td class="label">CCCA Membership Due:</td>
+    <td><%=number_to_currency @school_year.ccca_membership_due %></td>
+  </tr>
+</table>
+<p>The following dates are related to registration fee proration.
+<ul>
+  <li>
+    Registration Start Date - the date registration starts.
+  </li>
+  <li>
+    Pre-registration End Date - the date after which full tuition would be charged.
+    On or before this date, pre-registration tuition would be charged.
+  </li>
+  <li>
+    Registration 75 Percent Date - the date after which 75% of full tuition would be charged.
+  </li>
+  <li>
+    Registration 50 Percent Date - the date after which 50% of full tuition would be charged.
+  </li>
+  <li>
+    Registration End Date - the date after which no registration is allowed.
+  </li>
+  <li>
+    Refund 75 Percent Date - the date after which only 75% of full tuition would be refunded.
+  </li>
+  <li>
+    Refund 50 Percent Date - the date after which only 50% of full tuition would be refunded.
+  </li>
+  <li>
+    Refund 25 Percent Date - the date after which only 25% of full tuition would be refunded.
+  </li>
+  <li>
+    Refund End Date - the date after which no refund would be allowed.
+  </li>
+</ul>
+</p>
+<table border="0px">
+  <tr>
+    <td class="label">Registration Start Date:</td>
+    <td><%=h @school_year.registration_start_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Pre-registration End Date:</td>
+    <td><%=h @school_year.pre_registration_end_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Registration 75 Percent Date:</td>
+    <td><%=h @school_year.registration_75_percent_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Registration 50 Percent Date:</td>
+    <td><%=h @school_year.registration_50_percent_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Registration End Date:</td>
+    <td><%=h @school_year.registration_end_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Refund 75 Percent Date:</td>
+    <td><%=h @school_year.refund_75_percent_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Refund 50 Percent Date:</td>
+    <td><%=h @school_year.refund_50_percent_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Refund 25 Percent Date:</td>
+    <td><%=h @school_year.refund_25_percent_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Refund End Date:</td>
+    <td><%=h @school_year.refund_end_date %></td>
+  </tr>
+</table>
+
+<br/>
+<br/>
+<%= link_to 'Edit', {controller: '/admin/school_years', action: 'edit', id: @school_year}, {class: 'button'} %>
+<br/>
+<br/>
+<%= link_to 'Back to School Year List', {controller: '/admin/school_years'}, {class: 'button'} %>
+<br/>

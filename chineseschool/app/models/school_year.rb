@@ -4,6 +4,13 @@ class SchoolYear < ActiveRecord::Base
   TRACK_EVENT_SIGN_UP_START_DATE = Date.parse('2013-02-02')
   TRACK_EVENT_SIGN_UP_END_DATE = Date.parse('2013-02-23')
 
+  attr_accessible :name, :description, :start_date, :end_date, :age_cutoff_month, :registration_fee,
+                  :pre_registration_tuition, :tuition, :tuition_discount_for_three_or_more_child,
+                  :tuition_discount_for_pre_k, :pva_membership_due, :ccca_membership_due,
+                  :registration_start_date, :pre_registration_end_date, :registration_75_percent_date,
+                  :registration_50_percent_date, :registration_end_date, :refund_75_percent_date,
+                  :refund_50_percent_date, :refund_25_percent_date, :refund_end_date
+
   belongs_to :previous_school_year, class_name: 'SchoolYear', foreign_key: 'previous_school_year_id'
 
   validates :name, :start_date, :end_date, :age_cutoff_month,
