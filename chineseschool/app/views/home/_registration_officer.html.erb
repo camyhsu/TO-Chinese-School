@@ -1,22 +1,28 @@
 <h3>Registration Officer Resources</h3>
 
+<!--
 <br/>
 <%= link_to 'Process In-person Registration Payments', {controller: '/accounting/in_person_registration_payments'}, {class: 'button'} %>
 <br/>
+-->
 <br/>
 <%= link_to 'List All People', {controller: '/registration/people'}, {class: 'button'} %>
 <br/>
+<!--
 <br/>
 <%= link_to 'List All Grades', {controller: '/admin/grades'}, {class: 'button'} %>
 <br/>
 <br/>
 <%= link_to 'List All School Classes', {controller: '/admin/school_classes'}, {class: 'button'} %>
+-->
+<br/>
 <%= link_to 'List Active School Classes', {controller: '/registration/active_school_classes'}, {class: 'button'} %>
 <br/>
 <br/>
 <%= link_to '班級人數清單', {controller: '/registration/active_school_classes', action: 'grade_class_student_count'}, {class: 'button'} %>
 <%= link_to 'Elective Class 人數清單', {controller: '/registration/active_school_classes', action: 'elective_class_student_count'}, {class: 'button'} %>
 <br/>
+<!--
 <br/>
 <%= link_to 'Download Printable Student List By Class', {controller: '/registration/student_class_assignments', action: 'student_list_by_class', format: 'pdf'}, {class: 'button'} %>
 <br/>
@@ -33,6 +39,7 @@
   <%= submit_tag 'Manage Students By Grade', class: 'button' %>
 <% end %>
 <br/>
+-->
 <br/>
 <%= link_to 'Randomly Assign Students To Grade Class', {controller: '/registration/student_class_assignments', action: 'random_assign_grade_class'}, {class: 'button', confirm: 'WARNING - This action can not be reversed.  Are you sure you want to proceed?'} %>
 <br/>
