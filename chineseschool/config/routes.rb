@@ -45,6 +45,7 @@ Chineseschool::Application.routes.draw do
     post 'people/select_grade' => 'people#select_grade'
     post 'people/select_school_class' => 'people#select_school_class'
     post 'people/select_elective_class' => 'people#select_elective_class'
+    get 'people' => 'people#index'
     get 'people/show' => 'people#show'
 
     get 'report/registration_integrity' => 'report#registration_integrity'
