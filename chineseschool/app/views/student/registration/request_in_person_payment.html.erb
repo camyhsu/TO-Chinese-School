@@ -1,0 +1,14 @@
+<% @title = 'Request In-person Registration Payment' %>
+
+<%= render partial: 'registration_payment', object: @registration_payment %>
+
+<p>
+  You have requested to pay by check successfully.<br/>
+  Please visit TOCS office during school hours <br/>
+  and continue registration processing with registration staff.
+</p>
+<br/>
+<%= link_to 'Return to Home Page', {controller: '/home'}, {class: 'button'} %>
+<br/>
+<br/>
+<%= link_to 'Cancel Registration', {action: :remove_pending_registration_payment, id: @registration_payment}, {class: 'button'} %>

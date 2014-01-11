@@ -1,0 +1,13 @@
+<% @title = 'Tuition and Fee' %>
+
+<%= render partial: 'registration_payment', object: @registration_payment %>
+<br/>
+<span style="font-weight: bold; color: red;">Credit card payment temporarily unavailable</span>
+<br/>
+<br/>
+<% if PacificDate.today >= SchoolYear.current_school_year.start_date %>
+    <%= link_to 'Pay by Check', {action: :request_in_person_payment, id: @registration_payment}, {class: 'button'} %>
+    <br/>
+    <br/>
+<% end %>
+<%= link_to 'Cancel Registration', {action: :remove_pending_registration_payment, id: @registration_payment}, {class: 'button'} %>

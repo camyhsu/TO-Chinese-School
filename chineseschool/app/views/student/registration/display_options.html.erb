@@ -1,0 +1,154 @@
+<% @title = 'Student Registration Options' %>
+
+<h3>Registration For <%=h @registration_school_year.name %> School Year</h3>
+
+<ul>
+  <li>
+    Grade is determined by the follow rules:
+    <ol>
+      <li>
+        If a student attended school in <%=h @previous_school_year.name %>,
+        the grade for <%=h @registration_school_year.name %> would be the following grade in natural order.
+      </li>
+      <li>
+        If the following grade is not available, the grade would be the highest grade available.
+      </li>
+      <li>
+        If a student did not attend school in <%=h @previous_school_year.name %>,
+        the grade for <%=h @registration_school_year.name %> would be assigned based on school age.
+      </li>
+      <li>
+        If the age based grade is not available, the grade would be the highest grade available.
+      </li>
+      <li>
+        Children in the family not within school age and did not attend school in <%=h @previous_school_year.name %> are not eligible for registration.
+      </li>
+    </ol>
+  </li>
+  <li>
+    Please select the desired language class type (available types may vary by grade):
+    <ul>
+      <li><b>S</b> - 簡體中文(Simplified Chinese)</li>
+      <li><b>T</b> - 繁體中文(Traditional Chinese)</li>
+      <li><b>SE</b> - 雙語(Simplified Chinese with English Instructions)</li>
+    </ul>
+  </li>
+  <li>
+    Elective class is only available for 1st grade or above.  Selections are First Come, First Serve,
+    until a class is full.
+  </li>
+  <li>
+    Please read <a href="http://www.to-cs.org/tocs/">Registraion Overview and Refund Policy</a> or contact registration@to-cs.org for additional questions.
+  </li>
+</ul>
+<br/>
+<% unless @registered_students.empty? %>
+  <h3>Students Already Registered For <%=h @registration_school_year.name %> School Year</h3>
+  <% if @registration_school_year.school_has_started? %>
+    <%= render partial: 'class_assignments_by_students' %>
+  <% else %>
+    <%= render partial: 'registration_preferences_by_students' %>
+  <% end %>
+  <br/>
+<% end %>
+
+<% if @registration_preferences.empty? %>
+  <% if @registered_students.empty? %>
+    <p style="font-weight: bold; color: red;">
+      No eligible students to register - please contact registration@to-cs.org for special case registration
+    </p>
+  <% end %>
+<% else %>
+  <h3>Select Students To Register</h3>
+  <table class="registration-options-table" border="0px">
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+        <th><%=h @previous_school_year.name %> Grade</th>
+        <th><%=h @registration_school_year.name %> Grade</th>
+        <th>Select School Class Type</th>
+        <th>Select Elective Class</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= form_tag action: 'save_registration_preferences', id: @registration_school_year do %>
+        <% @registration_preferences.each do |registration_preference| -%>
+          <% student = registration_preference.student %>
+          <tr>
+            <td class="checkbox">
+              <% unless registration_preference.grade_full? %>
+                <%= check_box_tag "#{student.id}_register", true %>
+              <% end %>
+            </td>
+            <td><%=h student.name %></td>
+            <td>
+              <% if registration_preference.previous_grade.nil? -%>
+                Not In Record
+              <% else %>
+                <%=h registration_preference.previous_grade.name %>
+                <%= hidden_field_tag "#{student.id}_previous_grade", registration_preference.previous_grade.id %>
+              <% end %>
+            </td>
+            <td>
+              <%=h registration_preference.grade.name %>
+              <%= hidden_field_tag "#{student.id}_grade", registration_preference.grade.id %>
+            </td>
+            <td>
+              <% if registration_preference.grade_full? %>
+                <span style="font-weight: bold; color: red;"><%= registration_preference.grade.name %> is FULL</span>
+              <% else %>
+                <% available_school_class_types = registration_preference.grade.find_available_school_class_types(registration_preference.school_year) %>
+                <% if available_school_class_types.empty? %>
+                  <!-- No available school class type -->
+                <% elsif available_school_class_types.size == 1 %>
+                  <!-- Show the only choice as text instead of a dropdown -->
+                  <% school_class_type = available_school_class_types[0] %>
+                  <% if school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_MIXED %>
+                    <!-- the mixed type is the only type available -->
+                  <% else %>
+                    <%= display_string_for school_class_type %>
+                  <% end %>
+                  <%= hidden_field_tag "#{student.id}_school_class_type", school_class_type %>
+                <% else %>
+                  <select name="<%= student.id %>_school_class_type[school_class_type]">
+                    <% available_school_class_types.each do |school_class_type| %>
+                      <% if registration_preference.full_for? school_class_type %>
+                        <option value="" disabled><%= display_string_for school_class_type %>&nbsp;(FULL)</option>
+                      <% else %>
+                        <option value="<%= school_class_type %>"><%= display_string_for school_class_type %></option>
+                      <% end %>
+                  <% end %>
+                  </select>
+                <% end %>
+              <% end %>
+            </td>
+            <td>
+              <% unless registration_preference.grade.below_first_grade? %>
+                <%= collection_select "#{student.id}_elective", :elective_class,
+                    SchoolClass.find_available_elective_classes_for_registration(student.school_age_for(@registration_school_year), @registration_school_year), :id, :name, {include_blank: true} %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <td class="checkbox"></td>
+          <td style="padding-top: 1em;">
+            <%= submit_tag 'Continue', class: 'button'  %>
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td class="checkbox"></td>
+        <td colspan="2" style="padding-top: 0.5em; text-align: left;">
+          <%= link_to 'Cancel Registration', {controller: '/home'}, {class: 'button'} %>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>

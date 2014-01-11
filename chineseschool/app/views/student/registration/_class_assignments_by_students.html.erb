@@ -1,0 +1,21 @@
+  <table class="registration-options-class-assignment-table" border="0px">
+    <thead>
+      <tr>
+        <th></th>
+        <th><%=h @registration_school_year.name %> Grade</th>
+        <th>School Class</th>
+        <th>Elective Class</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @registered_students.each do |registered_student| -%>
+        <% student_class_assignment = registered_student.student_class_assignment_for(@registration_school_year) %>
+        <tr>
+          <td><%=h registered_student.name %></td>
+          <td><%=h student_class_assignment.try(:grade).try(:name) %></td>
+          <td><%=h student_class_assignment.try(:school_class).try(:name) %></td>
+          <td><%=h student_class_assignment.try(:elective_class).try(:name) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
