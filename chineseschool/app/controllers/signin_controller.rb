@@ -84,40 +84,43 @@ class SigninController < ApplicationController
       end
     end
   end
-  #
-  #def register
-  #  if request.post?
-  #    @address = Address.new params[:address]
-  #    @parent_one = Person.new params[:parent_one]
-  #    @user = User.new(:username => params[:user][:username], :person => @parent_one)
-  #    @user.password = params[:password]
-  #    @user.roles << Role.find_by_name(Role::ROLE_NAME_STUDENT_PARENT)
-  #
-  #    if params[:password] != params[:password_confirmation]
-  #      flash.now[:password_not_match] = 'Password does not match confirmation re-typed' and return
-  #    end
-  #    valid_address = @address.valid?
-  #    valid_parent_one = @parent_one.valid?
-  #    valid_user = @user.valid?
-  #    return unless valid_address and valid_parent_one and valid_user
-  #
-  #    new_family = Family.new
-  #    new_family.address = @address
-  #    new_family.parent_one = @parent_one
-  #    Family.transaction do
-  #      new_family.save!
-  #      @user.save!
-  #    end
-  #
-  #    flash[:notice] = 'Account successfully created'
-  #    redirect_to :action => 'index'
-  #  else
-  #    @address = Address.new
-  #    @parent_one = Person.new
-  #    @user = User.new
-  #  end
-  #end
-  #
+
+  def register
+    if request.post? || request.put?
+      @address = Address.new params[:address]
+      @parent_one = Person.new params[:parent_one]
+      @user = User.new
+      @user.username = params[:user][:username]
+      @user.person = @parent_one
+      @user.password = params[:password]
+      @user.roles << Role.find_by_name(Role::ROLE_NAME_STUDENT_PARENT)
+
+      if params[:password] != params[:password_confirmation]
+        flash.now[:password_not_match] = 'Password does not match confirmation re-typed'
+        return
+      end
+      valid_address = @address.valid?
+      valid_parent_one = @parent_one.valid?
+      valid_user = @user.valid?
+      return unless valid_address && valid_parent_one && valid_user
+
+      new_family = Family.new
+      new_family.address = @address
+      new_family.parent_one = @parent_one
+      Family.transaction do
+        new_family.save!
+        @user.save!
+      end
+
+      flash[:notice] = 'Account successfully created'
+      redirect_to action: :index
+    else
+      @address = Address.new
+      @parent_one = Person.new
+      @user = User.new
+    end
+  end
+
   #def register_with_invitation
   #  timed_token = TimedToken.find_by_token params[:id]
   #  redirect_to :action => 'invalid_token' and return if timed_token.nil? or timed_token.expired?
