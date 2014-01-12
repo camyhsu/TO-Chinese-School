@@ -1,0 +1,41 @@
+<% @title = 'Tuition and Fee' %>
+
+<%= render partial: '/student/registration/registration_payment', object: @registration_payment %>
+<br/>
+<div class="account-form">
+  <% if @in_person_registration_transaction.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@in_person_registration_transaction.errors.count, 'error') %> prohibited creating this transaction:</h2>
+        <ul>
+          <% @in_person_registration_transaction.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li> <% end %>
+        </ul>
+      </div>
+  <% end %>
+
+  <%= form_for :in_person_registration_transaction do |form| %>
+      <fieldset>
+        <legend>In-person Registration Payment by <%=h @registration_payment.paid_by.name %></legend>
+        <span class="manual-transaction-edit">
+          <div>
+            <label for="payment_method"><span style="color:red">*&nbsp;</span>Payment Method:</label>
+            <%= form.select :payment_method, InPersonRegistrationTransaction::PAYMENT_METHODS %>
+          </div>
+          <div>
+            <label for="check_number">Check Number:</label>
+            <%= form.text_field :check_number, size: 20 %>
+          </div>
+          <div>
+            <label for="note">Note:</label>
+            <%= form.text_area :note %>
+          </div>
+          <span style="color:red">*&nbsp;</span>Required Field
+          <div>
+            <%= submit_tag 'Payment Received', class: 'submit' %>
+          </div>
+        </span>
+      </fieldset>
+  <% end %>
+</div>
+<br/>
+<%= link_to 'Remove This Registration Request', {action: :remove_pending_registration_payment, id: @registration_payment}, {class: 'button'} %>

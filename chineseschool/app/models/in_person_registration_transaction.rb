@@ -4,6 +4,8 @@ class InPersonRegistrationTransaction < ActiveRecord::Base
   PAYMENT_METHOD_CASH = 'Cash'
   PAYMENT_METHODS = [PAYMENT_METHOD_CHECK, PAYMENT_METHOD_CASH]
 
+  attr_accessible :check_number, :note, :payment_method
+
   belongs_to :registration_payment
   belongs_to :recorded_by, class_name: 'Person', foreign_key: 'recorded_by_id'
 

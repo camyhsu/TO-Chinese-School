@@ -8,6 +8,7 @@ Chineseschool::Application.routes.draw do
   #match 'signin/:action'
 
   namespace :accounting do
+    get 'in_person_registration_payments' => 'in_person_registration_payments#index'
     get 'instructors/discount' => 'instructors#discount'
     get 'manual_transactions' => 'manual_transactions#index'
     match 'manual_transactions/new' => 'manual_transactions#new'

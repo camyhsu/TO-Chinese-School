@@ -1,0 +1,24 @@
+<% @title = 'Pending In-person Registration Payment Requests' %>
+
+<table border="1px">
+  <thead>
+  <tr>
+    <th>Requested By</th>
+    <th>Student(s)</th>
+    <th>Amount</th>
+    <th>Requested Time</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @registration_payments.each do |registration_payment| -%>
+      <tr>
+        <td><%=h registration_payment.paid_by.name %></td>
+        <td><%=h registration_payment.student_names.join(',') %></td>
+        <td><%=number_to_currency registration_payment.grand_total %></td>
+        <td><%= PacificTimeDisplay.display_utc_time_in_pacific registration_payment.updated_at %></td>
+        <td><%= link_to 'Record Payment', {action: :payment_entry, id: registration_payment}, {class: 'button'} %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

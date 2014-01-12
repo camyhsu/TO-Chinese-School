@@ -55,7 +55,8 @@ class SchoolClass < ActiveRecord::Base
   def current_year_gender_based_class_size(gender)
     class_clause = 'school_class_id = ?'
     class_clause = 'elective_class_id = ?' if elective?
-    StudentClassAssignment.count(:conditions => ["#{class_clause} AND school_year_id = ? AND gender = ?", self.id, SchoolYear.current_school_year.id, gender], :include => :student)
+    StudentClassAssignment.count(conditions: ["#{class_clause} AND school_year_id = ? AND gender = ?", self.id, SchoolYear.current_school_year.id, gender],
+                                 joins: 'LEFT JOIN people ON people.id = student_class_assignments.student_id')
   end
 
   def students
