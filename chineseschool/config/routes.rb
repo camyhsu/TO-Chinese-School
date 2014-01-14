@@ -24,6 +24,11 @@ Chineseschool::Application.routes.draw do
     match 'school_years/edit_book_charge' => 'school_years#edit_book_charge'
   end
 
+  namespace :communication do
+    get 'forms/picture_taking_form' => 'forms#picture_taking_form'
+    get 'forms/student_list_for_yearbook' => 'forms#student_list_for_yearbook'
+  end
+
   namespace :instruction do
     get 'active_school_classes' => 'active_school_classes#index'
   end
@@ -58,6 +63,8 @@ Chineseschool::Application.routes.draw do
   namespace :student do
     get 'transaction_history' => 'transaction_history#index'
   end
+
+  get 'signout' => 'signout#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
