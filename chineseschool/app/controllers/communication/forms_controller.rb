@@ -11,11 +11,26 @@ class Communication::FormsController < ApplicationController
   def student_list_for_yearbook
     retrieve_sorted_class_lists
     respond_to do |format|
-      format.csv {
-        headers['Content-Type'] = 'text/csv'
-        headers['Content-Disposition'] = 'attachment; filename="student_list_for_yearbook.csv"'
-        render layout: false
-      }
+      format.csv {send_data student_list_for_yearbook_csv}
+    end
+  end
+
+  private
+
+  def student_list_for_yearbook_csv
+    CSV.generate do |csv|
+      csv << ['Class', 'First Name', 'Last Name', 'Chinese Name', 'Gender']
+      @sorted_school_classes.each do |school_class|
+        @class_lists[school_class].each_with_index do |student, i|
+          row = []
+          row << school_class.short_name
+          row << student.english_first_name
+          row << student.english_last_name
+          row << student.chinese_name
+          row << student.gender
+          csv << row
+        end
+      end
     end
   end
 end
