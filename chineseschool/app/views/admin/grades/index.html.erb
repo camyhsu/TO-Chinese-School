@@ -1,0 +1,20 @@
+<% @title = 'Grades' %>
+
+<table border="1px">
+  <thead>
+    <tr>
+      <th>Chinese Name</th>
+      <th>English Name</th>
+      <th>Short Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @grades.each do |grade| -%>
+    <tr>
+      <td><%=h grade.chinese_name %></td>
+      <td><%=h grade.english_name %></td>
+      <td><%=h grade.short_name %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

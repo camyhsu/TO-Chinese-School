@@ -17,6 +17,7 @@ Chineseschool::Application.routes.draw do
   end
 
   namespace :admin do
+    get 'grades' => 'grades#index'
     get 'school_years' => 'school_years#index'
     get 'school_years/show' => 'school_years#show'
     match 'school_years/new' => 'school_years#new'
