@@ -18,6 +18,10 @@ Chineseschool::Application.routes.draw do
 
   namespace :admin do
     get 'grades' => 'grades#index'
+    get 'school_classes' => 'school_classes#index'
+    match 'school_classes/new' => 'school_classes#new'
+    match 'school_classes/edit' => 'school_classes#edit'
+    post 'school_classes/toggle_active' => 'school_classes#toggle_active'
     get 'school_years' => 'school_years#index'
     get 'school_years/show' => 'school_years#show'
     match 'school_years/new' => 'school_years#new'

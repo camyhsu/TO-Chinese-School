@@ -8,7 +8,10 @@ class SchoolClass < ActiveRecord::Base
   
   SCHOOL_CLASS_TYPES = [SCHOOL_CLASS_TYPE_SIMPLIFIED, SCHOOL_CLASS_TYPE_TRADITIONAL, 
     SCHOOL_CLASS_TYPE_MIXED, SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION, SCHOOL_CLASS_TYPE_ELECTIVE]
-  
+
+  attr_accessible :english_name, :chinese_name, :short_name, :description, :location,
+                  :school_class_type, :max_size, :min_age, :max_age
+
   belongs_to :grade
 
   has_many :school_class_active_flags

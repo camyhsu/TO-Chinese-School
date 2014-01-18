@@ -52,6 +52,14 @@ function removeInstructorAssignment(button, url) {
     });
 }
 
+function toggleSchoolClassActive(button, url, activeFlag, schoolYearId) {
+    var jRowElement = $(button).parent().parent();
+    jRowElement.effect('highlight', {}, 2000);
+    $.post(url, {active : activeFlag, school_year_id : schoolYearId}, function(data) {
+        jRowElement.html(data);
+    });
+}
+
 // Not called from HTML directly - used only by other scripts
 function setTableDataAndWireUpJQueryUi(jTableElement, data) {
     jTableElement.html(data);

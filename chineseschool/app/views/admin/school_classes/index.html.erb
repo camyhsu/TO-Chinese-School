@@ -1,0 +1,37 @@
+<% @title = 'All School Classes' %>
+
+<div>
+  <%= link_to 'Create New School Class', {action: :new}, {class: 'button'} %>
+</div>
+<br/>
+
+<table id="jquery-datatable" border="1px">
+  <thead>
+    <tr>
+      <th></th>
+      <th>English Name</th>
+      <th>Chinese Name</th>
+      <th>Short Name</th>
+      <th>Description</th>
+      <th>Location</th>
+      <th>Type</th>
+      <th>Maximum Size</th>
+      <th>Minimum Age</th>
+      <th>Maximum Age</th>
+      <th>Grade</th>
+      <th><%=h @current_school_year.name %> Active?</th>
+      <th></th>
+      <% unless @next_school_year.nil? %>
+      <th><%=h @next_school_year.name %> Active?</th>
+      <th></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_classes.each do |school_class| -%>
+    <tr>
+      <%= render partial: 'school_class', object: school_class, locals: {current_school_year: @current_school_year, next_school_year: @next_school_year} %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
