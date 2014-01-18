@@ -5,20 +5,22 @@ class Registration::StudentClassAssignmentsController < ApplicationController
 
 
   def list_by_grade
-    @grade = Grade.find_by_id params[:grade][:id]
-    render :layout => 'jquery_datatable'
+    @grade = Grade.find params[:grade][:id]
+    render layout: 'jquery_datatable'
   end
 
   def student_list_by_class
     @current_school_year = SchoolYear.current_school_year
     if params[:elective]
       retrieve_sorted_elective_class_lists
-      prawnto :filename => 'student_list_by_elective_class.pdf'
+      @filename = 'student_list_by_elective_class.pdf'
     else
       retrieve_sorted_class_lists
-      prawnto :filename => 'student_list_by_class.pdf'
+      @filename = 'student_list_by_class.pdf'
     end
-    render :layout => false
+    respond_to do |format|
+      format.pdf {render layout: false}
+    end
   end
 
   def list_active_students_by_name

@@ -1,9 +1,9 @@
 # encoding: utf-8
 
-prawn_document(filename: 'picture_taking_form.pdf') do |pdf|
+prawn_document(filename: @filename) do |pdf|
   pdf.font "#{Rails.root}/lib/data/fonts/ArialUnicode.ttf"
 
-  header = [ 'No', 'Student Name', 'Gender', 'Picture ID', 'Notes' ]
+  header = [ 'No', '姓名', 'First Name', 'Last Name' ]
 
   @sorted_school_classes.each do |school_class|
     pdf.font_size 16 do
@@ -14,26 +14,17 @@ prawn_document(filename: 'picture_taking_form.pdf') do |pdf|
 
     pdf.font_size 10 do
       instructor = school_class.current_primary_instructor
-      pdf.text "Teacher Name: #{instructor.name} 老師"
+      pdf.text "Teacher Name: #{instructor.try(:name)} 老師"
     end
-
-    pdf.move_up 10
-    pdf.font_size 10 do
-      pdf.text "Room Parent Name: #{school_class.current_room_parent_name}", align: :right
-    end
-
     pdf.move_down 10
-
-    one_twenty_spaces = ''.ljust 120, ' '
 
     data = [ header ]
     @class_lists[school_class].each_with_index do |student, i|
       row = []
       row << (i + 1)
-      row << student.name
-      row << student.gender
-      row << ''
-      row << one_twenty_spaces
+      row << student.chinese_name
+      row << student.english_first_name
+      row << student.english_last_name
       data << row
     end
 
