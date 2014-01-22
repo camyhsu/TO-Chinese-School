@@ -18,6 +18,7 @@ Chineseschool::Application.routes.draw do
 
   namespace :activity do
     get 'forms/fire_drill_form' => 'forms#fire_drill_form'
+    get 'forms/students_by_class' => 'forms#students_by_class'
   end
 
   namespace :admin do

@@ -11,7 +11,7 @@ class Communication::FormsController < ApplicationController
   def student_list_for_yearbook
     retrieve_sorted_class_lists
     respond_to do |format|
-      format.csv {send_data student_list_for_yearbook_csv}
+      format.csv {send_data student_list_for_yearbook_csv, type: 'text/csv'}
     end
   end
 
