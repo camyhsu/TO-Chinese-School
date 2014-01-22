@@ -16,6 +16,10 @@ Chineseschool::Application.routes.draw do
     get 'registration_report/registration_payments_by_date' => 'registration_report#registration_payments_by_date'
   end
 
+  namespace :activity do
+    get 'forms/fire_drill_form' => 'forms#fire_drill_form'
+  end
+
   namespace :admin do
     get 'grades' => 'grades#index'
     get 'school_classes' => 'school_classes#index'

@@ -9,7 +9,7 @@ class HomeController < ApplicationController
     @home_templates << 'principal' if principal_resources_enabled?
     @home_templates << 'registration_officer' if registration_resources_enabled?
     @home_templates << 'accounting_officer' if accounting_resources_enabled?
-    #@home_templates << 'activity_officer' if activity_resources_enabled?
+    @home_templates << 'activity_officer' if activity_resources_enabled?
     @home_templates << 'communication_officer' if communication_resources_enabled?
     @home_templates << 'instruction_officer' if instruction_resources_enabled?
     @home_templates << 'librarian' if librarian_resources_enabled?
