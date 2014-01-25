@@ -17,7 +17,9 @@ Chineseschool::Application.routes.draw do
   end
 
   namespace :activity do
+    get 'forms/elective_class_information' => 'forms#elective_class_information'
     get 'forms/fire_drill_form' => 'forms#fire_drill_form'
+    get 'forms/grade_class_information' => 'forms#grade_class_information'
     get 'forms/students_by_class' => 'forms#students_by_class'
   end
 

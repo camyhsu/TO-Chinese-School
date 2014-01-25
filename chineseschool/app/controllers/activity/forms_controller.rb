@@ -18,17 +18,17 @@ class Activity::FormsController < ApplicationController
   def grade_class_information
     @active_classes = SchoolClass.find_all_active_grade_classes
     @active_classes.sort! { |x, y| x.grade_id <=> y.grade_id }
-    headers["Content-Type"] = 'text/csv'
-    headers["Content-Disposition"] = 'attachment; filename="grade_class_information.csv"'
-    render :action => 'class_information', :layout => false
+    respond_to do |format|
+      format.csv {send_data class_info_csv, type: 'text/csv'}
+    end
   end
   
   def elective_class_information
     @active_classes = SchoolClass.find_all_active_elective_classes
     @active_classes.sort! { |x, y| x.english_name <=> y.english_name }
-    headers["Content-Type"] = 'text/csv'
-    headers["Content-Disposition"] = 'attachment; filename="elective_class_information.csv"'
-    render :action => 'class_information', :layout => false
+    respond_to do |format|
+      format.csv {send_data class_info_csv, type: 'text/csv'}
+    end
   end
 
   private
@@ -88,6 +88,25 @@ class Activity::FormsController < ApplicationController
       row << ''
     else
       row << field
+    end
+  end
+
+  def class_info_csv
+    CSV.generate do |csv|
+      csv << ['Chinese Name', 'English Name', 'Location', 'Student Count', 'Primary Instructor', 'Room Parent', 'Secondary Instructor', 'Teaching Assistant']
+      @active_classes.each do |school_class|
+        row = []
+        row << school_class.chinese_name
+        row << school_class.english_name
+        row << school_class.location
+        row << school_class.class_size
+        assignment_hash = school_class.current_instructor_assignments
+        row << assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].collect { |instructor| instructor.name }.join(';')
+        row << school_class.current_room_parent_name
+        row << assignment_hash[InstructorAssignment::ROLE_SECONDARY_INSTRUCTOR].collect { |instructor| instructor.name }.join(';')
+        row << assignment_hash[InstructorAssignment::ROLE_TEACHING_ASSISTANT].collect { |instructor| instructor.name }.join(';')
+        csv << row
+      end
     end
   end
 end
