@@ -104,14 +104,13 @@
                 <% elsif available_school_class_types.size == 1 %>
                   <!-- Show the only choice as text instead of a dropdown -->
                   <% school_class_type = available_school_class_types[0] %>
-                  <% if school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_MIXED %>
-                    <!-- the mixed type is the only type available -->
-                  <% else %>
+                  <% unless school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_MIXED %>
+                    <!-- do not display the mixed type if it is the only type available -->
                     <%= display_string_for school_class_type %>
                   <% end %>
                   <%= hidden_field_tag "#{student.id}_school_class_type", school_class_type %>
                 <% else %>
-                  <select name="<%= student.id %>_school_class_type[school_class_type]">
+                  <select name="<%= student.id %>_school_class_type">
                     <% available_school_class_types.each do |school_class_type| %>
                       <% if registration_preference.full_for? school_class_type %>
                         <option value="" disabled><%= display_string_for school_class_type %>&nbsp;(FULL)</option>

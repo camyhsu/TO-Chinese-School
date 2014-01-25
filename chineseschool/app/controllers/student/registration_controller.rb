@@ -140,7 +140,7 @@ class Student::RegistrationController < ApplicationController
         registration_preference = find_or_create_registration_preference_for student
         registration_preference.previous_grade_id = extract_previous_grade_id_from_params student.id
         registration_preference.grade_id = extract_grade_id_from_params student.id
-        registration_preference.school_class_type = extract_school_class_type_from_params student.id
+        registration_preference.school_class_type = params["#{student.id}_school_class_type".to_sym]
         registration_preference.elective_class_id = extract_elective_class_id_from_params student.id
         if registration_preference.save
           registration_preferences << registration_preference
@@ -171,13 +171,6 @@ class Student::RegistrationController < ApplicationController
     grade_id = params["#{student_id}_grade".to_sym]
     return nil if grade_id.blank?
     grade_id.to_i
-  end
-  
-  def extract_school_class_type_from_params(student_id)
-    school_class_type = params["#{student_id}_school_class_type".to_sym]
-    return nil if school_class_type.nil?
-    return school_class_type[:school_class_type] unless school_class_type[:school_class_type].nil?
-    school_class_type
   end
 
   def extract_elective_class_id_from_params(student_id)
