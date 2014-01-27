@@ -13,18 +13,19 @@
 <%= link_to 'Grade Class Information CSV', {controller: '/activity/forms', action: 'grade_class_information', format: 'csv'}, {class: 'button'} %>
 <%= link_to 'Elective Class Information CSV', {controller: '/activity/forms', action: 'elective_class_information', format: 'csv'}, {class: 'button'} %>
 <br/>
-<br/>
-<%= link_to 'Manage Track Events', {controller: '/activity/track_events'}, {class: 'button'} %>
-<br/>
-<br/>
-<%= link_to 'Assign Jersey Numbers', {controller: '/activity/track_events', action: 'assign_jersey_numbers'}, {class: 'button'} %>
-<br/>
-<br/>
-<%= link_to 'Download TOCS Track Event Lane Assignment Form', {controller: '/activity/track_events', action: 'tocs_lane_assignment_form', format: 'pdf'}, {class: 'button'} %>
-<br/>
-<br/>
-<%= link_to 'Download TOCS Track Event Data CSV', {controller: '/activity/track_events', action: 'tocs_track_event_data', format: 'csv'}, {class: 'button'} %>
-<br/>
-
+<% if PacificDate.today >= SchoolYear::TRACK_EVENT_SIGN_UP_START_DATE and PacificDate.today <= SchoolYear::TRACK_EVENT_DATE %>
+    <br/>
+    <%= link_to 'Manage Track Events', {controller: '/activity/track_events'}, {class: 'button'} %>
+    <br/>
+    <br/>
+    <%= link_to 'Assign Jersey Numbers', {controller: '/activity/track_events', action: 'assign_jersey_numbers'}, {class: 'button'} %>
+    <br/>
+    <br/>
+    <%= link_to 'Download TOCS Track Event Lane Assignment Form', {controller: '/activity/track_events', action: 'tocs_lane_assignment_form', format: 'pdf'}, {class: 'button'} %>
+    <br/>
+    <br/>
+    <%= link_to 'Download TOCS Track Event Data CSV', {controller: '/activity/track_events', action: 'tocs_track_event_data', format: 'csv'}, {class: 'button'} %>
+    <br/>
+<% end %>
 <br/>
 <hr/>
