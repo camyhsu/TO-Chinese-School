@@ -1,8 +1,8 @@
 class SchoolYear < ActiveRecord::Base
 
-  TRACK_EVENT_DATE = Date.parse('2013-03-16')
-  TRACK_EVENT_SIGN_UP_START_DATE = Date.parse('2013-02-02')
-  TRACK_EVENT_SIGN_UP_END_DATE = Date.parse('2013-02-23')
+  TRACK_EVENT_DATE = Date.parse('2014-03-29')
+  TRACK_EVENT_SIGN_UP_START_DATE = Date.parse('2014-02-28')
+  TRACK_EVENT_SIGN_UP_END_DATE = Date.parse('2014-03-20')
 
   attr_accessible :name, :description, :start_date, :end_date, :age_cutoff_month, :registration_fee,
                   :pre_registration_tuition, :tuition, :tuition_discount_for_three_or_more_child,
@@ -112,6 +112,10 @@ class SchoolYear < ActiveRecord::Base
   
   def school_has_started?
     PacificDate.today >= self.start_date
+  end
+
+  def start_year
+    self.start_date.year
   end
 
   private

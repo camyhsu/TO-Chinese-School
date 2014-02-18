@@ -1,0 +1,59 @@
+<% @title = 'Track Event Sign Up' %>
+
+<%= link_to 'Printable Form', {controller: '/activity/track_events', action: 'printable_sign_up_form', id: @school_class}, {class: 'button'} %>
+<br/>
+<br/>
+<div style="background-color:#7FFFD4;">千橡 Events (<%= SchoolYear::TRACK_EVENT_DATE.to_s %>)</div>
+<br/>
+
+<table class="track-event-sign-up" border="1px">
+  <thead>
+    <tr>
+      <th>Student Name</th>
+      <th>Gender</th>
+      <th>Birth Month</th>
+      <% @track_event_programs.each do |track_event_program| %>
+        <th style="<%= find_color_style(track_event_program) %>"><%=h track_event_program.name %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @regular_students.each do |student| -%>
+    <tr>
+      <%= render partial: 'student_sign_up', locals: {student: student, track_event_programs: @track_event_programs, school_class_id: @school_class.id} %>
+    </tr>
+    <% end %>
+    <% unless @older_students.empty? %>
+      <% @older_students.each do |student| -%>
+        <tr>
+            <%= render partial: 'parent_only_sign_up', locals: {student: student, track_event_programs: @track_event_programs, school_class_id: @school_class.id} %>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<% unless @older_students.empty? %>
+<h3>Student older than regular school age</h3>
+    <% @older_students.each do |student| -%>
+        <% track_event_programs = TrackEventProgram.find_by_school_age_for(student) %>
+        <table class="track-event-sign-up" border="1px">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Gender</th>
+                    <th>Birth Month</th>
+                    <% track_event_programs.each do |track_event_program| %>
+                        <th style="<%= find_color_style(track_event_program) %>"><%=h track_event_program.name %></th>
+                    <% end %>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <%= render partial: 'student_sign_up', locals: {student: student, track_event_programs: track_event_programs, school_class_id: @school_class.id} %>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+    <% end %>
+<% end %>

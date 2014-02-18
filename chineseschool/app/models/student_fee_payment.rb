@@ -45,7 +45,7 @@ class StudentFeePayment < ActiveRecord::Base
   end
 
   def apply_pre_k_discount(school_year, grade)
-    if Grade::GRADE_PRESCHOOL == grade
+    if Grade.grade_preschool == grade
       self.pre_k_discount = true
       self.tuition_in_cents -= school_year.tuition_discount_for_pre_k_in_cents
     end

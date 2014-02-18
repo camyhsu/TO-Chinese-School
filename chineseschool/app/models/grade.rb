@@ -1,7 +1,5 @@
 class Grade < ActiveRecord::Base
 
-  GRADE_PRESCHOOL = self.find_by_short_name 'Pre'
-
   belongs_to :next_grade, class_name: 'Grade', foreign_key: 'next_grade'
   has_one :previous_grade, class_name: 'Grade', foreign_key: 'next_grade'
 
@@ -36,7 +34,7 @@ class Grade < ActiveRecord::Base
 
   def below_first_grade?
     # Assuming only PreK and K are below first grade without checking the whole chain
-    return true if GRADE_PRESCHOOL == self or GRADE_PRESCHOOL.next_grade == self
+    return true if Grade.grade_preschool == self or Grade.grade_preschool.next_grade == self
     false
   end
 
@@ -102,11 +100,25 @@ class Grade < ActiveRecord::Base
     end
   end
 
+  def school_age
+    cursor = Grade.grade_preschool
+    school_age = 4
+    until cursor == self do
+      school_age += 1
+      cursor = cursor.next_grade
+    end
+    school_age
+  end
+
+
+  def self.grade_preschool
+    Grade.first conditions: ['short_name = ?', 'Pre']
+  end
 
   def self.find_by_school_age(school_age)
     return nil if school_age < 4
     # Currently defined lowest grade is PreK for age 4
-    grade = GRADE_PRESCHOOL
+    grade = Grade.grade_preschool
     (school_age - 4).times do
       grade = grade.next_grade unless grade.nil?
     end

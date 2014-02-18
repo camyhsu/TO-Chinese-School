@@ -43,9 +43,23 @@ class Person < ActiveRecord::Base
   
   def school_age_for(school_year)
     return nil if self.birth_year.blank? or self.birth_month.blank?
-    school_age = school_year.start_date.year - self.birth_year
+    school_age = school_year.start_year - self.birth_year
     return (school_age - 1) if school_year.age_cutoff_month <= self.birth_month
     school_age
+  end
+
+  def age_in_range_for_track_event?(grade)
+    # treat it as old age if no data
+    return 1 if self.birth_year.blank? or self.birth_month.blank?
+    age_difference = baseline_months(SchoolYear.current_school_year.start_year, SchoolYear.current_school_year.age_cutoff_month) -
+        baseline_months(self.birth_year, self.birth_month) - baseline_months(grade.school_age, 0)
+    if age_difference < 1
+      -1
+    elsif age_difference > 18
+      1
+    else
+      0
+    end
   end
 
   def is_a_child?
@@ -196,5 +210,11 @@ class Person < ActiveRecord::Base
     student_status_flag = student_status_flag_for SchoolYear.current_school_year
     return nil if (student_status_flag.nil? or !student_status_flag.registered?)
     student_status_flag.last_status_change_date
+  end
+
+  private
+
+  def baseline_months(year, month)
+    year * 12 + month
   end
 end

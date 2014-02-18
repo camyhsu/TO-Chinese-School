@@ -331,6 +331,7 @@ select {
 
 .track-event-sign-up td.select-parent {
     text-align: left;
+    width: 20em;
 }
 
 .book-charge-edit label {

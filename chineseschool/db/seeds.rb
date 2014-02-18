@@ -69,6 +69,7 @@ activity_track_events_printable_sign_up_form = Right.create(name: 'View Printabl
 activity_track_events_select_program = Right.create(name: 'Sign Up Student Track Event By Check Box', controller: 'activity/track_events', action: 'select_program')
 activity_track_events_select_relay_group = Right.create(name: 'Sign Up Student Relay Track Event By Select Relay Group', controller: 'activity/track_events', action: 'select_relay_group')
 activity_track_events_select_parent = Right.create(name: 'Sign Up Parent Track Event By Check Box', controller: 'activity/track_events', action: 'select_parent')
+activity_track_events_select_parent_relay_group = Right.create(name: 'Sign Up Parent Relay Track Event By Select Relay Group', controller: 'activity/track_events', action: 'select_parent_relay_group')
 activity_track_events_sign_up_result = Right.create(name: 'Sign Up Track Events Result', controller: 'activity/track_events', action: 'sign_up_result')
 activity_track_events_assign_jersey_numbers = Right.create(name: 'TOCS Track Event Assign Jersey Numbers', controller: 'activity/track_events', action: 'assign_jersey_numbers')
 activity_track_events_tocs_lane_assignment_form = Right.create(name: 'TOCS Track Event Lane Assignment Form', controller: 'activity/track_events', action: 'tocs_lane_assignment_form')
@@ -265,6 +266,7 @@ activity_officer.rights << activity_track_events_printable_sign_up_form
 activity_officer.rights << activity_track_events_select_program
 activity_officer.rights << activity_track_events_select_relay_group
 activity_officer.rights << activity_track_events_select_parent
+activity_officer.rights << activity_track_events_select_parent_relay_group
 activity_officer.rights << activity_track_events_assign_jersey_numbers
 activity_officer.rights << activity_track_events_tocs_lane_assignment_form
 activity_officer.rights << activity_track_events_tocs_track_event_data
@@ -316,6 +318,7 @@ instructor.rights << activity_track_events_printable_sign_up_form
 instructor.rights << activity_track_events_select_program
 instructor.rights << activity_track_events_select_relay_group
 instructor.rights << activity_track_events_select_parent
+instructor.rights << activity_track_events_select_parent_relay_group
 instructor.rights << activity_track_events_sign_up_result
 instructor.rights << library_book_read_only_view
 
@@ -330,6 +333,7 @@ room_parent.rights << activity_track_events_printable_sign_up_form
 room_parent.rights << activity_track_events_select_program
 room_parent.rights << activity_track_events_select_relay_group
 room_parent.rights << activity_track_events_select_parent
+room_parent.rights << activity_track_events_select_parent_relay_group
 room_parent.rights << activity_track_events_sign_up_result
 
 

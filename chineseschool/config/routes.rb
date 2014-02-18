@@ -21,6 +21,14 @@ Chineseschool::Application.routes.draw do
     get 'forms/fire_drill_form' => 'forms#fire_drill_form'
     get 'forms/grade_class_information' => 'forms#grade_class_information'
     get 'forms/students_by_class' => 'forms#students_by_class'
+
+    get 'track_events' => 'track_events#index'
+    get 'track_events/sign_up' => 'track_events#sign_up'
+
+    post 'track_events/select_program' => 'track_events#select_program'
+    post 'track_events/select_relay_group' => 'track_events#select_relay_group'
+    post 'track_events/select_parent' => 'track_events#select_parent'
+    post 'track_events/select_parent_relay_group' => 'track_events#select_parent_relay_group'
   end
 
   namespace :admin do
