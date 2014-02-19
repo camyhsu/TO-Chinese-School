@@ -15,6 +15,30 @@ module Activity::TrackEventsHelper
     return 'background-color:#B0E0E6;' if track_event_program.event_type == TrackEventProgram::EVENT_TYPE_SOUTHERN_CA
     ''
   end
+
+  def pdf_create_draft_header_for(track_event_programs)
+    header = ['Student Name', 'Gender', 'Birth Month']
+    track_event_programs.each do |track_event_program|
+      header << track_event_program.name
+    end
+    header
+  end
+
+  def pdf_create_draft_row_for(student, track_event_programs)
+    row = []
+    row << student.name
+    row << student.gender
+    row << student.birth_info
+    track_event_programs.size.times { row << '' }
+    row
+  end
+
+  def pdf_calculate_column_widths_for(track_event_programs)
+    column_widths = [100, 50, 50]
+    program_width = (720 - 100 - 50 - 50) / track_event_programs.size
+    track_event_programs.size.times { column_widths << program_width }
+    column_widths
+  end
   
   def display_sign_up_result_based_on_program_type(track_event_program, student_id, school_class_id, existing_signups)
     output = ''

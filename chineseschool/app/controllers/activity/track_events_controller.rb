@@ -34,6 +34,11 @@ class Activity::TrackEventsController < ApplicationController
         @regular_students << student
       end
     end
+
+    respond_to do |format|
+      format.html
+      format.pdf {render layout: false}
+    end
   end
   
   def sign_up_result
@@ -45,18 +50,6 @@ class Activity::TrackEventsController < ApplicationController
     end
     @school_class = SchoolClass.find requested_school_class_id
     @track_event_programs = TrackEventProgram.find_by_grade @school_class.grade
-  end
-  
-  def printable_sign_up_form
-    requested_school_class_id = params[:id].to_i
-    unless instructor_assignment_verified? requested_school_class_id
-      flash[:notice] = 'Access to requested track event sign up form not authorized'
-      redirect_to controller: '/home'
-      return
-    end
-    @school_class = SchoolClass.find requested_school_class_id
-    @track_event_programs = TrackEventProgram.find_by_grade @school_class.grade
-    render :layout => 'ajax_layout'
   end
   
   def select_program

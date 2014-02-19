@@ -1,6 +1,6 @@
 <% @title = 'Track Event Sign Up' %>
 
-<%= link_to 'Printable Form', {controller: '/activity/track_events', action: 'printable_sign_up_form', id: @school_class}, {class: 'button'} %>
+<%= link_to 'Printable Draft Form', {controller: '/activity/track_events', action: 'sign_up', id: @school_class, format: 'pdf'}, {class: 'button'} %>
 <br/>
 <br/>
 <div style="background-color:#7FFFD4;">千橡 Events (<%= SchoolYear::TRACK_EVENT_DATE.to_s %>)</div>
