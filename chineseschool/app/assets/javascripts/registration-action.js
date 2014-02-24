@@ -5,8 +5,9 @@ $(function() {
 function registrationSelectGrade(selectElement, url, studentId) {
     var jSelectElement = $(selectElement);
     var selectedGradeId = jSelectElement.children('option:selected').attr('value');
+    jSelectElement.attr("disabled", true);
     var jTableElement = jSelectElement.parent().parent().parent();
-    jTableElement.effect('highlight', {}, 2000);
+    //jTableElement.effect('highlight', {}, 2000);
     $.post(url, {selected_grade_id : selectedGradeId, student_id : studentId}, function(data) {
         jTableElement.html(data);
     });
@@ -15,8 +16,9 @@ function registrationSelectGrade(selectElement, url, studentId) {
 function registrationSelectClass(selectElement, url) {
     var jSelectElement = $(selectElement);
     var selectedClassId = jSelectElement.children('option:selected').attr('value');
+    jSelectElement.attr("disabled", true);
     var jTableElement = jSelectElement.parent().parent().parent();
-    jTableElement.effect('highlight', {}, 2000);
+    //jTableElement.effect('highlight', {}, 2000);
     $.post(url, {selected_class_id : selectedClassId}, function(data) {
         setTableDataAndWireUpJQueryUi(jTableElement, data);
     });
@@ -26,7 +28,7 @@ function selectAssignmentDate(textFieldElement, url) {
     var jTextFieldElement = $(textFieldElement);
     var selectedDateString = jTextFieldElement.attr('value');
     var jTableElement = jTextFieldElement.parent().parent().parent();
-    jTableElement.effect('highlight', {}, 2000);
+    //jTableElement.effect('highlight', {}, 2000);
     $.post(url, {selected_date_string : selectedDateString}, function(data) {
         setTableDataAndWireUpJQueryUi(jTableElement, data);
     });
@@ -35,16 +37,19 @@ function selectAssignmentDate(textFieldElement, url) {
 function selectInstructorRole(selectElement, url) {
     var jSelectElement = $(selectElement);
     var selectedRole = jSelectElement.children('option:selected').attr('value');
+    jSelectElement.attr("disabled", true);
     var jTableElement = jSelectElement.parent().parent().parent();
-    jTableElement.effect('highlight', {}, 2000);
+    //jTableElement.effect('highlight', {}, 2000);
     $.post(url, {selected_role : selectedRole}, function(data) {
         setTableDataAndWireUpJQueryUi(jTableElement, data);
     });
 }
 
 function removeInstructorAssignment(button, url) {
-    var jTableElement = $(button).parent().parent().parent();
-    jTableElement.effect('highlight', {}, 2000);
+    var jButtonElement = $(button);
+    jButtonElement.attr("disabled", true);
+    var jTableElement = jButtonElement.parent().parent().parent();
+    //jTableElement.effect('highlight', {}, 2000);
     $.post(url, function(data) {
         if (data == "destroy_successful") {
             jTableElement.remove();
@@ -53,8 +58,10 @@ function removeInstructorAssignment(button, url) {
 }
 
 function toggleSchoolClassActive(button, url, activeFlag, schoolYearId) {
-    var jRowElement = $(button).parent().parent();
-    jRowElement.effect('highlight', {}, 2000);
+    var jButtonElement = $(button);
+    jButtonElement.attr("disabled", true);
+    var jRowElement = jButtonElement.parent().parent();
+    //jRowElement.effect('highlight', {}, 2000);
     $.post(url, {active : activeFlag, school_year_id : schoolYearId}, function(data) {
         jRowElement.html(data);
     });
