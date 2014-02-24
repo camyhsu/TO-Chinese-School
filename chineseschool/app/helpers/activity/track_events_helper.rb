@@ -16,6 +16,13 @@ module Activity::TrackEventsHelper
     ''
   end
 
+  def find_gender_color(track_event_program, participant)
+    return '' if track_event_program.mixed_gender?
+    return 'background-color:#ADE7FF;' if participant.gender == 'M'
+    return 'background-color:#FDC5FF;' if participant.gender == 'F'
+    ''
+  end
+
   def pdf_create_draft_header_for(track_event_programs)
     header = ['Student Name', 'Gender', 'Birth Month']
     track_event_programs.each do |track_event_program|
