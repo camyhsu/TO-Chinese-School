@@ -4,6 +4,8 @@
 <br/>
 <br/>
 <div style="background-color:#7FFFD4;">千橡 Events (<%= SchoolYear::TRACK_EVENT_DATE.to_s %>)</div>
+<div style="background-color:#ADE7FF;">Boy / Dad</div>
+<div style="background-color:#FDC5FF;">Girl / Mom</div>
 <br/>
 
 <table class="track-event-sign-up" border="1px">
@@ -34,7 +36,7 @@
 </table>
 
 <% unless @older_students.empty? %>
-<h3>Student older than regular school age</h3>
+<h3>Student promoted to associated grade by age</h3>
     <% @older_students.each do |student| -%>
         <% track_event_programs = TrackEventProgram.find_by_school_age_for(student) %>
         <table class="track-event-sign-up" border="1px">

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130811214832) do
+ActiveRecord::Schema.define(:version => 20140224035929) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -312,6 +312,7 @@ ActiveRecord::Schema.define(:version => 20130811214832) do
     t.datetime "updated_at"
     t.integer  "relay_team_size"
     t.integer  "sort_key"
+    t.boolean  "mixed_gender",    :default => false, :null => false
   end
 
   create_table "track_event_signups", :force => true do |t|

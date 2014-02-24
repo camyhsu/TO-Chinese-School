@@ -6,7 +6,11 @@
   <% if (track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) || (track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY) %>
     <td class="select-parent">
     <% Person.find(student.id).find_parents.each do |parent| %>
-      <div>
+      <% if parent.gender == 'M' %>
+      <div style="background-color:#ADE7FF;">
+      <% else %>
+      <div style="background-color:#FDC5FF;">
+      <% end %>
         <% signup_found = existing_signups.detect { |existing_signup| (existing_signup.track_event_program.id == track_event_program.id) && (existing_signup.parent_id == parent.id) } %>
         <%= render partial: 'parent_track_event_signup', locals: {track_event_program: track_event_program, student: student, parent: parent, school_class_id: school_class_id, existing_signup: signup_found} %>
       </div>

@@ -17,7 +17,7 @@ prawn_document(filename: 'track_and_field_sign_up.pdf', page_layout: :landscape)
       # Black out cell for individual student programs for older students
       cells.style do |cell|
         if (cell.row > regular_student_count) && (cell.column > 2) && (cell.column < 3 + student_program_count)
-          cell.background_color = '000000'
+          cell.background_color = 'cccccc'
         end
       end
     end
