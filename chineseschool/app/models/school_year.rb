@@ -1,6 +1,7 @@
 class SchoolYear < ActiveRecord::Base
 
   TRACK_EVENT_DATE = Date.parse('2014-03-29')
+  TRACK_EVENT_SIGN_UP_PREVIEW_START_DATE = Date.parse('2014-02-23')
   TRACK_EVENT_SIGN_UP_START_DATE = Date.parse('2014-02-25')
   TRACK_EVENT_SIGN_UP_END_DATE = Date.parse('2014-03-11')
 
