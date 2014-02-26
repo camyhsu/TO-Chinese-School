@@ -3,7 +3,6 @@
 <%= link_to 'Printable Draft Form', {controller: '/activity/track_events', action: 'sign_up', id: @school_class, format: 'pdf'}, {class: 'button'} %>
 <br/>
 <br/>
-<div style="background-color:#7FFFD4;">千橡 Events (<%= SchoolYear::TRACK_EVENT_DATE.to_s %>)</div>
 <div style="background-color:#ADE7FF;">Boy / Dad</div>
 <div style="background-color:#FDC5FF;">Girl / Mom</div>
 <br/>
@@ -15,7 +14,7 @@
       <th>Gender</th>
       <th>Birth Month</th>
       <% @track_event_programs.each do |track_event_program| %>
-        <th style="<%= find_color_style(track_event_program) %>"><%=h track_event_program.name %></th>
+        <th><%=h track_event_program.name %></th>
       <% end %>
     </tr>
   </thead>
@@ -46,7 +45,7 @@
                     <th>Gender</th>
                     <th>Birth Month</th>
                     <% track_event_programs.each do |track_event_program| %>
-                        <th style="<%= find_color_style(track_event_program) %>"><%=h track_event_program.name %></th>
+                        <th><%=h track_event_program.name %></th>
                     <% end %>
                 </tr>
             </thead>

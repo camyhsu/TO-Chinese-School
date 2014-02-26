@@ -9,13 +9,6 @@ module Activity::TrackEventsHelper
     signup_found.group_name unless signup_found.nil?
   end
 
-  
-  def find_color_style(track_event_program)
-    return 'background-color:#7FFFD4;' if track_event_program.event_type == TrackEventProgram::EVENT_TYPE_TOCS
-    return 'background-color:#B0E0E6;' if track_event_program.event_type == TrackEventProgram::EVENT_TYPE_SOUTHERN_CA
-    ''
-  end
-
   def find_gender_color(track_event_program, participant)
     return '' if track_event_program.mixed_gender?
     return 'background-color:#ADE7FF;' if participant.gender == 'M'
