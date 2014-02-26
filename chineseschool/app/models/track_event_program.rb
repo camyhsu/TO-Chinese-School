@@ -33,7 +33,9 @@ class TrackEventProgram < ActiveRecord::Base
   end
 
   def self.find_by_school_age_for(student)
-    programs = TrackEventProgram.find_by_grade(Grade.find_by_school_age(student.school_age_for(SchoolYear.current_school_year)))
+    age_based_grade = Grade.find_by_school_age(student.school_age_for SchoolYear.current_school_year)
+    age_based_grade = age_based_grade.snap_down_to_first_active_grade(SchoolYear.current_school_year)
+    programs = TrackEventProgram.find_by_grade(age_based_grade)
     # This method would be called only for age-based movement of programs
     # There is a specific rule of only showing student individual programs as allowed sign-up
     programs.select {|program| program.program_type == PROGRAM_TYPE_STUDENT}
