@@ -35,9 +35,10 @@
 </table>
 
 <% unless @older_students.empty? %>
-<h3>Student promoted to associated grade by age</h3>
+    <br/><br/>
     <% @older_students.each do |student| -%>
         <% track_event_programs = TrackEventProgram.find_by_school_age_for(student) %>
+        <b>The following student is prompted to <%= track_event_programs[0].grade.name %></b>
         <table class="track-event-sign-up" border="1px">
             <thead>
                 <tr>

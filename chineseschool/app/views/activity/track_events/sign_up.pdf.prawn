@@ -25,13 +25,14 @@ prawn_document(filename: 'track_and_field_sign_up.pdf', page_layout: :landscape)
 
   unless @older_students.empty?
     pdf.move_down 30
-    pdf.font_size 14 do
-      pdf.text 'Student older than regular school age'
-    end
 
     @older_students.each do |student|
       pdf.move_down 14
       track_event_programs = TrackEventProgram.find_by_school_age_for student
+
+      pdf.font_size 10 do
+        pdf.text "The following student is prompted to #{track_event_programs[0].grade.name}"
+      end
 
       data = [ pdf_create_draft_header_for(track_event_programs) ]
       data << pdf_create_draft_row_for(student, track_event_programs)
