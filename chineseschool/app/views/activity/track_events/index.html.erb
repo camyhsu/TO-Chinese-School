@@ -1,5 +1,6 @@
 <% @title = 'Manage Track Events' %>
 
+<%- total_signup_student_count = 0 -%>
 <table border="1px">
   <thead>
     <tr>
@@ -20,7 +21,9 @@
       <td><%=h active_grade_class.location %></td>
       <td><%=h active_grade_class.current_primary_instructor.try(:name) %></td>
       <td><%=h active_grade_class.current_room_parent_name %></td>
-      <td><%= active_grade_class.track_event_signup_student_count %></td>
+      <%- signup_student_count = active_grade_class.track_event_signup_student_count -%>
+      <td><%= signup_student_count %></td>
+      <%- total_signup_student_count += signup_student_count -%>
       <td>
         <%= link_to 'Sign Up', {controller: '/activity/track_events', action: 'sign_up', id: active_grade_class}, {class: 'button'} %>
       </td>
@@ -28,3 +31,5 @@
     <% end %>
   </tbody>
 </table>
+
+<b>Total sign-up student count : <%= total_signup_student_count %></b>
