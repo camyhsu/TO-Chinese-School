@@ -38,7 +38,7 @@ class TrackEventProgram < ActiveRecord::Base
     programs = TrackEventProgram.find_by_grade(age_based_grade)
     # This method would be called only for age-based movement of programs
     # There is a specific rule of only showing student individual programs as allowed sign-up
-    programs.select {|program| program.program_type == PROGRAM_TYPE_STUDENT}
+    programs.select {|program| (program.program_type == PROGRAM_TYPE_STUDENT) && (!program.name.start_with?('Tug'))}
   end
   
   def self.find_tocs_programs_group_by_sort_keys(school_year=SchoolYear.current_school_year)
