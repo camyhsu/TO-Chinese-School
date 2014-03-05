@@ -50,6 +50,19 @@ class Activity::TrackEventsController < ApplicationController
     end
     @school_class = SchoolClass.find requested_school_class_id
     @track_event_programs = TrackEventProgram.find_by_grade @school_class.grade
+
+    # Split students into 3 groups based on age
+    # On 2014-02-01, activity team decided that we do not separate younger students in 2014
+    @regular_students = []
+    @older_students = []
+    @school_class.students.each do |student|
+      indicator = student.age_in_range_for_track_event? @school_class.grade
+      if indicator > 0
+        @older_students << student
+      else
+        @regular_students << student
+      end
+    end
   end
   
   def select_program

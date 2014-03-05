@@ -1,0 +1,29 @@
+<% existing_signups = student.find_all_track_event_signups_as_students %>
+<td><%=h student.name %></td>
+<td><%=h student.gender %></td>
+<td><%=h student.birth_info %></td>
+<% track_event_programs.each do |track_event_program| %>
+    <% if (track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) || (track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY) %>
+        <td class="select-parent">
+          <% student.find_parents.each do |parent| %>
+              <div style="<%= find_gender_color(track_event_program, parent) %>">
+                <% signup_found = existing_signups.detect { |existing_signup| (existing_signup.track_event_program.id == track_event_program.id) && (existing_signup.parent_id == parent.id) } %>
+                <% if track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT %>
+                    <input type="checkbox" <%= signup_found.nil? ? '' : 'checked' %> disabled="true">&nbsp;<%=h parent.name %>
+                <% else %>
+                    <%= find_relay_team_name(signup_found) %>&nbsp;<%=h parent.name %>
+                <% end %>
+              </div>
+          <% end %>
+        </td>
+    <% else %>
+        <td style="<%= find_gender_color(track_event_program, student) %>">
+          <% signup_found = existing_signups.detect { |existing_signup| existing_signup.track_event_program.id == track_event_program.id } %>
+          <% if track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT %>
+            <input type="checkbox" <%= signup_found.nil? ? '' : 'checked' %> disabled="true">
+          <% else %>
+            <%= find_relay_team_name(signup_found) %>
+          <% end %>
+        </td>
+    <% end %>
+<% end %>
