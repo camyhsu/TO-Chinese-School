@@ -187,8 +187,9 @@ class Activity::TrackEventsController < ApplicationController
       @lane_assignment_blocks << create_lane_assignment_blocks(tocs_program_groups[sort_key])
     end
     @lane_assignment_blocks = @lane_assignment_blocks.flatten.uniq.compact
-    prawnto :filename => 'lane_assignment_forms.pdf'
-    render :layout => false
+    respond_to do |format|
+      format.pdf {render layout: false}
+    end
   end
   
   def tocs_track_event_data
@@ -247,7 +248,7 @@ class Activity::TrackEventsController < ApplicationController
     elsif (sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT) or (sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT)
       create_lane_assignment_blocks_for_individual_program track_event_signups, sample_program
     elsif sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
-      if sample_program.relay_team_size > 7
+      if sample_program.mixed_gender?
         create_lane_assignment_blocks_for_unisex_student_relay_program track_event_signups, sample_program
       else
         create_lane_assignment_blocks_for_student_relay_program track_event_signups, sample_program
