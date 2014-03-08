@@ -24,6 +24,7 @@ Chineseschool::Application.routes.draw do
 
     get 'track_events' => 'track_events#index'
     get 'track_events/sign_up' => 'track_events#sign_up'
+    get 'track_events/assign_jersey_numbers' => 'track_events#assign_jersey_numbers'
 
     post 'track_events/select_program' => 'track_events#select_program'
     post 'track_events/select_relay_group' => 'track_events#select_relay_group'
