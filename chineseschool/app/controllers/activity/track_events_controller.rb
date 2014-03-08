@@ -193,9 +193,9 @@ class Activity::TrackEventsController < ApplicationController
   
   def tocs_track_event_data
     @track_event_signups = TrackEventSignup.find_tocs_track_event_signups
-    headers["Content-Type"] = 'text/csv'
-    headers["Content-Disposition"] = 'attachment; filename="tocs_track_event_data.csv"'
-    render :layout => false
+    respond_to do |format|
+      format.csv {send_data tocs_track_event_data_csv, type: 'text/csv'}
+    end
   end
   
   
@@ -205,6 +205,30 @@ class Activity::TrackEventsController < ApplicationController
     @user.roles.any? do |role|
       role.name == Role::ROLE_NAME_SUPER_USER or 
       role.name == Role::ROLE_NAME_ACTIVITY_OFFICER
+    end
+  end
+
+  def tocs_track_event_data_csv
+    CSV.generate do |csv|
+      csv << ['Student Chinese Name', 'Student English First Name', 'Student English Last Name', 'Gender', 'Birth Month', 'School Class Name', 'Location', 'Jersey Number', 'Program Name', 'Program Sort Key', 'Parent Name', 'Relay Team Group']
+      @track_event_signups.each do |track_event_signup|
+        row = []
+        student = track_event_signup.student
+        row << student.chinese_name
+        row << student.english_first_name
+        row << student.english_last_name
+        row << student.gender
+        row << student.birth_info
+        school_class = student.student_class_assignment_for(SchoolYear.current_school_year).school_class
+        row << school_class.name
+        row << school_class.location
+        row << JerseyNumber.find_jersey_number_for(student)
+        row << track_event_signup.track_event_program.name
+        row << track_event_signup.track_event_program.sort_key
+        row << track_event_signup.parent.try(:name)
+        row << track_event_signup.group_name
+        csv << row
+      end
     end
   end
   
