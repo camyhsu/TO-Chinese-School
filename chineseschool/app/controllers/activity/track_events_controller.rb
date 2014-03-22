@@ -241,8 +241,6 @@ class Activity::TrackEventsController < ApplicationController
     
     # All programs in the same group should have the same type and name
     sample_program = tocs_programs[0]
-    puts sample_program.name
-    puts track_event_signups.inspect
     if sample_program.name.start_with? 'Tug'
       create_lane_assignment_blocks_for_tug_of_war track_event_signups, sample_program
     elsif (sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT) or (sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT)
