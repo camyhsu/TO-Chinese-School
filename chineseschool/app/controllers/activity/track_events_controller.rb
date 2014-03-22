@@ -211,7 +211,7 @@ class Activity::TrackEventsController < ApplicationController
 
   def tocs_track_event_data_csv
     CSV.generate do |csv|
-      csv << ['Student Chinese Name', 'Student English First Name', 'Student English Last Name', 'Gender', 'Birth Month', 'School Class Name', 'Location', 'Jersey Number', 'Program Name', 'Program Sort Key', 'Parent Name', 'Relay Team Group']
+      csv << ['Student Chinese Name','Student English First Name','Student English Last Name','Gender','Birth Month','School Class Name','Location','Jersey Number','Program ID','Program Name','Program Sort Key','Parent Name','Relay Team Group']
       @track_event_signups.each do |track_event_signup|
         row = []
         student = track_event_signup.student
@@ -224,6 +224,7 @@ class Activity::TrackEventsController < ApplicationController
         row << school_class.name
         row << school_class.location
         row << JerseyNumber.find_jersey_number_for(student)
+        row << track_event_signup.track_event_program.id
         row << track_event_signup.track_event_program.name
         row << track_event_signup.track_event_program.sort_key
         row << track_event_signup.parent.try(:name)
