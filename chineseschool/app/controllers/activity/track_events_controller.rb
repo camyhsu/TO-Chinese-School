@@ -293,8 +293,9 @@ class Activity::TrackEventsController < ApplicationController
     sorted_track_event_signups = track_event_signups.sort do |a, b|
       school_class_a = a.student.student_class_assignment_for(SchoolYear.current_school_year).school_class
       school_class_b = b.student.student_class_assignment_for(SchoolYear.current_school_year).school_class
-      grade_order = school_class_a.grade_id <=> school_class_b.grade_id
-      if grade_order == 0
+      # This sorting relies on track event program ids go from low to high following grades from low to high
+      program_order = a.track_event_program.id <=> b.track_event_program.id
+      if program_order == 0
         class_order = school_class_a.short_name <=> school_class_b.short_name
         if class_order == 0
           last_name_order = a.student.english_last_name <=> b.student.english_last_name
@@ -307,7 +308,7 @@ class Activity::TrackEventsController < ApplicationController
           class_order
         end
       else
-        grade_order
+        program_order
       end
     end
 

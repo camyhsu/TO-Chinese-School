@@ -74,7 +74,13 @@ class LaneAssignmentBlock
   
   def school_class_name_row
     row = []
-    @lane_assignments.each { |lane_assignment| row << lane_assignment.school_class.short_name }
+    @lane_assignments.each do |lane_assignment|
+      if lane_assignment.moved_to_grade.nil?
+        row << lane_assignment.school_class.short_name
+      else
+        row << "#{lane_assignment.school_class.short_name} => #{lane_assignment.moved_to_grade.short_name}"
+      end
+    end
     fill_rest_of_row_with_empty_string(row)
     row
   end
@@ -164,6 +170,10 @@ class LaneAssignmentBlock
     lane_assignment.english_name = student.english_name
     lane_assignment.school_class = student.student_class_assignment_for(SchoolYear.current_school_year).school_class
     lane_assignment.jersey_number = JerseyNumber.find_jersey_number_for student
+    # Check if this is a prompted student
+    if lane_assignment.school_class.grade != track_event_signup.track_event_program.grade
+      lane_assignment.moved_to_grade = track_event_signup.track_event_program.grade
+    end
     @lane_assignments << lane_assignment
   end
   
@@ -260,7 +270,7 @@ class LaneAssignmentBlock
   end
 
   class IndividualLaneAssignment
-    attr_accessor :chinese_name, :english_name, :school_class, :jersey_number
+    attr_accessor :chinese_name, :english_name, :school_class, :jersey_number, :moved_to_grade
   end
 
   class RelayTeamLaneAssignment
