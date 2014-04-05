@@ -1,0 +1,80 @@
+
+person_one:
+  id: 1001
+  english_last_name: Smith
+  english_first_name: First
+  chinese_name: 
+  gender: M
+  birth_year: 1999
+  birth_month: 1
+  native_language: 
+
+person_two:
+  id: 1002
+  english_last_name: Second
+  english_first_name: 
+  chinese_name: 
+  gender: F
+  birth_year: 2003
+  birth_month: 3
+  native_language: 
+
+person_three:
+  id: 1003
+  english_last_name: Person
+  english_first_name: Third
+  chinese_name:
+  gender: F
+  birth_year: 2005
+  birth_month: 5
+  native_language:
+
+person_four:
+  id: 1004
+  english_last_name: Person
+  english_first_name: Four
+  chinese_name:
+  gender: M
+  birth_year: 1968
+  birth_month: 4
+  native_language:
+
+person_five:
+  id: 1005
+  english_last_name: Person
+  english_first_name: Five
+  chinese_name:
+  gender: F
+  birth_year: 1969
+  birth_month: 5
+  native_language:
+
+person_six:
+  id: 1006
+  english_last_name: Person
+  english_first_name: Six
+  chinese_name:
+  gender: F
+  birth_year: 2001
+  birth_month: 5
+  native_language:
+
+person_with_only_first_name:
+  id: 1233
+  english_last_name: 
+  english_first_name: First Only
+  chinese_name:
+  gender: M
+  birth_year: 1999
+  birth_month: 1
+  native_language:
+
+person_with_chinese_name:
+  id: 1234
+  english_last_name: Person
+  english_first_name: Chinese
+  chinese_name: 蔣光燦
+  gender: M
+  birth_year: 1983
+  birth_month: 11
+  native_language:

@@ -1,0 +1,104 @@
+
+first_grade_class_a:
+  id: 1
+  english_name: 1st Grade
+  chinese_name: 一年級
+  short_name: 1A
+  description: 1st Grade
+  location: F-10*
+  school_class_type: T
+  max_size: 4
+  min_age: 0
+  max_age: 0
+  grade_id: 3
+
+first_grade_class_b:
+  id: 2
+  english_name: 1st B
+  chinese_name: 一年級 B
+  short_name: 1B
+  description: 1st Grade Class B
+  location: F-11*
+  school_class_type: S
+  max_size: 4
+  min_age: 0
+  max_age: 0
+  grade_id: 3
+
+first_grade_class_c:
+  id: 8
+  english_name: 1st C
+  chinese_name: 一年級 C
+  short_name: 1C
+  description: 1st Grade Class C
+  location: F-12*
+  school_class_type: SE
+  max_size: 4
+  min_age: 0
+  max_age: 0
+  grade_id: 3
+
+first_grade_class_inactive:
+  id: 3
+  english_name: 1st F
+  chinese_name: 一年級 F
+  short_name: 1F
+  description: 1st Grade Class F Inactive
+  location: F-11*
+  school_class_type: S
+  max_size: 0
+  min_age: 0
+  max_age: 0
+  grade_id: 3
+
+chinese_history_one:
+  id: 4
+  english_name: Chinese Culture and History I
+  chinese_name: 中國歷史研討（初）
+  short_name: 
+  description: Chinese Culture and History I
+  location: I-9
+  school_class_type: ELECTIVE
+  max_size: 3
+  min_age: 10
+  max_age: 15
+  grade_id:
+
+second_grade:
+  id: 5
+  english_name: 2nd Grade
+  chinese_name: 二年級
+  short_name: 2A
+  description: 2nd Grade A
+  location: F-12*
+  school_class_type: T
+  max_size: 0
+  min_age: 0
+  max_age: 0
+  grade_id: 4
+
+chinese_history_two:
+  id: 6
+  english_name: Chinese Culture and History II
+  chinese_name: 中國歷史研討（中）
+  short_name:
+  description: Chinese Culture and History II
+  location: I-10
+  school_class_type: ELECTIVE
+  max_size: 3
+  min_age: 10
+  max_age: 15
+  grade_id:
+
+chinese_history_full:
+  id: 7
+  english_name: Chinese Culture and History III
+  chinese_name: 中國歷史研討（高）
+  short_name:
+  description: Chinese Culture and History III
+  location: I-10
+  school_class_type: ELECTIVE
+  max_size: 0
+  min_age: 10
+  max_age: 15
+  grade_id:

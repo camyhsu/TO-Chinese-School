@@ -1,0 +1,55 @@
+
+2008_first_grade__class_a_active:
+  school_class_id: 1
+  school_year_id: 1
+  active: true
+
+2008_first_grade_class_b_active:
+  school_class_id: 2
+  school_year_id: 1
+  active: true
+
+2008_first_grade_class_c_active:
+  school_class_id: 8
+  school_year_id: 1
+  active: true
+
+2008_first_grade_class_inactive:
+  school_class_id: 3
+  school_year_id: 1
+  active: false
+
+2008_second_grade_active:
+  school_class_id: 5
+  school_year_id: 1
+  active: true
+
+2008_chinese_history_one_inactive:
+  school_class_id: 4
+  school_year_id: 1
+  active: false
+
+2008_chinese_history_two_active:
+  school_class_id: 6
+  school_year_id: 1
+  active: true
+
+2009_first_grade_class_b_inactive:
+  school_class_id: 2
+  school_year_id: 2
+  active: false
+
+2009_chinese_history_one_active:
+  school_class_id: 4
+  school_year_id: 2
+  active: true
+
+2009_chinese_history_two_inactive:
+  school_class_id: 6
+  school_year_id: 2
+  active: false
+
+2009_chinese_history_full_active:
+  school_class_id: 7
+  school_year_id: 2
+  active: true
