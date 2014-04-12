@@ -38,7 +38,7 @@ describe Grade do
   end
 end
 
-describe Grade, 'finding active grade classes' do
+describe Grade, '#active_grade_classes' do
   fixtures :grades, :school_classes, :school_class_active_flags
 
   it 'should find active grade classes belonging to this grade' do
@@ -52,7 +52,7 @@ describe Grade, 'finding active grade classes' do
   end
 end
 
-describe Grade, 'checking if having active school classes in a school year' do
+describe Grade, '#has_active_grade_classes_in?' do
   fixtures :grades, :school_classes, :school_class_active_flags
 
   before(:each) do
@@ -74,7 +74,7 @@ describe Grade, 'checking if having active school classes in a school year' do
   end
 end
 
-describe Grade, 'snapping down to the first active grade' do
+describe Grade, '#snap_down_to_first_active_grade' do
   fixtures :grades, :school_classes, :school_class_active_flags
 
   before(:each) do
@@ -91,7 +91,7 @@ describe Grade, 'snapping down to the first active grade' do
   end
 end
 
-describe Grade, 'checking if a grade is below first grade' do
+describe Grade, '#below_first_grade?' do
   fixtures :grades
   
   it 'should return true for PreK' do
@@ -109,7 +109,7 @@ describe Grade, 'checking if a grade is below first grade' do
   end
 end
 
-describe Grade, 'finding grade by school age' do
+describe Grade, '.find_by_school_age' do
   fixtures :grades
 
   # This spec does not cover all cases
@@ -138,7 +138,7 @@ describe Grade, 'finding grade by school age' do
   end
 end
 
-describe Grade, 'finding next assignable school class' do
+describe Grade, '#find_next_assignable_school_class' do
   fixtures :grades, :school_classes, :school_class_active_flags, :school_years
 
   it 'should return nil if no school class found'
@@ -153,6 +153,17 @@ describe Grade, 'finding next assignable school class' do
 
   it 'should find school class of type simplified when specified so' do
     expect(grades(:first_grade).find_next_assignable_school_class(SchoolClass::SCHOOL_CLASS_TYPE_SIMPLIFIED, school_years(:two_thousand_eight), nil)).to eq school_classes(:first_grade_class_b)
+  end
+end
+
+describe Grade, '#school_age' do
+  fixtures :grades
+
+  it 'should return the school age of the grade' do
+    expect(grades(:pre_grade).school_age).to eq 4
+    expect(grades(:k_grade).school_age).to eq 5
+    expect(grades(:first_grade).school_age).to eq 6
+    expect(grades(:second_grade).school_age).to eq 7
   end
 end
 
