@@ -30,7 +30,7 @@ class Student::RegistrationController < ApplicationController
       redirect_to(action: :display_options, id: registration_school_year) and return
     end
     @registration_payment = create_and_save_registration_payment registration_preference_ids, registration_school_year
-    #@credit_card = CreditCard.new
+    @credit_card = CreditCard.new
   end
   
   def remove_pending_registration_payment
@@ -44,27 +44,27 @@ class Student::RegistrationController < ApplicationController
   end
 
   def submit_payment
-    @registration_payment = RegistrationPayment.find_by_id params[:id].to_i
+    @registration_payment = RegistrationPayment.find params[:id].to_i
     if @registration_payment.paid?
-      redirect_to(:action => :payment_confirmation, :id => @registration_payment) and return
+      redirect_to(action: :payment_confirmation, id: @registration_payment) and return
     end
     if @registration_payment.at_least_one_student_already_registered?
       flash[:notice] = 'At least one student in the attempted payment has already registered.'
-      redirect_to(:action => :display_options, :id => @registration_payment.school_year) and return
+      redirect_to(action: :display_options, id: @registration_payment.school_year) and return
     end
     @credit_card = CreditCard.new params[:credit_card]
     unless @credit_card.valid?
-      render :template => '/student/registration/payment_entry' and return
+      render(template: '/student/registration/payment_entry') and return
     end
     gateway_transaction = create_and_save_initial_gateway_transaction
     begin
-      response = ::LINKPOINT_GATEWAY.purchase(gateway_transaction.amount_in_cents, @credit_card, :order_id => gateway_transaction.id)
+      response = ::LINKPOINT_GATEWAY.purchase(gateway_transaction.amount_in_cents, @credit_card, order_id: gateway_transaction.id)
       save_gateway_response gateway_transaction, response
     rescue => e
       gateway_transaction.error_message = e.inspect
       gateway_transaction.save!
       flash.now[:notice] = "Error occurred when processing payment.  Please try again later or contact #{Contacts::WEB_SITE_SUPPORT}"
-      render :template => '/student/registration/payment_entry' and return
+      render(template: '/student/registration/payment_entry') and return
     end
 
     if GatewayTransaction::APPROVAL_STATUS_APPROVED == gateway_transaction.approval_status
@@ -76,10 +76,10 @@ class Student::RegistrationController < ApplicationController
       rescue => e
         logger.error "Error during post-payment operations => #{e.inspect}"
       end
-      redirect_to :action => :payment_confirmation, :id => @registration_payment
+      redirect_to action: :payment_confirmation, id: @registration_payment
     else
       flash.now[:notice] = "Payment DECLINED by bank.  Please use a different credit card to try again or contact #{Contacts::WEB_SITE_SUPPORT}"
-      render :template => '/student/registration/payment_entry'
+      render template: '/student/registration/payment_entry'
     end
   end
 

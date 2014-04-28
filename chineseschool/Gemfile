@@ -9,6 +9,7 @@ gem 'mysql2'
 
 gem 'jquery-rails'
 gem 'prawn_rails'
+gem 'activemerchant'
 
 group :development, :test do
   gem 'rspec-rails'

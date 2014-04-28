@@ -2,10 +2,50 @@
 
 <%= render partial: 'registration_payment', object: @registration_payment %>
 <br/>
-<span style="font-weight: bold; color: red;">Credit card payment temporarily unavailable</span>
+<div class="account-form">
+  <% if @credit_card.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@credit_card.errors.count, 'error') %> prohibited this credit card from being processed:</h2>
+        <ul>
+          <% @credit_card.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li> <% end %>
+        </ul>
+      </div>
+  <% end %>
+
+  <%= form_for :credit_card, url: {action: 'submit_payment', id: @registration_payment} do |form| %>
+      <fieldset>
+        <legend>Enter Credit Card Information</legend>
+        <span class="payment-entry">
+          <p>
+            Chinese School does not save credit card information<br/>
+            Visa, MasterCard, or Discover Credit Card are accepted
+          </p>
+          <div>
+            <label for="number"><span style="color:red">*&nbsp;</span>Card Number:</label>
+            <%= form.text_field :number, size: 25 %>
+          </div>
+          <div>
+            <label><span style="color:red">*&nbsp;</span>Valid Through:</label>
+            <%= form.select :month, (1..12) %>
+            &nbsp;/
+            <%= form.select :year, (PacificDate.today.year..(PacificDate.today.year + 5)) %>
+          </div>
+          <div>
+            <label for="verification_value"><span style="color:red">*&nbsp;</span>Card Code:</label>
+            <%= form.text_field :verification_value, size: 3 %>
+          </div>
+          <span style="color:red">*&nbsp;</span>Required Field
+          <div>
+            <%= submit_tag 'Submit Payment', class: 'submit', disable_with: 'Processing Payment... Please Wait' %>
+          </div>
+        </span>
+      </fieldset>
+  <% end %>
+</div>
 <br/>
 <br/>
-<% if PacificDate.today >= SchoolYear.current_school_year.start_date %>
+<% if PacificDate.today >= @registration_payment.school_year.start_date %>
     <%= link_to 'Pay by Check', {action: :request_in_person_payment, id: @registration_payment}, {class: 'button'} %>
     <br/>
     <br/>
