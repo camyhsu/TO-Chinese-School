@@ -41,6 +41,15 @@
     Please read <a href="http://www.to-cs.org/tocs/">Registraion Overview and Refund Policy</a> or contact registration@to-cs.org for additional questions.
   </li>
 </ul>
+<% if @registration_preferences.any? {|registration_preference| registration_preference.grade_full?} %>
+<p style="color: red;">
+One or more of your child has designated grade that is already full.  Unfortunately, we are not able to process
+registration for full grade.  If you would like to be on the waiting list, please send an email to
+<span style="font-weight: bold;">waiting-list@to-cs.org</span>
+with the name of the child, designated grade, and contact information.  We will contact you if additional openings
+become available.
+</p>
+<% end %>
 <br/>
 <% unless @registered_students.empty? %>
   <h3>Students Already Registered For <%=h @registration_school_year.name %> School Year</h3>
