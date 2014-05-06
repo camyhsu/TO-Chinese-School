@@ -11,7 +11,7 @@
       </div>
   <% end %>
   
-  <%= form_tag "/admin/school_years/edit_book_charge/#{@school_year.id}", method: :put do %>
+  <%= form_tag action: 'edit_book_charge', id: @school_year, method: :put do %>
     <fieldset>
         <legend>Edit Book Charge For School Year <%=h @school_year.name %></legend>
         <span class="book-charge-edit">
