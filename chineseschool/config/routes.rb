@@ -36,6 +36,12 @@ Chineseschool::Application.routes.draw do
 
   namespace :admin do
     get 'grades' => 'grades#index'
+
+    get 'roles' => 'roles#index'
+    get 'roles/show' => 'roles#show'
+    post 'roles/add_user' => 'roles#add_user'
+    post 'roles/remove_user' => 'roles#remove_user'
+
     get 'school_classes' => 'school_classes#index'
     match 'school_classes/new' => 'school_classes#new'
     match 'school_classes/edit' => 'school_classes#edit'

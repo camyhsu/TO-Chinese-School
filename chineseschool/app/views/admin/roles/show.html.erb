@@ -1,0 +1,47 @@
+<% @title = 'Role Details' %>
+
+Role Name: <%=h @role.name %>
+<br/>
+<br/>
+
+Rights:
+<br/>
+<table>
+  <% @role.rights.each do |right| -%>
+  <tr>
+    <td><%=h "#{right.controller}/#{right.action}" %></td>
+    <td><%=h right.name %></td>
+  </tr>
+  <% end %>
+</table>
+
+<br/>
+<br/>
+
+<% # Do not show users for role student parent because every user should have this role %>
+<% unless @role.name == Role::ROLE_NAME_STUDENT_PARENT %>
+  Users with this role:
+  <br/>
+  <table>
+    <% @role.users.each do |user| -%>
+    <tr>
+      <td><%=h user.username %></td>
+      <td><%= link_to "#{user.person.name}", controller: 'registration/people', action: 'show', id: user.person %></td>
+      <td>
+        <%= form_tag action: 'remove_user', id: @role do %>
+          <%= hidden_field_tag :user_id, user.id %>
+          <%= submit_tag 'Remove from this role', class: 'submit' %>
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+<% end %>
+
+<br/>
+Add user to this role:
+<%= form_tag action: 'add_user', id: @role do %>
+  <%= text_field_tag :username, params[:username], :size => 20 %>
+  <%= submit_tag 'Add', :class => 'submit' %>
+<% end %>
+<br/>
