@@ -37,6 +37,8 @@ Chineseschool::Application.routes.draw do
   namespace :admin do
     get 'grades' => 'grades#index'
 
+    get 'rights' => 'rights#index'
+    
     get 'roles' => 'roles#index'
     get 'roles/show' => 'roles#show'
     post 'roles/add_user' => 'roles#add_user'
