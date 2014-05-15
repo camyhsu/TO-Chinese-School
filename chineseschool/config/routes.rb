@@ -6,6 +6,7 @@ Chineseschool::Application.routes.draw do
 
   #match 'signin/' => 'signin#index'
   #match 'signin/:action'
+  match 'signin/register_with_invitation' => 'signin#register_with_invitation'
 
   namespace :accounting do
     get 'in_person_registration_payments' => 'in_person_registration_payments#index'
@@ -38,7 +39,7 @@ Chineseschool::Application.routes.draw do
     get 'grades' => 'grades#index'
 
     get 'rights' => 'rights#index'
-    
+
     get 'roles' => 'roles#index'
     get 'roles/show' => 'roles#show'
     post 'roles/add_user' => 'roles#add_user'
@@ -53,6 +54,8 @@ Chineseschool::Application.routes.draw do
     match 'school_years/new' => 'school_years#new'
     match 'school_years/edit' => 'school_years#edit'
     match 'school_years/edit_book_charge' => 'school_years#edit_book_charge'
+
+    match 'user_registration/invite' => 'user_registration#invite'
   end
 
   namespace :communication do

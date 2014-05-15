@@ -1,0 +1,27 @@
+Dear <%=h @person_to_invite.name %>,
+
+The following are the instructions for you to create a user account on the 
+secured web site for Thousand Oaks Chinese School:
+
+1. Click on this link:
+<%= @invitation_url %>
+
+2. Fill in your phone number and select username / password on the form shown
+
+3. Click on the "Create Account" button
+
+Please note that, due to security considerations, the link above will expire 72
+hours from the time this email was generated.  If the link has expired when you
+try to create a user account, please request a new link by replying to this email.
+
+Once the user account is created, you can sign-in to the site at:
+https://www.to-cs.org/chineseschool/signin
+
+The home page after sign-in would display family information currently on record
+with Chinese School.  You may update information as needed.
+
+Contact us at  <%= Contacts::WEB_SITE_SUPPORT -%>  if you encounter technical issues.
+
+Regards,
+Thousand Oaks Chinese School
+

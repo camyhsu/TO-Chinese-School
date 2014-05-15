@@ -1,0 +1,53 @@
+<% @title = 'Create User With Invitation' %>
+
+<div class="account-form">
+  <% if @user && @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, 'error') %> prohibited creating this user:</h2>
+        <ul>
+          <% @user.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li> <% end %>
+        </ul>
+      </div>
+  <% end %>
+
+  <%= form_tag action: 'register_with_invitation', id: @token_entered do %>
+    <fieldset>
+      <legend>Create User For Existing TOCS Family</legend>
+      <span class="register">
+        <div>
+          Please note that this user is for the invited parent who would be managing
+          the account, not the prospective student.
+        </div>
+        <div>
+          Verify your identity against existing records with Chinese School:
+        </div>
+        <div>
+          <label for="phone_number">Phone Number:</label>
+          <%= text_field_tag :phone_number, params[:phone_number] %>
+          &nbsp;&nbsp;home phone number or mobile phone number
+        </div>
+        <br/>
+        <div>
+          Please create your account username and password:
+        </div>
+        <div>
+          <label for="username">Username:</label>
+          <%= text_field_tag :username, params[:username] %>
+        </div>
+        <div>
+          <label for="password">Password:</label>
+          <%= password_field_tag :password %>
+          &nbsp;&nbsp;password must be at least 6 characters long, case sensitive
+        </div>
+        <div>
+          <label for="password_confirmation">Re-type Password:</label>
+          <%= password_field_tag :password_confirmation %>
+        </div>
+        <div>
+          <%= submit_tag 'Create User', class: 'submit' %>
+        </div>
+      </span>
+    </fieldset>
+  <% end %>
+</div>
