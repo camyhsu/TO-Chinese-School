@@ -1,5 +1,5 @@
 class ReceiptMailer < ActionMailer::Base
-  default from: Contacts::WEB_SITE_SUPPORT
+  default from: Contacts::REGISTRATION_CONTACT
 
   def payment_confirmation(gateway_transaction, registration_payment)
     @registration_payment = registration_payment
