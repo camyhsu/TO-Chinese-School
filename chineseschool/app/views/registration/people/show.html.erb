@@ -75,8 +75,13 @@
 <hr/>
 <h3>Grade And Class Assignments for <%=h @person.name %></h3>
 <table class="person-detail" border="0px">
-  <%= render partial: 'student_class_assignment', object: @person.student_class_assignment_for(SchoolYear.current_school_year), locals: {student_id: @person.id} %>
+  <%= render partial: 'student_class_assignment', object: @person.student_class_assignment_for(SchoolYear.current_school_year), locals: {student_id: @person.id, school_year: SchoolYear.current_school_year} %>
 </table>
+<% unless SchoolYear.next_school_year.nil? -%>
+  <table class="person-detail" border="0px">
+    <%= render partial: 'student_class_assignment', object: @person.student_class_assignment_for(SchoolYear.next_school_year), locals: {student_id: @person.id, school_year: SchoolYear.next_school_year} %>
+  </table>
+<% end %>
 <hr/>
 <h3>Transation History as Student for <%=h @person.name %></h3>
 <% completed_registration_payments = @person.find_completed_registration_payments_as_students %>

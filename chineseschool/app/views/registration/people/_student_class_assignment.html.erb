@@ -1,18 +1,18 @@
   <tr>
-    <td class="label">Grade:</td>
+    <td class="label"><%=h school_year.name %> Grade:</td>
     <td><%=h student_class_assignment.try(:grade).try(:chinese_name) %></td>
   </tr>
   <tr>
     <td class="label">Select New Grade:</td>
     <td>
-      <% select_grade_handler = "registrationSelectGrade(this, '#{url_for action: :select_grade, id: student_class_assignment}', #{student_id})" %>
+      <% select_grade_handler = "registrationSelectGrade(this, '#{url_for action: :select_grade, id: student_class_assignment}', #{student_id}, #{school_year.id})" %>
       <%= collection_select :student_class_assignment, :grade, Grade.all, :id, :chinese_name,
           {include_blank: true, selected: student_class_assignment.try(:grade).try(:id)},
           {onchange: select_grade_handler} %></td>
   </tr>
   <% unless student_class_assignment.try(:grade).nil? -%>
   <tr>
-    <td class="label">School Class:</td>
+    <td class="label"><%=h school_year.name %> School Class:</td>
     <td><%=h student_class_assignment.try(:school_class).try(:chinese_name) %></td>
   </tr>
   <tr>
@@ -26,7 +26,7 @@
   </tr>
   
   <tr>
-    <td class="label">Elective Class:</td>
+    <td class="label"><%=h school_year.name %> Elective Class:</td>
     <td><%=h student_class_assignment.try(:elective_class).try(:chinese_name) %></td>
   </tr>
   <tr>

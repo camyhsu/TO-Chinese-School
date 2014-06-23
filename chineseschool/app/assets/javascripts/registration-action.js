@@ -2,13 +2,13 @@ $(function() {
     $('.jquery-datepicker').datepicker({dateFormat: 'yy-mm-dd'});
 });
 
-function registrationSelectGrade(selectElement, url, studentId) {
+function registrationSelectGrade(selectElement, url, studentId, schoolYearId) {
     var jSelectElement = $(selectElement);
     var selectedGradeId = jSelectElement.children('option:selected').attr('value');
     jSelectElement.attr("disabled", true);
     var jTableElement = jSelectElement.parent().parent().parent();
     //jTableElement.effect('highlight', {}, 2000);
-    $.post(url, {selected_grade_id : selectedGradeId, student_id : studentId}, function(data) {
+    $.post(url, {selected_grade_id : selectedGradeId, student_id : studentId, school_year_id : schoolYearId}, function(data) {
         jTableElement.html(data);
     });
 }

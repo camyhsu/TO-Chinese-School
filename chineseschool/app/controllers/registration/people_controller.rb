@@ -52,6 +52,7 @@ class Registration::PeopleController < ApplicationController
   end
 
   def select_grade
+    @school_year = SchoolYear.find params[:school_year_id].to_i
     if params[:selected_grade_id].blank?
       unless params[:id].blank?
         # selected blank grade but has a previous student class assignment
@@ -62,7 +63,7 @@ class Registration::PeopleController < ApplicationController
       if params[:id].blank?
         # selected a new grade without a previous student class assignment
         @student_class_assignment = StudentClassAssignment.new
-        @student_class_assignment.school_year = SchoolYear.current_school_year
+        @student_class_assignment.school_year = @school_year
         @student_class_assignment.student = Person.find params[:student_id].to_i
       else
         @student_class_assignment = StudentClassAssignment.find params[:id].to_i
@@ -87,6 +88,7 @@ class Registration::PeopleController < ApplicationController
     end
     @student_class_assignment.save!
     @student_id = @student_class_assignment.student.id
+    @school_year = @student_class_assignment.school_year
     render action: :one_student_class_assignment, layout: 'ajax_layout'
   end
 
@@ -101,6 +103,7 @@ class Registration::PeopleController < ApplicationController
     end
     @student_class_assignment.save!
     @student_id = @student_class_assignment.student.id
+    @school_year = @student_class_assignment.school_year
     render action: :one_student_class_assignment, layout: 'ajax_layout'
   end
 
