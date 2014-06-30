@@ -65,3 +65,17 @@ Chineseschool::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 end
+
+
+#
+# Monkey patch action view to turn off rendering logging
+# This can be done in Rails4 with a config, but not in Rails3
+#
+module ActionView
+  class LogSubscriber < ActiveSupport::LogSubscriber
+    def logger
+      @memorized_logger ||= Logger.new('/dev/null')
+    end
+  end
+end
+
