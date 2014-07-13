@@ -41,7 +41,7 @@ Rights:
 <br/>
 Add user to this role:
 <%= form_tag action: 'add_user', id: @role do %>
-  <%= text_field_tag :username, params[:username], :size => 20 %>
-  <%= submit_tag 'Add', :class => 'submit' %>
+  <%= text_field_tag :username, params[:username], size: 20 %>
+  <%= submit_tag 'Add', class: 'submit' %>
 <% end %>
 <br/>
