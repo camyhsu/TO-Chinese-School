@@ -25,5 +25,14 @@
 </table>
 
 <br/>
+<%= form_tag action: 'search_result', id: @school_year, format: 'pdf' do %>
+    <%= hidden_field_tag 'start_date', @start_date %>
+    <%= hidden_field_tag 'end_date', @end_date %>
+    <%= submit_tag 'Download Search Result as PDF', class: 'button' %>
+<% end %>
+
+<br/>
 <%= link_to 'Back to Search Page', {action: 'index'}, {class: 'button'} %>
+<br/>
+<br/>
 <br/>

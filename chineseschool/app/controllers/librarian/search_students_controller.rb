@@ -7,6 +7,7 @@ class Librarian::SearchStudentsController < ApplicationController
   end
 
   def search_result
+    @school_year = SchoolYear.find params[:id]
     @start_date = Date.parse params[:start_date]
     @end_date = Date.parse params[:end_date]
     @output_records = []
@@ -55,6 +56,11 @@ class Librarian::SearchStudentsController < ApplicationController
       else
         grade_order
       end
+    end
+
+    respond_to do |format|
+      format.html {}
+      format.pdf {render layout: false}
     end
   end
 end

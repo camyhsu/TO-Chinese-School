@@ -5,5 +5,5 @@
 <%= form_tag action: 'search_result', id: @school_year do %>
     <p>Start Date (yyyy-MM-dd): <%= text_field_tag :start_date, "#{@default_start_date}", size: 20 %></p>
     <p>End Date (yyyy-MM-dd): <%= text_field_tag :end_date, "#{@default_end_date}", size: 20 %></p>
-    <%= submit_tag 'Search', :class => 'button' %>
+    <%= submit_tag 'Search', class: 'button' %>
 <% end %>
