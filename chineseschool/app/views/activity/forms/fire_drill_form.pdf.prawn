@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-prawn_document(filename: 'tocs_active_students.pdf') do |pdf|
+prawn_document(filename: 'tocs_fire_drill_form.pdf') do |pdf|
   pdf.font "#{Rails.root}/lib/data/fonts/ArialUnicode.ttf"
 
   header = [ 'No', '姓名', 'First Name', 'Last Name', '當日出席/class check-in', '參與演習/event check-in' ]
