@@ -1,0 +1,29 @@
+<% @title = 'Students By Registration Date Search Result' %>
+
+<h3>Students By Registration Date Search Result</h3>
+
+<p>
+  Start Date: <%= @start_date %><br/>
+  End Date: <%= @end_date %>
+</p>
+
+<table border="1px">
+  <tr>
+    <th>Grade</th>
+    <th>Class</th>
+    <th>Registration Date</th>
+    <th>Student Name</th>
+  </tr>
+  <% @output_records.each do |output_record| %>
+    <tr>
+      <td><%= output_record[:grade].name %></td>
+      <td><%= output_record[:school_class].try(:name) %></td>
+      <td><%= output_record[:registration_date] %></td>
+      <td><%= output_record[:student].name %></td>
+    </tr>
+  <% end %>
+</table>
+
+<br/>
+<%= link_to 'Back to Search Page', {action: 'index'}, {class: 'button'} %>
+<br/>

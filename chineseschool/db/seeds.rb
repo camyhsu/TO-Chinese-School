@@ -150,6 +150,9 @@ library_book_check_out = Right.create(name: 'Library Book Check Out', controller
 library_book_return = Right.create(name: 'Library Book Return', controller: 'librarian/library_books', action: 'return_library_book')
 library_book_read_only_view = Right.create(name: 'Library Book Read Only View', controller: 'librarian/library_books', action: 'read_only_view')
 
+librarian_search_students_form = Right.create(name: 'Librarian search students', controller: 'librarian/search_students', action: 'index')
+librarian_search_students_result = Right.create(name: 'Librarian search students result', controller: 'librarian/search_students', action: 'search_result')
+
 communication_forms_picture_taking_form = Right.create(name: 'Picture Taking Form', controller: 'communication/forms', action: 'picture_taking_form')
 communication_student_list_for_yearbook = Right.create(name: 'Student List For Yearbook', controller: 'communication/forms', action: 'student_list_for_yearbook')
 
@@ -305,6 +308,8 @@ librarian.rights << library_book_edit
 librarian.rights << library_book_checkout_history
 librarian.rights << library_book_check_out
 librarian.rights << library_book_return
+librarian.rights << librarian_search_students_form
+librarian.rights << librarian_search_students_result
 
 
 #

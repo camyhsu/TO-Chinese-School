@@ -71,6 +71,9 @@ Chineseschool::Application.routes.draw do
     get 'library_books' => 'library_books#index'
     match 'library_books/new' => 'library_books#new'
     get 'library_books/read_only_view' => 'library_books#read_only_view'
+
+    get 'search_students/index' => 'search_students#index'
+    match 'search_students/search_result' => 'search_students#search_result'
   end
 
   namespace :registration do
