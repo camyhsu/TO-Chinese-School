@@ -256,6 +256,8 @@ accounting_officer.rights << accounting_instructors_discount
 # Assign rights to Activity Officer
 #
 activity_officer = Role.find_by_name(Role::ROLE_NAME_ACTIVITY_OFFICER)
+activity_officer.rights << active_school_classes_grade_class_student_count
+activity_officer.rights << active_school_classes_elective_class_student_count
 activity_officer.rights << activity_forms_fire_drill_form
 activity_officer.rights << instruction_active_school_classes_index
 activity_officer.rights << instruction_school_classes_show
