@@ -7,7 +7,7 @@ prawn_document(filename: @filename) do |pdf|
 
   @sorted_school_classes.each do |school_class|
     pdf.font_size 16 do
-      pdf.text "#{school_class.name} : #{school_class.location}", align: :center
+      pdf.text "#{school_class.name} : Classroom #{school_class.location}", align: :center
     end
 
     pdf.move_down 10
