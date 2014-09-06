@@ -302,6 +302,7 @@ instruction_officer.rights << library_book_read_only_view
 librarian = Role.find_by_name(Role::ROLE_NAME_LIBRARIAN)
 librarian.rights << active_school_classes_grade_class_student_count
 librarian.rights << active_school_classes_elective_class_student_count
+librarian.rights << student_class_assignments_student_list_by_class
 librarian.rights << instruction_active_school_classes_index
 librarian.rights << instruction_school_classes_show
 librarian.rights << library_book_index
