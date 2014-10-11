@@ -22,8 +22,12 @@ class Accounting::InPersonRegistrationPaymentsController < ApplicationController
           @registration_payment.paid = true
           @registration_payment.save!
         end
-        @registration_payment.create_student_class_assignments
-        @registration_payment.send_email_notification
+        begin
+          @registration_payment.create_student_class_assignments
+          @registration_payment.send_email_notification
+        rescue => e
+          logger.error "Error during post-payment operations => #{e.inspect}"
+        end
         flash[:notice] = 'In-person Registration Payment recorded successfully'
         redirect_to action: :index
       end

@@ -119,5 +119,11 @@ class ManualTransaction < ActiveRecord::Base
       student_class_assignment.destroy
     end
     withdrawal_record.save!
+
+    # Notify instructors about the withdrawal
+    if PacificDate.tomorrow >= current_school_year.start_date
+      WithdrawalMailer.instructor_notification(self.student, withdrawal_record.school_class).deliver
+      WithdrawalMailer.instructor_notification(self.student, withdrawal_record.elective_class).deliver
+    end
   end
 end
