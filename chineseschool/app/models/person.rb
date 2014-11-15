@@ -131,6 +131,18 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def personal_home_phone
+    if self.address
+      self.address.home_phone
+    else
+      family_with_home_phone = self.families.detect do |family|
+        !family.address.home_phone.blank?
+      end
+      return nil if family_with_home_phone.nil?
+      family_with_home_phone.address.home_phone
+    end
+  end
+
   def email_and_phone_number_correct?(email, phone_number)
     if self.address
       self.addres.email_and_phone_number_correct? email, phone_number
