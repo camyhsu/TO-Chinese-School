@@ -7,55 +7,47 @@
 <div style="background-color:#FDC5FF;">Girl / Mom</div>
 <br/>
 
-<table class="track-event-sign-up" border="1px">
-  <thead>
-    <tr>
-      <th>Student Name</th>
-      <th>Gender</th>
-      <th>Birth Month</th>
-      <% @track_event_programs.each do |track_event_program| %>
-        <th><%=h track_event_program.name %></th>
-      <% end %>
-    </tr>
-  </thead>
-  <tbody>
-    <% @regular_students.each do |student| -%>
-    <tr>
-      <%= render partial: 'student_sign_up', locals: {student: student, track_event_programs: @track_event_programs, school_class_id: @school_class.id} %>
-    </tr>
-    <% end %>
-    <% unless @older_students.empty? %>
-      <% @older_students.each do |student| -%>
+<% unless @young_students.empty? %>
+    <table class="track-event-sign-up" border="1px">
+      <thead>
         <tr>
-            <%= render partial: 'parent_only_sign_up', locals: {student: student, track_event_programs: @track_event_programs, school_class_id: @school_class.id} %>
+          <th>Student Name</th>
+          <th>Gender</th>
+          <th>Birth Month</th>
+          <% @young_student_programs.each do |track_event_program| %>
+            <th><%=h track_event_program.name %></th>
+          <% end %>
         </tr>
-      <% end %>
-    <% end %>
-  </tbody>
-</table>
+      </thead>
+      <tbody>
+        <% @young_students.each do |student| -%>
+        <tr>
+          <%= render partial: 'student_sign_up', locals: {student: student, track_event_programs: @young_student_programs, school_class_id: @school_class.id} %>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br/><br/><br/>
+<% end %>
 
-<% unless @older_students.empty? %>
-    <br/><br/>
-    <% @older_students.each do |student| -%>
-        <% track_event_programs = TrackEventProgram.find_by_school_age_for(student) %>
-        <b>The following student is prompted to <%= track_event_programs[0].grade.name %></b>
-        <table class="track-event-sign-up" border="1px">
-            <thead>
-                <tr>
-                    <th>Student Name</th>
-                    <th>Gender</th>
-                    <th>Birth Month</th>
-                    <% track_event_programs.each do |track_event_program| %>
-                        <th><%=h track_event_program.name %></th>
-                    <% end %>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <%= render partial: 'student_sign_up', locals: {student: student, track_event_programs: track_event_programs, school_class_id: @school_class.id} %>
-                </tr>
-            </tbody>
-        </table>
-        <br/>
-    <% end %>
+<% unless @teen_students.empty? %>
+    <table class="track-event-sign-up" border="1px">
+      <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Gender</th>
+        <th>Birth Month</th>
+        <% @teen_student_programs.each do |track_event_program| %>
+            <th><%=h track_event_program.name %></th>
+        <% end %>
+      </tr>
+      </thead>
+      <tbody>
+      <% @teen_students.each do |student| -%>
+          <tr>
+            <%= render partial: 'student_sign_up', locals: {student: student, track_event_programs: @teen_student_programs, school_class_id: @school_class.id} %>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
 <% end %>

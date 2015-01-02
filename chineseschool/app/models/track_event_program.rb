@@ -1,17 +1,31 @@
 class TrackEventProgram < ActiveRecord::Base
   
   EVENT_TYPE_TOCS = 'TOCS'
-  EVENT_TYPE_SOUTHERN_CA = 'Southern CA'
-  
+  EVENT_TYPE_SOUTHERN_CA = 'Southern CA' # This is only used in 2011-2012, kept for historical data reference
+
+  # The following program types are used before 2014-2015
   PROGRAM_TYPE_STUDENT = 'Student'
   PROGRAM_TYPE_STUDENT_RELAY = 'Student Relay'
   PROGRAM_TYPE_PARENT = 'Parent'
   PROGRAM_TYPE_PARENT_RELAY = 'Parent Relay'
+
+  # The folling program types are used starting 2014-2015
+  PROGRAM_TYPE_INDIVIDUAL = 'individual'
+  PROGRAM_TYPE_RELAY = 'relay'
+  PROGRAM_TYPE_GROUP = 'group'
+
+  # Starting 2014-2015, track program becomes age-based
+  # to make sign-up form creating easier, the code is now written with the assumption of two distinct sets
+  # of programs for younger and older students
+  # The minimum school age is 4, and the age mapped to 10th grade is 15, but there are students older than 15
+  YOUNG_DIVISION = 'young'
+  TEEN_DIVISION = 'teen'
+  PARENT_DIVISION = 'parent'
+  MAX_AGE_YOUNG_DIVISION = 9
   
   belongs_to :school_year
-  belongs_to :grade
   
-  validates :school_year, :grade, :name, :event_type, :program_type, presence: true
+  validates :school_year, :name, :event_type, :program_type, presence: true
 
 
   def max_sign_up_reached?(school_class)
@@ -24,8 +38,16 @@ class TrackEventProgram < ActiveRecord::Base
     false
   end
 
-  def self.find_current_year_parent_programs
-    self.all :conditions => { :school_year_id => SchoolYear.current_school_year.id, :program_type => [ PROGRAM_TYPE_PARENT, PROGRAM_TYPE_PARENT_RELAY ] }
+  def self.young_division_programs
+    self.all :conditions => { :school_year_id => SchoolYear.current_school_year.id, :division => YOUNG_DIVISION }
+  end
+
+  def self.teen_division_programs
+    self.all :conditions => { :school_year_id => SchoolYear.current_school_year.id, :division => TEEN_DIVISION }
+  end
+
+  def self.parent_division_programs
+    self.all :conditions => { :school_year_id => SchoolYear.current_school_year.id, :division => PARENT_DIVISION }
   end
   
   def self.find_by_grade(grade, school_year=SchoolYear.current_school_year)

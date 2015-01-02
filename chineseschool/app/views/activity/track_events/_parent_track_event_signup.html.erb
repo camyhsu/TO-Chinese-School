@@ -1,9 +1,5 @@
-<% if track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY %>
-    <% select_parent_relay_group_handler = "selectParentRelayGroup(this, #{student.id}, #{parent.id}, #{track_event_program.id}, '#{url_for action: :select_parent_relay_group, id: school_class_id}')" %>
-    <%= select('program', 'relay', TrackEventSignup::RELAY_GROUP_CHOICES, {include_blank: 'Not Participate', selected: (existing_signup.nil? ? '' : existing_signup.group_name) }, {onchange: select_parent_relay_group_handler}) %>
-    &nbsp;<%=h parent.name %>
-<% else %>
+
   <% select_parent_handler = "selectParent(this, #{student.id}, #{parent.id}, '#{url_for action: :select_parent, id: school_class_id}')" %>
   <%= check_box_tag('select', "#{track_event_program.id}", !existing_signup.nil?, {onchange: select_parent_handler}) %>
   &nbsp;<%=h parent.name %>
-<% end %>
+
