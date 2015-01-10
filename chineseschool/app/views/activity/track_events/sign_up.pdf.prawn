@@ -3,47 +3,30 @@
 prawn_document(filename: 'track_and_field_sign_up.pdf', page_layout: :landscape) do |pdf|
   pdf.font "#{Rails.root}/lib/data/fonts/ArialUnicode.ttf"
 
-  data = [ pdf_create_draft_header_for(@track_event_programs) ]
-  @regular_students.each {|student| data << pdf_create_draft_row_for(student, @track_event_programs)}
-  @older_students.each {|student| data << pdf_create_draft_row_for(student, @track_event_programs)}
+  unless @young_students.empty?
+    data = [ pdf_create_draft_header_for(@young_student_programs) ]
+    @young_students.each {|student| data << pdf_create_draft_row_for(student, @young_student_programs)}
+    column_widths = pdf_calculate_column_widths_for(@young_student_programs)
 
-  column_widths = pdf_calculate_column_widths_for(@track_event_programs)
-  regular_student_count = @regular_students.size
-  student_program_count = @track_event_programs.count {|program| (program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT) || (program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY)}
-  pdf.font_size 9 do
-    pdf.table(data, header: true, column_widths: column_widths, cell_style: {align: :center}) do
-      row(0).style(background_color: 'cccccc')
-
-      # Black out cell for individual student programs for older students
-      cells.style do |cell|
-        if (cell.row > regular_student_count) && (cell.column > 2) && (cell.column < 3 + student_program_count)
-          cell.background_color = 'cccccc'
-        end
+    pdf.font_size 9 do
+      pdf.table(data, header: true, column_widths: column_widths, cell_style: {align: :center}) do
+        row(0).style(background_color: 'cccccc')
       end
     end
+
+    pdf.move_down 30
   end
 
-  unless @older_students.empty?
-    pdf.move_down 30
+  unless @teen_students.empty?
+      data = [ pdf_create_draft_header_for(@teen_student_programs) ]
+      @teen_students.each {|student| data << pdf_create_draft_row_for(student, @teen_student_programs)}
+      column_widths = pdf_calculate_column_widths_for(@teen_student_programs)
 
-    @older_students.each do |student|
-      pdf.move_down 14
-      track_event_programs = TrackEventProgram.find_by_school_age_for student
-
-      pdf.font_size 10 do
-        pdf.text "The following student is prompted to #{track_event_programs[0].grade.name}"
-      end
-
-      data = [ pdf_create_draft_header_for(track_event_programs) ]
-      data << pdf_create_draft_row_for(student, track_event_programs)
-
-      column_widths = pdf_calculate_column_widths_for(track_event_programs)
       pdf.font_size 9 do
-        pdf.table(data, header:true, column_widths: column_widths, cell_style: {align: :center}) do
-          row(0).style(background_color: 'cccccc')
-        end
+          pdf.table(data, header: true, column_widths: column_widths, cell_style: {align: :center}) do
+              row(0).style(background_color: 'cccccc')
+          end
       end
-    end
   end
 
   pdf.font_size 9 do
