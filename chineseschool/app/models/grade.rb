@@ -78,28 +78,6 @@ class Grade < ActiveRecord::Base
     end
   end
 
-  def assign_jersey_number_to_student
-    students = self.current_year_student_class_assignments.collect { |student_class_assignment| student_class_assignment.student }
-    max_number_assigned = JerseyNumber.find_max_number_assigned_in students
-    sorted_student_class_assignments = current_year_student_class_assignments.sort do |x, y|
-      class_order = x.school_class.short_name <=> y.school_class.short_name
-      if class_order == 0
-        last_name_order = x.student.english_last_name <=> y.student.english_last_name
-        if last_name_order == 0
-          x.student.english_first_name <=> y.student.english_first_name
-        else
-          last_name_order
-        end
-      else
-        class_order
-      end
-    end
-    sorted_student_class_assignments.each do |student_class_assignment|
-      jersey_number = JerseyNumber.create_jersey_number_for student_class_assignment.student, self.jersey_number_prefix, max_number_assigned + 1
-      max_number_assigned = jersey_number.number if max_number_assigned < jersey_number.number
-    end
-  end
-
   def school_age
     cursor = Grade.grade_preschool
     school_age = 4

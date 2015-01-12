@@ -10,6 +10,8 @@ class Person < ActiveRecord::Base
   has_one :user
   belongs_to :address
 
+  has_many :jersey_numbers
+
   has_many :student_class_assignments, foreign_key: 'student_id', dependent: :destroy
   has_many :instructor_assignments, foreign_key: 'instructor_id', dependent: :destroy
 
@@ -88,6 +90,10 @@ class Person < ActiveRecord::Base
   
   def student_status_flag_for(school_year)
     self.student_status_flags.first :conditions => ['school_year_id = ?', school_year.id]
+  end
+
+  def jersey_number_for(school_year)
+    self.jersey_numbers.first :conditions => ['school_year_id = ?', school_year.id]
   end
   
   def families
@@ -222,6 +228,16 @@ class Person < ActiveRecord::Base
     student_status_flag = student_status_flag_for SchoolYear.current_school_year
     return nil if (student_status_flag.nil? or !student_status_flag.registered?)
     student_status_flag.last_status_change_date
+  end
+
+  def create_jersey_number
+    return unless self.jersey_number_for(SchoolYear.current_school_year).nil?
+    JerseyNumber.create_new_number_for self
+  end
+
+  def create_parent_jersey_number
+    return unless self.jersey_number_for(SchoolYear.current_school_year).nil?
+    JerseyNumber.create_new_parent_number_for self
   end
 
   private

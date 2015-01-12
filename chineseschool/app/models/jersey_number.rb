@@ -3,41 +3,42 @@ class JerseyNumber < ActiveRecord::Base
   belongs_to :school_year
   belongs_to :person
 
+  PARENT_PREFIX = '70'
+
   def jersey_number
-    padded_number = self.number.to_s.rjust 3, '0'
+    # Starting 2014-2015 school year, track event programs are age-based
+    # The prefix is the school age of the student
+    # We make the assumption here there there will be 99 or less students per school age
+    # and allocating only two digits for the numeric part of the jersey number when printing
+    # Similar assumption is in place that there would be 99 or less parents participating in track events
+    padded_number = self.number.to_s.rjust 2, '0'
     return padded_number if self.prefix.nil? || self.prefix.size == 0
     self.prefix + padded_number
   end
-  
-  def self.create_jersey_number_for(person, prefix, next_number)
-    existing_jersey_number = self.first :conditions => ['person_id = ? AND school_year_id = ?', person.id, SchoolYear.current_school_year.id]
-    return existing_jersey_number unless existing_jersey_number.nil?
+
+  def self.create_new_number_for(person)
     new_jersey_number = JerseyNumber.new
     new_jersey_number.person = person
     new_jersey_number.school_year = SchoolYear.current_school_year
-    new_jersey_number.prefix = prefix
-    new_jersey_number.number = next_number
+    school_age = person.school_age_for SchoolYear.current_school_year
+    new_jersey_number.prefix = school_age.to_s.rjust 2, '0'
+    new_jersey_number.number = JerseyNumber.find_next_available_number_for new_jersey_number.prefix
     new_jersey_number.save!
-    new_jersey_number
+    puts new_jersey_number.inspect
   end
 
-  def self.create_jersey_numbers_for_participating_parents
-    parent_program_signups = TrackEventSignup.find_current_year_parent_program_signups
-    participating_parents = parent_program_signups.collect { |signup| signup.parent }.uniq
-    max_number_assigned = JerseyNumber.find_max_number_assigned_in participating_parents
-    sorted_parents = participating_parents.sort do |x, y|
-      last_name_order = x.english_last_name <=> y.english_last_name
-      if last_name_order == 0
-        x.english_first_name <=> y.english_first_name
-      else
-        last_name_order
-      end
-    end
-    sorted_parents.each do |parent|
-      jersey_number = JerseyNumber.create_jersey_number_for parent, '1', max_number_assigned + 1
-      max_number_assigned = jersey_number.number if max_number_assigned < jersey_number.number
-    end
+  def self.create_new_parent_number_for(person)
+    # Parent jersey numbers need special treatment because we don't have the age data for parent
+    # It uses a per-determined prefix
+    new_jersey_number = JerseyNumber.new
+    new_jersey_number.person = person
+    new_jersey_number.school_year = SchoolYear.current_school_year
+    new_jersey_number.prefix = PARENT_PREFIX
+    new_jersey_number.number = JerseyNumber.find_next_available_number_for new_jersey_number.prefix
+    new_jersey_number.save!
+    puts new_jersey_number.inspect
   end
+
   
   def self.find_jersey_number_for(person, school_year=SchoolYear.current_school_year)
     existing_jersey_number = self.first :conditions => ['person_id = ? AND school_year_id = ?', person.id, school_year.id]
@@ -45,9 +46,12 @@ class JerseyNumber < ActiveRecord::Base
     existing_jersey_number.jersey_number
   end
 
-  def self.find_max_number_assigned_in(people)
-    largest_jersey_number_assigned = self.first :conditions => { :school_year_id => SchoolYear.current_school_year.id, :person_id => people }, :order => 'number DESC'
-    return 0 if largest_jersey_number_assigned.nil?
-    largest_jersey_number_assigned.number
+  def self.find_next_available_number_for(prefix)
+    largest_jersey_number_assigned = self.first :conditions => { :school_year_id => SchoolYear.current_school_year.id, :prefix => prefix }, :order => 'number DESC'
+    if largest_jersey_number_assigned.nil?
+      1
+    else
+      largest_jersey_number_assigned.number + 1
+    end
   end
 end

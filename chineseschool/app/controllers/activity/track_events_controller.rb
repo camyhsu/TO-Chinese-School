@@ -83,6 +83,7 @@ class Activity::TrackEventsController < ApplicationController
         track_event_signup.student = @student
         track_event_signup.save!
         @existing_signup = track_event_signup
+        @student.create_jersey_number
       end
     else
       track_event_signup.destroy unless track_event_signup.nil?
@@ -90,32 +91,32 @@ class Activity::TrackEventsController < ApplicationController
     render action: :one_student_track_event_signup, layout: 'ajax_layout'
   end
   
-  def select_relay_group
-    requested_school_class_id = params[:id].to_i
-    unless instructor_assignment_verified? requested_school_class_id
-      flash[:notice] = 'Attempt to sign up track event not authorized'
-      redirect_to controller: '/home', action: :index
-      return
-    end
-    @school_class = SchoolClass.find requested_school_class_id
-    @student = Person.find params[:student_id].to_i
-    @track_event_program = TrackEventProgram.find params[:program_id].to_i
-    selected_relay_group = params[:selected_relay_group]
-    track_event_signup = TrackEventSignup.find_by_student_id_and_track_event_program_id @student.id, @track_event_program.id
-    if selected_relay_group == ''
-      track_event_signup.destroy unless track_event_signup.nil?
-    else
-      if track_event_signup.nil?
-        track_event_signup = TrackEventSignup.new
-        track_event_signup.track_event_program = @track_event_program
-        track_event_signup.student = @student
-      end
-      track_event_signup.group_name = selected_relay_group
-      track_event_signup.save!
-      @existing_signup = track_event_signup
-    end
-    render action: :one_student_track_event_signup, layout: 'ajax_layout'
-  end
+  # def select_relay_group
+  #   requested_school_class_id = params[:id].to_i
+  #   unless instructor_assignment_verified? requested_school_class_id
+  #     flash[:notice] = 'Attempt to sign up track event not authorized'
+  #     redirect_to controller: '/home', action: :index
+  #     return
+  #   end
+  #   @school_class = SchoolClass.find requested_school_class_id
+  #   @student = Person.find params[:student_id].to_i
+  #   @track_event_program = TrackEventProgram.find params[:program_id].to_i
+  #   selected_relay_group = params[:selected_relay_group]
+  #   track_event_signup = TrackEventSignup.find_by_student_id_and_track_event_program_id @student.id, @track_event_program.id
+  #   if selected_relay_group == ''
+  #     track_event_signup.destroy unless track_event_signup.nil?
+  #   else
+  #     if track_event_signup.nil?
+  #       track_event_signup = TrackEventSignup.new
+  #       track_event_signup.track_event_program = @track_event_program
+  #       track_event_signup.student = @student
+  #     end
+  #     track_event_signup.group_name = selected_relay_group
+  #     track_event_signup.save!
+  #     @existing_signup = track_event_signup
+  #   end
+  #   render action: :one_student_track_event_signup, layout: 'ajax_layout'
+  # end
   
   def select_parent
     requested_school_class_id = params[:id].to_i
@@ -137,6 +138,7 @@ class Activity::TrackEventsController < ApplicationController
         track_event_signup.parent = @parent
         track_event_signup.save!
         @existing_signup = track_event_signup
+        @parent.create_parent_jersey_number
       end
     else
       track_event_signup.destroy unless track_event_signup.nil?
@@ -144,41 +146,35 @@ class Activity::TrackEventsController < ApplicationController
     render action: :one_parent_track_event_signup, layout: 'ajax_layout'
   end
 
-  def select_parent_relay_group
-    requested_school_class_id = params[:id].to_i
-    unless instructor_assignment_verified? requested_school_class_id
-      flash[:notice] = 'Attempt to sign up track event not authorized'
-      redirect_to controller: '/home', action: :index
-      return
-    end
-    @school_class = SchoolClass.find requested_school_class_id
-    @student = Person.find params[:student_id].to_i
-    @parent = Person.find params[:parent_id].to_i
-    @track_event_program = TrackEventProgram.find params[:program_id].to_i
-    selected_relay_group = params[:selected_relay_group]
-    track_event_signup = TrackEventSignup.find_by_student_id_and_parent_id_and_track_event_program_id @student.id, params[:parent_id].to_i, @track_event_program.id
-    if selected_relay_group == ''
-      track_event_signup.destroy unless track_event_signup.nil?
-    else
-      if track_event_signup.nil?
-        track_event_signup = TrackEventSignup.new
-        track_event_signup.track_event_program = @track_event_program
-        track_event_signup.student = @student
-        track_event_signup.parent = @parent
-      end
-      track_event_signup.group_name = selected_relay_group
-      track_event_signup.save!
-      @existing_signup = track_event_signup
-    end
-    render action: :one_parent_track_event_signup, layout: 'ajax_layout'
-  end
+  # def select_parent_relay_group
+  #   requested_school_class_id = params[:id].to_i
+  #   unless instructor_assignment_verified? requested_school_class_id
+  #     flash[:notice] = 'Attempt to sign up track event not authorized'
+  #     redirect_to controller: '/home', action: :index
+  #     return
+  #   end
+  #   @school_class = SchoolClass.find requested_school_class_id
+  #   @student = Person.find params[:student_id].to_i
+  #   @parent = Person.find params[:parent_id].to_i
+  #   @track_event_program = TrackEventProgram.find params[:program_id].to_i
+  #   selected_relay_group = params[:selected_relay_group]
+  #   track_event_signup = TrackEventSignup.find_by_student_id_and_parent_id_and_track_event_program_id @student.id, params[:parent_id].to_i, @track_event_program.id
+  #   if selected_relay_group == ''
+  #     track_event_signup.destroy unless track_event_signup.nil?
+  #   else
+  #     if track_event_signup.nil?
+  #       track_event_signup = TrackEventSignup.new
+  #       track_event_signup.track_event_program = @track_event_program
+  #       track_event_signup.student = @student
+  #       track_event_signup.parent = @parent
+  #     end
+  #     track_event_signup.group_name = selected_relay_group
+  #     track_event_signup.save!
+  #     @existing_signup = track_event_signup
+  #   end
+  #   render action: :one_parent_track_event_signup, layout: 'ajax_layout'
+  # end
 
-  def assign_jersey_numbers
-    Grade.all.each { |grade| grade.assign_jersey_number_to_student }
-    JerseyNumber.create_jersey_numbers_for_participating_parents
-    flash[:notice] = 'Jersey number assignment completed'
-    redirect_to controller: '/home'
-  end
 
   def tocs_lane_assignment_form
     @lane_assignment_blocks = []
