@@ -1,6 +1,10 @@
 class Activity::TrackEventsController < ApplicationController
-  
+
   def index
+
+  end
+
+  def sign_up_index
     @active_grade_classes = SchoolClass.find_all_active_grade_classes
     @active_grade_classes.sort! do |a, b|
       grade_order = a.grade_id <=> b.grade_id

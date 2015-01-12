@@ -1,35 +1,16 @@
 <% @title = 'Manage Track Events' %>
 
-<%- total_signup_student_count = 0 -%>
-<table border="1px">
-  <thead>
-    <tr>
-      <th>Chinese Name</th>
-      <th>English Name</th>
-      <th>Location</th>
-      <th>Primary Instructor</th>
-      <th>Room Parent</th>
-      <th>Sign-up Student Count</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @active_grade_classes.each do |active_grade_class| -%>
-    <tr>
-      <td><%=h active_grade_class.chinese_name %></td>
-      <td><%=h active_grade_class.english_name %></td>
-      <td><%=h active_grade_class.location %></td>
-      <td><%=h active_grade_class.current_primary_instructor.try(:name) %></td>
-      <td><%=h active_grade_class.current_room_parent_name %></td>
-      <%- signup_student_count = active_grade_class.track_event_signup_student_count -%>
-      <td><%= signup_student_count %></td>
-      <%- total_signup_student_count += signup_student_count -%>
-      <td>
-        <%= link_to 'Sign Up', {controller: '/activity/track_events', action: 'sign_up', id: active_grade_class}, {class: 'button'} %>
-      </td>
-    </tr>
-    <% end %>
-  </tbody>
-</table>
+<h3>Manage Track Events</h3>
 
-<b>Total sign-up student count : <%= total_signup_student_count %></b>
+<% if PacificDate.today >= SchoolYear::TRACK_EVENT_SIGN_UP_PREVIEW_START_DATE and PacificDate.today <= SchoolYear::TRACK_EVENT_DATE %>
+    <br/>
+    <%= link_to 'Manage Sign Ups', {controller: '/activity/track_events/sign_up_index'}, {class: 'button'} %>
+    <br/>
+    <br/>
+    <%= link_to 'Download TOCS Track Event Lane Assignment Form', {controller: '/activity/track_events', action: 'tocs_lane_assignment_form', format: 'pdf'}, {class: 'button'} %>
+    <br/>
+    <br/>
+    <%= link_to 'Download TOCS Track Event Data CSV', {controller: '/activity/track_events', action: 'tocs_track_event_data', format: 'csv'}, {class: 'button'} %>
+    <br/>
+<% end %>
+<br/>
