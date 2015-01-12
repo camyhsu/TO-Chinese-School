@@ -6,6 +6,19 @@
     <br/>
     <%= link_to 'Manage Sign Ups', {controller: '/activity/track_events', action: 'sign_up_index'}, {class: 'button'} %>
     <br/>
+
+    <% TrackEventProgram.relay_programs.each do |relay_program| %>
+        <br/>
+        <%= link_to "Assign relay teams for #{relay_program.name}", {controller: '/activity/track_events', action: 'sign_up_index'}, {class: 'button'} %>
+        <br/>
+    <% end %>
+
+    <% TrackEventProgram.group_programs.each do |group_program| %>
+        <br/>
+        <%= link_to "Assign groups for #{group_program.name}", {controller: '/activity/track_events', action: 'sign_up_index'}, {class: 'button'} %>
+        <br/>
+    <% end %>
+
     <br/>
     <%= link_to 'Download TOCS Track Event Lane Assignment Form', {controller: '/activity/track_events', action: 'tocs_lane_assignment_form', format: 'pdf'}, {class: 'button'} %>
     <br/>
