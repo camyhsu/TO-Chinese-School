@@ -1,7 +1,7 @@
 <% existing_signups = student.find_all_track_event_signups_as_students %>
 <td><%=h student.name %></td>
 <td><%=h student.gender %></td>
-<td><%=h student.birth_info %></td>
+<td><%=h student.school_age_for SchoolYear.current_school_year %></td>
 <% track_event_programs.each do |track_event_program| %>
     <% if (track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT) || (track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY) %>
         <td class="select-parent">

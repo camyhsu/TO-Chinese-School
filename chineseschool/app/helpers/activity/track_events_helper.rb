@@ -16,7 +16,7 @@ module Activity::TrackEventsHelper
   end
 
   def pdf_create_draft_header_for(track_event_programs)
-    header = ['Student Name', 'Gender', 'Birth Month']
+    header = ['Student Name', 'Gender', 'School Age']
     track_event_programs.each do |track_event_program|
       header << track_event_program.name
     end
@@ -27,7 +27,7 @@ module Activity::TrackEventsHelper
     row = []
     row << student.name
     row << student.gender
-    row << student.birth_info
+    row << student.school_age_for(SchoolYear.current_school_year)
     track_event_programs.size.times { row << '' }
     row
   end

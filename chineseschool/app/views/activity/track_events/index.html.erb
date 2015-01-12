@@ -4,7 +4,7 @@
 
 <% if PacificDate.today >= SchoolYear::TRACK_EVENT_SIGN_UP_PREVIEW_START_DATE and PacificDate.today <= SchoolYear::TRACK_EVENT_DATE %>
     <br/>
-    <%= link_to 'Manage Sign Ups', {controller: '/activity/track_events/sign_up_index'}, {class: 'button'} %>
+    <%= link_to 'Manage Sign Ups', {controller: '/activity/track_events', action: 'sign_up_index'}, {class: 'button'} %>
     <br/>
     <br/>
     <%= link_to 'Download TOCS Track Event Lane Assignment Form', {controller: '/activity/track_events', action: 'tocs_lane_assignment_form', format: 'pdf'}, {class: 'button'} %>
