@@ -73,7 +73,7 @@ class ManualTransaction < ActiveRecord::Base
         true
       rescue => e
         puts "Saving manual transaction failed - Exception => #{e.inspect}"
-        errors.add_to_base 'System Transaction Failed' if errors.empty?
+        (errors[:base] << 'System Transaction Failed') if errors.empty?
         false
       end
     else
@@ -122,8 +122,8 @@ class ManualTransaction < ActiveRecord::Base
 
     # Notify instructors about the withdrawal
     if PacificDate.tomorrow >= current_school_year.start_date
-      WithdrawalMailer.instructor_notification(self.student, withdrawal_record.school_class).deliver
-      WithdrawalMailer.instructor_notification(self.student, withdrawal_record.elective_class).deliver
+      #WithdrawalMailer.instructor_notification(self.student, withdrawal_record.school_class).deliver unless withdrawal_record.school_class.nil?
+      WithdrawalMailer.instructor_notification(self.student, withdrawal_record.elective_class).deliver unless withdrawal_record.elective_class.nil?
     end
   end
 end
