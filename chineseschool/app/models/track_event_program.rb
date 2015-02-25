@@ -24,6 +24,8 @@ class TrackEventProgram < ActiveRecord::Base
   MAX_AGE_YOUNG_DIVISION = 9
   
   belongs_to :school_year
+  has_many :track_event_teams
+  has_many :track_event_signups
   
   validates :school_year, :name, :event_type, :program_type, presence: true
 

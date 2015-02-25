@@ -7,6 +7,12 @@ module Activity::TrackEventsHelper
     ''
   end
 
+  def title_label_for_gender(gender)
+    return '' if gender.nil?
+    return '(Male)' if gender == 'M'
+    '(Female)'
+  end
+
   def find_relay_team_name(signup)
     if signup.nil?
       'Not Participate'

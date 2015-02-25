@@ -26,6 +26,16 @@ function selectRelayGroup(selectElement, studentId, programId, url) {
     });
 }
 
+function selectTrackTeam(selectElement, genderValue, url) {
+    var jSelectElement = $(selectElement);
+    var selectedTrackTeamId = jSelectElement.children('option:selected').attr('value');
+    jSelectElement.attr("disabled", true);
+    var jCellElement = jSelectElement.parent();
+    $.post(url, {selected_track_team_id : selectedTrackTeamId, gender : genderValue}, function(data) {
+        jCellElement.html(data);
+    });
+}
+
 function selectParent(checkboxElement, studentId, parentId, url) {
     var jCheckboxElement = $(checkboxElement);
     var programId = jCheckboxElement.attr('value');

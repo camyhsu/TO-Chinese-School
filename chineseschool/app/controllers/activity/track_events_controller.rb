@@ -1,7 +1,6 @@
 class Activity::TrackEventsController < ApplicationController
 
   def index
-
   end
 
   def sign_up_index
@@ -179,6 +178,55 @@ class Activity::TrackEventsController < ApplicationController
   #   render action: :one_parent_track_event_signup, layout: 'ajax_layout'
   # end
 
+  def assign_student_team_index
+    @track_event_program = TrackEventProgram.find params[:id].to_i
+    @gender = params[:gender]
+    @track_event_signups = @track_event_program.track_event_signups.select { |signup| signup.student.gender == @gender }
+    @track_event_teams = @track_event_program.track_event_teams.select { |team| team.gender == @gender }
+  end
+
+  def assign_parent_team_index
+    @track_event_program = TrackEventProgram.find params[:id].to_i
+    @track_event_signups = @track_event_program.track_event_signups
+    @track_event_teams = @track_event_program.track_event_teams
+  end
+
+  def create_team
+    track_event_program = TrackEventProgram.find params[:id].to_i
+    new_team = TrackEventTeam.new
+    new_team.track_event_program = track_event_program
+    new_team.name = params[:name]
+    new_team.gender = params[:gender] unless track_event_program.division == TrackEventProgram::PARENT_DIVISION
+
+    flash[:notice] = 'Error creating new team' unless new_team.save
+    if track_event_program.division == TrackEventProgram::PARENT_DIVISION
+      redirect_to action: :assign_parent_team_index, id: track_event_program
+    else
+      redirect_to action: :assign_student_team_index, id: track_event_program, gender: params[:gender]
+    end
+  end
+
+  def delete_team
+
+  end
+
+  def select_team
+    @signup = TrackEventSignup.find params[:id].to_i
+    if params[:selected_track_team_id].empty?
+      @signup.track_event_team = nil
+    else
+      selected_track_team = TrackEventTeam.find params[:selected_track_team_id].to_i
+      @signup.track_event_team = selected_track_team
+    end
+    @signup.save!
+    @gender = params[:gender]
+    if @gender.empty?
+      @track_event_teams = @signup.track_event_program.track_event_teams
+    else
+      @track_event_teams = @signup.track_event_program.track_event_teams.select { |team| team.gender == @gender }
+    end
+    render action: :one_track_team_assignment, layout: 'ajax_layout'
+  end
 
   def tocs_lane_assignment_form
     @lane_assignment_blocks = []

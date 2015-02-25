@@ -1,0 +1,58 @@
+
+<% @title = "Assign team for #{@track_event_program.name}" %>
+
+<h2><%= @title %></h2>
+
+<h3>Current Sign-ups</h3>
+<table border="1px">
+  <thead>
+  <tr>
+    <th>Student Name</th>
+    <th>Student Grade Class</th>
+    <th>Parent Name</th>
+    <th>Parent Gender</th>
+    <th>Assign Team</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @track_event_signups.each do |signup| %>
+      <% student = signup.student %>
+      <% parent = signup.parent %>
+      <tr>
+        <td align="center"><%=h student.name %></td>
+        <td align="center"><%= student.student_class_assignment_for(SchoolYear.current_school_year).school_class.short_name %></td>
+        <td align="center"><%=h parent.name %></td>
+        <td align="center"><%= parent.gender %></td>
+        <td>
+          <%= render partial: 'track_team_assignment', locals: {track_event_teams: @track_event_teams, gender: '', signup: signup} %>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<h3>Team List</h3>
+<table border="1px">
+  <thead>
+  <tr>
+    <th>Team Name</th>
+    <th>Team Member Count</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @track_event_teams.each do |team| %>
+      <tr>
+        <td align="center"><%=h team.name %></td>
+        <td align="center">0</td>
+        <td><%= link_to 'Delete', {controller: '/activity/track_events', action: 'delete_team', id: team}, {class: 'button', confirm: "Are you sure you want to delete #{team.name}?"} %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Refresh Team Member Count', {controller: '/activity/track_events', action: 'assign_parent_team_index', id: @track_event_program}, {class: 'button'} %>
+<br/>
+<br/>
+<%= form_tag action: 'create_team', id: @track_event_program do %>
+    <%= submit_tag 'Create New Team', class: 'button' %>&nbsp;with name&nbsp;<%= text_field_tag :name, '', size: 20 %>
+<% end %>

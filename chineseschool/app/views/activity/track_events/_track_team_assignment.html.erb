@@ -1,0 +1,3 @@
+
+<% select_track_team_handler = "selectTrackTeam(this, '#{gender}', '#{url_for action: :select_team, id: signup}')" %>
+<%= select('program', 'relay', track_event_teams.collect {|team| [team.name, team.id]}, {include_blank: true, selected: (signup.track_event_team.nil? ? '' : signup.track_event_team.id) }, {onchange: select_track_team_handler}) %>

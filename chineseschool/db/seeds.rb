@@ -64,11 +64,17 @@ activity_forms_grade_class_information = Right.create(name: 'Activity Forms Grad
 activity_forms_elective_class_information = Right.create(name: 'Activity Forms Elective Class Information', controller: 'activity/forms', action: 'elective_class_information')
 
 activity_track_events_index = Right.create(name: 'Manage Track Events', controller: 'activity/track_events', action: 'index')
+activity_track_events_sign_up_index = Right.create(name: 'Sign Up Track Events Index', controller: 'activity/track_events', action: 'sign_up_index')
 activity_track_events_sign_up = Right.create(name: 'Sign Up Track Events', controller: 'activity/track_events', action: 'sign_up')
 activity_track_events_select_program = Right.create(name: 'Sign Up Student Track Event By Check Box', controller: 'activity/track_events', action: 'select_program')
-activity_track_events_select_relay_group = Right.create(name: 'Sign Up Student Relay Track Event By Select Relay Group', controller: 'activity/track_events', action: 'select_relay_group')
 activity_track_events_select_parent = Right.create(name: 'Sign Up Parent Track Event By Check Box', controller: 'activity/track_events', action: 'select_parent')
-activity_track_events_select_parent_relay_group = Right.create(name: 'Sign Up Parent Relay Track Event By Select Relay Group', controller: 'activity/track_events', action: 'select_parent_relay_group')
+
+activity_track_events_assign_student_team_index = Right.create(name: 'Assign Student Track Event Team Main Page', controller: 'activity/track_events', action: 'assign_student_team_index')
+activity_track_events_assign_parent_team_index = Right.create(name: 'Assign Parent Track Event Team Main Page', controller: 'activity/track_events', action: 'assign_parent_team_index')
+activity_track_events_create_team = Right.create(name: 'Create Track Event Team', controller: 'activity/track_events', action: 'create_team')
+activity_track_events_select_team = Right.create(name: 'Assign Track Event Team', controller: 'activity/track_events', action: 'select_team')
+activity_track_events_delete_team = Right.create(name: 'Delete Track Event Team', controller: 'activity/track_events', action: 'delete_team')
+
 activity_track_events_sign_up_result = Right.create(name: 'Sign Up Track Events Result', controller: 'activity/track_events', action: 'sign_up_result')
 activity_track_events_assign_jersey_numbers = Right.create(name: 'TOCS Track Event Assign Jersey Numbers', controller: 'activity/track_events', action: 'assign_jersey_numbers')
 activity_track_events_tocs_lane_assignment_form = Right.create(name: 'TOCS Track Event Lane Assignment Form', controller: 'activity/track_events', action: 'tocs_lane_assignment_form')
@@ -265,11 +271,15 @@ activity_officer.rights << activity_forms_students_by_class
 activity_officer.rights << activity_forms_grade_class_information
 activity_officer.rights << activity_forms_elective_class_information
 activity_officer.rights << activity_track_events_index
+activity_officer.rights << activity_track_events_sign_up_index
 activity_officer.rights << activity_track_events_sign_up
 activity_officer.rights << activity_track_events_select_program
-activity_officer.rights << activity_track_events_select_relay_group
 activity_officer.rights << activity_track_events_select_parent
-activity_officer.rights << activity_track_events_select_parent_relay_group
+activity_officer.rights << activity_track_events_assign_student_team_index
+activity_officer.rights << activity_track_events_assign_parent_team_index
+activity_officer.rights << activity_track_events_create_team
+activity_officer.rights << activity_track_events_select_team
+activity_officer.rights << activity_track_events_delete_team
 activity_officer.rights << activity_track_events_assign_jersey_numbers
 activity_officer.rights << activity_track_events_tocs_lane_assignment_form
 activity_officer.rights << activity_track_events_tocs_track_event_data
@@ -325,9 +335,7 @@ instructor.rights << instruction_school_classes_save_room_parent_selection
 instructor.rights << instruction_school_classes_cancel_room_parent_selection
 instructor.rights << activity_track_events_sign_up
 instructor.rights << activity_track_events_select_program
-instructor.rights << activity_track_events_select_relay_group
 instructor.rights << activity_track_events_select_parent
-instructor.rights << activity_track_events_select_parent_relay_group
 instructor.rights << activity_track_events_sign_up_result
 instructor.rights << library_book_read_only_view
 
@@ -339,9 +347,7 @@ room_parent = Role.find_by_name(Role::ROLE_NAME_ROOM_PARENT)
 room_parent.rights << instruction_school_classes_show
 room_parent.rights << activity_track_events_sign_up
 room_parent.rights << activity_track_events_select_program
-room_parent.rights << activity_track_events_select_relay_group
 room_parent.rights << activity_track_events_select_parent
-room_parent.rights << activity_track_events_select_parent_relay_group
 room_parent.rights << activity_track_events_sign_up_result
 
 
