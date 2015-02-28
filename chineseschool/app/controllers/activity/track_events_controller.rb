@@ -78,7 +78,7 @@ class Activity::TrackEventsController < ApplicationController
     @school_class = SchoolClass.find requested_school_class_id
     @student = Person.find params[:student_id].to_i
     @track_event_program = TrackEventProgram.find params[:program_id].to_i
-    track_event_signup = TrackEventSignup.find_by_student_id_and_track_event_program_id @student.id, @track_event_program.id
+    track_event_signup = @track_event_program.find_non_filler_signup_for @student
     if params[:checked_flag] == 'true'
       if track_event_signup.nil?
         track_event_signup = TrackEventSignup.new
@@ -132,7 +132,7 @@ class Activity::TrackEventsController < ApplicationController
     @student = Person.find params[:student_id].to_i
     @parent = Person.find params[:parent_id].to_i
     @track_event_program = TrackEventProgram.find params[:program_id].to_i
-    track_event_signup = TrackEventSignup.find_by_student_id_and_parent_id_and_track_event_program_id @student.id, params[:parent_id].to_i, @track_event_program.id
+    track_event_signup = @track_event_program.find_non_filler_signup_for @student, @parent
     if params[:checked_flag] == 'true'
       if track_event_signup.nil?
         track_event_signup = TrackEventSignup.new
