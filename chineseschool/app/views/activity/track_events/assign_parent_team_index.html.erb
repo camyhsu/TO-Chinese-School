@@ -43,7 +43,7 @@
   <% @track_event_teams.each do |team| %>
       <tr>
         <td align="center"><%=h team.name %></td>
-        <td align="center">0</td>
+        <td align="center"><%= team.track_event_signups.size %></td>
         <td><%= link_to 'Delete', {controller: '/activity/track_events', action: 'delete_team', id: team}, {class: 'button', confirm: "Are you sure you want to delete #{team.name}?"} %></td>
       </tr>
   <% end %>
