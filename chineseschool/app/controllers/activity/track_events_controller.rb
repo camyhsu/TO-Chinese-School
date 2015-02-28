@@ -207,7 +207,14 @@ class Activity::TrackEventsController < ApplicationController
   end
 
   def delete_team
-
+    track_event_team = TrackEventTeam.find params[:id].to_i
+    track_event_team.destroy
+    track_event_program = track_event_team.track_event_program
+    if track_event_program.division == TrackEventProgram::PARENT_DIVISION
+      redirect_to action: :assign_parent_team_index, id: track_event_program
+    else
+      redirect_to action: :assign_student_team_index, id: track_event_program, gender: params[:gender]
+    end
   end
 
   def select_team
