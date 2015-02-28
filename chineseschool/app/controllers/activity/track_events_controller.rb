@@ -182,13 +182,13 @@ class Activity::TrackEventsController < ApplicationController
     @track_event_program = TrackEventProgram.find params[:id].to_i
     @gender = params[:gender]
     @track_event_signups = @track_event_program.track_event_signups.select { |signup| signup.student.gender == @gender }
-    @track_event_teams = @track_event_program.track_event_teams.select { |team| team.gender == @gender }
+    @track_event_teams = @track_event_program.track_event_teams.select { |team| team.gender == @gender }.sort { |a, b| a.name <=> b.name }
   end
 
   def assign_parent_team_index
     @track_event_program = TrackEventProgram.find params[:id].to_i
     @track_event_signups = @track_event_program.track_event_signups
-    @track_event_teams = @track_event_program.track_event_teams
+    @track_event_teams = @track_event_program.track_event_teams.sort { |a, b| a.name <=> b.name }
   end
 
   def create_team
