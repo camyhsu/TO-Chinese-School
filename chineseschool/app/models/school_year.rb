@@ -3,7 +3,7 @@ class SchoolYear < ActiveRecord::Base
   TRACK_EVENT_DATE = Date.parse('2015-03-28')
   TRACK_EVENT_SIGN_UP_PREVIEW_START_DATE = Date.parse('2015-01-23')
   TRACK_EVENT_SIGN_UP_START_DATE = Date.parse('2015-01-31')
-  TRACK_EVENT_SIGN_UP_END_DATE = Date.parse('2015-02-28')
+  TRACK_EVENT_SIGN_UP_END_DATE = Date.parse('2015-03-01')
 
   attr_accessible :name, :description, :start_date, :end_date, :age_cutoff_month, :registration_fee,
                   :pre_registration_tuition, :tuition, :tuition_discount_for_three_or_more_child,
