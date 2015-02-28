@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150214180551) do
+ActiveRecord::Schema.define(:version => 20150228180046) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -310,9 +310,9 @@ ActiveRecord::Schema.define(:version => 20150214180551) do
     t.integer  "grade_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "relay_team_size"
+    t.integer  "team_size"
     t.integer  "sort_key"
-    t.boolean  "mixed_gender",    :default => false, :null => false
+    t.boolean  "mixed_gender",   :default => false, :null => false
     t.string   "division"
   end
 
