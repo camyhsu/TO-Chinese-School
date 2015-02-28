@@ -2,6 +2,9 @@
 <% @title = "Assign team for #{@track_event_program.name} #{title_label_for_gender(@gender)}" %>
 
 <h2><%= @title %></h2>
+<br/>
+<%= link_to 'Back to Manage Track Events', {controller: '/activity/track_events', action: 'index'}, {class: 'button'} %>
+<br/><br/>
 
 <h3>Current Sign-ups</h3>
 <table border="1px">

@@ -1,5 +1,8 @@
 <% @title = 'Manage Track Event Sign Ups' %>
 
+<%= link_to 'Back to Manage Track Events', {controller: '/activity/track_events', action: 'index'}, {class: 'button'} %>
+<br/><br/>
+
 <%- total_signup_student_count = 0 -%>
 <table border="1px">
   <thead>
@@ -33,3 +36,4 @@
 </table>
 
 <b>Total sign-up student count : <%= total_signup_student_count %></b>
+<br/><br/>
