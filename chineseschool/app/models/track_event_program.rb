@@ -44,6 +44,14 @@ class TrackEventProgram < ActiveRecord::Base
     self.track_event_signups.detect { |signup| (!signup.filler?) && (signup.student == student) && (signup.parent == parent) }
   end
 
+  def find_filler_team_for_gender(gender)
+    if gender.nil?
+      self.track_event_teams.detect { |team| team.filler? }
+    else
+      self.track_event_teams.select { |team| team.gender == gender }.detect { |team| team.filler? }
+    end
+  end
+
   def self.young_division_programs
     self.all :conditions => { :school_year_id => SchoolYear.current_school_year.id, :division => YOUNG_DIVISION }
   end

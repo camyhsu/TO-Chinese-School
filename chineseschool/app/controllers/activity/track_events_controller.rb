@@ -183,12 +183,14 @@ class Activity::TrackEventsController < ApplicationController
     @gender = params[:gender]
     @track_event_signups = @track_event_program.track_event_signups.select { |signup| signup.student.gender == @gender }.sort
     @track_event_teams = @track_event_program.track_event_teams.select { |team| team.gender == @gender }.sort { |a, b| a.name <=> b.name }
+    @filler_team = @track_event_teams.detect { |team| team.filler? }
   end
 
   def assign_parent_team_index
     @track_event_program = TrackEventProgram.find params[:id].to_i
     @track_event_signups = @track_event_program.track_event_signups.sort
     @track_event_teams = @track_event_program.track_event_teams.sort { |a, b| a.name <=> b.name }
+    @filler_team = @track_event_teams.detect { |team| team.filler? }
   end
 
   def create_team
@@ -233,6 +235,31 @@ class Activity::TrackEventsController < ApplicationController
       @track_event_teams = @signup.track_event_program.track_event_teams.select { |team| team.gender == @gender }
     end
     render action: :one_track_team_assignment, layout: 'ajax_layout'
+  end
+
+  def change_filler_team
+    track_event_program = TrackEventProgram.find params[:id].to_i
+    if params[:team][:filler].empty?
+      existing_filler_team = track_event_program.find_filler_team_for_gender params[:gender]
+      unless existing_filler_team.nil?
+        existing_filler_team.filler = false
+        flash[:notice] = 'Error changing filler team' unless existing_filler_team.save
+      end
+    else
+      filler_team = TrackEventTeam.find params[:team][:filler].to_i
+      if filler_team.nil?
+        flash[:notice] = 'Problem finding filler team to change to -- has it been deleted?'
+      else
+        filler_team.filler = true
+        flash[:notice] = 'Error changing filler team' unless filler_team.save
+      end
+    end
+
+    if track_event_program.division == TrackEventProgram::PARENT_DIVISION
+      redirect_to action: :assign_parent_team_index, id: track_event_program
+    else
+      redirect_to action: :assign_student_team_index, id: track_event_program, gender: params[:gender]
+    end
   end
 
   def tocs_lane_assignment_form

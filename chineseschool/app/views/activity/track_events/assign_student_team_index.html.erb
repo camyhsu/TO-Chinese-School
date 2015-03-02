@@ -30,8 +30,11 @@
     <% end %>
   </tbody>
 </table>
+<br/><br/>
 
 <h3>Team List</h3>
+<%= link_to 'Refresh Team Member Count', {controller: '/activity/track_events', action: 'assign_student_team_index', id: @track_event_program, gender: @gender}, {class: 'button'} %>
+<br/><br/>
 <table border="1px">
   <thead>
     <tr>
@@ -50,9 +53,23 @@
   </tbody>
 </table>
 
-<%= link_to 'Refresh Team Member Count', {controller: '/activity/track_events', action: 'assign_student_team_index', id: @track_event_program, gender: @gender}, {class: 'button'} %>
-<br/>
 <br/>
 <%= form_tag action: 'create_team', id: @track_event_program, gender: @gender do %>
     <%= submit_tag 'Create New Team', class: 'button' %>&nbsp;with name&nbsp;<%= text_field_tag :name, '', size: 20 %>
 <% end %>
+<br/><br/>
+
+<h3>Filler Team</h3>
+
+<% if @filler_team.nil? %>
+    No filler team
+<% else %>
+    Current fillter team is <b><%=h @filler_team.name %></b>
+<% end %>
+<br/><br/>
+<%= form_tag action: 'change_filler_team', id: @track_event_program, gender: @gender do %>
+    <%= submit_tag 'Change', class: 'button' %>&nbsp;filler team to&nbsp;
+    <%= select('team', 'filler', @track_event_teams.collect {|team| [team.name, team.id]}, {include_blank: true, selected: (@filler_team.nil? ? '' : @filler_team.id) }) %>
+<% end %>
+
+<br/><br/>

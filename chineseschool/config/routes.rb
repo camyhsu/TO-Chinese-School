@@ -33,6 +33,7 @@ Chineseschool::Application.routes.draw do
     post 'track_events/select_team' => 'track_events#select_team'
     get 'track_events/delete_team' => 'track_events#delete_team'
 
+    post 'track_events/change_filler_team' => 'track_events#change_filler_team'
 
     get 'track_events/tocs_lane_assignment_form' => 'track_events#tocs_lane_assignment_form'
     get 'track_events/tocs_track_event_data' => 'track_events#tocs_track_event_data'

@@ -74,6 +74,7 @@ activity_track_events_assign_parent_team_index = Right.create(name: 'Assign Pare
 activity_track_events_create_team = Right.create(name: 'Create Track Event Team', controller: 'activity/track_events', action: 'create_team')
 activity_track_events_select_team = Right.create(name: 'Assign Track Event Team', controller: 'activity/track_events', action: 'select_team')
 activity_track_events_delete_team = Right.create(name: 'Delete Track Event Team', controller: 'activity/track_events', action: 'delete_team')
+activity_track_events_change_filler_team = Right.create(name: 'Change Filler Team for Team Program', controller: 'activity/track_events', action: 'change_filler_team')
 
 activity_track_events_sign_up_result = Right.create(name: 'Sign Up Track Events Result', controller: 'activity/track_events', action: 'sign_up_result')
 activity_track_events_assign_jersey_numbers = Right.create(name: 'TOCS Track Event Assign Jersey Numbers', controller: 'activity/track_events', action: 'assign_jersey_numbers')
@@ -280,6 +281,7 @@ activity_officer.rights << activity_track_events_assign_parent_team_index
 activity_officer.rights << activity_track_events_create_team
 activity_officer.rights << activity_track_events_select_team
 activity_officer.rights << activity_track_events_delete_team
+activity_officer.rights << activity_track_events_change_filler_team
 activity_officer.rights << activity_track_events_assign_jersey_numbers
 activity_officer.rights << activity_track_events_tocs_lane_assignment_form
 activity_officer.rights << activity_track_events_tocs_track_event_data
