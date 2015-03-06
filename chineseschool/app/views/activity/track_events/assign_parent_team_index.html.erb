@@ -76,3 +76,35 @@
 <% end %>
 
 <br/><br/>
+<b>Filler Sign-ups</b><br/>
+<table border="1px">
+  <thead>
+  <tr>
+    <th>Student Name</th>
+    <th>Student Grade Class</th>
+    <th>Parent Name</th>
+    <th>Parent Gender</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @track_event_program.filler_signups_for_gender(nil).sort.each do |signup| %>
+      <% student = signup.student %>
+      <% parent = signup.parent %>
+      <tr>
+        <td align="center"><%=h student.name %></td>
+        <td align="center"><%= student.student_class_assignment_for(SchoolYear.current_school_year).school_class.short_name %></td>
+        <td align="center"><%=h parent.name %></td>
+        <td align="center"><%= parent.gender %></td>
+        <td><%= link_to 'Delete', {controller: '/activity/track_events', action: 'delete_filler_signup', id: signup}, {class: 'button'} %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br/>
+<%= form_tag action: 'create_filler_signup', id: @track_event_program do %>
+    <%= submit_tag 'Add Filler Sign-up', class: 'button' %>&nbsp;with parent&nbsp;
+    <%= select('filler', 'signup_ref', @track_event_signups.collect {|signup| [signup.parent.name, signup.id]}, {include_blank: false}) %>
+<% end %>
+
+<br/><br/>

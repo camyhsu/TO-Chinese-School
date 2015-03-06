@@ -94,33 +94,6 @@ class Activity::TrackEventsController < ApplicationController
     render action: :one_student_track_event_signup, layout: 'ajax_layout'
   end
   
-  # def select_relay_group
-  #   requested_school_class_id = params[:id].to_i
-  #   unless instructor_assignment_verified? requested_school_class_id
-  #     flash[:notice] = 'Attempt to sign up track event not authorized'
-  #     redirect_to controller: '/home', action: :index
-  #     return
-  #   end
-  #   @school_class = SchoolClass.find requested_school_class_id
-  #   @student = Person.find params[:student_id].to_i
-  #   @track_event_program = TrackEventProgram.find params[:program_id].to_i
-  #   selected_relay_group = params[:selected_relay_group]
-  #   track_event_signup = TrackEventSignup.find_by_student_id_and_track_event_program_id @student.id, @track_event_program.id
-  #   if selected_relay_group == ''
-  #     track_event_signup.destroy unless track_event_signup.nil?
-  #   else
-  #     if track_event_signup.nil?
-  #       track_event_signup = TrackEventSignup.new
-  #       track_event_signup.track_event_program = @track_event_program
-  #       track_event_signup.student = @student
-  #     end
-  #     track_event_signup.group_name = selected_relay_group
-  #     track_event_signup.save!
-  #     @existing_signup = track_event_signup
-  #   end
-  #   render action: :one_student_track_event_signup, layout: 'ajax_layout'
-  # end
-  
   def select_parent
     requested_school_class_id = params[:id].to_i
     unless instructor_assignment_verified? requested_school_class_id
@@ -149,46 +122,17 @@ class Activity::TrackEventsController < ApplicationController
     render action: :one_parent_track_event_signup, layout: 'ajax_layout'
   end
 
-  # def select_parent_relay_group
-  #   requested_school_class_id = params[:id].to_i
-  #   unless instructor_assignment_verified? requested_school_class_id
-  #     flash[:notice] = 'Attempt to sign up track event not authorized'
-  #     redirect_to controller: '/home', action: :index
-  #     return
-  #   end
-  #   @school_class = SchoolClass.find requested_school_class_id
-  #   @student = Person.find params[:student_id].to_i
-  #   @parent = Person.find params[:parent_id].to_i
-  #   @track_event_program = TrackEventProgram.find params[:program_id].to_i
-  #   selected_relay_group = params[:selected_relay_group]
-  #   track_event_signup = TrackEventSignup.find_by_student_id_and_parent_id_and_track_event_program_id @student.id, params[:parent_id].to_i, @track_event_program.id
-  #   if selected_relay_group == ''
-  #     track_event_signup.destroy unless track_event_signup.nil?
-  #   else
-  #     if track_event_signup.nil?
-  #       track_event_signup = TrackEventSignup.new
-  #       track_event_signup.track_event_program = @track_event_program
-  #       track_event_signup.student = @student
-  #       track_event_signup.parent = @parent
-  #     end
-  #     track_event_signup.group_name = selected_relay_group
-  #     track_event_signup.save!
-  #     @existing_signup = track_event_signup
-  #   end
-  #   render action: :one_parent_track_event_signup, layout: 'ajax_layout'
-  # end
-
   def assign_student_team_index
     @track_event_program = TrackEventProgram.find params[:id].to_i
     @gender = params[:gender]
-    @track_event_signups = @track_event_program.track_event_signups.select { |signup| signup.student.gender == @gender }.sort
+    @track_event_signups = @track_event_program.track_event_signups.select { |signup| (signup.student.gender == @gender) && (!signup.filler?) }.sort
     @track_event_teams = @track_event_program.track_event_teams.select { |team| team.gender == @gender }.sort { |a, b| a.name <=> b.name }
     @filler_team = @track_event_teams.detect { |team| team.filler? }
   end
 
   def assign_parent_team_index
     @track_event_program = TrackEventProgram.find params[:id].to_i
-    @track_event_signups = @track_event_program.track_event_signups.sort
+    @track_event_signups = @track_event_program.track_event_signups.select { |signup| (!signup.filler?) }.sort
     @track_event_teams = @track_event_program.track_event_teams.sort { |a, b| a.name <=> b.name }
     @filler_team = @track_event_teams.detect { |team| team.filler? }
   end
@@ -201,22 +145,14 @@ class Activity::TrackEventsController < ApplicationController
     new_team.gender = params[:gender] unless track_event_program.division == TrackEventProgram::PARENT_DIVISION
 
     flash[:notice] = 'Error creating new team' unless new_team.save
-    if track_event_program.division == TrackEventProgram::PARENT_DIVISION
-      redirect_to action: :assign_parent_team_index, id: track_event_program
-    else
-      redirect_to action: :assign_student_team_index, id: track_event_program, gender: params[:gender]
-    end
+    redirect_to_assign_team_index track_event_program, params[:gender]
   end
 
   def delete_team
     track_event_team = TrackEventTeam.find params[:id].to_i
-    track_event_team.destroy
     track_event_program = track_event_team.track_event_program
-    if track_event_program.division == TrackEventProgram::PARENT_DIVISION
-      redirect_to action: :assign_parent_team_index, id: track_event_program
-    else
-      redirect_to action: :assign_student_team_index, id: track_event_program, gender: params[:gender]
-    end
+    track_event_team.destroy
+    redirect_to_assign_team_index track_event_program, params[:gender]
   end
 
   def select_team
@@ -239,27 +175,42 @@ class Activity::TrackEventsController < ApplicationController
 
   def change_filler_team
     track_event_program = TrackEventProgram.find params[:id].to_i
+    gender = params[:gender]
+    existing_filler_team = track_event_program.find_filler_team_for_gender params[:gender]
     if params[:team][:filler].empty?
-      existing_filler_team = track_event_program.find_filler_team_for_gender params[:gender]
       unless existing_filler_team.nil?
-        existing_filler_team.filler = false
-        flash[:notice] = 'Error changing filler team' unless existing_filler_team.save
+        change_filler_team_with_signup_updates(existing_filler_team, nil, track_event_program, gender)
       end
     else
       filler_team = TrackEventTeam.find params[:team][:filler].to_i
       if filler_team.nil?
         flash[:notice] = 'Problem finding filler team to change to -- has it been deleted?'
       else
-        filler_team.filler = true
-        flash[:notice] = 'Error changing filler team' unless filler_team.save
+        change_filler_team_with_signup_updates(existing_filler_team, filler_team, track_event_program, gender)
       end
     end
+    redirect_to_assign_team_index track_event_program, gender
+  end
 
-    if track_event_program.division == TrackEventProgram::PARENT_DIVISION
-      redirect_to action: :assign_parent_team_index, id: track_event_program
-    else
-      redirect_to action: :assign_student_team_index, id: track_event_program, gender: params[:gender]
-    end
+  def create_filler_signup
+    track_event_program = TrackEventProgram.find params[:id].to_i
+    gender = params[:gender]
+    reference_signup = TrackEventSignup.find params[:filler][:signup_ref]
+    new_filler_signup = TrackEventSignup.new
+    new_filler_signup.track_event_program = track_event_program
+    new_filler_signup.student = reference_signup.student
+    new_filler_signup.parent = reference_signup.parent
+    new_filler_signup.track_event_team = track_event_program.find_filler_team_for_gender gender
+    new_filler_signup.filler = true
+
+    flash[:notice] = 'Error creating new filler sign-up' unless new_filler_signup.save
+    redirect_to_assign_team_index track_event_program, gender
+  end
+
+  def delete_filler_signup
+    filler_signup = TrackEventSignup.find params[:id].to_i
+    filler_signup.destroy
+    redirect_to_assign_team_index filler_signup.track_event_program, params[:gender]
   end
 
   def tocs_lane_assignment_form
@@ -288,6 +239,40 @@ class Activity::TrackEventsController < ApplicationController
     @user.roles.any? do |role|
       role.name == Role::ROLE_NAME_SUPER_USER or 
       role.name == Role::ROLE_NAME_ACTIVITY_OFFICER
+    end
+  end
+
+  def redirect_to_assign_team_index(track_event_program, gender)
+    if track_event_program.division == TrackEventProgram::PARENT_DIVISION
+      redirect_to action: :assign_parent_team_index, id: track_event_program
+    else
+      redirect_to action: :assign_student_team_index, id: track_event_program, gender: gender
+    end
+  end
+
+  def move_filler_signup_to(new_team, track_event_program, gender)
+    track_event_program.filler_signups_for_gender(gender).each do |signup|
+      signup.track_event_team = new_team
+      signup.save!
+    end
+  end
+
+  def change_filler_team_with_signup_updates(old_team, new_team, track_event_program, gender)
+    begin
+      TrackEventTeam.transaction do
+        move_filler_signup_to(new_team, track_event_program, gender)
+        unless old_team.nil?
+          old_team.filler = false
+          old_team.save!
+        end
+        unless new_team.nil?
+          new_team.filler = true
+          new_team.save!
+        end
+      end
+    rescue => e
+      logger.error "Error changing filler team from #{old_team.nil? ? 'none' : old_team.id} to #{new_team.nil? ? 'none' : new_team.id} => #{e.inspect}"
+      flash[:notice] = 'Error changing filler team'
     end
   end
 

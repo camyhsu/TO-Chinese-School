@@ -40,6 +40,14 @@ class TrackEventProgram < ActiveRecord::Base
   #   false
   # end
 
+  def filler_signups_for_gender(gender)
+    if gender.nil?
+      self.track_event_signups.select { |signup| signup.filler? }
+    else
+      self.track_event_signups.select { |signup| signup.filler? && (signup.student.gender == gender) }
+    end
+  end
+
   def find_non_filler_signup_for(student, parent=nil)
     self.track_event_signups.detect { |signup| (!signup.filler?) && (signup.student == student) && (signup.parent == parent) }
   end
