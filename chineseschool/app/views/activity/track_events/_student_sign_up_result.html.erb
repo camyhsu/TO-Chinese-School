@@ -3,12 +3,12 @@
 <td><%=h student.gender %></td>
 <td><%=h student.school_age_for SchoolYear.current_school_year %></td>
 <% track_event_programs.each do |track_event_program| %>
-    <% if track_event_program.division == TrackEventProgram::PARENT_DIVISION %>
+    <% if track_event_program.parent_division? %>
         <td class="select-parent">
           <% student.find_parents.each do |parent| %>
               <div style="<%= find_gender_color(track_event_program, parent) %>">
                 <% signup_found = existing_signups.detect { |existing_signup| (existing_signup.track_event_program.id == track_event_program.id) && (existing_signup.parent_id == parent.id) } %>
-                <% if track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_INDIVIDUAL %>
+                <% if track_event_program.individual_program? %>
                     <input type="checkbox" <%= signup_found.nil? ? '' : 'checked' %> disabled="true">&nbsp;<%=h parent.name %>
                 <% else %>
                     <input type="checkbox" <%= signup_found.nil? ? '' : 'checked' %> disabled="true">&nbsp;<%=h parent.name %>&nbsp;<b><%=h signup_found.try(:track_event_team).try(:name) %></b>
@@ -19,7 +19,7 @@
     <% else %>
         <td style="<%= find_gender_color(track_event_program, student) %>">
           <% signup_found = existing_signups.detect { |existing_signup| existing_signup.track_event_program.id == track_event_program.id } %>
-          <% if track_event_program.program_type == TrackEventProgram::PROGRAM_TYPE_INDIVIDUAL %>
+          <% if track_event_program.individual_program? %>
               <input type="checkbox" <%= signup_found.nil? ? '' : 'checked' %> disabled="true">
           <% else %>
               <input type="checkbox" <%= signup_found.nil? ? '' : 'checked' %> disabled="true">&nbsp;<%=h signup_found.try(:track_event_team).try(:name) %>

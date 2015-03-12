@@ -1,0 +1,10 @@
+<% @title = 'Lane Assignments' %>
+
+<%= link_to 'Back to Manage Track Events', {controller: '/activity/track_events', action: 'index'}, {class: 'button'} %>
+<br/><br/>
+
+<% @track_event_programs.each do |program| %>
+
+    <h3><%=h program.name %></h3>
+
+<% end %>

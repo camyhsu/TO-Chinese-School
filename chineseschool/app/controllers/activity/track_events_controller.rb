@@ -142,7 +142,7 @@ class Activity::TrackEventsController < ApplicationController
     new_team = TrackEventTeam.new
     new_team.track_event_program = track_event_program
     new_team.name = params[:name]
-    new_team.gender = params[:gender] unless track_event_program.division == TrackEventProgram::PARENT_DIVISION
+    new_team.gender = params[:gender] unless track_event_program.parent_division?
 
     flash[:notice] = 'Error creating new team' unless new_team.save
     redirect_to_assign_team_index track_event_program, params[:gender]
@@ -213,6 +213,20 @@ class Activity::TrackEventsController < ApplicationController
     redirect_to_assign_team_index filler_signup.track_event_program, params[:gender]
   end
 
+  def calculate_lane_assignments
+    next_run_order = 1
+    TrackEventProgram.find_programs_by_sort_keys.each do |program|
+      program.track_event_heats.clear
+      next_run_order = program.create_heats(next_run_order)
+    end
+    flash[:notice] = 'Lane Assignment Calculation Completed'
+    redirect_to action: :index
+  end
+
+  def lane_assignment_index
+    @track_event_programs = TrackEventProgram.find_programs_by_sort_keys
+  end
+
   def tocs_lane_assignment_form
     @lane_assignment_blocks = []
     tocs_program_groups = TrackEventProgram.find_tocs_programs_group_by_sort_keys
@@ -224,7 +238,7 @@ class Activity::TrackEventsController < ApplicationController
       format.pdf {render layout: false}
     end
   end
-  
+
   def tocs_track_event_data
     @track_event_signups = TrackEventSignup.find_tocs_track_event_signups
     respond_to do |format|
@@ -243,7 +257,7 @@ class Activity::TrackEventsController < ApplicationController
   end
 
   def redirect_to_assign_team_index(track_event_program, gender)
-    if track_event_program.division == TrackEventProgram::PARENT_DIVISION
+    if track_event_program.parent_division?
       redirect_to action: :assign_parent_team_index, id: track_event_program
     else
       redirect_to action: :assign_student_team_index, id: track_event_program, gender: gender
@@ -301,28 +315,28 @@ class Activity::TrackEventsController < ApplicationController
     end
   end
   
-  def create_lane_assignment_blocks(tocs_programs)
-    return [] if tocs_programs.empty?
-    
-    tocs_program_ids = tocs_programs.collect { |tocs_program| tocs_program.id }
-    track_event_signups = TrackEventSignup.all :conditions => ["track_event_program_id IN (#{tocs_program_ids.join(',')})"], :order => 'track_event_program_id ASC'
-    
-    # All programs in the same group should have the same type and name
-    sample_program = tocs_programs[0]
-    if sample_program.name.start_with? 'Tug'
-      create_lane_assignment_blocks_for_tug_of_war track_event_signups, sample_program
-    elsif (sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT) or (sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT)
-      create_lane_assignment_blocks_for_individual_program track_event_signups, sample_program
-    elsif sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
-      if sample_program.mixed_gender?
-        create_lane_assignment_blocks_for_unisex_student_relay_program track_event_signups, sample_program
-      else
-        create_lane_assignment_blocks_for_student_relay_program track_event_signups, sample_program
-      end
-    elsif sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY
-      create_lane_assignment_blocks_for_parent_relay_program track_event_signups, sample_program
-    end
-  end
+  # def create_lane_assignment_blocks(tocs_programs)
+  #   return [] if tocs_programs.empty?
+  #
+  #   tocs_program_ids = tocs_programs.collect { |tocs_program| tocs_program.id }
+  #   track_event_signups = TrackEventSignup.all :conditions => ["track_event_program_id IN (#{tocs_program_ids.join(',')})"], :order => 'track_event_program_id ASC'
+  #
+  #   # All programs in the same group should have the same type and name
+  #   sample_program = tocs_programs[0]
+  #   if sample_program.name.start_with? 'Tug'
+  #     create_lane_assignment_blocks_for_tug_of_war track_event_signups, sample_program
+  #   elsif (sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT) or (sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT)
+  #     create_lane_assignment_blocks_for_individual_program track_event_signups, sample_program
+  #   elsif sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
+  #     if sample_program.mixed_gender?
+  #       create_lane_assignment_blocks_for_unisex_student_relay_program track_event_signups, sample_program
+  #     else
+  #       create_lane_assignment_blocks_for_student_relay_program track_event_signups, sample_program
+  #     end
+  #   elsif sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY
+  #     create_lane_assignment_blocks_for_parent_relay_program track_event_signups, sample_program
+  #   end
+  # end
   
   def create_lane_assignment_blocks_for_tug_of_war(track_event_signups, sample_program)
     tug_of_war_teams = Hash.new { |hash, key| hash[key] = [] }
@@ -353,7 +367,7 @@ class Activity::TrackEventsController < ApplicationController
     end
     lane_assignment_blocks
   end
-  
+
   def create_lane_assignment_blocks_for_individual_program(track_event_signups, sample_program)
 
     # Get all sign-ups sorted into correct order

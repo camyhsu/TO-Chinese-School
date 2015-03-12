@@ -2,42 +2,46 @@
 
 <h3>Manage Track Events</h3>
 
-<% if PacificDate.today >= SchoolYear::TRACK_EVENT_SIGN_UP_PREVIEW_START_DATE and PacificDate.today <= SchoolYear::TRACK_EVENT_DATE %>
-    <br/>
-    <%= link_to 'Manage Sign Ups', {controller: '/activity/track_events', action: 'sign_up_index'}, {class: 'button'} %>
-    <br/>
+<br/>
+<%= link_to 'Manage Sign Ups', {controller: '/activity/track_events', action: 'sign_up_index'}, {class: 'button'} %>
+<br/>
 
-    <% # Only parent programs are mixed gender %>
-    <% TrackEventProgram.relay_programs.each do |relay_program| %>
-        <% if relay_program.division == TrackEventProgram::PARENT_DIVISION %>
-            <br/>
-            <%= link_to "Assign relay teams for #{relay_program.name}", {controller: '/activity/track_events', action: 'assign_parent_team_index', id: relay_program}, {class: 'button'} %>
-            <br/>
-        <% else %>
-            <br/>
-            <%= link_to "Assign relay teams for #{relay_program.name} (Male)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: relay_program, gender: 'M'}, {class: 'button'} %>
-            <br/>
-            <br/>
-            <%= link_to "Assign relay teams for #{relay_program.name} (Female)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: relay_program, gender: 'F'}, {class: 'button'} %>
-            <br/>
-        <% end %>
-    <% end %>
-
-    <% # There is no parent group programs %>
-    <% TrackEventProgram.group_programs.each do |group_program| %>
+<% # Only parent programs are mixed gender %>
+<% TrackEventProgram.relay_programs.each do |relay_program| %>
+    <% if relay_program.parent_division? %>
         <br/>
-        <%= link_to "Assign teams for #{group_program.name} (Male)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: group_program, gender: 'M'}, {class: 'button'} %>
+        <%= link_to "Assign relay teams for #{relay_program.name}", {controller: '/activity/track_events', action: 'assign_parent_team_index', id: relay_program}, {class: 'button'} %>
+        <br/>
+    <% else %>
+        <br/>
+        <%= link_to "Assign relay teams for #{relay_program.name} (Male)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: relay_program, gender: 'M'}, {class: 'button'} %>
         <br/>
         <br/>
-        <%= link_to "Assign teams for #{group_program.name} (Female)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: group_program, gender: 'F'}, {class: 'button'} %>
+        <%= link_to "Assign relay teams for #{relay_program.name} (Female)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: relay_program, gender: 'F'}, {class: 'button'} %>
         <br/>
     <% end %>
+<% end %>
 
+<% # There is no parent group programs %>
+<% TrackEventProgram.group_programs.each do |group_program| %>
     <br/>
-    <%= link_to 'Download TOCS Track Event Lane Assignment Form', {controller: '/activity/track_events', action: 'tocs_lane_assignment_form', format: 'pdf'}, {class: 'button'} %>
+    <%= link_to "Assign teams for #{group_program.name} (Male)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: group_program, gender: 'M'}, {class: 'button'} %>
     <br/>
     <br/>
-    <%= link_to 'Download TOCS Track Event Data CSV', {controller: '/activity/track_events', action: 'tocs_track_event_data', format: 'csv'}, {class: 'button'} %>
+    <%= link_to "Assign teams for #{group_program.name} (Female)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: group_program, gender: 'F'}, {class: 'button'} %>
     <br/>
 <% end %>
+
+<br/>
+<%= link_to 'Calculate Lane Assignments', {controller: '/activity/track_events', action: 'calculate_lane_assignments'}, {class: 'button', disable_with: 'Calculating Lane Assignments... Please Wait'} %>
+<br/>
+<br/>
+<%= link_to 'View Lane Assignments', {controller: '/activity/track_events', action: 'lane_assignment_index'}, {class: 'button'} %>
+<br/>
+<br/>
+<%= link_to 'Download TOCS Track Event Lane Assignment Form', {controller: '/activity/track_events', action: 'tocs_lane_assignment_form', format: 'pdf'}, {class: 'button'} %>
+<br/>
+<br/>
+<%= link_to 'Download TOCS Track Event Data CSV', {controller: '/activity/track_events', action: 'tocs_track_event_data', format: 'csv'}, {class: 'button'} %>
+<br/>
 <br/>

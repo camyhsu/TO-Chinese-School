@@ -3,7 +3,7 @@
     <td><%=h student.gender %></td>
     <td><%=h student.school_age_for SchoolYear.current_school_year %></td>
     <% track_event_programs.each do |track_event_program| %>
-      <% if track_event_program.division == TrackEventProgram::PARENT_DIVISION %>
+      <% if track_event_program.parent_division? %>
         <td class="select-parent">
           <% student.find_parents.each do |parent| %>
             <div style="<%= find_gender_color(track_event_program, parent) %>">
