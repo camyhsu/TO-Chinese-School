@@ -4,7 +4,9 @@
 <br/><br/>
 
 <% @track_event_programs.each do |program| %>
-
     <h3><%=h program.name %></h3>
-
+    <% program.track_event_heats.sort { |a, b| a.run_order <=> b.run_order }.each do |heat| %>
+        <%= link_to "Heat #{heat.run_order}", {controller: '/activity/track_events', action: 'heat_view', id: heat }, {class: 'button'} %>
+    <% end %>
+    <br/><br/>
 <% end %>

@@ -227,6 +227,15 @@ class Activity::TrackEventsController < ApplicationController
     @track_event_programs = TrackEventProgram.find_programs_by_sort_keys
   end
 
+  def heat_view
+    @heat = TrackEventHeat.find params[:id].to_i
+    if @heat.track_event_program.individual_program?
+      render action: :heat_view_individual
+    else
+      render action: :heat_view_relay
+    end
+  end
+
   def tocs_lane_assignment_form
     @lane_assignment_blocks = []
     tocs_program_groups = TrackEventProgram.find_tocs_programs_group_by_sort_keys

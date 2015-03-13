@@ -22,4 +22,16 @@ class TrackEventHeat < ActiveRecord::Base
     end
     max_student_school_age
   end
+
+  def sorted_signups
+    track_event_signups.sort do |a, b|
+      # Sort by school age first
+      school_age_order = a.student.school_age_for(SchoolYear.current_school_year) <=> b.student.school_age_for(SchoolYear.current_school_year)
+      if school_age_order == 0
+        a <=> b
+      else
+        school_age_order
+      end
+    end
+  end
 end

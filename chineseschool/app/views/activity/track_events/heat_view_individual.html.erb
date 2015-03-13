@@ -1,0 +1,32 @@
+<% @title = "Track Event Heat #{@heat.run_order}" %>
+
+<%= link_to 'Back to View Lane Assignments', {controller: '/activity/track_events', action: 'lane_assignment_index'}, {class: 'button'} %>
+<br/><br/>
+
+<h3><%= @heat.track_event_program.name %></h3>
+<h3>Heat <%= @heat.run_order %> -- <%= title_label_for_gender(@heat.gender) %></h3>
+<table border="1px">
+  <thead>
+  <tr>
+    <th>Lane Number</th>
+    <th>Student Name</th>
+    <th>School Age</th>
+    <th>Grade Class</th>
+    <th>Jersey Number</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% current_lane_number = 2 %>
+  <% @heat.sorted_signups.each do |signup| %>
+      <% student = signup.participant %>
+      <tr>
+        <td align="center"><%= current_lane_number %></td>
+        <td align="center"><%=h student.name %></td>
+        <td align="center"><%= student.school_age_for(SchoolYear.current_school_year) %></td>
+        <td align="center"><%= student.student_class_assignment_for(SchoolYear.current_school_year).school_class.short_name %></td>
+        <td align="center"><%=h student.jersey_number_for(SchoolYear.current_school_year).jersey_number %></td>
+      </tr>
+      <% current_lane_number += 1 %>
+  <% end %>
+  </tbody>
+</table>

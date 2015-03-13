@@ -37,6 +37,11 @@ class TrackEventSignup < ActiveRecord::Base
     end
   end
 
+  def participant
+    return parent if track_event_program.parent_division?
+    student
+  end
+
   def self.find_current_year_parent_program_signups
     parent_programs = TrackEventProgram.find_current_year_parent_programs
     self.all :conditions => { :track_event_program_id => parent_programs }

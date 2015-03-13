@@ -35,16 +35,6 @@ class TrackEventProgram < ActiveRecord::Base
   validates :school_year, :name, :event_type, :program_type, presence: true
 
 
-  # def max_sign_up_reached?(school_class)
-  #   if (self.program_type == PROGRAM_TYPE_STUDENT_RELAY) and (self.relay_team_size > 7)
-  #     current_signup_count = TrackEventSignup.count :conditions => ['track_event_program_id = ? AND student_class_assignments.school_class_id = ? AND school_year_id = ?', self.id, school_class.id, self.school_year.id],
-  #                                                   :joins => 'JOIN student_class_assignments ON student_class_assignments.student_id = track_event_signups.student_id'
-  #     puts "Current Signup Count => #{current_signup_count}"
-  #     return true if current_signup_count >= self.relay_team_size
-  #   end
-  #   false
-  # end
-
   def individual_program?
     self.program_type == PROGRAM_TYPE_INDIVIDUAL
   end
