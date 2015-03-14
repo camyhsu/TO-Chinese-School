@@ -44,10 +44,15 @@ class TrackEventSignup < ActiveRecord::Base
 
   def self.find_current_year_parent_program_signups
     parent_programs = TrackEventProgram.find_current_year_parent_programs
-    self.all :conditions => { :track_event_program_id => parent_programs }
+    self.all conditions: { track_event_program_id: parent_programs }
   end
 
   def self.find_tocs_track_event_signups(school_year=SchoolYear.current_school_year)
-    self.all :conditions => ['event_type = ? AND school_year_id = ?', TrackEventProgram::EVENT_TYPE_TOCS, school_year.id], :joins => :track_event_program
+    self.all conditions: ['event_type = ? AND school_year_id = ?', TrackEventProgram::EVENT_TYPE_TOCS, school_year.id], joins: :track_event_program
+  end
+
+  def self.find_filler_signups_for(students)
+    filler_signups = self.all conditions: { student_id: students, filler: true }
+    filler_signups.select { |signup| signup.track_event_program.school_year_id == SchoolYear.current_school_year.id }
   end
 end

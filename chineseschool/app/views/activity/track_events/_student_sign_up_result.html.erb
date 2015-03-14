@@ -1,4 +1,4 @@
-<% existing_signups = student.find_all_track_event_signups_as_students %>
+<% existing_signups = student.find_all_non_filler_track_event_signups_as_students %>
 <td><%=h student.name %></td>
 <td><%=h student.gender %></td>
 <td><%=h student.school_age_for SchoolYear.current_school_year %></td>

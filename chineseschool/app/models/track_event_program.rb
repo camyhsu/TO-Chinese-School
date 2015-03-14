@@ -207,7 +207,7 @@ class TrackEventProgram < ActiveRecord::Base
   end
 
   def self.find_programs_by_sort_keys
-    self.all :conditions => { :school_year_id => SchoolYear.current_school_year.id }, :order => 'sort_key ASC'
+    self.all conditions: { school_year_id: SchoolYear.current_school_year.id }, order: 'sort_key ASC'
   end
 
   def self.find_tocs_programs_group_by_sort_keys(school_year=SchoolYear.current_school_year)

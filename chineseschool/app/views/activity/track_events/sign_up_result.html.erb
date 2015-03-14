@@ -47,5 +47,29 @@
       <% end %>
       </tbody>
     </table>
-    <br/><br/><br/>
+    <br/><br/>
 <% end %>
+
+<% unless @filler_signups.empty? %>
+    <h3>Team Program Fillers</h3>
+    <table border="1px">
+      <thead>
+      <tr>
+        <th>Participant Name</th>
+        <th>Program Name</th>
+        <th>Team Name</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @filler_signups.each do |signup| %>
+        <tr>
+          <td><%=h signup.participant.name %></td>
+          <td><%=h signup.track_event_program.name %></td>
+          <td><%=h signup.track_event_team.name %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <br/><br/>
+<% end %>
+<br/>

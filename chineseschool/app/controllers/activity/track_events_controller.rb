@@ -66,6 +66,7 @@ class Activity::TrackEventsController < ApplicationController
 
     @young_student_programs = TrackEventProgram.young_division_programs + TrackEventProgram.parent_division_programs unless @young_students.empty?
     @teen_student_programs = TrackEventProgram.teen_division_programs + TrackEventProgram.parent_division_programs unless @teen_students.empty?
+    @filler_signups = TrackEventSignup.find_filler_signups_for @school_class.students
   end
   
   def select_program
