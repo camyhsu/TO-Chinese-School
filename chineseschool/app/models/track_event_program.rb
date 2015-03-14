@@ -67,18 +67,16 @@ class TrackEventProgram < ActiveRecord::Base
     end
   end
 
-
   def create_heats(next_run_order)
     if self.group_program?
-      #create_lane_assignment_blocks_for_tug_of_war track_event_signups, sample_program
+      # Tug of War is the only group program
+      next_run_order = create_heats_for_tug_of_war next_run_order
     elsif self.individual_program?
       if self.parent_division?
-        #create_heats_for_parent_individual_program program
+        next_run_order = create_heats_for_parent_individual next_run_order
       else
         next_run_order = create_heats_for_student_individual next_run_order
       end
-
-      #create_lane_assignment_blocks_for_individual_program track_event_signups, sample_program
     else
       # Relay program
 
@@ -95,6 +93,69 @@ class TrackEventProgram < ActiveRecord::Base
 
     # returning the next run order for the next batch of heats
     next_run_order
+  end
+
+
+  def self.young_division_programs
+    self.all conditions: { school_year_id: SchoolYear.current_school_year.id, division: YOUNG_DIVISION }
+  end
+
+  def self.teen_division_programs
+    self.all conditions: { school_year_id: SchoolYear.current_school_year.id, division: TEEN_DIVISION }
+  end
+
+  def self.parent_division_programs
+    self.all conditions: { school_year_id: SchoolYear.current_school_year.id, division: PARENT_DIVISION }
+  end
+
+  def self.relay_programs
+    self.all conditions: { school_year_id: SchoolYear.current_school_year.id, program_type: PROGRAM_TYPE_RELAY }
+  end
+
+  def self.group_programs
+    self.all conditions: { school_year_id: SchoolYear.current_school_year.id, program_type: PROGRAM_TYPE_GROUP }
+  end
+  
+  def self.find_by_grade(grade, school_year=SchoolYear.current_school_year)
+    self.all conditions: { grade_id: grade.id, school_year_id: school_year.id }, order: 'id ASC'
+  end
+
+  def self.find_by_school_age_for(student)
+    age_based_grade = Grade.find_by_school_age(student.school_age_for SchoolYear.current_school_year)
+    age_based_grade = age_based_grade.snap_down_to_first_active_grade(SchoolYear.current_school_year)
+    programs = TrackEventProgram.find_by_grade(age_based_grade)
+    # This method would be called only for age-based movement of programs
+    # There is a specific rule of only showing student individual programs as allowed sign-up
+    programs.select {|program| (program.program_type == PROGRAM_TYPE_STUDENT) && (!program.name.start_with?('Tug'))}
+  end
+
+  def self.find_programs_by_sort_keys
+    self.all conditions: { school_year_id: SchoolYear.current_school_year.id }, order: 'sort_key ASC'
+  end
+
+  def self.find_tocs_programs_group_by_sort_keys(school_year=SchoolYear.current_school_year)
+    tocs_programs = self.all :conditions => ['event_type = ? AND school_year_id = ?', EVENT_TYPE_TOCS, school_year.id], :order => 'sort_key ASC'
+    tocs_programs_group_by_sort_keys = Hash.new { |hash, key| hash[key] = [] }
+    tocs_programs.each { |tocs_program| tocs_programs_group_by_sort_keys[tocs_program.sort_key] << tocs_program }
+    tocs_programs_group_by_sort_keys
+  end
+
+
+  private
+
+
+  def create_heats_for_tug_of_war(next_run_order)
+    female_groups = []
+    male_groups = []
+    self.track_event_teams.each do |team|
+      if team.gender == Person::GENDER_FEMALE
+        female_groups << team
+      else
+        male_groups << team
+      end
+    end
+
+
   end
 
   def create_heats_for_student_individual(next_run_order)
@@ -141,7 +202,7 @@ class TrackEventProgram < ActiveRecord::Base
     next_run_order
   end
 
-  def create_heats_for_student_individual_by_gender(signups, gender=nil)
+  def create_heats_for_student_individual_by_gender(signups, gender)
     sorted_signups = signups.sort do |a, b|
       # Sort by school age first
       school_age_order = a.student.school_age_for(SchoolYear.current_school_year) <=> b.student.school_age_for(SchoolYear.current_school_year)
@@ -151,12 +212,45 @@ class TrackEventProgram < ActiveRecord::Base
         school_age_order
       end
     end
+    create_heats_for_signups(sorted_signups, gender)
+  end
 
+  def create_heats_for_parent_individual(next_run_order)
+    sorted_signups = self.track_event_signups.sort do |a, b|
+      parent_a = a.parent
+      parent_b = b.parent
+      gender_order = parent_a.gender <=> parent_b.gender
+      if gender_order == 0
+        last_name_order = parent_a.english_last_name <=> parent_b.english_last_name
+        if last_name_order == 0
+          parent_a.english_first_name <=> parent_b.english_first_name
+        else
+          last_name_order
+        end
+      else
+        gender_order
+      end
+    end
+
+    heats = create_heats_for_signups(sorted_signups)
+
+    # Figure out run order - no age group for parent programs
+    heats.each do |heat|
+      heat.run_order = next_run_order
+      heat.save
+      next_run_order += 1
+    end
+
+    # returning the next run order for the next batch of heats
+    next_run_order
+  end
+
+  def create_heats_for_signups(signups, gender=nil)
     heats = []
     last_heat = TrackEventHeat.new
     last_heat.track_event_program = self
     last_heat.gender = gender
-    sorted_signups.each do |signup|
+    signups.each do |signup|
       if last_heat.full?
         last_heat.save
         heats << last_heat
@@ -169,51 +263,5 @@ class TrackEventProgram < ActiveRecord::Base
     last_heat.save
     heats << last_heat
     heats
-  end
-
-
-
-  def self.young_division_programs
-    self.all conditions: { school_year_id: SchoolYear.current_school_year.id, division: YOUNG_DIVISION }
-  end
-
-  def self.teen_division_programs
-    self.all conditions: { school_year_id: SchoolYear.current_school_year.id, division: TEEN_DIVISION }
-  end
-
-  def self.parent_division_programs
-    self.all conditions: { school_year_id: SchoolYear.current_school_year.id, division: PARENT_DIVISION }
-  end
-
-  def self.relay_programs
-    self.all conditions: { school_year_id: SchoolYear.current_school_year.id, program_type: PROGRAM_TYPE_RELAY }
-  end
-
-  def self.group_programs
-    self.all conditions: { school_year_id: SchoolYear.current_school_year.id, program_type: PROGRAM_TYPE_GROUP }
-  end
-  
-  def self.find_by_grade(grade, school_year=SchoolYear.current_school_year)
-    self.all conditions: { grade_id: grade.id, school_year_id: school_year.id }, order: 'id ASC'
-  end
-
-  def self.find_by_school_age_for(student)
-    age_based_grade = Grade.find_by_school_age(student.school_age_for SchoolYear.current_school_year)
-    age_based_grade = age_based_grade.snap_down_to_first_active_grade(SchoolYear.current_school_year)
-    programs = TrackEventProgram.find_by_grade(age_based_grade)
-    # This method would be called only for age-based movement of programs
-    # There is a specific rule of only showing student individual programs as allowed sign-up
-    programs.select {|program| (program.program_type == PROGRAM_TYPE_STUDENT) && (!program.name.start_with?('Tug'))}
-  end
-
-  def self.find_programs_by_sort_keys
-    self.all conditions: { school_year_id: SchoolYear.current_school_year.id }, order: 'sort_key ASC'
-  end
-
-  def self.find_tocs_programs_group_by_sort_keys(school_year=SchoolYear.current_school_year)
-    tocs_programs = self.all :conditions => ['event_type = ? AND school_year_id = ?', EVENT_TYPE_TOCS, school_year.id], :order => 'sort_key ASC'
-    tocs_programs_group_by_sort_keys = Hash.new { |hash, key| hash[key] = [] }
-    tocs_programs.each { |tocs_program| tocs_programs_group_by_sort_keys[tocs_program.sort_key] << tocs_program }
-    tocs_programs_group_by_sort_keys
   end
 end

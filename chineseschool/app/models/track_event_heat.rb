@@ -24,13 +24,31 @@ class TrackEventHeat < ActiveRecord::Base
   end
 
   def sorted_signups
-    track_event_signups.sort do |a, b|
-      # Sort by school age first
-      school_age_order = a.student.school_age_for(SchoolYear.current_school_year) <=> b.student.school_age_for(SchoolYear.current_school_year)
-      if school_age_order == 0
-        a <=> b
-      else
-        school_age_order
+    if track_event_program.parent_division?
+      track_event_signups.sort do |a, b|
+        parent_a = a.parent
+        parent_b = b.parent
+        gender_order = parent_a.gender <=> parent_b.gender
+        if gender_order == 0
+          last_name_order = parent_a.english_last_name <=> parent_b.english_last_name
+          if last_name_order == 0
+            parent_a.english_first_name <=> parent_b.english_first_name
+          else
+            last_name_order
+          end
+        else
+          gender_order
+        end
+      end
+    else
+      track_event_signups.sort do |a, b|
+        # Sort by school age first
+        school_age_order = a.student.school_age_for(SchoolYear.current_school_year) <=> b.student.school_age_for(SchoolYear.current_school_year)
+        if school_age_order == 0
+          a <=> b
+        else
+          school_age_order
+        end
       end
     end
   end
