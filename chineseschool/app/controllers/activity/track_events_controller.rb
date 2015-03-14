@@ -301,10 +301,10 @@ class Activity::TrackEventsController < ApplicationController
 
   def tocs_track_event_data_csv
     CSV.generate do |csv|
-      csv << ['Student Chinese Name','Student English First Name','Student English Last Name','Gender','Birth Month','School Class Name','Location','Jersey Number','Program ID','Program Name','Program Sort Key','Parent Name','Relay Team Group']
-      @track_event_signups.each do |track_event_signup|
+      csv << ['Student Chinese Name','Student English First Name','Student English Last Name','Gender','Birth Month','School Class Name','Location','Jersey Number','Program ID','Program Name','Program Sort Key','Parent Name','Relay Team', 'Filler Sign-up']
+      @track_event_signups.each do |signup|
         row = []
-        student = track_event_signup.student
+        student = signup.student
         row << student.chinese_name
         row << student.english_first_name
         row << student.english_last_name
@@ -314,11 +314,12 @@ class Activity::TrackEventsController < ApplicationController
         row << school_class.name
         row << school_class.location
         row << JerseyNumber.find_jersey_number_for(student)
-        row << track_event_signup.track_event_program.id
-        row << track_event_signup.track_event_program.name
-        row << track_event_signup.track_event_program.sort_key
-        row << track_event_signup.parent.try(:name)
-        row << track_event_signup.group_name
+        row << signup.track_event_program.id
+        row << signup.track_event_program.name
+        row << signup.track_event_program.sort_key
+        row << signup.parent.try(:name)
+        row << signup.try(:track_event_team).try(:name)
+        row << (signup.filler? ? 'YES' : 'NO')
         csv << row
       end
     end
