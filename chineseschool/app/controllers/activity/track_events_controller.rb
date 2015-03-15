@@ -232,6 +232,8 @@ class Activity::TrackEventsController < ApplicationController
     @heat = TrackEventHeat.find params[:id].to_i
     if @heat.track_event_program.individual_program?
       render action: :heat_view_individual
+    elsif @heat.track_event_program.group_program?
+      render action: :heat_view_tug_of_war
     else
       render action: :heat_view_relay
     end

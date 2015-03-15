@@ -1,0 +1,62 @@
+<% @title = "Track Event Heat #{@heat.run_order}" %>
+
+<%= link_to 'Back to View Lane Assignments', {controller: '/activity/track_events', action: 'lane_assignment_index'}, {class: 'button'} %>
+<br/><br/>
+
+<h3><%= @heat.track_event_program.name %></h3>
+<h3>Heat <%= @heat.run_order %></h3>
+
+<h5>Left Side -- <%=h @heat.track_event_teams[0].name %></h5>
+<table border="1px">
+  <thead>
+  <tr>
+    <th>Participant Name</th>
+    <th>Gender</th>
+    <th>School Age</th>
+    <th>Grade Class</th>
+    <th>Jersey Number</th>
+  </tr>
+  </thead>
+  <tbody>
+    <% @heat.track_event_teams[0].track_event_signups.sort.each do |signup| %>
+      <% participant = signup.student %>
+      <tr>
+        <td align="center"><%=h participant.name %></td>
+        <td align="center"><%=h participant.gender %></td>
+        <td align="center"><%= participant.school_age_for(SchoolYear.current_school_year) %></td>
+        <td align="center"><%= participant.student_class_assignment_for(SchoolYear.current_school_year).school_class.short_name %></td>
+        <td align="center"><%=h participant.jersey_number_for(SchoolYear.current_school_year).jersey_number %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br/><br/>
+
+
+<% unless @heat.track_event_teams[1].nil? %>
+    <h5>Right Side -- <%=h @heat.track_event_teams[1].name %></h5>
+    <table border="1px">
+      <thead>
+      <tr>
+        <th>Participant Name</th>
+        <th>Gender</th>
+        <th>School Age</th>
+        <th>Grade Class</th>
+        <th>Jersey Number</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @heat.track_event_teams[1].track_event_signups.sort.each do |signup| %>
+          <% participant = signup.student %>
+          <tr>
+            <td align="center"><%=h participant.name %></td>
+            <td align="center"><%=h participant.gender %></td>
+            <td align="center"><%= participant.school_age_for(SchoolYear.current_school_year) %></td>
+            <td align="center"><%= participant.student_class_assignment_for(SchoolYear.current_school_year).school_class.short_name %></td>
+            <td align="center"><%=h participant.jersey_number_for(SchoolYear.current_school_year).jersey_number %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>
+<br/><br/>

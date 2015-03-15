@@ -7,6 +7,10 @@ class TrackEventAgeGroup
 
   def contains_heat_by_upper_bound?(track_event_heat)
     return true if @max_age.nil?
-    track_event_heat.max_student_school_age <= @max_age
+    if track_event_heat.track_event_program.group_program?
+      track_event_heat.max_team_age <= @max_age
+    else
+      track_event_heat.max_student_school_age <= @max_age
+    end
   end
 end
