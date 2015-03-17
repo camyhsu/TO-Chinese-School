@@ -70,29 +70,20 @@ class TrackEventProgram < ActiveRecord::Base
   def create_heats(next_run_order)
     if self.group_program?
       # Tug of War is the only group program
-      next_run_order = create_heats_for_tug_of_war next_run_order
+      create_heats_for_tug_of_war next_run_order
     elsif self.individual_program?
       if self.parent_division?
-        next_run_order = create_heats_for_parent_individual next_run_order
+        create_heats_for_parent_individual next_run_order
       else
-        next_run_order = create_heats_for_student_individual next_run_order
+        create_heats_for_student_individual next_run_order
       end
     else
-      # Relay program
-
-
-      # elsif sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_STUDENT_RELAY
-      #   if sample_program.mixed_gender?
-      #     create_lane_assignment_blocks_for_unisex_student_relay_program track_event_signups, sample_program
-      #   else
-      #     create_lane_assignment_blocks_for_student_relay_program track_event_signups, sample_program
-      #   end
-      # elsif sample_program.program_type == TrackEventProgram::PROGRAM_TYPE_PARENT_RELAY
-      #   create_lane_assignment_blocks_for_parent_relay_program track_event_signups, sample_program
+      if self.parent_division?
+        create_heats_for_parent_relay next_run_order
+      else
+        create_heats_for_student_relay next_run_order
+      end
     end
-
-    # returning the next run order for the next batch of heats
-    next_run_order
   end
 
 
@@ -145,60 +136,20 @@ class TrackEventProgram < ActiveRecord::Base
 
 
   def create_heats_for_tug_of_war(next_run_order)
-    female_groups = []
-    male_groups = []
-    self.track_event_teams.each do |team|
-      if team.gender == Person::GENDER_FEMALE
-        female_groups << team
-      else
-        male_groups << team
-      end
-    end
-    female_heats = create_heats_for_tug_of_war_by_gender female_groups, Person::GENDER_FEMALE
-    male_heats = create_heats_for_tug_of_war_by_gender male_groups, Person::GENDER_MALE
+    gender_heats = split_gender(self.track_event_teams).collect { |gender_teams| create_heats_for_team(gender_teams) }
 
     # Figure out run order - heat lists should have been in name order already
-    arrange_run_order_by_age_group female_heats, male_heats, next_run_order
-  end
-
-  def create_heats_for_tug_of_war_by_gender(groups, gender)
-    heats = []
-    last_heat = TrackEventHeat.new
-    last_heat.track_event_program = self
-    last_heat.gender = gender
-    groups.sort { |a, b| a.name <=> b.name }.each do |group|
-      if last_heat.track_event_teams.size == 2
-        last_heat.save
-        heats << last_heat
-        last_heat = TrackEventHeat.new
-        last_heat.track_event_program = self
-        last_heat.gender = gender
-      end
-      last_heat.track_event_teams << group
-    end
-    last_heat.save
-    heats << last_heat
-    heats
+    arrange_run_order_by_age_group gender_heats[0], gender_heats[1], next_run_order
   end
 
   def create_heats_for_student_individual(next_run_order)
-    female_signups = []
-    male_signups = []
-    self.track_event_signups.each do |signup|
-      if signup.student.gender == Person::GENDER_FEMALE
-        female_signups << signup
-      else
-        male_signups << signup
-      end
-    end
-    female_heats = create_heats_for_student_individual_by_gender female_signups, Person::GENDER_FEMALE
-    male_heats = create_heats_for_student_individual_by_gender male_signups, Person::GENDER_MALE
+    gender_heats = split_gender(self.track_event_signups).collect { |gender_signups| create_heats_for_student_individual_by_gender(gender_signups) }
 
     # Figure out run order - heat lists should have been in school age order already
-    arrange_run_order_by_age_group female_heats, male_heats, next_run_order
+    arrange_run_order_by_age_group gender_heats[0], gender_heats[1], next_run_order
   end
 
-  def create_heats_for_student_individual_by_gender(signups, gender)
+  def create_heats_for_student_individual_by_gender(signups)
     sorted_signups = signups.sort do |a, b|
       # Sort by school age first
       school_age_order = a.student.school_age_for(SchoolYear.current_school_year) <=> b.student.school_age_for(SchoolYear.current_school_year)
@@ -208,7 +159,7 @@ class TrackEventProgram < ActiveRecord::Base
         school_age_order
       end
     end
-    create_heats_for_signups(sorted_signups, gender)
+    create_heats_for_signups(sorted_signups)
   end
 
   def arrange_run_order_by_age_group(female_heats, male_heats, next_run_order)
@@ -272,18 +223,74 @@ class TrackEventProgram < ActiveRecord::Base
     next_run_order
   end
 
-  def create_heats_for_signups(signups, gender=nil)
+  def create_heats_for_student_relay(next_run_order)
+    gender_heats = split_gender(self.track_event_teams).collect { |gender_teams| create_heats_for_team(gender_teams) }
+
+    # Figure out run order - heat lists should have been in school age order already
+    arrange_run_order_by_age_group gender_heats[0], gender_heats[1], next_run_order
+  end
+
+  def create_heats_for_parent_relay(next_run_order)
+    heats = create_heats_for_team(self.track_event_teams)
+
+    # Figure out run order - no age group for parent programs
+    heats.each do |heat|
+      heat.run_order = next_run_order
+      heat.save
+      next_run_order += 1
+    end
+
+    # returning the next run order for the next batch of heats
+    next_run_order
+  end
+
+  def split_gender(list)
+    female_list = []
+    male_list = []
+    list.each do |item|
+      if item.gender == Person::GENDER_FEMALE
+        female_list << item
+      else
+        male_list << item
+      end
+    end
+    [female_list, male_list]
+  end
+
+  def create_heats_for_team(teams)
     heats = []
+    return heats if teams.empty?
     last_heat = TrackEventHeat.new
     last_heat.track_event_program = self
-    last_heat.gender = gender
+    last_heat.gender = teams[0].gender
+    teams.sort { |a, b| a.name <=> b.name }.each do |team|
+      if last_heat.full?
+        last_heat.save
+        heats << last_heat
+        last_heat = TrackEventHeat.new
+        last_heat.track_event_program = self
+        last_heat.gender = team.gender
+      end
+      last_heat.track_event_teams << team
+    end
+    last_heat.save
+    heats << last_heat
+    heats
+  end
+
+  def create_heats_for_signups(signups)
+    heats = []
+    return heats if signups.empty?
+    last_heat = TrackEventHeat.new
+    last_heat.track_event_program = self
+    last_heat.gender = signups[0].gender
     signups.each do |signup|
       if last_heat.full?
         last_heat.save
         heats << last_heat
         last_heat = TrackEventHeat.new
         last_heat.track_event_program = self
-        last_heat.gender = gender
+        last_heat.gender = signup.gender
       end
       last_heat.track_event_signups << signup
     end

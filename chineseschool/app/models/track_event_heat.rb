@@ -11,7 +11,12 @@ class TrackEventHeat < ActiveRecord::Base
   validates :track_event_program, presence: true
 
   def full?
-    (track_event_signups.size >= LANE_COUNT) || (track_event_teams.size >= LANE_COUNT)
+    if track_event_program.group_program?
+      # Tug of war is the only group program, for which each heat has two teams
+      track_event_teams.size >= 2
+    else
+      (track_event_signups.size >= LANE_COUNT) || (track_event_teams.size >= LANE_COUNT)
+    end
   end
 
   def max_student_school_age
@@ -35,6 +40,10 @@ class TrackEventHeat < ActiveRecord::Base
       max_team_age = team_age if team_age > max_team_age
     end
     max_team_age
+  end
+
+  def sorted_teams
+    track_event_teams.sort { |a, b| a.name <=> b.name }
   end
 
   def sorted_signups

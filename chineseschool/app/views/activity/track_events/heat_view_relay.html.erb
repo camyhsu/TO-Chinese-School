@@ -5,12 +5,15 @@
 
 <h3><%= @heat.track_event_program.name %></h3>
 <h3>Heat <%= @heat.run_order %></h3>
+
+<% current_lane_number = 2 %>
+<% @heat.sorted_teams.each do |team| %>
+<h5>Lane <%= current_lane_number %> -- <%=h team.name %></h5>
 <table border="1px">
   <thead>
   <tr>
-    <th>Lane Number</th>
     <th>Participant Name</th>
-    <th>Participant Gender</th>
+    <th>Gender</th>
     <% unless @heat.track_event_program.parent_division? %>
         <th>School Age</th>
         <th>Grade Class</th>
@@ -19,11 +22,9 @@
   </tr>
   </thead>
   <tbody>
-  <% current_lane_number = 2 %>
-  <% @heat.sorted_signups.each do |signup| %>
+  <% team.track_event_signups.sort.each do |signup| %>
       <% participant = signup.participant %>
       <tr>
-        <td align="center"><%= current_lane_number %></td>
         <td align="center"><%=h participant.name %></td>
         <td align="center"><%=h participant.gender %></td>
         <% unless @heat.track_event_program.parent_division? %>
@@ -32,8 +33,9 @@
         <% end %>
         <td align="center"><%=h participant.jersey_number_for(SchoolYear.current_school_year).jersey_number %></td>
       </tr>
-      <% current_lane_number += 1 %>
   <% end %>
   </tbody>
 </table>
 <br/><br/>
+    <% current_lane_number += 1 %>
+<% end %>

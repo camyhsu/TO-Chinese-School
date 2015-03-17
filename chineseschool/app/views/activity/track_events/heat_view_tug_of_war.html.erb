@@ -6,7 +6,8 @@
 <h3><%= @heat.track_event_program.name %></h3>
 <h3>Heat <%= @heat.run_order %></h3>
 
-<h5>Left Side -- <%=h @heat.track_event_teams[0].name %></h5>
+<% sorted_teams = @heat.sorted_teams %>
+<h5>Left Side -- <%=h sorted_teams[0].name %></h5>
 <table border="1px">
   <thead>
   <tr>
@@ -18,7 +19,7 @@
   </tr>
   </thead>
   <tbody>
-    <% @heat.track_event_teams[0].track_event_signups.sort.each do |signup| %>
+    <% sorted_teams[0].track_event_signups.sort.each do |signup| %>
       <% participant = signup.student %>
       <tr>
         <td align="center"><%=h participant.name %></td>
@@ -33,8 +34,8 @@
 <br/><br/>
 
 
-<% unless @heat.track_event_teams[1].nil? %>
-    <h5>Right Side -- <%=h @heat.track_event_teams[1].name %></h5>
+<% unless sorted_teams[1].nil? %>
+    <h5>Right Side -- <%=h sorted_teams[1].name %></h5>
     <table border="1px">
       <thead>
       <tr>
@@ -46,7 +47,7 @@
       </tr>
       </thead>
       <tbody>
-      <% @heat.track_event_teams[1].track_event_signups.sort.each do |signup| %>
+      <% sorted_teams[1].track_event_signups.sort.each do |signup| %>
           <% participant = signup.student %>
           <tr>
             <td align="center"><%=h participant.name %></td>
