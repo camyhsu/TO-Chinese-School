@@ -43,6 +43,10 @@ class TrackEventProgram < ActiveRecord::Base
     self.program_type == TrackEventProgram::PROGRAM_TYPE_GROUP
   end
 
+  def relay_program?
+    self.program_type == TrackEventProgram::PROGRAM_TYPE_RELAY
+  end
+
   def parent_division?
     self.division == PARENT_DIVISION
   end
@@ -84,6 +88,14 @@ class TrackEventProgram < ActiveRecord::Base
         create_heats_for_student_relay next_run_order
       end
     end
+  end
+
+  def find_max_heat_run_order
+    self.track_event_heats.max { |a, b| a.run_order <=> b.run_order }.run_order
+  end
+
+  def sorted_heats
+    self.track_event_heats.sort { |a, b| a.run_order <=> b.run_order }
   end
 
 

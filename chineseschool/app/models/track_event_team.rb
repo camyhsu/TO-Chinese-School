@@ -9,4 +9,8 @@ class TrackEventTeam < ActiveRecord::Base
     self.track_event_signups.select { |signup| signup.filler? }
   end
 
+  def find_runner_identifier(i)
+    runner = self.track_event_signups.sort[i].participant
+    "#{runner.jersey_number_for(SchoolYear.current_school_year).jersey_number}\n#{runner.chinese_name}\n#{runner.english_name}"
+  end
 end
