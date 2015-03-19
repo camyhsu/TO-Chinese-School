@@ -10,7 +10,9 @@ class TrackEventTeam < ActiveRecord::Base
   end
 
   def find_runner_identifier(i)
-    runner = self.track_event_signups.sort[i].participant
+    signup = self.track_event_signups.sort[i]
+    return '' if signup.nil?
+    runner = signup.participant
     "#{runner.jersey_number_for(SchoolYear.current_school_year).jersey_number}\n#{runner.chinese_name}\n#{runner.english_name}"
   end
 end
