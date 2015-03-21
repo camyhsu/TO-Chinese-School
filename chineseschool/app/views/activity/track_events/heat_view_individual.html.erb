@@ -5,35 +5,41 @@
 
 <h3><%= @heat.track_event_program.name %></h3>
 <h3>Heat <%= @heat.run_order %></h3>
-<table border="1px">
-  <thead>
-  <tr>
-    <th>Lane Number</th>
-    <th>Participant Name</th>
-    <th>Participant Gender</th>
-    <% unless @heat.track_event_program.parent_division? %>
-        <th>School Age</th>
-        <th>Grade Class</th>
-    <% end %>
-    <th>Jersey Number</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% current_lane_number = 2 %>
-  <% @heat.sorted_signups.each do |signup| %>
-      <% participant = signup.participant %>
+<%= form_tag action: 'save_track_time', id: @heat do %>
+    <table border="1px">
+      <thead>
       <tr>
-        <td align="center"><%= current_lane_number %></td>
-        <td align="center"><%=h participant.name %></td>
-        <td align="center"><%=h participant.gender %></td>
+        <th>Track Time</th>
+        <th>Lane Number</th>
+        <th>Participant Name</th>
+        <th>Participant Gender</th>
         <% unless @heat.track_event_program.parent_division? %>
-            <td align="center"><%= participant.school_age_for(SchoolYear.current_school_year) %></td>
-            <td align="center"><%= participant.student_class_assignment_for(SchoolYear.current_school_year).school_class.short_name %></td>
+            <th>School Age</th>
+            <th>Grade Class</th>
         <% end %>
-        <td align="center"><%=h participant.jersey_number_for(SchoolYear.current_school_year).jersey_number %></td>
+        <th>Jersey Number</th>
       </tr>
-      <% current_lane_number += 1 %>
-  <% end %>
-  </tbody>
-</table>
+      </thead>
+      <tbody>
+      <% current_lane_number = 2 %>
+      <% @heat.sorted_signups.each do |signup| %>
+          <% participant = signup.participant %>
+          <tr>
+            <td align="center"><%= text_field_tag "track_time_#{signup.id}", "#{signup.track_time.nil? ? '' : (signup.track_time / 100.0) }", size: 6, align: :right %></td>
+            <td align="center"><%= current_lane_number %></td>
+            <td align="center"><%=h participant.name %></td>
+            <td align="center"><%=h participant.gender %></td>
+            <% unless @heat.track_event_program.parent_division? %>
+                <td align="center"><%= participant.school_age_for(SchoolYear.current_school_year) %></td>
+                <td align="center"><%= participant.student_class_assignment_for(SchoolYear.current_school_year).school_class.short_name %></td>
+            <% end %>
+            <td align="center"><%=h participant.jersey_number_for(SchoolYear.current_school_year).jersey_number %></td>
+          </tr>
+          <% current_lane_number += 1 %>
+      <% end %>
+      </tbody>
+    </table>
+    <br/>
+    <%= submit_tag 'Save Track Time', class: 'button' %>
+<% end %>
 <br/><br/>

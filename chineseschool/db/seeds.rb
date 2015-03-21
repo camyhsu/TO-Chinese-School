@@ -81,6 +81,7 @@ activity_track_events_delete_filler_signup = Right.create(name: 'Delete Filler S
 activity_track_events_calculate_lane_assignments = Right.create(name: 'Calculate Lane Assignments', controller: 'activity/track_events', action: 'calculate_lane_assignments')
 activity_track_events_lane_assignment_index = Right.create(name: 'View Lane Assignments', controller: 'activity/track_events', action: 'lane_assignment_index')
 activity_track_events_heat_view = Right.create(name: 'View Heat', controller: 'activity/track_events', action: 'heat_view')
+activity_track_events_save_track_time = Right.create(name: 'Save Track Time', controller: 'activity/track_events', action: 'save_track_time')
 
 activity_track_events_sign_up_result = Right.create(name: 'Sign Up Track Events Result', controller: 'activity/track_events', action: 'sign_up_result')
 activity_track_events_assign_jersey_numbers = Right.create(name: 'TOCS Track Event Assign Jersey Numbers', controller: 'activity/track_events', action: 'assign_jersey_numbers')
@@ -293,6 +294,7 @@ activity_officer.rights << activity_track_events_delete_filler_signup
 activity_officer.rights << activity_track_events_calculate_lane_assignments
 activity_officer.rights << activity_track_events_lane_assignment_index
 activity_officer.rights << activity_track_events_heat_view
+activity_officer.rights << activity_track_events_save_track_time
 activity_officer.rights << activity_track_events_assign_jersey_numbers
 activity_officer.rights << activity_track_events_tocs_lane_assignment_form
 activity_officer.rights << activity_track_events_tocs_track_event_data

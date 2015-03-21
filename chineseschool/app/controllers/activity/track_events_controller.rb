@@ -239,6 +239,28 @@ class Activity::TrackEventsController < ApplicationController
     end
   end
 
+  def save_track_time
+    # track time is in unit of 10ms
+    heat = TrackEventHeat.find params[:id].to_i
+    if heat.track_event_program.individual_program?
+      heat.track_event_signups.each { |signup| save_track_time_for signup }
+    else
+      heat.track_event_teams.each { |team| save_track_time_for team }
+    end
+    flash[:notice] = 'Track Time Saved'
+    redirect_to action: :heat_view, id: heat
+  end
+
+  def save_track_time_for(lane_unit)
+    track_time_input = params["track_time_#{lane_unit.id}"]
+    if track_time_input.empty?
+      lane_unit.track_time = nil
+    else
+      lane_unit.track_time = (track_time_input.to_d * 100).to_i
+    end
+    lane_unit.save
+  end
+
   def tocs_lane_assignment_form
     @track_event_programs = TrackEventProgram.find_programs_by_sort_keys
     respond_to do |format|

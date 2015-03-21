@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150307184419) do
+ActiveRecord::Schema.define(:version => 20150321162124) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -334,6 +334,8 @@ ActiveRecord::Schema.define(:version => 20150307184419) do
     t.integer  "track_event_team_id"
     t.boolean  "filler",                 :default => false, :null => false
     t.integer  "track_event_heat_id"
+    t.integer  "track_time"
+    t.float    "score"
   end
 
   create_table "track_event_teams", :force => true do |t|
@@ -344,6 +346,8 @@ ActiveRecord::Schema.define(:version => 20150307184419) do
     t.datetime "updated_at",                                :null => false
     t.boolean  "filler",                 :default => false, :null => false
     t.integer  "track_event_heat_id"
+    t.integer  "track_time"
+    t.boolean  "pair_winner"
   end
 
   create_table "users", :force => true do |t|

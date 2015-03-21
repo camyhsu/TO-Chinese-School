@@ -40,6 +40,7 @@ Chineseschool::Application.routes.draw do
     get 'track_events/calculate_lane_assignments' => 'track_events#calculate_lane_assignments'
     get 'track_events/lane_assignment_index' => 'track_events#lane_assignment_index'
     get 'track_events/heat_view' => 'track_events#heat_view'
+    post 'track_events/save_track_time' => 'track_events#save_track_time'
     get 'track_events/tocs_lane_assignment_form' => 'track_events#tocs_lane_assignment_form'
     get 'track_events/tocs_track_event_data' => 'track_events#tocs_track_event_data'
 
