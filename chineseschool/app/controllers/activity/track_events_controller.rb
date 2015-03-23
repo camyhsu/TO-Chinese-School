@@ -233,6 +233,8 @@ class Activity::TrackEventsController < ApplicationController
     if @heat.track_event_program.individual_program?
       render action: :heat_view_individual
     elsif @heat.track_event_program.group_program?
+      # Tug of War is the only group program
+      @winner = @heat.track_event_teams.detect { |team| team.pair_winner? }
       render action: :heat_view_tug_of_war
     else
       render action: :heat_view_relay
@@ -251,14 +253,33 @@ class Activity::TrackEventsController < ApplicationController
     redirect_to action: :heat_view, id: heat
   end
 
-  def save_track_time_for(lane_unit)
-    track_time_input = params["track_time_#{lane_unit.id}"]
-    if track_time_input.empty?
-      lane_unit.track_time = nil
+  def save_winner_tug_of_war
+    heat = TrackEventHeat.find params[:id].to_i
+    previous_winner = heat.track_event_teams.detect { |team| team.pair_winner? }
+    new_winner_id = params[:tug_of_war][:winner]
+    if new_winner_id.empty?
+      unless previous_winner.nil?
+        previous_winner.pair_winner = false
+        previous_winner.save
+      end
     else
-      lane_unit.track_time = (track_time_input.to_d * 100).to_i
+      new_winner = TrackEventTeam.find new_winner_id.to_i
+      if previous_winner.nil?
+        new_winner.pair_winner = true
+        new_winner.save
+      else
+        unless new_winner == previous_winner
+          TrackEventTeam.transaction do
+            previous_winner.pair_winner = false
+            previous_winner.save
+            new_winner.pair_winner = true
+            new_winner.save
+          end
+        end
+      end
     end
-    lane_unit.save
+    flash[:notice] = 'Tug of War Winner Saved'
+    redirect_to action: :heat_view, id: heat
   end
 
   def tocs_lane_assignment_form
@@ -317,6 +338,16 @@ class Activity::TrackEventsController < ApplicationController
       logger.error "Error changing filler team from #{old_team.nil? ? 'none' : old_team.id} to #{new_team.nil? ? 'none' : new_team.id} => #{e.inspect}"
       flash[:notice] = 'Error changing filler team'
     end
+  end
+
+  def save_track_time_for(lane_unit)
+    track_time_input = params["track_time_#{lane_unit.id}"]
+    if track_time_input.empty?
+      lane_unit.track_time = nil
+    else
+      lane_unit.track_time = (track_time_input.to_d * 100).to_i
+    end
+    lane_unit.save
   end
 
   def tocs_track_event_data_csv

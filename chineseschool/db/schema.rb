@@ -347,7 +347,7 @@ ActiveRecord::Schema.define(:version => 20150321162124) do
     t.boolean  "filler",                 :default => false, :null => false
     t.integer  "track_event_heat_id"
     t.integer  "track_time"
-    t.boolean  "pair_winner"
+    t.boolean  "pair_winner",            :default => false, :null => false
   end
 
   create_table "users", :force => true do |t|

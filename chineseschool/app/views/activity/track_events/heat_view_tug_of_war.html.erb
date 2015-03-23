@@ -33,7 +33,6 @@
 </table>
 <br/><br/>
 
-
 <% unless sorted_teams[1].nil? %>
     <h5>Right Side -- <%=h sorted_teams[1].name %></h5>
     <table border="1px">
@@ -59,5 +58,11 @@
       <% end %>
       </tbody>
     </table>
+<% end %>
+
+<br/>
+<%= form_tag action: 'save_winner_tug_of_war', id: @heat do %>
+    <%= select('tug_of_war', 'winner', @heat.track_event_teams.collect {|team| [team.name, team.id]}, {include_blank: true, selected: (@winner.nil? ? '' : @winner.id)}) %>&nbsp;
+    <%= submit_tag 'Is Winner', class: 'button' %>
 <% end %>
 <br/><br/>
