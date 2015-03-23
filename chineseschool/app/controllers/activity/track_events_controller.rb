@@ -255,31 +255,23 @@ class Activity::TrackEventsController < ApplicationController
 
   def save_winner_tug_of_war
     heat = TrackEventHeat.find params[:id].to_i
-    previous_winner = heat.track_event_teams.detect { |team| team.pair_winner? }
-    new_winner_id = params[:tug_of_war][:winner]
-    if new_winner_id.empty?
-      unless previous_winner.nil?
-        previous_winner.pair_winner = false
-        previous_winner.save
-      end
+    existing_winner = heat.track_event_teams.detect { |team| team.pair_winner? }
+    if params[:tug_of_war][:winner].empty?
+      change_pair_winner(existing_winner, nil)
     else
-      new_winner = TrackEventTeam.find new_winner_id.to_i
-      if previous_winner.nil?
-        new_winner.pair_winner = true
-        new_winner.save
+      new_winner = TrackEventTeam.find params[:tug_of_war][:winner].to_i
+      if new_winner.nil?
+        flash[:notice] = 'Problem finding winner to change to -- has it been deleted?'
       else
-        unless new_winner == previous_winner
-          TrackEventTeam.transaction do
-            previous_winner.pair_winner = false
-            previous_winner.save
-            new_winner.pair_winner = true
-            new_winner.save
-          end
-        end
+        change_pair_winner(existing_winner, new_winner)
       end
     end
     flash[:notice] = 'Tug of War Winner Saved'
     redirect_to action: :heat_view, id: heat
+  end
+
+  def calculate_score_and_view
+
   end
 
   def tocs_lane_assignment_form
@@ -348,6 +340,25 @@ class Activity::TrackEventsController < ApplicationController
       lane_unit.track_time = (track_time_input.to_d * 100).to_i
     end
     lane_unit.save
+  end
+
+  def change_pair_winner(old_winner, new_winner)
+    return if old_winner == new_winner
+    begin
+      TrackEventTeam.transaction do
+        unless old_winner.nil?
+          old_winner.pair_winner = false
+          old_winner.save!
+        end
+        unless new_winner.nil?
+          new_winner.pair_winner = true
+          new_winner.save!
+        end
+      end
+    rescue => e
+      logger.error "Error changing winner from #{old_winner.nil? ? 'none' : old_winner.id} to #{new_winner.nil? ? 'none' : new_winner.id} => #{e.inspect}"
+      flash[:notice] = 'Error changing tug of war winner'
+    end
   end
 
   def tocs_track_event_data_csv
