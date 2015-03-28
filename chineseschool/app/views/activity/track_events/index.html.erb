@@ -10,14 +10,14 @@
 <% TrackEventProgram.relay_programs.each do |relay_program| %>
     <% if relay_program.parent_division? %>
         <br/>
-        <%= link_to "Assign relay teams for #{relay_program.name}", {controller: '/activity/track_events', action: 'assign_parent_team_index', id: relay_program}, {class: 'button'} %>
+        <%= link_to "Assign Relay Teams for #{relay_program.name}", {controller: '/activity/track_events', action: 'assign_parent_team_index', id: relay_program}, {class: 'button'} %>
         <br/>
     <% else %>
         <br/>
-        <%= link_to "Assign relay teams for #{relay_program.name} (Male)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: relay_program, gender: 'M'}, {class: 'button'} %>
+        <%= link_to "Assign Relay Teams for #{relay_program.name} (Male)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: relay_program, gender: 'M'}, {class: 'button'} %>
         <br/>
         <br/>
-        <%= link_to "Assign relay teams for #{relay_program.name} (Female)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: relay_program, gender: 'F'}, {class: 'button'} %>
+        <%= link_to "Assign Relay Teams for #{relay_program.name} (Female)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: relay_program, gender: 'F'}, {class: 'button'} %>
         <br/>
     <% end %>
 <% end %>
@@ -25,10 +25,10 @@
 <% # There is no parent group programs %>
 <% TrackEventProgram.group_programs.each do |group_program| %>
     <br/>
-    <%= link_to "Assign teams for #{group_program.name} (Male)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: group_program, gender: 'M'}, {class: 'button'} %>
+    <%= link_to "Assign Teams for #{group_program.name} (Male)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: group_program, gender: 'M'}, {class: 'button'} %>
     <br/>
     <br/>
-    <%= link_to "Assign teams for #{group_program.name} (Female)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: group_program, gender: 'F'}, {class: 'button'} %>
+    <%= link_to "Assign Teams for #{group_program.name} (Female)", {controller: '/activity/track_events', action: 'assign_student_team_index', id: group_program, gender: 'F'}, {class: 'button'} %>
     <br/>
 <% end %>
 

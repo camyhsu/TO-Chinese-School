@@ -13,6 +13,10 @@ module Activity::TrackEventsHelper
     '(Female)'
   end
 
+  def display_track_time(track_time)
+    track_time.nil? ? '' : (track_time / 100.0)
+  end
+
   def find_relay_team_name(signup)
     if signup.nil?
       'Not Participate'

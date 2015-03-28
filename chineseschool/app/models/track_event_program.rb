@@ -25,7 +25,10 @@ class TrackEventProgram < ActiveRecord::Base
 
   # Starting 2014-2015, the heat run order and scoring are based on age groups
   # the age groups are: [4-5], [6-7], [8-9], [10-11], 12 and above
-  AGE_GROUPS = [ TrackEventAgeGroup.new(4, 5), TrackEventAgeGroup.new(6, 7), TrackEventAgeGroup.new(8, 9), TrackEventAgeGroup.new(10, 11), TrackEventAgeGroup.new(12, nil) ]
+  # Note that age groups must be ordered from young to old -- heat arrangement code depends on that ordering
+  YOUNG_DIVISION_AGE_GROUPS = [ TrackEventAgeGroup.new(4, 5), TrackEventAgeGroup.new(6, 7), TrackEventAgeGroup.new(8, 9) ]
+  TEEN_DIVISION_AGE_GROUPS = [ TrackEventAgeGroup.new(10, 11), TrackEventAgeGroup.new(12, nil) ]
+  AGE_GROUPS = YOUNG_DIVISION_AGE_GROUPS + TEEN_DIVISION_AGE_GROUPS
   
   belongs_to :school_year
   has_many :track_event_teams
@@ -72,17 +75,17 @@ class TrackEventProgram < ActiveRecord::Base
   end
 
   def create_heats(next_run_order)
-    if self.group_program?
+    if group_program?
       # Tug of War is the only group program
       create_heats_for_tug_of_war next_run_order
-    elsif self.individual_program?
-      if self.parent_division?
+    elsif individual_program?
+      if parent_division?
         create_heats_for_parent_individual next_run_order
       else
         create_heats_for_student_individual next_run_order
       end
     else
-      if self.parent_division?
+      if parent_division?
         create_heats_for_parent_relay next_run_order
       else
         create_heats_for_student_relay next_run_order
@@ -98,6 +101,61 @@ class TrackEventProgram < ActiveRecord::Base
     self.track_event_heats.sort { |a, b| a.run_order <=> b.run_order }
   end
 
+  def map_scores_for_student_individual
+    score_map = []
+    split_gender(self.track_event_signups).each do |gender_signups|
+      age_group_map = Hash.new { |hash, key| hash[key] = [] }
+      gender_signups.each do |signup|
+        AGE_GROUPS.each do |age_group|
+          age_group_map[age_group] << signup if age_group.contains_student?(signup.student)
+        end
+      end
+      age_group_map.each_value do |signups|
+        signups.sort! { |a, b| determine_track_time_order(a.track_time, b.track_time) }
+      end
+      score_map << age_group_map
+    end
+    score_map
+  end
+
+  def map_scores_for_student_relay
+    score_map = []
+    split_gender(self.track_event_teams).each do |gender_teams|
+      age_group_map = Hash.new { |hash, key| hash[key] = [] }
+      gender_teams.each do |team|
+        AGE_GROUPS.each do |age_group|
+          age_group_map[age_group] << team if age_group.contains_team?(team)
+        end
+      end
+      age_group_map.each_value do |teams|
+        teams.sort! { |a, b| determine_track_time_order(a.track_time, b.track_time) }
+      end
+      score_map << age_group_map
+    end
+    score_map
+  end
+
+  def map_scores_for_parent_individual
+    score_map = []
+    split_gender(self.track_event_signups).each do |gender_signups|
+      gender_signups.sort! { |a, b| determine_track_time_order(a.track_time, b.track_time) }
+      score_map << gender_signups
+    end
+    score_map
+  end
+
+  def map_scores_for_parent_relay
+    score_map = []
+    split_gender(self.track_event_teams).each do |gender_teams|
+      gender_teams.sort! { |a, b| determine_track_time_order(a.track_time, b.track_time) }
+      score_map << gender_teams
+    end
+    score_map
+  end
+
+  def calculate_scores_for_student_individual
+    score_map = map_scores_for_student_individual
+  end
 
   def self.young_division_programs
     self.all conditions: { school_year_id: SchoolYear.current_school_year.id, division: YOUNG_DIVISION }
@@ -309,5 +367,21 @@ class TrackEventProgram < ActiveRecord::Base
     last_heat.save
     heats << last_heat
     heats
+  end
+
+  def determine_track_time_order(a, b)
+    if a.nil?
+      if b.nil?
+        0
+      else
+        1
+      end
+    else
+      if b.nil?
+        -1
+      else
+        a <=> b
+      end
+    end
   end
 end

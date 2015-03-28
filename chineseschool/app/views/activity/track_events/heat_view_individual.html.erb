@@ -25,7 +25,7 @@
       <% @heat.sorted_signups.each do |signup| %>
           <% participant = signup.participant %>
           <tr>
-            <td align="center"><%= text_field_tag "track_time_#{signup.id}", "#{signup.track_time.nil? ? '' : (signup.track_time / 100.0) }", size: 6, align: :right %></td>
+            <td align="center"><%= text_field_tag "track_time_#{signup.id}", "#{display_track_time(signup.track_time)}", size: 6, align: :right %></td>
             <td align="center"><%= current_lane_number %></td>
             <td align="center"><%=h participant.name %></td>
             <td align="center"><%=h participant.gender %></td>

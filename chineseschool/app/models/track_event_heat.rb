@@ -31,12 +31,7 @@ class TrackEventHeat < ActiveRecord::Base
   def max_team_age
     max_team_age = 1
     self.track_event_teams.each do |team|
-      # Current implementation agreement is that team age is determined by the team name
-      # For new we grab the first digital string in name, which tends to be the starting age
-      # This would not be a problem in heat arrangement as long as age groups are not overlapping
-      # The potential issue with grabbing the second digital string in name is that it may not exist,
-      # particularly for the 12 & over teams
-      team_age = team.name.match(/^\d+/)[0].to_i
+      team_age = team.team_age
       max_team_age = team_age if team_age > max_team_age
     end
     max_team_age

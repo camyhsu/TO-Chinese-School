@@ -270,8 +270,48 @@ class Activity::TrackEventsController < ApplicationController
     redirect_to action: :heat_view, id: heat
   end
 
-  def calculate_score_and_view
+  def view_scores
+    @track_event_program = TrackEventProgram.find params[:id].to_i
+    if @track_event_program.individual_program?
+      if @track_event_program.parent_division?
+        @score_map = @track_event_program.map_scores_for_parent_individual
+        render action: :view_scores_parent_individual
+      else
+        @score_map = @track_event_program.map_scores_for_student_individual
+        render action: :view_scores_student_individual
+      end
+    elsif @track_event_program.group_program?
+      @score_map = @track_event_program.map_scores_for_tug_of_war
+      render action: :view_scores_tug_of_war
+    else
+      if @track_event_program.parent_division?
+        @score_map = @track_event_program.map_scores_for_parent_relay
+        render action: :view_scores_parent_relay
+      else
+        @score_map = @track_event_program.map_scores_for_student_relay
+        render action: :view_scores_student_relay
+      end
+    end
 
+  end
+
+  def calculate_scores
+    track_event_program = TrackEventProgram.find params[:id].to_i
+    if track_event_program.individual_program?
+      if track_event_program.parent_division?
+
+      else
+        track_event_program.calculate_scores_for_student_individual
+        render action: :view_scores_student_individual
+      end
+    elsif track_event_program.group_program?
+
+    else
+
+
+    end
+    flash[:notice] = 'Score Calculation Completed'
+    redirect_to action: :view_scores, id: track_event_program
   end
 
   def tocs_lane_assignment_form

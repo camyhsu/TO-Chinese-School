@@ -9,4 +9,6 @@
         <%= link_to "Heat #{heat.run_order}", {controller: '/activity/track_events', action: 'heat_view', id: heat }, {class: 'button'} %>
     <% end %>
     <br/><br/>
+    <%= link_to "View Scores for #{program.name}", {controller: '/activity/track_events', action: 'view_scores', id: program }, {class: 'button'} %>
+    <br/><br/>
 <% end %>
