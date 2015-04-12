@@ -155,6 +155,112 @@ class TrackEventProgram < ActiveRecord::Base
 
   def calculate_scores_for_student_individual
     score_map = map_scores_for_student_individual
+    score_map.each do |gender_age_group_map|
+      gender_age_group_map.each_value do |signups|
+        # map scores should have arrange signups in the proper order
+        additional_points_for_winner = 6
+        step_size = 0
+        previous_track_time = 0
+        signups.each do |signup|
+          if signup.track_time.nil?
+            # no penalty for no-show
+            signup.score = 0
+          else
+            if previous_track_time == signup.track_time
+              # multiple participants with equal track time
+              step_size += 1
+            else
+              additional_points_for_winner -= step_size unless additional_points_for_winner < 1
+              previous_track_time = signup.track_time
+              step_size = 1
+            end
+            signup.score = 1 + additional_points_for_winner
+          end
+          signup.save
+        end
+      end
+    end
+  end
+
+  def calculate_scores_for_student_relay
+    score_map = map_scores_for_student_relay
+    score_map.each do |gender_age_group_map|
+      gender_age_group_map.each_value do |teams|
+        # map scores should have arrange teams in the proper order
+        additional_points_for_winner = 6.0
+        step_size = 0
+        previous_track_time = 0
+        teams.each do |team|
+          if team.track_time.nil?
+            # no penalty for no-show
+            team.save_score(0)
+          else
+            if previous_track_time == team.track_time
+              # multiple teams with equal track time
+              step_size += 1
+            else
+              additional_points_for_winner -= step_size unless additional_points_for_winner < 1
+              previous_track_time = team.track_time
+              step_size = 1
+            end
+            team.save_score(1 + (additional_points_for_winner / self.team_size))
+          end
+        end
+      end
+    end
+  end
+
+  def calculate_scores_for_parent_individual
+    score_map = map_scores_for_parent_individual
+    score_map.each do |gender_signups|
+      # map scores should have arrange signups in the proper order
+      additional_points_for_winner = 6
+      step_size = 0
+      previous_track_time = 0
+      gender_signups.each do |signup|
+        if signup.track_time.nil?
+          # no penalty for no-show
+          signup.score = 0
+        else
+          if previous_track_time == signup.track_time
+            # multiple participants with equal track time
+            step_size += 1
+          else
+            additional_points_for_winner -= step_size unless additional_points_for_winner < 1
+            previous_track_time = signup.track_time
+            step_size = 1
+          end
+          signup.score = 1 + additional_points_for_winner
+        end
+        signup.save
+      end
+    end
+  end
+
+  def calculate_scores_for_parent_relay
+    score_map = map_scores_for_parent_relay
+    score_map.each do |gender_teams|
+      # map scores should have arrange teams in the proper order
+      additional_points_for_winner = 6.0
+      step_size = 0
+      previous_track_time = 0
+      gender_teams.each do |team|
+        if team.track_time.nil?
+          # no penalty for no-show
+          team.save_score(0)
+        else
+          if previous_track_time == team.track_time
+            # multiple teams with equal track time
+            step_size += 1
+          else
+            additional_points_for_winner -= step_size unless additional_points_for_winner < 1
+            previous_track_time = team.track_time
+            step_size = 1
+          end
+          team.save_score(1 + (additional_points_for_winner / self.team_size))
+        end
+      end
+    end
   end
 
   def self.young_division_programs

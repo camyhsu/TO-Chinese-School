@@ -24,4 +24,11 @@ class TrackEventTeam < ActiveRecord::Base
     # particularly for the 12 & over teams
     self.name.match(/^\d+/)[0].to_i
   end
+
+  def save_score(score)
+    self.track_event_signups.each do |signup|
+      signup.score = score
+      signup.save
+    end
+  end
 end

@@ -272,6 +272,9 @@ class Activity::TrackEventsController < ApplicationController
 
   def view_scores
     @track_event_program = TrackEventProgram.find params[:id].to_i
+    # View scores is not implemented for group program due to the complication of fina matches
+    # We currently guard against this by not showing the button for the UI
+    # If this controller action is called with a group program, it would be garbage output using student relay code
     if @track_event_program.individual_program?
       if @track_event_program.parent_division?
         @score_map = @track_event_program.map_scores_for_parent_individual
@@ -280,9 +283,6 @@ class Activity::TrackEventsController < ApplicationController
         @score_map = @track_event_program.map_scores_for_student_individual
         render action: :view_scores_student_individual
       end
-    elsif @track_event_program.group_program?
-      @score_map = @track_event_program.map_scores_for_tug_of_war
-      render action: :view_scores_tug_of_war
     else
       if @track_event_program.parent_division?
         @score_map = @track_event_program.map_scores_for_parent_relay
@@ -297,18 +297,21 @@ class Activity::TrackEventsController < ApplicationController
 
   def calculate_scores
     track_event_program = TrackEventProgram.find params[:id].to_i
+    # Calculate scores is not implemented for group program due to the complication of fina matches
+    # We currently guard against this by not showing the button for the UI
+    # If this controller action is called with a group program, it would be garbage output using student relay code
     if track_event_program.individual_program?
       if track_event_program.parent_division?
-
+        track_event_program.calculate_scores_for_parent_individual
       else
         track_event_program.calculate_scores_for_student_individual
-        render action: :view_scores_student_individual
       end
-    elsif track_event_program.group_program?
-
     else
-
-
+      if track_event_program.parent_division?
+        track_event_program.calculate_scores_for_parent_relay
+      else
+        track_event_program.calculate_scores_for_student_relay
+      end
     end
     flash[:notice] = 'Score Calculation Completed'
     redirect_to action: :view_scores, id: track_event_program
