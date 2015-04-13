@@ -188,7 +188,12 @@ class Person < ActiveRecord::Base
   end
   
   def find_all_non_filler_track_event_signups_as_students(school_year=SchoolYear.current_school_year)
-    TrackEventSignup.all :from => 'track_event_signups, track_event_programs', :conditions => ['track_event_signups.track_event_program_id = track_event_programs.id AND track_event_signups.student_id = ? AND track_event_programs.school_year_id = ? AND track_event_signups.filler = false', self.id, school_year.id]
+    TrackEventSignup.all from: 'track_event_signups, track_event_programs', conditions: ['track_event_signups.track_event_program_id = track_event_programs.id AND track_event_signups.student_id = ? AND track_event_programs.school_year_id = ? AND track_event_signups.filler = false', self.id, school_year.id]
+  end
+
+  def track_event_scores(school_year=SchoolYear.current_school_year)
+    track_event_signups = TrackEventSignup.all from: 'track_event_signups, track_event_programs', conditions: ['track_event_signups.track_event_program_id = track_event_programs.id AND track_event_signups.student_id = ? AND track_event_programs.school_year_id = ?', self.id, school_year.id]
+    track_event_signups.collect { |signup| signup.score.nil? ? 0.0 : signup.score }.inject(0, &:+)
   end
 
   def self.find_people_on_record(english_first_name, english_last_name, email, phone_number)

@@ -84,6 +84,10 @@ activity_track_events_heat_view = Right.create(name: 'View Heat', controller: 'a
 activity_track_events_save_track_time = Right.create(name: 'Save Track Time', controller: 'activity/track_events', action: 'save_track_time')
 activity_track_events_save_winner_tug_of_war = Right.create(name: 'Save Tug of War Winner', controller: 'activity/track_events', action: 'save_winner_tug_of_war')
 
+activity_track_events_view_scores = Right.create(name: 'View Track Events Scores', controller: 'activity/track_events', action: 'view_scores')
+activity_track_events_calculate_scores = Right.create(name: 'Calculate Track Events Scores', controller: 'activity/track_events', action: 'calculate_scores')
+activity_track_events_view_class_scores = Right.create(name: 'View Track Events Class Scores', controller: 'activity/track_events', action: 'view_class_scores')
+
 activity_track_events_sign_up_result = Right.create(name: 'Sign Up Track Events Result', controller: 'activity/track_events', action: 'sign_up_result')
 activity_track_events_assign_jersey_numbers = Right.create(name: 'TOCS Track Event Assign Jersey Numbers', controller: 'activity/track_events', action: 'assign_jersey_numbers')
 activity_track_events_tocs_lane_assignment_form = Right.create(name: 'TOCS Track Event Lane Assignment Form', controller: 'activity/track_events', action: 'tocs_lane_assignment_form')
@@ -297,6 +301,9 @@ activity_officer.rights << activity_track_events_lane_assignment_index
 activity_officer.rights << activity_track_events_heat_view
 activity_officer.rights << activity_track_events_save_track_time
 activity_officer.rights << activity_track_events_save_winner_tug_of_war
+activity_officer.rights << activity_track_events_view_scores
+activity_officer.rights << activity_track_events_calculate_scores
+activity_officer.rights << activity_track_events_view_class_scores
 activity_officer.rights << activity_track_events_assign_jersey_numbers
 activity_officer.rights << activity_track_events_tocs_lane_assignment_form
 activity_officer.rights << activity_track_events_tocs_track_event_data

@@ -1,0 +1,27 @@
+<% @title = 'View Class Scores' %>
+
+<h2>Class Scores for Track Events <%=h SchoolYear.current_school_year.name %></h2>
+
+<table class="details-table" border="1px">
+  <thead>
+  <tr>
+    <th>Grade Class</th>
+    <th>Student Count</th>
+    <th>Track Event Scores</th>
+    <th>Scores Per Student</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @active_grade_classes.each do |school_class| -%>
+      <% class_size = school_class.class_size %>
+      <% total_score = school_class.track_event_scores %>
+      <tr>
+        <td><%=h school_class.name %></td>
+        <td><%= class_size %></td>
+        <td><%= total_score %></td>
+        <td><%= total_score / class_size %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+<br/><br/>

@@ -317,6 +317,18 @@ class Activity::TrackEventsController < ApplicationController
     redirect_to action: :view_scores, id: track_event_program
   end
 
+  def view_class_scores
+    @active_grade_classes = SchoolClass.find_all_active_grade_classes
+    @active_grade_classes.sort! do |x, y|
+      grade_order = x.grade_id <=> y.grade_id
+      if grade_order == 0
+        x.short_name <=> y.short_name
+      else
+        grade_order
+      end
+    end
+  end
+
   def tocs_lane_assignment_form
     @track_event_programs = TrackEventProgram.find_programs_by_sort_keys
     respond_to do |format|

@@ -44,6 +44,7 @@ Chineseschool::Application.routes.draw do
     post 'track_events/save_winner_tug_of_war' => 'track_events#save_winner_tug_of_war'
     get 'track_events/view_scores' => 'track_events#view_scores'
     get 'track_events/calculate_scores' => 'track_events#calculate_scores'
+    get 'track_events/view_class_scores' => 'track_events#view_class_scores'
     get 'track_events/tocs_lane_assignment_form' => 'track_events#tocs_lane_assignment_form'
     get 'track_events/tocs_track_event_data' => 'track_events#tocs_track_event_data'
 

@@ -127,7 +127,6 @@ class SchoolClass < ActiveRecord::Base
 
   def track_event_signup_student_count(school_year=SchoolYear.current_school_year)
     counter = 0
-    puts self.short_name if self.id == 25
     students.each do |student|
       signup_count = TrackEventSignup.count :conditions => ['track_event_signups.student_id = ? AND student_class_assignments.school_class_id = ? AND track_event_programs.school_year_id = ?', student.id, self.id, school_year.id],
                                             :joins => 'JOIN student_class_assignments ON student_class_assignments.student_id = track_event_signups.student_id' +
@@ -136,6 +135,10 @@ class SchoolClass < ActiveRecord::Base
       puts "#{student.name} #{student.id} => #{signup_count}" if self.id == 25
     end
     counter
+  end
+
+  def track_event_scores
+    students.collect(&:track_event_scores).inject(0, &:+)
   end
 
   def self.find_all_active_school_classes
