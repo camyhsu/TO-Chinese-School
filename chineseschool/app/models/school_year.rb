@@ -6,27 +6,25 @@ class SchoolYear < ActiveRecord::Base
   TRACK_EVENT_SIGN_UP_END_DATE = Date.parse('2015-03-01')
 
   attr_accessible :name, :description, :start_date, :end_date, :age_cutoff_month, :registration_fee,
-                  :pre_registration_tuition, :tuition, :tuition_discount_for_three_or_more_child,
+                  :early_registration_tuition, :tuition, :tuition_discount_for_three_or_more_child,
                   :tuition_discount_for_pre_k, :pva_membership_due, :ccca_membership_due,
-                  :registration_start_date, :pre_registration_end_date, :registration_75_percent_date,
-                  :registration_50_percent_date, :registration_end_date, :refund_75_percent_date,
-                  :refund_50_percent_date, :refund_25_percent_date, :refund_end_date
+                  :early_registration_start_date, :early_registration_end_date, :registration_start_date,
+                  :registration_75_percent_date, :registration_50_percent_date, :registration_end_date,
+                  :refund_75_percent_date, :refund_50_percent_date, :refund_25_percent_date, :refund_end_date
 
   belongs_to :previous_school_year, class_name: 'SchoolYear', foreign_key: 'previous_school_year_id'
 
   validates :name, :start_date, :end_date, :age_cutoff_month,
-      :registration_start_date, :pre_registration_end_date, 
-      :registration_75_percent_date, :registration_50_percent_date,
-      :registration_end_date, :refund_75_percent_date,
-      :refund_50_percent_date, :refund_25_percent_date,
-      :refund_end_date, :registration_fee_in_cents,
-      :pre_registration_tuition_in_cents, :tuition_in_cents,
-      :tuition_discount_for_three_or_more_child_in_cents, :tuition_discount_for_pre_k_in_cents,
-      :pva_membership_due_in_cents, :ccca_membership_due_in_cents,
-      :previous_school_year, presence: true
+            :early_registration_start_date, :early_registration_end_date, :registration_start_date,
+            :registration_75_percent_date, :registration_50_percent_date, :registration_end_date,
+            :refund_75_percent_date, :refund_50_percent_date, :refund_25_percent_date, :refund_end_date,
+            :registration_fee_in_cents, :early_registration_tuition_in_cents, :tuition_in_cents,
+            :tuition_discount_for_three_or_more_child_in_cents, :tuition_discount_for_pre_k_in_cents,
+            :pva_membership_due_in_cents, :ccca_membership_due_in_cents, :previous_school_year,
+            presence: true
 
   validates :registration_fee_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
-  validates :pre_registration_tuition_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
+  validates :early_registration_tuition_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
   validates :tuition_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
   validates :tuition_discount_for_three_or_more_child_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
   validates :tuition_discount_for_pre_k_in_cents, numericality: {only_integer: true, greater_than_or_equal_to: 0, allow_nil: false}
@@ -43,12 +41,12 @@ class SchoolYear < ActiveRecord::Base
     self.registration_fee_in_cents = (registration_fee * 100).to_i
   end
 
-  def pre_registration_tuition
-    self.pre_registration_tuition_in_cents / 100.0
+  def early_registration_tuition
+    self.early_registration_tuition_in_cents / 100.0
   end
 
-  def pre_registration_tuition=(pre_registration_tuition)
-    self.pre_registration_tuition_in_cents = (pre_registration_tuition * 100).to_i
+  def early_registration_tuition=(early_registration_tuition)
+    self.early_registration_tuition_in_cents = (early_registration_tuition * 100).to_i
   end
 
   def tuition
@@ -108,7 +106,8 @@ class SchoolYear < ActiveRecord::Base
   end
 
   def self.find_active_registration_school_years
-    self.all :conditions => ['registration_start_date <= ? AND registration_end_date >= ?', PacificDate.today, PacificDate.today], :order => 'start_date ASC'
+    active_registration_years = self.all :conditions => ['early_registration_start_date <= ? AND registration_end_date >= ?', PacificDate.today, PacificDate.today], :order => 'start_date ASC'
+    active_registration_years.reject { |school_year| (school_year.early_registration_end_date < PacificDate.today) && (school_year.registration_start_date > PacificDate.today) }
   end
   
   def school_has_started?

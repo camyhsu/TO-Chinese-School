@@ -23,8 +23,8 @@
             <%= school_year_form.text_field :registration_fee, size: 20 %>
           </div>
           <div>
-            <label for="tuition"><span style="color:red">*&nbsp;</span>Pre-registration Tuition:</label>
-            <%= school_year_form.text_field :pre_registration_tuition, size: 20 %>
+            <label for="tuition"><span style="color:red">*&nbsp;</span>Early Registration Tuition:</label>
+            <%= school_year_form.text_field :early_registration_tuition, size: 20 %>
           </div>
           <div>
             <label for="tuition"><span style="color:red">*&nbsp;</span>Tuition:</label>
@@ -47,12 +47,16 @@
             <%= school_year_form.text_field :ccca_membership_due, size: 20 %>
           </div>
           <div>
-            <label for="registration_start_date"><span style="color:red">*&nbsp;</span>Registration Start Date:</label>
-            <%= school_year_form.text_field :registration_start_date, future_date_html_options(@school_year.registration_start_date) %>
+            <label for="early_registration_start_date"><span style="color:red">*&nbsp;</span>Early Registration Start Date:</label>
+            <%= school_year_form.text_field :early_registration_start_date, future_date_html_options(@school_year.early_registration_start_date) %>
           </div>
           <div>
-            <label for="pre_registration_end_date"><span style="color:red">*&nbsp;</span>Pre-registration End Date:</label>
-            <%= school_year_form.text_field :pre_registration_end_date, future_date_html_options(@school_year.pre_registration_end_date) %>
+            <label for="early_registration_end_date"><span style="color:red">*&nbsp;</span>Early Registration End Date:</label>
+            <%= school_year_form.text_field :early_registration_end_date, future_date_html_options(@school_year.early_registration_end_date) %>
+          </div>
+          <div>
+            <label for="registration_start_date"><span style="color:red">*&nbsp;</span>Registration Start Date:</label>
+            <%= school_year_form.text_field :registration_start_date, future_date_html_options(@school_year.registration_start_date) %>
           </div>
           <div>
             <label for="registration_75_percent_date"><span style="color:red">*&nbsp;</span>Registration 75% Date:</label>

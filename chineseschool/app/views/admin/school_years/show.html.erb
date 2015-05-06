@@ -27,8 +27,8 @@
     <td><%=number_to_currency @school_year.registration_fee %></td>
   </tr>
   <tr>
-    <td class="label">Pre-registration Tuition:</td>
-    <td><%=number_to_currency @school_year.pre_registration_tuition %></td>
+    <td class="label">Early Registration Tuition:</td>
+    <td><%=number_to_currency @school_year.early_registration_tuition %></td>
   </tr>
   <tr>
     <td class="label">Tuition:</td>
@@ -60,11 +60,14 @@
 <p>The following dates are related to registration fee proration.
 <ul>
   <li>
-    Registration Start Date - the date registration starts.
+    Early Registration Start Date - the date early registration starts.
+    During early registration period, early registration tuition would be charged.
   </li>
   <li>
-    Pre-registration End Date - the date after which full tuition would be charged.
-    On or before this date, pre-registration tuition would be charged.
+    Early Registration End Date - the date after which early registration is no longer available.
+  </li>
+  <li>
+    Registration Start Date - the date regular registration starts.
   </li>
   <li>
     Registration 75 Percent Date - the date after which 75% of full tuition would be charged.
@@ -91,12 +94,16 @@
 </p>
 <table border="0px">
   <tr>
-    <td class="label">Registration Start Date:</td>
-    <td><%=h @school_year.registration_start_date %></td>
+    <td class="label">Early Registration Start Date:</td>
+    <td><%=h @school_year.early_registration_start_date %></td>
   </tr>
   <tr>
-    <td class="label">Pre-registration End Date:</td>
-    <td><%=h @school_year.pre_registration_end_date %></td>
+    <td class="label">Early Registration End Date:</td>
+    <td><%=h @school_year.early_registration_end_date %></td>
+  </tr>
+  <tr>
+    <td class="label">Registration Start Date:</td>
+    <td><%=h @school_year.registration_start_date %></td>
   </tr>
   <tr>
     <td class="label">Registration 75 Percent Date:</td>

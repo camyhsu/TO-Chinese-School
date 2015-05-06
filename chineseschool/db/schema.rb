@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150321162124) do
+ActiveRecord::Schema.define(:version => 20150502174540) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -250,11 +250,12 @@ ActiveRecord::Schema.define(:version => 20150321162124) do
     t.integer  "tuition_in_cents",                                  :default => 38000, :null => false
     t.integer  "pva_membership_due_in_cents",                       :default => 1500,  :null => false
     t.integer  "ccca_membership_due_in_cents",                      :default => 2000,  :null => false
-    t.date     "pre_registration_end_date"
-    t.integer  "pre_registration_tuition_in_cents",                 :default => 38000, :null => false
+    t.date     "early_registration_end_date"
+    t.integer  "early_registration_tuition_in_cents",               :default => 38000, :null => false
     t.integer  "tuition_discount_for_three_or_more_child_in_cents", :default => 3800,  :null => false
     t.integer  "tuition_discount_for_pre_k_in_cents",               :default => 4000,  :null => false
     t.integer  "previous_school_year_id"
+    t.date     "early_registration_start_date"
   end
 
   create_table "student_class_assignments", :force => true do |t|
@@ -275,7 +276,7 @@ ActiveRecord::Schema.define(:version => 20150321162124) do
     t.integer  "registration_fee_in_cents"
     t.integer  "tuition_in_cents"
     t.integer  "book_charge_in_cents"
-    t.boolean  "pre_registration",          :default => false, :null => false
+    t.boolean  "early_registration",        :default => false, :null => false
     t.boolean  "multiple_child_discount",   :default => false, :null => false
     t.boolean  "pre_k_discount",            :default => false, :null => false
     t.datetime "created_at"

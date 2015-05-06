@@ -33,8 +33,9 @@ class Admin::SchoolYearsController < ApplicationController
       set_date_if_original_in_future :end_date
       @school_year.age_cutoff_month = params[:school_year][:age_cutoff_month]
       set_fees_from_params
+      set_date_if_original_in_future :early_registration_start_date
+      set_date_if_original_in_future :early_registration_end_date
       set_date_if_original_in_future :registration_start_date
-      set_date_if_original_in_future :pre_registration_end_date
       set_date_if_original_in_future :registration_75_percent_date
       set_date_if_original_in_future :registration_50_percent_date
       set_date_if_original_in_future :registration_end_date
@@ -108,7 +109,7 @@ class Admin::SchoolYearsController < ApplicationController
 
   def set_fees_from_params
     @school_year.registration_fee = params[:school_year][:registration_fee].to_f
-    @school_year.pre_registration_tuition = params[:school_year][:pre_registration_tuition].to_f
+    @school_year.early_registration_tuition = params[:school_year][:early_registration_tuition].to_f
     @school_year.tuition = params[:school_year][:tuition].to_f
     @school_year.tuition_discount_for_three_or_more_child = params[:school_year][:tuition_discount_for_three_or_more_child].to_f
     @school_year.tuition_discount_for_pre_k = params[:school_year][:tuition_discount_for_pre_k].to_f

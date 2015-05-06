@@ -33,9 +33,9 @@ class StudentFeePayment < ActiveRecord::Base
   end
 
   def calculate_tuition(school_year, grade, registration_count_before_this_student)
-    if PacificDate.today <= school_year.pre_registration_end_date
-      self.pre_registration = true
-      self.tuition_in_cents = school_year.pre_registration_tuition_in_cents
+    if PacificDate.today <= school_year.early_registration_end_date
+      self.early_registration = true
+      self.tuition_in_cents = school_year.early_registration_tuition_in_cents
     else
       self.tuition_in_cents = school_year.tuition_in_cents
     end

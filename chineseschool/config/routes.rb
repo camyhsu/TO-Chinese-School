@@ -119,6 +119,14 @@ Chineseschool::Application.routes.draw do
   end
 
   namespace :student do
+    get 'registration/display_options' => 'registration#display_options'
+    post 'registration/save_registration_preferences' => 'registration#save_registration_preferences'
+    post 'registration/payment_entry' => 'registration#payment_entry'
+    get 'registration/remove_pending_registration_payment' => 'registration#remove_pending_registration_payment'
+    post 'registration/submit_payment' => 'registration#submit_payment'
+    get 'registration/payment_confirmation' => 'registration#payment_confirmation'
+    get 'registration/request_in_person_payment' => 'registration#request_in_person_payment'
+
     get 'transaction_history' => 'transaction_history#index'
   end
 
