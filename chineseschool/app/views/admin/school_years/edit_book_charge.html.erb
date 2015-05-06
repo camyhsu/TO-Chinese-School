@@ -3,7 +3,7 @@
 <div class="account-form">
   <% unless @book_charge_with_error.nil? %>
       <div id="error_explanation">
-        <h2><%= pluralize(@book_charge_with_error.errors.count, 'error') %> prohibited updating the book charge for <%= @book_charge_with_error.grade.name %>:</h2>
+        <h2><%= pluralize(@book_charge_with_error.errors.count, 'error') %> prohibited updating the book / material charge for <%= @book_charge_with_error.grade.name %>:</h2>
         <ul>
           <% @book_charge_with_error.errors.full_messages.each do |msg| %>
               <li><%= msg %></li> <% end %>
@@ -13,7 +13,7 @@
   
   <%= form_tag action: 'edit_book_charge', id: @school_year, method: :put do %>
     <fieldset>
-        <legend>Edit Book Charge For School Year <%=h @school_year.name %></legend>
+        <legend>Edit Book / Material Charge For School Year <%=h @school_year.name %></legend>
         <span class="book-charge-edit">
           <% @book_charges.each do |book_charge| %>
             <%= render partial: 'book_charge_form', object: book_charge %>
