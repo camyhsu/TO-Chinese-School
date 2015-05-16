@@ -1,0 +1,23 @@
+<% @title = 'Email Address Already Exists' %>
+
+<h3><%= @title %></h3>
+
+<% if @matched_users.empty? %>
+    This email address <span style="font-weight: bold"><%=h @existing_email %></span> already exists in school records, but there is no associated user account.<br/>
+    Please contact <%= Contacts::WEB_SITE_SUPPORT %> with your information to obtain
+    user invitation so that your user could be linked to existing data.
+<% else %>
+    <% @matched_users.each do |user| %>
+        <br/><br/>
+        A user with username <span style="font-weight: bold"><%=h user.username %></span> exists with this email address <%=h @existing_email %>
+        <br/><br/>
+        <%= form_tag action: 'forgot_password', username: user.username do %>
+            <%= submit_tag "Request Password Reset for #{user.username}", class: 'button' %>
+        <% end %>
+    <% end %>
+<% end %>
+
+<br/><br/>
+<span class="register-link">
+  <%= link_to 'Back to Sign In', action: :index %>
+</span>

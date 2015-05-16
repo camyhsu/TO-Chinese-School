@@ -88,6 +88,10 @@ class SigninController < ApplicationController
   def register
     if request.post? || request.put?
       @address = Address.new params[:address]
+      if @address.email_already_exists?
+        redirect_to action: :email_already_exists, email: @address.email
+        return
+      end
       @parent_one = Person.new params[:parent_one]
       @user = User.new
       @user.username = params[:user][:username]
@@ -119,6 +123,24 @@ class SigninController < ApplicationController
       @parent_one = Person.new
       @user = User.new
     end
+  end
+
+  def email_already_exists
+    @existing_email = params[:email]
+    addresses = Address.find_all_by_email(@existing_email)
+    people = addresses.collect { |address| address.person }.uniq.compact
+    @matched_users = []
+    if people.empty?
+      addresses.each do |address|
+        family = address.family
+        collect_user_with_matching_email family.parent_one unless family.parent_one.nil?
+        collect_user_with_matching_email family.parent_two unless family.parent_two.nil?
+      end
+    else
+      @matched_users = people.collect { |person| person.user }
+    end
+    @matched_users.uniq!
+    @matched_users.compact!
   end
 
   def register_with_invitation
@@ -161,5 +183,11 @@ class SigninController < ApplicationController
   
   def collect_user_from(person)
     @matched_users << person.user unless person.user.nil?
+  end
+
+  def collect_user_with_matching_email(person)
+    if person.personal_email_address == @existing_email
+      @matched_users << person.user unless person.user.nil?
+    end
   end
 end

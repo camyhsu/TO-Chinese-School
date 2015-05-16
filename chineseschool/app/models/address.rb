@@ -46,6 +46,11 @@ class Address < ActiveRecord::Base
     "(#{phone_number[0..2]}) #{phone_number[3..5]}-#{phone_number[6..-1]}"
   end
 
+  def email_already_exists?
+    existing_emails = Address.find_all_by_email(email)
+    ! existing_emails.empty?
+  end
+
   def self.clean_phone_number(phone_number_to_clean)
     return nil if phone_number_to_clean.nil?
     phone_number_to_clean.gsub /\D/, ''
