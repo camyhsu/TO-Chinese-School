@@ -106,8 +106,7 @@ class SchoolYear < ActiveRecord::Base
   end
 
   def self.find_active_registration_school_years
-    active_registration_years = self.all :conditions => ['early_registration_start_date <= ? AND registration_end_date >= ?', PacificDate.today, PacificDate.today], :order => 'start_date ASC'
-    active_registration_years.reject { |school_year| (school_year.early_registration_end_date < PacificDate.today) && (school_year.registration_start_date > PacificDate.today) }
+    self.all :conditions => ['early_registration_start_date <= ? AND registration_end_date >= ?', PacificDate.today, PacificDate.today], :order => 'start_date ASC'
   end
   
   def school_has_started?

@@ -1,8 +1,9 @@
 
 <% if @possible_students.size > 0 -%>
   <% @active_registration_school_years.each do |registration_year| %>
-    <%= link_to "Register For #{registration_year.name} School Year", {controller: '/student/registration', action: :display_options, id: registration_year}, {class: 'button'} %>
-    <br/>
+        <% if (registration_year.early_registration_end_date >= PacificDate.today) || (registration_year.registration_start_date <= PacificDate.today) %>
+            <%= link_to "Register For #{registration_year.name} School Year", {controller: '/student/registration', action: :display_options, id: registration_year}, {class: 'button'} %><br/>
+        <% end %>
   <% end %>
 <% end %>
 
@@ -125,8 +126,9 @@
     </table>
   <% end %>
   <% @active_registration_school_years.each do |registration_year| %>
-    <%= link_to "Register For #{registration_year.name} School Year", {controller: '/student/registration', action: :display_options, id: registration_year}, {class: 'button'} %>
-    <br/>
+    <% if (registration_year.early_registration_end_date >= PacificDate.today) || (registration_year.registration_start_date <= PacificDate.today) %>
+      <%= link_to "Register For #{registration_year.name} School Year", {controller: '/student/registration', action: :display_options, id: registration_year}, {class: 'button'} %><br/>
+     <% end %>
   <% end %>
   <hr/>
 <% end %>
