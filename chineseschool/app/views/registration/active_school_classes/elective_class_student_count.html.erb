@@ -1,5 +1,5 @@
 <% @title = 'Elective Class 人數清單' %>
 
-<h2>千橡中文學校  <%=h @current_school_year.name %>學年度  Elective Class 人數清單</h2>
+<h2>千橡中文學校  <%=h @school_year.name %>學年度  Elective Class 人數清單</h2>
 
-<%= render partial: 'student_counts', object: @active_elective_classes %>
+<%= render partial: 'student_counts', object: @active_elective_classes, locals: {school_year: @school_year} %>
