@@ -7,6 +7,7 @@ class HomeController < ApplicationController
   def index
     @home_templates = []
     @home_templates << 'principal' if principal_resources_enabled?
+    @home_templates << 'academic_vice_principal' if academic_vice_principal_resources_enabled?
     @home_templates << 'registration_officer' if registration_resources_enabled?
     @home_templates << 'accounting_officer' if accounting_resources_enabled?
     @home_templates << 'activity_officer' if activity_resources_enabled?
@@ -45,6 +46,12 @@ class HomeController < ApplicationController
   def principal_resources_enabled?
     return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
     return true if @user.has_role? Role::ROLE_NAME_PRINCIPAL
+    false
+  end
+
+  def academic_vice_principal_resources_enabled?
+    return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
+    return true if @user.has_role? Role::ROLE_NAME_ACADEMIC_VICE_PRINCIPAL
     false
   end
 
