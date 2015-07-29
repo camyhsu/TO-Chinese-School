@@ -61,6 +61,12 @@
     <p><span style="color: blue">Session preference, please email to <%= Contacts::REGISTRATION_CONTACT %> subject to first come, first served</span></p>
   </li>
   <% end %>
+  <% if @registration_preferences.any? {|registration_preference|  Grade.grades_with_ap_class.include? registration_preference.grade} %>
+      <li>
+        Chinese AP Class Announcement: higher grade students will be enrolled in 3rd period AP class if no other 3rd period class was selected.
+        <p><span style="color: blue">Please email to <%= Contacts::REGISTRATION_CONTACT %> if there are questions.</span></p>
+      </li>
+  <% end %>
 </ul>
 <% if @registration_preferences.any? {|registration_preference| registration_preference.grade_full?} %>
 <p style="color: red;">

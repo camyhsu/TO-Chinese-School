@@ -93,6 +93,10 @@ class Grade < ActiveRecord::Base
     Grade.first conditions: ['short_name = ?', 'Pre']
   end
 
+  def self.grades_with_ap_class
+    Grade.all conditions: ['short_name IN (?)', %w(9 10 11)]
+  end
+
   def self.find_by_school_age(school_age)
     return nil if school_age < 4
     # Currently defined lowest grade is PreK for age 4
