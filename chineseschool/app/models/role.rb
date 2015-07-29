@@ -2,6 +2,7 @@ class Role < ActiveRecord::Base
 
   ROLE_NAME_SUPER_USER = 'Super User'
   ROLE_NAME_PRINCIPAL = 'Principal'
+  ROLE_NAME_ACADEMIC_VICE_PRINCIPAL = 'Academic Vice Principal'
   ROLE_NAME_REGISTRATION_OFFICER = 'Registration Officer'
   ROLE_NAME_ACCOUNTING_OFFICER = 'Accounting Officer'
   ROLE_NAME_ACTIVITY_OFFICER = 'Activity Officer'
@@ -14,6 +15,8 @@ class Role < ActiveRecord::Base
   ROLE_NAME_STUDENT_PARENT = 'Student Parent'
   
   ROLE_NAME_CCCA_STAFF = 'CCCA Staff'
+
+  attr_accessible :name
 
   has_and_belongs_to_many :users
   has_and_belongs_to_many :rights, order: 'controller ASC, action ASC'

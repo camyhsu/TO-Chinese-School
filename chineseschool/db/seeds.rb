@@ -15,6 +15,7 @@ end
 # Create roles
 #
 create_role(Role::ROLE_NAME_PRINCIPAL)
+create_role(Role::ROLE_NAME_ACADEMIC_VICE_PRINCIPAL)
 create_role(Role::ROLE_NAME_REGISTRATION_OFFICER)
 create_role(Role::ROLE_NAME_ACCOUNTING_OFFICER)
 create_role(Role::ROLE_NAME_ACTIVITY_OFFICER)
@@ -188,6 +189,17 @@ principal.rights << instruction_school_classes_show
 
 principal.rights << report_daily_online_registration_summary
 principal.rights << library_book_read_only_view
+
+
+#
+# Assign rights to Academic Vice Principal
+#
+academic_vice_principal = Role.find_by_name(Role::ROLE_NAME_ACADEMIC_VICE_PRINCIPAL)
+academic_vice_principal.rights << active_school_classes_grade_class_student_count
+academic_vice_principal.rights << active_school_classes_elective_class_student_count
+academic_vice_principal.rights << instruction_active_school_classes_index
+academic_vice_principal.rights << instruction_school_classes_show
+academic_vice_principal.rights << library_book_read_only_view
 
 
 #
