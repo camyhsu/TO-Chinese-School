@@ -112,6 +112,7 @@ Chineseschool::Application.routes.draw do
     get 'people/show' => 'people#show'
 
     get 'report/registration_integrity' => 'report#registration_integrity'
+    get 'report/sibling_in_same_grade' => 'report#sibling_in_same_grade'
 
     get 'student_class_assignments/list_active_students_by_name' => 'student_class_assignments#list_active_students_by_name'
     get 'student_class_assignments/random_assign_grade_class' => 'student_class_assignments#random_assign_grade_class'

@@ -129,6 +129,7 @@ instructor_assignments_destroy = Right.create(name: 'Destroy Instructor Assignme
 
 report_daily_online_registration_summary = Right.create(name: 'Daily Online Registration Summary Report', controller: 'registration/report', action: 'daily_online_registration_summary')
 report_registration_integrity = Right.create(name: 'Registration Integrity Report', controller: 'registration/report', action: 'registration_integrity')
+report_sibling_in_same_grade = Right.create(name: 'Sibling in Same Grade Report', controller: 'registration/report', action: 'sibling_in_same_grade')
 
 
 instruction_school_classes_show = Right.create(name: 'Student List For One School Class', controller: 'instruction/school_classes', action: 'show')
@@ -244,6 +245,7 @@ registration_officer.rights << instruction_school_classes_show
 
 registration_officer.rights << report_daily_online_registration_summary
 registration_officer.rights << report_registration_integrity
+registration_officer.rights << report_sibling_in_same_grade
 
 registration_officer.rights << student_transaction_history_show_registration_payment_for_staff
 

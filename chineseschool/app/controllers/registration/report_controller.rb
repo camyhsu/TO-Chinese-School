@@ -33,6 +33,24 @@ class Registration::ReportController < ApplicationController
     @student_class_assignments_without_school_class = StudentClassAssignment.all :conditions => [ 'school_year_id = ? AND school_class_id is null', SchoolYear.current_school_year ]
   end
 
+  def sibling_in_same_grade
+    query_result = StudentClassAssignment.connection.select_all 'SELECT fc.family_id, sca.grade_id, sca.student_id FROM student_class_assignments AS sca ' +
+                                                          'INNER JOIN families_children AS fc ON sca.student_id = fc.child_id ' +
+                                                          'WHERE sca.school_year_id = ' + SchoolYear.current_school_year.id.to_s +
+                                                          ' ORDER BY fc.family_id, sca.grade_id'
+    @students = []
+    previous_result = {}
+    query_result.each do |result|
+      if (result['family_id'] == previous_result['family_id']) && (result['grade_id'] == previous_result['grade_id'])
+        @students << Person.find(result['student_id'].to_i)
+        previous_student = Person.find(previous_result['student_id'].to_i)
+        @students << previous_student unless @students.include?(previous_student)
+      else
+        previous_result = result
+      end
+    end
+  end
+
   private
 
   def find_or_create_summary_entry(payment_date, registration_summary_hash)
