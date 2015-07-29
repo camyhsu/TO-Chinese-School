@@ -63,8 +63,8 @@
   <% end %>
   <% if @registration_preferences.any? {|registration_preference|  Grade.grades_with_ap_class.include? registration_preference.grade} %>
       <li>
-        Chinese AP Class Announcement: higher grade students will be enrolled in 3rd period AP class if no other 3rd period class was selected.
-        <p><span style="color: blue">Please email to <%= Contacts::REGISTRATION_CONTACT %> if there are questions.</span></p>
+        <span style="font-weight: bold">Chinese AP Class Announcement: 9th and 10th grade students will be automatically enrolled in 3rd period AP class if no other 3rd period class was selected.</span>
+        <br/><span style="color: blue">Please email to <%= Contacts::REGISTRATION_CONTACT %> if there are questions.</span></br>
       </li>
   <% end %>
 </ul>
