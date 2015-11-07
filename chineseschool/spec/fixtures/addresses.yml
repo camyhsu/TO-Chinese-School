@@ -1,0 +1,29 @@
+
+one:
+  id: 1
+  street: 123 Some Street
+  city: Thousand Oaks
+  state: CA
+  zipcode: 91360
+  home_phone: 8055554321
+  cell_phone: 
+  email: tester1@tocs.org
+
+two:
+  id: 2
+  street: 987 Other Drive
+  city: Simi Valley
+  state: CA
+  zipcode: 91365
+  home_phone: 
+  cell_phone: 8056661234
+  email: tester2@tocs.org
+
+minimal:
+  id: 3
+  street: 123 Random St
+  city: Thousand Oaks
+  state: CA
+  zipcode: 91360
+  home_phone: 8051234567
+  email: test_minimal@tocs.org
