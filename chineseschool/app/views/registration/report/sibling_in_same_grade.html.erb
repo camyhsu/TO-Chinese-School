@@ -1,0 +1,34 @@
+<% @title = 'Sibling in Same Grade Report' %>
+
+<h3><%= @title %></h3>
+
+<% unless @students.empty? %>
+    <table border="1px">
+      <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Parent One</th>
+        <th>Parent Two</th>
+        <th>Family Phone Number</th>
+        <th>Family Email</th>
+        <th>Grade</th>
+        <th>School Class Assigned</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @students.each do |student| -%>
+          <tr>
+            <td><%= link_to student.name, controller: '/registration/people', action: :show, id: student.id %></td>
+            <% first_family = student.find_families_as_child[0] %>
+            <td><%=h first_family.try(:parent_one).try(:name) %></td>
+            <td><%=h first_family.try(:parent_two).try(:name) %></td>
+            <td><%=h first_family.try(:address).try(:home_phone) %></td>
+            <td><%=h first_family.try(:address).try(:email) %></td>
+            <% student_class_assignment = student.student_class_assignment_for SchoolYear.current_school_year %>
+            <td><%=h student_class_assignment.try(:grade).try(:short_name) %></td>
+            <td><%=h student_class_assignment.try(:school_class).try(:short_name) %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>
