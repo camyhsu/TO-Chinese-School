@@ -4,11 +4,6 @@ class Registration::StudentClassAssignmentsController < ApplicationController
   #    :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
 
 
-  def list_by_grade
-    @grade = Grade.find params[:grade][:id]
-    render layout: 'jquery_datatable'
-  end
-
   def student_list_by_class
     @current_school_year = SchoolYear.current_school_year
     if params[:elective]
@@ -43,22 +38,6 @@ class Registration::StudentClassAssignmentsController < ApplicationController
   def destroy
     StudentClassAssignment.destroy params[:id].to_i
     render text: 'destroy_successful'
-  end
-
-  def select_school_class
-    @student_class_assignment = StudentClassAssignment.find_by_id params[:id].to_i
-    selected_school_class = SchoolClass.find_by_id params[:selected_class_id]
-    @student_class_assignment.school_class = selected_school_class
-    @student_class_assignment.save!
-    render :action => :one_student_class_assignment, :layout => 'ajax_layout'
-  end
-
-  def select_elective_class
-    @student_class_assignment = StudentClassAssignment.find_by_id params[:id].to_i
-    selected_elective_class = SchoolClass.find_by_id params[:selected_class_id]
-    @student_class_assignment.elective_class = selected_elective_class
-    @student_class_assignment.save!
-    render :action => :one_student_class_assignment, :layout => 'ajax_layout'
   end
   
   def random_assign_grade_class
