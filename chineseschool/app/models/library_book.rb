@@ -8,7 +8,7 @@ class LibraryBook < ActiveRecord::Base
 
   attr_accessible :title, :description, :publisher, :book_type, :note
 
-  has_many :library_book_checkouts, order: 'checked_out_date DESC'
+  has_many :library_book_checkouts, order: 'checked_out_date DESC', dependent: :destroy
   validates :title, :publisher, :book_type, presence: true
 
   def find_current_checkout_record
