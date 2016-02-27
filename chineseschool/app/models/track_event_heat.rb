@@ -1,6 +1,9 @@
 class TrackEventHeat < ActiveRecord::Base
 
-  LANE_COUNT = 7
+  # There are 9 running lanes in TOHS tracks
+  # We do not use lane 1 and lane 9 to avoid issues
+  FULL_LANE_COUNT = 7
+  SPARSE_LANE_COUNT = 4
 
   attr_accessible :track_event_program
 
@@ -10,12 +13,16 @@ class TrackEventHeat < ActiveRecord::Base
 
   validates :track_event_program, presence: true
 
+  def lane_count
+    track_event_program.sparse_lane_program? ? SPARSE_LANE_COUNT : FULL_LANE_COUNT
+  end
+
   def full?
     if track_event_program.group_program?
       # Tug of war is the only group program, for which each heat has two teams
       track_event_teams.size >= 2
     else
-      (track_event_signups.size >= LANE_COUNT) || (track_event_teams.size >= LANE_COUNT)
+      (track_event_signups.size >= lane_count) || (track_event_teams.size >= lane_count)
     end
   end
 
@@ -97,9 +104,13 @@ class TrackEventHeat < ActiveRecord::Base
   end
 
   def table_header_row
-    # Lane markings start from Lane 2 per request from activity officers
+    # Lane markings start from Lane 2 because we don't use edge lanes 1 and 9
     header = []
-    LANE_COUNT.times { |i| header << "Lane #{i + 2}" }
+    if track_event_program.sparse_lane_program?
+      lane_count.times { |i| header << "Lane #{i*2 + 2}" }
+    else
+      lane_count.times { |i| header << "Lane #{i + 2}" }
+    end
     header
   end
 
@@ -166,6 +177,6 @@ class TrackEventHeat < ActiveRecord::Base
   end
 
   def fill_rest_of_row_with_empty_string(row, occupied_count)
-    (LANE_COUNT - occupied_count).times { |i| row << '' }
+    (lane_count - occupied_count).times { row << '' }
   end
 end

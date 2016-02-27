@@ -51,10 +51,18 @@ prawn_document(filename: 'lane_assignment_forms.pdf') do |pdf|
                       t.row(1).style(height: 24)
                   end
               elsif program.relay_program?
-                  pdf.table(data, header: true, width: 553) do |t|
-                      t.cells.style width: 79, height: 45, align: :center
-                      t.row(0).style(background_color: 'cccccc', height: 24)
-                      t.row(1).style(height: 24)
+                  if program.sparse_lane_program?
+                      pdf.table(data, header: true, width: 316) do |t|
+                          t.cells.style width: 79, height: 45, align: :center
+                          t.row(0).style(background_color: 'cccccc', height: 24)
+                          t.row(1).style(height: 24)
+                      end
+                  else
+                      pdf.table(data, header: true, width: 553) do |t|
+                          t.cells.style width: 79, height: 45, align: :center
+                          t.row(0).style(background_color: 'cccccc', height: 24)
+                          t.row(1).style(height: 24)
+                      end
                   end
               else
                   pdf.table(data, header: true, width: 553) do |t|

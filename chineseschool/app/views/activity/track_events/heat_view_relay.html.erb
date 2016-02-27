@@ -39,7 +39,7 @@
     </table>
         Track Time <%= text_field_tag "track_time_#{team.id}", "#{team.track_time.nil? ? '' : (team.track_time / 100.0) }", size: 6, align: :right %>
     <br/><br/>
-        <% current_lane_number += 1 %>
+        <% current_lane_number += (@heat.track_event_program.sparse_lane_program? ? 2 : 1) %>
     <% end %>
     <br/>
     <%= submit_tag 'Save Track Time', class: 'button' %>

@@ -54,6 +54,13 @@ class TrackEventProgram < ActiveRecord::Base
     self.division == PARENT_DIVISION
   end
 
+  def sparse_lane_program?
+    # Sparse lane program has empty lane between used lanes
+    # This is designed for the situation where there are young kids in relay to avoid potential runner collisions
+    # For 2015 - 2016, only young division relays are sparse lane program
+    (self.division == YOUNG_DIVISION) && self.relay_program?
+  end
+
   def filler_signups_for_gender(gender)
     if gender.nil?
       self.track_event_signups.select { |signup| signup.filler? }
