@@ -54,6 +54,8 @@
 </table>
 
 <br/>
+<p>Note that student team name should start with a number representing the starting team age.<br/>
+  For example, 4-5 Team A, 12 & over Team 1</p>
 <%= form_tag action: 'create_team', id: @track_event_program, gender: @gender do %>
     <%= submit_tag 'Create New Team', class: 'button' %>&nbsp;with name&nbsp;<%= text_field_tag :name, '', size: 20 %>
 <% end %>
