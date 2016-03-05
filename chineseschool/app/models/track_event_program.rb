@@ -322,17 +322,24 @@ class TrackEventProgram < ActiveRecord::Base
     gender_heats = split_gender(self.track_event_teams).collect { |gender_teams| create_heats_for_team(gender_teams) }
 
     # Figure out run order - heat lists should have been in name order already
-    arrange_run_order_by_age_group gender_heats[0], gender_heats[1], next_run_order
+    arrange_run_order_by_age_group_and_gender gender_heats[0], gender_heats[1], next_run_order
   end
 
   def create_heats_for_student_individual(next_run_order)
-    gender_heats = split_gender(self.track_event_signups).collect { |gender_signups| create_heats_for_student_individual_by_gender(gender_signups) }
+    if mixed_gender?
+      heats = create_heats_for_student_individual_sorted_age_first(self.track_event_signups)
 
-    # Figure out run order - heat lists should have been in school age order already
-    arrange_run_order_by_age_group gender_heats[0], gender_heats[1], next_run_order
+      # Figure out run order
+      arrange_run_order_by_age_group heats, next_run_order
+    else
+      gender_heats = split_gender(self.track_event_signups).collect { |gender_signups| create_heats_for_student_individual_sorted_age_first(gender_signups) }
+
+      # Figure out run order - heat lists should have been in school age order already
+      arrange_run_order_by_age_group_and_gender gender_heats[0], gender_heats[1], next_run_order
+    end
   end
 
-  def create_heats_for_student_individual_by_gender(signups)
+  def create_heats_for_student_individual_sorted_age_first(signups)
     sorted_signups = signups.sort do |a, b|
       # Sort by school age first
       school_age_order = a.student.school_age_for(SchoolYear.current_school_year) <=> b.student.school_age_for(SchoolYear.current_school_year)
@@ -345,7 +352,20 @@ class TrackEventProgram < ActiveRecord::Base
     create_heats_for_signups(sorted_signups)
   end
 
-  def arrange_run_order_by_age_group(female_heats, male_heats, next_run_order)
+  def arrange_run_order_by_age_group(heats, next_run_order)
+
+    # heat lists should have been in school age order already
+    heats.each do |heat|
+      heat.run_order = next_run_order
+      heat.save
+      next_run_order += 1
+    end
+
+    # returning the next run order for the next batch of heats
+    next_run_order
+  end
+
+  def arrange_run_order_by_age_group_and_gender(female_heats, male_heats, next_run_order)
     # The rules are a bit complicated.
     # We starts with female heats first from young age, then switch to male heats once the max
     # student school age passes the age group upper bound, then switch back to female heats
@@ -410,7 +430,7 @@ class TrackEventProgram < ActiveRecord::Base
     gender_heats = split_gender(self.track_event_teams).collect { |gender_teams| create_heats_for_team(gender_teams) }
 
     # Figure out run order - heat lists should have been in school age order already
-    arrange_run_order_by_age_group gender_heats[0], gender_heats[1], next_run_order
+    arrange_run_order_by_age_group_and_gender gender_heats[0], gender_heats[1], next_run_order
   end
 
   def create_heats_for_parent_relay(next_run_order)

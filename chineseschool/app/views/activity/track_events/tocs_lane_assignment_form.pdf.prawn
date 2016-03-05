@@ -32,10 +32,14 @@ prawn_document(filename: 'lane_assignment_forms.pdf') do |pdf|
               if program.parent_division?
                   pdf.text "#{heat_marker}", align: :right
               else
-                  if heat.gender == Person::GENDER_FEMALE
-                      pdf.text "#{heat_marker}   Girls", align: :right
+                  if program.mixed_gender?
+                      pdf.text "#{heat_marker}", align: :right
                   else
-                      pdf.text "#{heat_marker}   Boys", align: :right
+                      if heat.gender == Person::GENDER_FEMALE
+                          pdf.text "#{heat_marker}   Girls", align: :right
+                      else
+                          pdf.text "#{heat_marker}   Boys", align: :right
+                      end
                   end
               end
           end
