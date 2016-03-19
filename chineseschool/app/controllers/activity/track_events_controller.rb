@@ -272,7 +272,7 @@ class Activity::TrackEventsController < ApplicationController
 
   def view_scores
     @track_event_program = TrackEventProgram.find params[:id].to_i
-    # View scores is not implemented for group program due to the complication of fina matches
+    # View scores is not implemented for group program due to the complication of final matches
     # We currently guard against this by not showing the button for the UI
     # If this controller action is called with a group program, it would be garbage output using student relay code
     if @track_event_program.individual_program?
