@@ -178,6 +178,7 @@ class TrackEventProgram < ActiveRecord::Base
               step_size += 1
             else
               additional_points_for_winner -= step_size unless additional_points_for_winner < 1
+              additional_points_for_winner = 0 if additional_points_for_winner < 0
               previous_track_time = signup.track_time
               step_size = 1
             end
