@@ -142,6 +142,22 @@ class TrackEventProgram < ActiveRecord::Base
     score_map
   end
 
+  def map_scores_for_group_program
+    # similar to student relay, group has gender and age group split
+    # however, group programs do not have track time for now and all participants get the same score of 1
+    score_map = []
+    split_gender(self.track_event_teams).each do |gender_teams|
+      age_group_map = Hash.new { |hash, key| hash[key] = [] }
+      gender_teams.each do |team|
+        AGE_GROUPS.each do |age_group|
+          age_group_map[age_group] << team if age_group.contains_team?(team)
+        end
+      end
+      score_map << age_group_map
+    end
+    score_map
+  end
+
   def map_scores_for_parent_individual
     score_map = []
     split_gender(self.track_event_signups).each do |gender_signups|
@@ -215,6 +231,13 @@ class TrackEventProgram < ActiveRecord::Base
           end
         end
       end
+    end
+  end
+
+  def calculate_scores_for_group_program
+    # group programs do not have track time for now and all participants get the same score of 1
+    self.track_event_teams.each do |team|
+      team.save_score(1)
     end
   end
 

@@ -141,6 +141,12 @@ class SchoolClass < ActiveRecord::Base
     students.collect(&:track_event_scores).inject(0, &:+)
   end
 
+  def track_event_participant_count
+    participant_count = 0
+    students.each { |student| participant_count += 1 if student.track_event_scores > 0.0 }
+    participant_count
+  end
+
   def self.find_all_active_school_classes
     self.all.reject { |school_class| !school_class.active_in?(SchoolYear.current_school_year) }
   end

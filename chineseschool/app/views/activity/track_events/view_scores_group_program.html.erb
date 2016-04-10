@@ -1,0 +1,40 @@
+<% @title = "Track Event Scores for #{@track_event_program.name}" %>
+
+<%= link_to 'Back to View Lane Assignments', {controller: '/activity/track_events', action: 'lane_assignment_index'}, {class: 'button'} %>
+<br/><br/>
+
+<h3><%= @track_event_program.name %></h3>
+
+<% @score_map.each do |gender_score_map| %>
+    <% gender_score_map.each_pair do |age_group, teams| %>
+        <% unless teams.empty? %>
+            <h3><%= age_group.name %> : <%= title_label_for_gender(teams[0].gender) %></h3>
+            <% teams.each do |team| %>
+                <h5><%=h team.name %></h5>
+                <table border="1px">
+                  <thead>
+                  <tr>
+                    <th>Student Name</th>
+                    <th>School Age</th>
+                    <th>Grade Class</th>
+                    <th>Score</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <% team.track_event_signups.sort.each do |signup| %>
+                      <tr>
+                        <td><%=h signup.student.name %></td>
+                        <td align="center"><%= signup.student.school_age_for(SchoolYear.current_school_year) %></td>
+                        <td align="center"><%= signup.student.student_class_assignment_for(SchoolYear.current_school_year).school_class.short_name %></td>
+                        <td><%= signup.score %></td>
+                      </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+            <% end %>
+        <% end %>
+    <% end %>
+<% end %>
+<br/><br/>
+<%= link_to 'Calculate Scores', {controller: '/activity/track_events', action: 'calculate_scores', id: @track_event_program}, {class: 'button'} %>
+<br/><br/>
