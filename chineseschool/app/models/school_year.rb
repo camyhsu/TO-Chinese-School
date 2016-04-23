@@ -7,7 +7,8 @@ class SchoolYear < ActiveRecord::Base
 
   attr_accessible :name, :description, :start_date, :end_date, :age_cutoff_month, :registration_fee,
                   :early_registration_tuition, :tuition, :tuition_discount_for_three_or_more_child,
-                  :tuition_discount_for_pre_k, :pva_membership_due, :ccca_membership_due,
+                  :tuition_discount_for_pre_k, :tuition_discount_for_instructor,
+                  :pva_membership_due, :ccca_membership_due,
                   :early_registration_start_date, :early_registration_end_date, :registration_start_date,
                   :registration_75_percent_date, :registration_50_percent_date, :registration_end_date,
                   :refund_75_percent_date, :refund_50_percent_date, :refund_25_percent_date, :refund_end_date
@@ -20,6 +21,7 @@ class SchoolYear < ActiveRecord::Base
             :refund_75_percent_date, :refund_50_percent_date, :refund_25_percent_date, :refund_end_date,
             :registration_fee_in_cents, :early_registration_tuition_in_cents, :tuition_in_cents,
             :tuition_discount_for_three_or_more_child_in_cents, :tuition_discount_for_pre_k_in_cents,
+            :tuition_discount_for_instructor_in_cents,
             :pva_membership_due_in_cents, :ccca_membership_due_in_cents, :previous_school_year,
             presence: true
 
@@ -28,6 +30,7 @@ class SchoolYear < ActiveRecord::Base
   validates :tuition_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
   validates :tuition_discount_for_three_or_more_child_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
   validates :tuition_discount_for_pre_k_in_cents, numericality: {only_integer: true, greater_than_or_equal_to: 0, allow_nil: false}
+  validates :tuition_discount_for_instructor_in_cents, numericality: {only_integer: true, greater_than_or_equal_to: 0, allow_nil: false}
   validates :pva_membership_due_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
   validates :ccca_membership_due_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
 
@@ -71,6 +74,14 @@ class SchoolYear < ActiveRecord::Base
 
   def tuition_discount_for_pre_k=(tuition_discount_for_pre_k)
     self.tuition_discount_for_pre_k_in_cents = (tuition_discount_for_pre_k * 100).to_i
+  end
+
+  def tuition_discount_for_instructor
+    self.tuition_discount_for_instructor_in_cents / 100.0
+  end
+
+  def tuition_discount_for_instructor=(tuition_discount_for_instructor)
+    self.tuition_discount_for_instructor_in_cents = (tuition_discount_for_instructor * 100).to_i
   end
 
   def pva_membership_due

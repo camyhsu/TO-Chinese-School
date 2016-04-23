@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150502174540) do
+ActiveRecord::Schema.define(:version => 20160416191412) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -256,6 +256,17 @@ ActiveRecord::Schema.define(:version => 20150502174540) do
     t.integer  "tuition_discount_for_pre_k_in_cents",               :default => 4000,  :null => false
     t.integer  "previous_school_year_id"
     t.date     "early_registration_start_date"
+    t.integer  "tuition_discount_for_instructor_in_cents",          :default => 0,     :null => false
+  end
+
+  create_table "staff_assignments", :force => true do |t|
+    t.integer  "school_year_id", :null => false
+    t.integer  "person_id",      :null => false
+    t.string   "role"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "student_class_assignments", :force => true do |t|
@@ -283,6 +294,8 @@ ActiveRecord::Schema.define(:version => 20150502174540) do
     t.datetime "updated_at"
     t.boolean  "prorate_75",                :default => false, :null => false
     t.boolean  "prorate_50",                :default => false, :null => false
+    t.boolean  "instructor_discount",       :default => false, :null => false
+    t.boolean  "staff_discount",            :default => false, :null => false
   end
 
   create_table "student_status_flags", :force => true do |t|
