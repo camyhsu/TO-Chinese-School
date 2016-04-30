@@ -185,7 +185,7 @@ class Student::RegistrationController < ApplicationController
     # calculations here must be done in a specific order because
     # later calculations may depends on the result of earlier calculations
     remove_previously_pending_registration_payments @user.person, registration_school_year
-    completed_registration_count_in_family = count_completed_registration_in_family_for registration_school_year
+    paid_student_fee_payments_in_family = find_paid_student_fee_payments_in_family_for registration_school_year
     registration_payment = RegistrationPayment.new
     registration_payment.school_year = registration_school_year
     registration_payment.paid_by = @user.person
@@ -193,11 +193,11 @@ class Student::RegistrationController < ApplicationController
       registration_preference = RegistrationPreference.find registration_preference_id
       student_fee_payment = StudentFeePayment.new
       student_fee_payment.student = registration_preference.student
-      student_fee_payment.fill_in_tuition_and_fee registration_school_year, registration_preference.grade, (registration_payment.student_fee_payments.size + completed_registration_count_in_family)
+      student_fee_payment.fill_in_tuition_and_fee registration_school_year, registration_preference.grade, (paid_student_fee_payments_in_family + registration_payment.student_fee_payments)
       student_fee_payment.registration_payment = registration_payment
       registration_payment.student_fee_payments << student_fee_payment
     end
-    registration_payment.fill_in_due completed_registration_count_in_family
+    registration_payment.fill_in_due paid_student_fee_payments_in_family.size
     registration_payment.calculate_grand_total
     registration_payment.save!
     registration_payment
@@ -217,15 +217,20 @@ class Student::RegistrationController < ApplicationController
     end
   end
 
-  def count_completed_registration_in_family_for(school_year)
-    counter = 0
+  def find_paid_student_fee_payments_in_family_for(school_year)
+    paid_student_fee_payments = []
     find_possible_students.each do |student|
       student_status_flag = student.student_status_flag_for school_year
       if (not student_status_flag.nil?) and student_status_flag.registered?
-        counter += 1
+        paid_student_fee_payment = student.find_paid_student_fee_payment_as_student_for(school_year)
+        if paid_student_fee_payment.nil?
+          logger.error "Unable to find paid student fee payment for registered student => #{student.id}"
+        else
+          paid_student_fee_payments << paid_student_fee_payment
+        end
       end
     end
-    counter
+    paid_student_fee_payments
   end
 
   def create_and_save_initial_gateway_transaction

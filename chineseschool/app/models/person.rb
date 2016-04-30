@@ -14,6 +14,7 @@ class Person < ActiveRecord::Base
 
   has_many :student_class_assignments, foreign_key: 'student_id', dependent: :destroy
   has_many :instructor_assignments, foreign_key: 'instructor_id', dependent: :destroy
+  has_many :staff_assignments, dependent: :destroy
 
   has_many :registration_preferences, foreign_key: 'student_id'
   has_many :student_status_flags, foreign_key: 'student_id'
@@ -78,6 +79,18 @@ class Person < ActiveRecord::Base
 
   def instructor_assignments_for(school_year)
     self.instructor_assignments.all :conditions => ['school_year_id = ?', school_year.id]
+  end
+
+  def is_an_instructor_for?(school_year)
+    instructor_assignments_for(school_year).any? {|instructor_assignment| instructor_assignment.role_is_an_instructor?}
+  end
+
+  def staff_assignments_for(school_year)
+    self.staff_assignments.all :conditions => ['school_year_id = ?', school_year.id]
+  end
+
+  def is_a_staff_for?(school_year)
+    not staff_assignments_for(school_year).empty?
   end
 
   def student_class_assignment_for(school_year)
@@ -172,7 +185,7 @@ class Person < ActiveRecord::Base
   def find_completed_registration_payments_as_students
     student_fee_payments = StudentFeePayment.all :conditions => ["student_id = ?", self.id]
     registration_payments = student_fee_payments.collect do |student_fee_payment|
-      if student_fee_payment.registration_payment.paid
+      if student_fee_payment.registration_payment.paid?
         student_fee_payment.registration_payment
       else
         nil
@@ -180,6 +193,13 @@ class Person < ActiveRecord::Base
     end
     registration_payments.compact!
     registration_payments.sort { |a, b| b.updated_at <=> a.updated_at}
+  end
+
+  def find_paid_student_fee_payment_as_student_for(school_year)
+    student_fee_payments = StudentFeePayment.all :conditions => ["student_id = ?", self.id]
+    student_fee_payments.detect do |student_fee_payment|
+      (student_fee_payment.registration_payment.school_year == school_year) && student_fee_payment.registration_payment.paid?
+    end
   end
   
   def find_manual_transactions_as_students

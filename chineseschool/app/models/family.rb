@@ -34,4 +34,16 @@ class Family < ActiveRecord::Base
       person.id == self.parent_two.id
     end
   end
+
+  def has_staff_for?(school_year)
+    return true if parent_one.is_a_staff_for?(school_year)
+    return true if parent_two.is_a_staff_for?(school_year)
+    self.children.any? {|child| child.is_a_staff_for? school_year}
+  end
+
+  def has_instructor_for?(school_year)
+    return true if parent_one.is_an_instructor_for?(school_year)
+    return true if parent_two.is_an_instructor_for?(school_year)
+    self.children.any? {|child| child.is_an_instructor_for? school_year}
+  end
 end
