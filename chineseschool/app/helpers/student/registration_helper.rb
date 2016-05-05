@@ -7,4 +7,10 @@ module Student::RegistrationHelper
     return 'SE(雙語)' if school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION
     school_class_type
   end
+
+  def label_for_tuition_discount_applied(student_fee_payment)
+    return ' (Staff Discount Applied)' if student_fee_payment.staff_discount?
+    return ' (Instructor Discount Applied)' if student_fee_payment.instructor_discount?
+    ''
+  end
 end

@@ -17,7 +17,7 @@
     <td><%= number_to_currency student_fee_payment.registration_fee %></td>
   </tr>
   <tr>
-    <td class="label">Tuition:</td>
+    <td class="label">Tuition<%= label_for_tuition_discount_applied(student_fee_payment) %>:</td>
     <td><%= number_to_currency student_fee_payment.tuition %></td>
   </tr>
   <tr>

@@ -1,4 +1,5 @@
 class ReceiptMailer < ActionMailer::Base
+  add_template_helper Student::RegistrationHelper
   default from: Contacts::REGISTRATION_CONTACT
 
   def payment_confirmation(gateway_transaction, registration_payment)
