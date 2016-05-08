@@ -35,6 +35,9 @@ create_role(Role::ROLE_NAME_CCCA_STAFF)
 #
 Right.delete_all
 
+principal_staff_assignments_index = Right.create(name: 'List School Years with Staff Assignments', controller: 'admin/staff_assignments', action: 'index')
+principal_staff_assignments_show = Right.create(name: 'Show Staff Assignments for School Year', controller: 'admin/staff_assignments', action: 'show')
+
 accounting_registration_report_payments_by_date = Right.create(name: 'Accounting Registration Report Payments By Date', controller: 'accounting/registration_report', action: 'registration_payments_by_date')
 accounting_manual_transactions_index = Right.create(name: 'List Manual Transaction', controller: 'accounting/manual_transactions', action: 'index')
 accounting_manual_transactions_show = Right.create(name: 'Show Manual Transaction', controller: 'accounting/manual_transactions', action: 'show')
@@ -186,6 +189,9 @@ principal.rights << active_school_classes_grade_class_student_count
 principal.rights << active_school_classes_elective_class_student_count
 principal.rights << instruction_active_school_classes_index
 principal.rights << instruction_school_classes_show
+
+principal.rights << principal_staff_assignments_index
+principal.rights << principal_staff_assignments_show
 
 principal.rights << report_daily_online_registration_summary
 principal.rights << library_book_read_only_view

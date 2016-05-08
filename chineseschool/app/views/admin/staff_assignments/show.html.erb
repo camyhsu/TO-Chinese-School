@@ -1,0 +1,23 @@
+<% @title = 'Staff Assignments' %>
+
+<h3>Staff Assignments for <%=h @school_year.name %></h3>
+<table border="1px">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Role</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @staff_assignments.each do |staff_assignment| -%>
+      <tr>
+        <td><%=h staff_assignment.person.name %></td>
+        <td><%=h staff_assignment.role %></td>
+        <td><%=h staff_assignment.start_date %></td>
+        <td><%=h staff_assignment.end_date %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -74,6 +74,8 @@ Chineseschool::Application.routes.draw do
     match 'school_years/edit' => 'school_years#edit'
     match 'school_years/edit_book_charge' => 'school_years#edit_book_charge'
 
+    get 'staff_assignments' => 'staff_assignments#index'
+    
     match 'user_registration/invite' => 'user_registration#invite'
   end
 

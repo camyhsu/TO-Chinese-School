@@ -1,0 +1,15 @@
+<% @title = 'Staff Assignments' %>
+
+<table border="0px">
+  <tbody>
+  <% @school_years.each do |school_year| -%>
+    <% if school_year.id > 8 %>
+      <tr>
+        <td>
+          <%= link_to "Show Staff Assignments for #{school_year.name}", {action: 'show', id: school_year}, {class: 'button'} %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>
