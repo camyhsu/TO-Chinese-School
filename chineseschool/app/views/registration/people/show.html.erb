@@ -144,6 +144,13 @@
   <%= render partial: '/registration/instructor_assignments/instructor_assignment', object: instructor_assignment %>
 </table>
 <% end %>
+<% unless SchoolYear.next_school_year.nil? %>
+  <% @person.instructor_assignments_for(SchoolYear.next_school_year).each do |instructor_assignment| %>
+      <table class="person-detail" border="0px">
+        <%= render partial: '/registration/instructor_assignments/instructor_assignment', object: instructor_assignment %>
+      </table>
+  <% end %>
+<% end %>
 <div id="add-instructor-assignment">
    <%= link_to 'Add Instructor Assignment', {action: :add_instructor_assignment, id: @person}, {class: 'button'} %>
 </div>
