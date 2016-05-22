@@ -8,6 +8,12 @@ class Instruction::SchoolClassesController < ApplicationController
       return
     end
     @school_class = SchoolClass.find requested_school_class_id
+    if params[:school_year_id].nil?
+      @school_year = SchoolYear.current_school_year
+    else
+      @school_year = SchoolYear.find params[:school_year_id].to_i
+    end
+
   end
   
   def display_room_parent_selection

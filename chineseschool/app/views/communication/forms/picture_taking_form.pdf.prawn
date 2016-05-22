@@ -19,7 +19,7 @@ prawn_document(filename: 'picture_taking_form.pdf') do |pdf|
 
     pdf.move_up 10
     pdf.font_size 10 do
-      pdf.text "Room Parent Name: #{school_class.current_room_parent_name}", align: :right
+      pdf.text "Room Parent Name: #{school_class.room_parent_name}", align: :right
     end
 
     pdf.move_down 10

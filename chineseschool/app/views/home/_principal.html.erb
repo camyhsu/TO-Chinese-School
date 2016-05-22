@@ -7,14 +7,18 @@
 <br/>
 <%= link_to 'List Active School Classes', {controller: '/instruction/active_school_classes', action: 'index'}, {class: 'button'} %>
 <br/>
+
+<% unless SchoolYear.next_school_year.nil? %>
+    <br/>
+    <%= link_to "#{SchoolYear.next_school_year.name} 班級人數清單", {controller: '/registration/active_school_classes', action: 'grade_class_student_count', id: SchoolYear.next_school_year.id}, {class: 'button'} %>
+    <%= link_to "#{SchoolYear.next_school_year.name} Elective Class 人數清單", {controller: '/registration/active_school_classes', action: 'elective_class_student_count', id: SchoolYear.next_school_year.id}, {class: 'button'} %>
+    <br/>
+<% end %>
+
 <br/>
 <% @active_registration_school_years.each do |registration_year| %>
   <%= link_to "Daily Online Registration Summary For #{registration_year.name} School Year", {controller: '/registration/report', action: 'daily_online_registration_summary', id: registration_year}, {class: 'button'} %>
   <br/>
-    <br/>
-    <%= link_to "#{registration_year.name} 班級人數清單", {controller: '/registration/active_school_classes', action: 'grade_class_student_count', id: registration_year.id}, {class: 'button'} %>
-    <%= link_to "#{registration_year.name} Elective Class 人數清單", {controller: '/registration/active_school_classes', action: 'elective_class_student_count', id: registration_year.id}, {class: 'button'} %>
-    <br/>
 <% end %>
 
 <br/>

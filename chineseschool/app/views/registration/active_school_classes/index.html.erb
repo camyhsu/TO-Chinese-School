@@ -1,4 +1,4 @@
-<% @title = 'Active School Classes' %>
+<% @title = "#{@school_year.name}Active School Classes" %>
 
 <table id="jquery-datatable" border="1px">
   <thead>
@@ -16,7 +16,7 @@
   <tbody>
     <% @active_school_classes.each do |active_school_class| -%>
     <tr>
-      <%= render partial: 'active_school_class', object: active_school_class %>
+      <%= render partial: 'active_school_class', object: active_school_class, locals: {school_year: @school_year} %>
     </tr>
     <% end %>
   </tbody>

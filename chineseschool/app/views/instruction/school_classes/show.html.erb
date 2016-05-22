@@ -1,8 +1,8 @@
-<% @title = "Student List For #{@school_class.name}" %>
+<% @title = "Student List For #{@school_class.name} For #{@school_year.name}" %>
 
 <table class="student-list-header">
   <tr>
-    <% assignment_hash = @school_class.current_instructor_assignments %>
+    <% assignment_hash = @school_class.instructor_assignments(@school_year) %>
     <td class="instructor-cell">
       <% assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].each do |instructor| %>
       <%=h "#{instructor.name} 老師"%>&nbsp;
@@ -11,7 +11,7 @@
     <td><%=h @school_class.chinese_name %></td>
     <td><%=h "教室: #{@school_class.location}" %></td>
     <td class="room-parent-cell">
-      Room Parent: <%=h @school_class.current_room_parent_name %>
+      Room Parent: <%=h @school_class.room_parent_name(@school_year) %>
     </td>
   </tr>
 </table>
@@ -33,11 +33,11 @@
     </tr>
   </thead>
   <tbody>
-    <% @school_class.students.each do |student| -%>
+    <% @school_class.students(@school_year).each do |student| -%>
     <tr>
       <td><%=h student.chinese_name %></td>
       <% if @school_class.elective? %>
-      <td><%=h student.student_class_assignment_for(SchoolYear.current_school_year).try(:school_class).try(:short_name) %></td>
+      <td><%=h student.student_class_assignment_for(@school_year).try(:school_class).try(:short_name) %></td>
       <% end %>
       <td><%=h student.english_last_name %></td>
       <td><%=h student.english_first_name %></td>
@@ -53,6 +53,6 @@
   </tbody>
 </table>
 <br/>
-Total Student Count: <%= @school_class.students.size %>
+Total Student Count: <%= @school_class.class_size(@school_year) %>
 <br/>
 Current Time: <%= PacificTimeDisplay.display_now_in_pacific %>

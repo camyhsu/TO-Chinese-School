@@ -3,7 +3,7 @@ class Accounting::InstructorsController < ApplicationController
   def discount
     @instructor_discounts = []
     SchoolClass.find_all_active_school_classes.each do |school_class|
-      instructor_hash = school_class.current_instructor_assignments
+      instructor_hash = school_class.instructor_assignments
       create_discount_for instructor_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR], school_class
       create_discount_for instructor_hash[InstructorAssignment::ROLE_SECONDARY_INSTRUCTOR], school_class
     end

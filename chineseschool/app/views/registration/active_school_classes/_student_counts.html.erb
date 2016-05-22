@@ -23,7 +23,7 @@
       <td><%= class_size %></td>
       <td><%=h school_class.location %></td>
       <% if school_year == SchoolYear.current_school_year %>
-          <% assignment_hash = school_class.current_instructor_assignments %>
+          <% assignment_hash = school_class.instructor_assignments %>
           <td>
             <% instructor = school_class.current_primary_instructor %>
             <%=h instructor.try(:name) %><br/>
@@ -31,7 +31,7 @@
             <%=h instructor.try(:personal_home_phone) %><br/>
           </td>
           <td>
-            <% room_parent = school_class.current_room_parent_assignment.try(:instructor) %>
+            <% room_parent = school_class.room_parent_assignment.try(:instructor) %>
             <%=h room_parent.try(:name) %><br/>
             <%=h room_parent.try(:personal_email_address) %><br/>
             <%=h room_parent.try(:personal_home_phone) %><br/>

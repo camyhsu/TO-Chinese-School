@@ -62,12 +62,12 @@ class SchoolClass < ActiveRecord::Base
                                  joins: 'LEFT JOIN people ON people.id = student_class_assignments.student_id')
   end
 
-  def students
+  def students(school_year = SchoolYear.current_school_year)
     association_key = 'school_class_id'
     association_key = 'elective_class_id' if elective?
     Person.all :select => 'people.*', 
         :from => 'people, student_class_assignments',
-        :conditions => ["people.id = student_class_assignments.student_id AND student_class_assignments.#{association_key} = ? AND student_class_assignments.school_year_id = ?", self.id, SchoolYear.current_school_year.id],
+        :conditions => ["people.id = student_class_assignments.student_id AND student_class_assignments.#{association_key} = ? AND student_class_assignments.school_year_id = ?", self.id, school_year.id],
         :order => 'people.english_last_name ASC, people.english_first_name ASC'
   end
   
@@ -75,9 +75,8 @@ class SchoolClass < ActiveRecord::Base
     @instructor_assignment_history ||= InstructorAssignmentHistory.new(self.id)
   end
 
-  def current_instructor_assignments
-    instructor_assignments = InstructorAssignment.all :conditions => ["school_year_id = ? AND school_class_id = ?",
-        SchoolYear.current_school_year.id, self.id ]
+  def instructor_assignments(school_year=SchoolYear.current_school_year)
+    instructor_assignments = InstructorAssignment.all :conditions => ["school_year_id = ? AND school_class_id = ?", school_year.id, self.id ]
     assignment_hash = create_empty_instructor_assignment_hash
     instructor_assignments.each do |instructor_assignment|
       assignment_hash[instructor_assignment.role] << instructor_assignment.instructor
@@ -91,13 +90,13 @@ class SchoolClass < ActiveRecord::Base
     current_primary_instructor_assignment.try(:instructor)
   end
 
-  def current_room_parent_assignment
+  def room_parent_assignment(school_year=SchoolYear.current_school_year)
     InstructorAssignment.first :conditions => ["school_year_id = ? AND school_class_id = ? AND role = ? AND start_date <= ? AND end_date >= ?",
-      SchoolYear.current_school_year.id, self.id, InstructorAssignment::ROLE_ROOM_PARENT, PacificDate.today, PacificDate.today ]
+      school_year.id, self.id, InstructorAssignment::ROLE_ROOM_PARENT, PacificDate.today, PacificDate.today ]
   end
 
-  def current_room_parent_name
-    current_room_parent_assignment.try(:instructor).try(:name)
+  def room_parent_name(school_year=SchoolYear.current_school_year)
+    room_parent_assignment(school_year).try(:instructor).try(:name)
   end
   
   def find_room_parent_candidates
@@ -147,8 +146,8 @@ class SchoolClass < ActiveRecord::Base
     participant_count
   end
 
-  def self.find_all_active_school_classes
-    self.all.reject { |school_class| !school_class.active_in?(SchoolYear.current_school_year) }
+  def self.find_all_active_school_classes(school_year=SchoolYear.current_school_year)
+    self.all.reject { |school_class| !school_class.active_in?(school_year) }
   end
   
   def self.find_all_active_grade_classes(school_year=SchoolYear.current_school_year)

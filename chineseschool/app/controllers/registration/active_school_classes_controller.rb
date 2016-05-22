@@ -1,7 +1,8 @@
 class Registration::ActiveSchoolClassesController < ApplicationController
   
   def index
-    @active_school_classes = SchoolClass.find_all_active_school_classes
+    @school_year = SchoolYear.find params[:id].to_i
+    @active_school_classes = SchoolClass.find_all_active_school_classes(@school_year)
     render layout: 'jquery_datatable'
   end
 

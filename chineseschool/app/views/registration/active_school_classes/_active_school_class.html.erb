@@ -1,7 +1,7 @@
       <td><%=h active_school_class.chinese_name %></td>
       <td><%=h active_school_class.english_name %></td>
       <td><%=h active_school_class.location %></td>
-      <% assignment_hash = active_school_class.current_instructor_assignments %>
+      <% assignment_hash = active_school_class.instructor_assignments(school_year) %>
       <td>
         <% assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].each do |instructor| %>
         <%=link_to "#{instructor.name}", controller: '/registration/people', action: 'show', id: instructor %>&nbsp;
@@ -23,5 +23,5 @@
         <% end %>
       </td>
       <td>
-        <%= link_to 'Student List', controller: '/instruction/school_classes', action: 'show', id: active_school_class %>
+        <%= link_to 'Student List', controller: '/instruction/school_classes', action: 'show', id: active_school_class, school_year_id: school_year.id %>
       </td>

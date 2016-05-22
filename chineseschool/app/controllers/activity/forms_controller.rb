@@ -100,9 +100,9 @@ class Activity::FormsController < ApplicationController
         row << school_class.english_name
         row << school_class.location
         row << school_class.class_size
-        assignment_hash = school_class.current_instructor_assignments
+        assignment_hash = school_class.instructor_assignments
         row << assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].collect { |instructor| instructor.name }.join(';')
-        row << school_class.current_room_parent_name
+        row << school_class.room_parent_name
         row << assignment_hash[InstructorAssignment::ROLE_SECONDARY_INSTRUCTOR].collect { |instructor| instructor.name }.join(';')
         row << assignment_hash[InstructorAssignment::ROLE_TEACHING_ASSISTANT].collect { |instructor| instructor.name }.join(';')
         csv << row

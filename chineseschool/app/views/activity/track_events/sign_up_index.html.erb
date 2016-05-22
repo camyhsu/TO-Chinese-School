@@ -23,7 +23,7 @@
         <td><%=h active_grade_class.english_name %></td>
         <td><%=h active_grade_class.location %></td>
         <td><%=h active_grade_class.current_primary_instructor.try(:name) %></td>
-        <td><%=h active_grade_class.current_room_parent_name %></td>
+        <td><%=h active_grade_class.room_parent_name %></td>
         <%- signup_student_count = active_grade_class.track_event_signup_student_count -%>
         <td><%= signup_student_count %></td>
         <%- total_signup_student_count += signup_student_count -%>

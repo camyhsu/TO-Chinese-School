@@ -29,7 +29,7 @@ class InstructorAssignment < ActiveRecord::Base
   end
 
   def self.change_room_parent(school_class, new_room_parent_id)
-    old_room_parent_assignment = school_class.current_room_parent_assignment
+    old_room_parent_assignment = school_class.room_parent_assignment
     unless old_room_parent_assignment.nil?
       if old_room_parent_assignment.start_date > PacificDate.yesterday
         old_room_parent_assignment.destroy
