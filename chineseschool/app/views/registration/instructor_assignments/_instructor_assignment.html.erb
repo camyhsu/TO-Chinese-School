@@ -32,7 +32,7 @@
     <td>
       <% select_school_class_handler = "registrationSelectClass(this, '#{url_for controller: 'registration/instructor_assignments',
           action: :select_school_class, id: instructor_assignment}')" %>
-      <%= collection_select :instructor_assignment, :school_class, SchoolClass.find_all_active_school_classes, :id, :chinese_name,
+      <%= collection_select :instructor_assignment, :school_class, SchoolClass.find_all_active_school_classes_in_current_and_future_school_years, :id, :chinese_name,
           {selected: instructor_assignment.try(:school_class).try(:id)}, {onchange: select_school_class_handler} %>
     </td>
   </tr>

@@ -149,6 +149,17 @@ class SchoolClass < ActiveRecord::Base
   def self.find_all_active_school_classes(school_year=SchoolYear.current_school_year)
     self.all.reject { |school_class| !school_class.active_in?(school_year) }
   end
+
+  def self.find_all_active_school_classes_in_current_and_future_school_years
+    school_years = SchoolYear.find_current_and_future_school_years
+    self.all.reject do |school_class|
+      active_in_any_school_year = false
+      school_years.each do |school_year|
+        active_in_any_school_year ||= school_class.active_in?(school_year)
+      end
+      !active_in_any_school_year
+    end.sort! { |a, b| a.english_name <=> b.english_name }
+  end
   
   def self.find_all_active_grade_classes(school_year=SchoolYear.current_school_year)
     self.all(:conditions => ['school_class_type <> ?', SCHOOL_CLASS_TYPE_ELECTIVE]).reject { |grade_class| !grade_class.active_in?(school_year) }

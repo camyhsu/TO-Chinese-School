@@ -5,7 +5,7 @@
           </div>
           <div>
             <label for="school_class"><span style="color:red">*&nbsp;</span>School Class:</label>
-            <%= instructor_assignment_form.collection_select :school_class, SchoolClass.find_all_active_school_classes, :id, :chinese_name,
+            <%= instructor_assignment_form.collection_select :school_class, SchoolClass.find_all_active_school_classes_in_current_and_future_school_years, :id, :chinese_name,
                 {selected: instructor_assignment.try(:school_class).try(:id)} %>
           </div>
           <div>
