@@ -42,8 +42,8 @@ class Grade < ActiveRecord::Base
     assignable_school_classes = self.active_grade_classes(school_year).select { |active_school_class| active_school_class.school_class_type == school_class_type }
     return nil if assignable_school_classes.empty?
     return assignable_school_classes[0] if assignable_school_classes.size == 1
-    # If there are more than one school class assignable, but the school has not started yet, don't assign automatically
-    return nil unless school_year.school_has_started?
+    # If there are more than one school class assignable, but it is more than a day away from the school start, don't assign automatically
+    return nil unless school_year.school_will_start_tomorrow?
     pick_school_class_with_lowest_head_count_from assignable_school_classes, gender
   end
   

@@ -124,6 +124,10 @@ class SchoolYear < ActiveRecord::Base
     PacificDate.today >= self.start_date
   end
 
+  def school_will_start_tomorrow?
+    PacificDate.tomorrow >= self.start_date
+  end
+
   def start_year
     self.start_date.year
   end
