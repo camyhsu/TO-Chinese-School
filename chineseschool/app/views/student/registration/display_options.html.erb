@@ -40,27 +40,6 @@
   <li>
     Please read <a href="http://www.to-cs.org/tocs/">Registraion Overview and Refund Policy</a> or contact registration@to-cs.org for additional questions.
   </li>
-  <% if @registration_preferences.any? {|registration_preference| registration_preference.grade == Grade.grade_preschool} %>
-  <li>
-    New Class Announcement: We are happy to announce that a new Pre-K class has been added to <%=h @registration_school_year.name %> school year schedule.<br/>
-    The two Pre-K classes schedule is arranged as below:
-    <ul>
-      <li>
-        Pre-K A<br/>
-        First Period: 9:15am - 9:55am<br/>
-        Recess: 10 minutes<br/>
-        Second Period: 10:05am - 10:45am
-      </li>
-      <li>
-        Pre-K B<br/>
-        First Period: 10:55am - 11:35am<br/>
-        Recess: 10 minutes<br/>
-        Second Period: 11:45am - 12:25pm
-      </li>
-    </ul>
-    <p><span style="color: blue">Session preference, please email to <%= Contacts::REGISTRATION_CONTACT %> subject to first come, first served</span></p>
-  </li>
-  <% end %>
   <% if @registration_preferences.any? {|registration_preference|  Grade.grades_with_ap_class.include? registration_preference.grade} %>
       <li>
         <span style="font-weight: bold">Chinese AP Class Announcement: 9th and 10th grade students will be automatically enrolled in 3rd period AP class if no other 3rd period class was selected.</span>
