@@ -43,7 +43,9 @@ class Grade < ActiveRecord::Base
     return nil if assignable_school_classes.empty?
     return assignable_school_classes[0] if assignable_school_classes.size == 1
     # If there are more than one school class assignable, but it is more than a day away from the school start, don't assign automatically
-    return nil unless school_year.school_will_start_tomorrow?
+    # TODO - 2016-08-13 - we decided to change automatic assignment from date-based to manual switch control
+    # before the manual switch control is implemented, just remove the date-based check
+    #return nil unless school_year.school_will_start_tomorrow?
     pick_school_class_with_lowest_head_count_from assignable_school_classes, gender
   end
   
