@@ -12,4 +12,9 @@ class ReceiptMailer < ActionMailer::Base
     @students = students
     mail to: Contacts::TEXT_BOOK_MANAGER, subject: 'TOCS - text books for new students'
   end
+
+  def registration_staff_notification(students)
+    @students = students
+    mail to: Contacts::REGISTRATION_CONTACT, subject: 'TOCS - new students registered'
+  end
 end
