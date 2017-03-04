@@ -18,7 +18,7 @@ class SigninController < ApplicationController
 
   def forgot_password
     if request.post? || request.put?
-      user_found = User.find_by_username params[:username]
+      user_found = User.find_by_username params[:username].strip
       unless user_found
         flash.now[:notice] = 'Username does not exist'
         return
@@ -94,7 +94,7 @@ class SigninController < ApplicationController
       end
       @parent_one = Person.new params[:parent_one]
       @user = User.new
-      @user.username = params[:user][:username]
+      @user.username = params[:user][:username].strip
       @user.person = @parent_one
       @user.password = params[:password]
       @user.roles << Role.find_by_name(Role::ROLE_NAME_STUDENT_PARENT)
@@ -161,7 +161,7 @@ class SigninController < ApplicationController
        end
 
        @user = User.new
-       @user.username = params[:username]
+       @user.username = params[:username].strip
        @user.person = person
        @user.password = params[:password]
        @user.roles << Role.find_by_name(Role::ROLE_NAME_STUDENT_PARENT)

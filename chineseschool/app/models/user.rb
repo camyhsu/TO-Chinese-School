@@ -50,9 +50,9 @@ class User < ActiveRecord::Base
   end
 
   def self.authenticate(username, passwd)
-    user_found = self.find_by_username(username)
+    user_found = self.find_by_username(username.strip)
     return nil if user_found.nil?
-    return nil if self.hash_password(passwd, user_found.password_salt) != user_found.password_hash
+    return nil unless user_found.password_correct?(passwd)
     user_found
   end
 

@@ -10,7 +10,7 @@ class Admin::RolesController < ApplicationController
 
   def add_user
     @role = Role.find params[:id].to_i
-    @role.users << User.find_by_username(params[:username])
+    @role.users << User.find_by_username(params[:username].strip)
     @role.save!
     redirect_to action: :show, id: @role
   end
