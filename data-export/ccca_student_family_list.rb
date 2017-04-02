@@ -4,7 +4,7 @@
 # 
 # Required dependencies:
 # Ruby
-# Ruby gems => sequel, mysql
+# Ruby gems => sequel, pg
 # 
 # Command to generate report => ruby ccca_student_family_list.rb
 # Output would be written to ccca_student_family_list.csv
@@ -16,18 +16,16 @@ require 'csv'
 SCHOOL_YEAR_ID = 9
 
 DB_HOST = 'localhost'
-DB_USER = 'root'
+DB_USER = 'tocsorg_camyhsu'
 DB_PASSWORD = ''
 
-DEV_DB = Sequel.connect "mysql2://#{DB_USER}:#{DB_PASSWORD}@#{DB_HOST}/chineseschool_development"
-DEV_DB.run "SET NAMES 'utf8' COLLATE 'utf8_unicode_ci'"
+DEV_DB = Sequel.connect "postgres://#{DB_USER}:#{DB_PASSWORD}@#{DB_HOST}/chineseschool_development"
 
 FAMILY_SQL_STATEMENT =<<EOSQL
 SELECT distinct families_children.family_id
 FROM student_class_assignments, families_children
 WHERE student_class_assignments.school_year_id = #{SCHOOL_YEAR_ID}
-AND student_class_assignments.student_id = families_children.child_id 
-ORDER BY student_class_assignments.grade_id ASC
+AND student_class_assignments.student_id = families_children.child_id
 EOSQL
 
 
