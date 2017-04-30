@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160416191412) do
+ActiveRecord::Schema.define(:version => 20170430025607) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -257,6 +257,7 @@ ActiveRecord::Schema.define(:version => 20160416191412) do
     t.integer  "previous_school_year_id"
     t.date     "early_registration_start_date"
     t.integer  "tuition_discount_for_instructor_in_cents",          :default => 0,     :null => false
+    t.date     "refund_90_percent_date"
   end
 
   create_table "staff_assignments", :force => true do |t|

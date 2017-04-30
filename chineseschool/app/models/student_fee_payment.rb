@@ -60,10 +60,8 @@ class StudentFeePayment < ActiveRecord::Base
   end
   
   def apply_late_registration_prorate(school_year)
-    if PacificDate.today > school_year.registration_50_percent_date
-      self.prorate_50 = true
-      self.tuition_in_cents = (self.tuition_in_cents * 0.5).to_i
-    elsif PacificDate.today > school_year.registration_75_percent_date
+    # as of 2017-2018 school year, registration_50_percent_date is no longer used
+    if PacificDate.today > school_year.registration_75_percent_date
       self.prorate_75 = true
       self.tuition_in_cents = (self.tuition_in_cents * 0.75).to_i
     end

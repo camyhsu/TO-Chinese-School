@@ -5,20 +5,23 @@ class SchoolYear < ActiveRecord::Base
   TRACK_EVENT_SIGN_UP_START_DATE = Date.parse('2017-01-29')
   TRACK_EVENT_SIGN_UP_END_DATE = Date.parse('2017-03-03')
 
+  # as of 2017-2018 school year
+  # :registration_50_percent_date, :refund_75_percent_date, :refund_25_percent_date are no longer used
+  # :refund_90_percent_date is added
+
   attr_accessible :name, :description, :start_date, :end_date, :age_cutoff_month, :registration_fee,
                   :early_registration_tuition, :tuition, :tuition_discount_for_three_or_more_child,
-                  :tuition_discount_for_pre_k, :tuition_discount_for_instructor,
-                  :pva_membership_due, :ccca_membership_due,
+                  :tuition_discount_for_pre_k, :tuition_discount_for_instructor, :pva_membership_due, :ccca_membership_due,
                   :early_registration_start_date, :early_registration_end_date, :registration_start_date,
-                  :registration_75_percent_date, :registration_50_percent_date, :registration_end_date,
-                  :refund_75_percent_date, :refund_50_percent_date, :refund_25_percent_date, :refund_end_date
+                  :registration_75_percent_date, :registration_end_date,
+                  :refund_90_percent_date, :refund_50_percent_date, :refund_end_date
 
   belongs_to :previous_school_year, class_name: 'SchoolYear', foreign_key: 'previous_school_year_id'
 
   validates :name, :start_date, :end_date, :age_cutoff_month,
             :early_registration_start_date, :early_registration_end_date, :registration_start_date,
-            :registration_75_percent_date, :registration_50_percent_date, :registration_end_date,
-            :refund_75_percent_date, :refund_50_percent_date, :refund_25_percent_date, :refund_end_date,
+            :registration_75_percent_date, :registration_end_date,
+            :refund_90_percent_date, :refund_50_percent_date, :refund_end_date,
             :registration_fee_in_cents, :early_registration_tuition_in_cents, :tuition_in_cents,
             :tuition_discount_for_three_or_more_child_in_cents, :tuition_discount_for_pre_k_in_cents,
             :tuition_discount_for_instructor_in_cents,
