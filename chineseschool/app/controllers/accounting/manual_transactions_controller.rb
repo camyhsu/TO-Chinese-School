@@ -1,7 +1,7 @@
 class Accounting::ManualTransactionsController < ApplicationController
   
   def index
-    @manual_transactions = ManualTransaction.all
+    @manual_transactions = ManualTransaction.where('updated_at > ?', SchoolYear.current_school_year.previous_school_year.registration_start_date)
     @manual_transactions.sort! {|a, b| b.updated_at <=> a.updated_at}
   end
   
