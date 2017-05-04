@@ -1,0 +1,46 @@
+<% @title = "Show Student Final Mark For #{@school_class.name} For #{@school_year.name}" %>
+
+<table class="student-list-header">
+  <tr>
+    <% assignment_hash = @school_class.instructor_assignments(@school_year) %>
+    <td class="instructor-cell">
+      <% assignment_hash[InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR].each do |instructor| %>
+          <%= h "#{instructor.name} 老師" %>&nbsp;
+      <% end %>
+    </td>
+    <td><%= h @school_class.chinese_name %></td>
+    <td><%= h "教室: #{@school_class.location}" %></td>
+  </tr>
+</table>
+<table class="details-table" border="1px">
+  <thead>
+  <tr>
+    <th>學生</th>
+    <th>Last Name</th>
+    <th>First Name</th>
+    <th>前三名</th>
+    <th>進步獎</th>
+    <th>精神獎</th>
+    <th>全勤獎</th>
+    <th>總成績</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @school_class.students(@school_year).each do |student| -%>
+      <tr>
+        <td><%= h student.chinese_name %></td>
+        <td><%= h student.english_last_name %></td>
+        <td><%= h student.english_first_name %></td>
+        <% mark = @student_to_mark_map[student] %>
+        <td><%= h mark.top_three %></td>
+        <td><%= convert_to_yes_blank mark.progress_award %></td>
+        <td><%= convert_to_yes_blank mark.spirit_award %></td>
+        <td><%= convert_to_yes_blank mark.attendance_award %></td>
+        <td><%= h mark.total_score %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+<br/>
+Total Student Count: <%= @school_class.class_size(@school_year) %>
+<br/>

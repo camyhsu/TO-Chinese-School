@@ -137,6 +137,8 @@ report_sibling_in_same_grade = Right.create(name: 'Sibling in Same Grade Report'
 
 
 instruction_school_classes_show = Right.create(name: 'Student List For One School Class', controller: 'instruction/school_classes', action: 'show')
+instruction_school_classes_enter_student_final_mark = Right.create(name: 'Enter Student Final Mark For One School Class', controller: 'instruction/school_classes', action: 'enter_student_final_mark')
+instruction_school_classes_show_student_final_mark = Right.create(name: 'Show Student Final Mark For One School Class', controller: 'instruction/school_classes', action: 'show_student_final_mark')
 instruction_school_classes_display_room_parent_selection = Right.create(name: 'Display Room Parent Selection', controller: 'instruction/school_classes', action: 'display_room_parent_selection')
 instruction_school_classes_save_room_parent_selection = Right.create(name: 'Save Room Parent Selection', controller: 'instruction/school_classes', action: 'save_room_parent_selection')
 instruction_school_classes_cancel_room_parent_selection = Right.create(name: 'Cancel Room Parent Selection', controller: 'instruction/school_classes', action: 'cancel_room_parent_selection')
@@ -374,6 +376,8 @@ librarian.rights << librarian_search_students_result
 #
 instructor = Role.find_by_name(Role::ROLE_NAME_INSTRUCTOR)
 instructor.rights << instruction_school_classes_show
+instructor.rights << instruction_school_classes_enter_student_final_mark
+instructor.rights << instruction_school_classes_show_student_final_mark
 instructor.rights << instruction_school_classes_display_room_parent_selection
 instructor.rights << instruction_school_classes_save_room_parent_selection
 instructor.rights << instruction_school_classes_cancel_room_parent_selection

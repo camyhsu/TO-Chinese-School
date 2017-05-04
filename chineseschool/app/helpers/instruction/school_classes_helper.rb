@@ -10,6 +10,10 @@ module Instruction::SchoolClassesHelper
     family_fields
   end
 
+  def convert_to_yes_blank(flag)
+    return 'Yes' if flag
+    ''
+  end
 
   private
 
