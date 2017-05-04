@@ -102,7 +102,7 @@ class Instruction::SchoolClassesController < ApplicationController
       mark.top_three = nil
     end
     if mark.errors[:total_score].any?
-      mark.errors[:base] = '總成績 must be a number greater than 0'
+      mark.errors[:base] = '總成績 must be a number, 0 or greater'
       mark.total_score = nil
     end
   end

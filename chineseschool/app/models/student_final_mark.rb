@@ -6,6 +6,6 @@ class StudentFinalMark < ActiveRecord::Base
   belongs_to :school_class
 
   validates :top_three, numericality: {only_integer: true, greater_than: 0, less_than: 4, allow_nil: true}
-  validates :total_score, numericality: {greater_than: 0, allow_nil: true}
+  validates :total_score, numericality: {greater_than_or_equal_to: 0, allow_nil: true}
 
 end
