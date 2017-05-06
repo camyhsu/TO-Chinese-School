@@ -84,9 +84,9 @@ class SchoolClass < ActiveRecord::Base
     assignment_hash
   end
 
-  def current_primary_instructor
+  def current_primary_instructor(school_year=SchoolYear.current_school_year)
     current_primary_instructor_assignment = InstructorAssignment.first :conditions => ["school_year_id = ? AND school_class_id = ? AND role = ? AND end_date >= ?",
-      SchoolYear.current_school_year.id, self.id, InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR, PacificDate.today ]
+                                                                                       school_year.id, self.id, InstructorAssignment::ROLE_PRIMARY_INSTRUCTOR, PacificDate.today ]
     current_primary_instructor_assignment.try(:instructor)
   end
 
