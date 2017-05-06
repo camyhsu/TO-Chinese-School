@@ -21,5 +21,10 @@
         <% end %>
       </td>
       <td>
-        <%= link_to 'Student List', controller: '/instruction/school_classes', action: 'show', id: active_school_class %>
+        <%= link_to 'Student List', {controller: '/instruction/school_classes', action: 'show', id: active_school_class}, {class: 'button'} %>
+      </td>
+      <td>
+        <% unless active_school_class.elective? %>
+            <%= link_to 'Student Final Mark', {controller: '/instruction/school_classes', action: 'enter_student_final_mark', id: active_school_class}, {class: 'button'} %>
+        <% end %>
       </td>

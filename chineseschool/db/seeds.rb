@@ -349,6 +349,7 @@ instruction_officer.rights << active_school_classes_grade_class_student_count
 instruction_officer.rights << active_school_classes_elective_class_student_count
 instruction_officer.rights << instruction_active_school_classes_index
 instruction_officer.rights << instruction_school_classes_show
+instruction_officer.rights << instruction_school_classes_enter_student_final_mark
 instruction_officer.rights << library_book_read_only_view
 
 
