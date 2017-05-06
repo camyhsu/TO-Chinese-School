@@ -269,6 +269,7 @@ registration_officer.rights << report_sibling_in_same_grade
 
 registration_officer.rights << student_transaction_history_show_registration_payment_for_staff
 
+registration_officer.rights << accounting_manual_transactions_index
 registration_officer.rights << accounting_manual_transactions_new
 registration_officer.rights << accounting_manual_transactions_show
 
