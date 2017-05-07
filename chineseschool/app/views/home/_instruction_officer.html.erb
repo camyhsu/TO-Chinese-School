@@ -15,7 +15,9 @@
     <%= link_to "#{SchoolYear.next_school_year.name} Elective Class 人數清單", {controller: '/registration/active_school_classes', action: 'elective_class_student_count', id: SchoolYear.next_school_year.id}, {class: 'button'} %>
     <br/>
 <% end %>
-
+<br/>
+<%= link_to "Download Student Final Marks CSV For #{SchoolYear.current_school_year.name}", {controller: '/instruction/school_classes', action: 'download_student_final_marks', format: 'csv'}, {class: 'button'} %>
+<br/>
 <br/>
 <%= link_to 'View Library Books', {controller: '/librarian/library_books', action: 'read_only_view'}, {class: 'button'} %>
 <br/>

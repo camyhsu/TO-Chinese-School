@@ -86,6 +86,10 @@ Chineseschool::Application.routes.draw do
 
   namespace :instruction do
     get 'active_school_classes' => 'active_school_classes#index'
+    get 'school_classes/show' => 'school_classes#show'
+    match 'school_classes/enter_student_final_mark' => 'school_classes#enter_student_final_mark'
+    get 'school_classes/show_student_final_mark' => 'school_classes#show_student_final_mark'
+    get 'school_classes/download_student_final_marks' => 'school_classes#download_student_final_marks'
   end
 
   namespace :librarian do

@@ -139,6 +139,7 @@ report_sibling_in_same_grade = Right.create(name: 'Sibling in Same Grade Report'
 instruction_school_classes_show = Right.create(name: 'Student List For One School Class', controller: 'instruction/school_classes', action: 'show')
 instruction_school_classes_enter_student_final_mark = Right.create(name: 'Enter Student Final Mark For One School Class', controller: 'instruction/school_classes', action: 'enter_student_final_mark')
 instruction_school_classes_show_student_final_mark = Right.create(name: 'Show Student Final Mark For One School Class', controller: 'instruction/school_classes', action: 'show_student_final_mark')
+instruction_school_classes_download_student_final_marks = Right.create(name: 'Download Student Final Marks CSV', controller: 'instruction/school_classes', action: 'download_student_final_marks')
 instruction_school_classes_display_room_parent_selection = Right.create(name: 'Display Room Parent Selection', controller: 'instruction/school_classes', action: 'display_room_parent_selection')
 instruction_school_classes_save_room_parent_selection = Right.create(name: 'Save Room Parent Selection', controller: 'instruction/school_classes', action: 'save_room_parent_selection')
 instruction_school_classes_cancel_room_parent_selection = Right.create(name: 'Cancel Room Parent Selection', controller: 'instruction/school_classes', action: 'cancel_room_parent_selection')
@@ -351,6 +352,7 @@ instruction_officer.rights << active_school_classes_elective_class_student_count
 instruction_officer.rights << instruction_active_school_classes_index
 instruction_officer.rights << instruction_school_classes_show
 instruction_officer.rights << instruction_school_classes_enter_student_final_mark
+instruction_officer.rights << instruction_school_classes_download_student_final_marks
 instruction_officer.rights << library_book_read_only_view
 
 

@@ -55,6 +55,17 @@ class Instruction::SchoolClassesController < ApplicationController
     retrieve_student_final_marks_for_class
   end
 
+  def download_student_final_marks
+    retrieve_sorted_class_lists
+    @student_to_mark_map = {}
+    StudentFinalMark.find_all_by_school_year_id(SchoolYear.current_school_year.id).each do |mark|
+      @student_to_mark_map[mark.student] = mark
+    end
+    respond_to do |format|
+      format.csv {send_data students_final_marks_csv, type: 'text/csv'}
+    end
+  end
+
   
   def display_room_parent_selection
     requested_school_class_id = params[:id].to_i
@@ -104,6 +115,38 @@ class Instruction::SchoolClassesController < ApplicationController
     if mark.errors[:total_score].any?
       mark.errors[:base] = '總成績 must be a number, 0 or greater'
       mark.total_score = nil
+    end
+  end
+
+  def students_final_marks_csv
+    CSV.generate do |csv|
+      csv << ['Class Short Name', 'English First Name', 'English Last Name', 'Chinese Name', '前三名', '進步獎', '精神獎', '全勤獎']
+      @sorted_school_classes.each do |school_class|
+        @class_lists[school_class].each do |student|
+          row = []
+          row << school_class.short_name
+          row << student.english_first_name
+          row << student.english_last_name
+          row << student.chinese_name
+          append_student_final_mark_fields row, student
+          csv << row
+        end
+      end
+    end
+  end
+
+  def append_student_final_mark_fields(row, student)
+    mark = @student_to_mark_map[student]
+    if mark.nil?
+      row << ''
+      row << ''
+      row << ''
+      row << ''
+    else
+      row << (mark.top_three.nil? ? '' : mark.top_three)
+      row << mark.progress_award
+      row << mark.spirit_award
+      row << mark.attendance_award
     end
   end
 
