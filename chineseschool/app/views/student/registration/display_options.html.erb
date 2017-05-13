@@ -40,6 +40,12 @@
   <li>
     Please read <a href="http://www.to-cs.org/tocs/">Registraion Overview and Refund Policy</a> or contact registration@to-cs.org for additional questions.
   </li>
+  <% if @registration_preferences.any? {|registration_preference|  (Grade.grade_preschool == registration_preference.grade) || (Grade.grade_preschool.next_grade == registration_preference.grade)} %>
+      <li>
+        <span style="font-weight: bold">Attention Preschool and Kindergarden new students: please bring a valid proof of birth date on the first day of school to verify age.</span>
+        <br/><span style="color: blue">Please email to <%= Contacts::REGISTRATION_CONTACT %> if there are questions.</span></br>
+      </li>
+  <% end %>
   <% if @registration_preferences.any? {|registration_preference|  Grade.grades_with_ap_class.include? registration_preference.grade} %>
       <li>
         <span style="font-weight: bold">Chinese AP Class Announcement: 9th and 10th grade students will be automatically enrolled in 3rd period AP class if no other 3rd period class was selected.</span>
