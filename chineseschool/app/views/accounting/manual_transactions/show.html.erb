@@ -15,6 +15,14 @@
     <td><%=h @manual_transaction.transaction_date %></td>
   </tr>
   <tr>
+    <td class="label">Requested by:</td>
+    <td><%=h @manual_transaction.transaction_by.name %></td>
+  </tr>
+  <tr>
+    <td class="label">Resident Address:</td>
+    <td><%=h @manual_transaction.transaction_by.personal_address.try(:street_address) %></td>
+  </tr>
+  <tr>
     <td class="label">Payment Method:</td>
     <td><%=h @manual_transaction.payment_method %></td>
   </tr>

@@ -138,6 +138,18 @@ class Person < ActiveRecord::Base
     children.flatten.compact.uniq
   end
 
+  def personal_address
+    if self.address
+      self.address
+    else
+      family_with_address = self.families.detect do |family|
+        !family.address.nil?
+      end
+      return nil if family_with_address.nil?
+      family_with_address.address
+    end
+  end
+
   def personal_email_address
     if self.address
       self.address.email
