@@ -73,6 +73,7 @@ Chineseschool::Application.routes.draw do
     match 'school_years/new' => 'school_years#new'
     match 'school_years/edit' => 'school_years#edit'
     match 'school_years/edit_book_charge' => 'school_years#edit_book_charge'
+    get 'school_years/toggle_auto_class_assignment' => 'school_years#toggle_auto_class_assignment'
 
     get 'staff_assignments' => 'staff_assignments#index'
     
