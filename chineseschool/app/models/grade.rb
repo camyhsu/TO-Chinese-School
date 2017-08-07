@@ -42,13 +42,9 @@ class Grade < ActiveRecord::Base
     assignable_school_classes = self.active_grade_classes(school_year).select { |active_school_class| active_school_class.school_class_type == school_class_type }
     return nil if assignable_school_classes.empty?
     return assignable_school_classes[0] if assignable_school_classes.size == 1
-    # If there are more than one school class assignable, but it is more than a day away from the school start, don't assign automatically
-    # TODO - 2016-08-13 - we decided to change automatic assignment from date-based to manual switch control
-    # before the manual switch control is implemented, just remove the date-based check
-    #return nil unless school_year.school_will_start_tomorrow?
-    # 2017-05-03 - temporarily change to no auto-assignment for the beginning of 2017-2018 registration before manual switch is implemented
-    #pick_school_class_with_lowest_head_count_from assignable_school_classes, gender
-    nil
+    # If there are more than one school class assignable, don't assign automatically if the flag is not set in school year
+    return nil unless school_year.auto_class_assignment?
+    pick_school_class_with_lowest_head_count_from assignable_school_classes, gender
   end
   
   def find_available_school_class_types(school_year)

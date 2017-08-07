@@ -8,6 +8,8 @@
       <th>Start Date</th>
       <th>End Date</th>
       <th></th>
+      <th style="width: 10em">Assign Class Upon Registration</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -19,6 +21,10 @@
       <td><%=h school_year.end_date %></td>
       <td>
         <%= link_to 'Details', {action: 'show', id: school_year}, {class: 'button'} %>
+      </td>
+      <td style="text-align: center"><%= convert_to_yes_no(school_year.auto_class_assignment) %></td>
+      <td>
+        <%= link_to 'Change', {action: 'toggle_auto_class_assignment', id: school_year}, {class: 'button'} %>
       </td>
     </tr>
     <% end %>

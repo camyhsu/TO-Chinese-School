@@ -1,7 +1,7 @@
 class Admin::SchoolYearsController < ApplicationController
 
   def index
-    @school_years = SchoolYear.all
+    @school_years = SchoolYear.order('start_date ASC').all
   end
 
   def show
@@ -77,6 +77,13 @@ class Admin::SchoolYearsController < ApplicationController
       flash[:notice] = 'Book Charge updated successfully'
       redirect_to action: :show, id: @school_year
     end
+  end
+
+  def toggle_auto_class_assignment
+    @school_year = SchoolYear.find params[:id].to_i
+    @school_year.auto_class_assignment = !@school_year.auto_class_assignment
+    @school_year.save
+    redirect_to action: :index
   end
 
   private
