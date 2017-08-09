@@ -106,6 +106,7 @@ Chineseschool::Application.routes.draw do
     get 'active_school_classes' => 'active_school_classes#index'
     get 'active_school_classes/grade_class_student_count' => 'active_school_classes#grade_class_student_count'
     get 'active_school_classes/elective_class_student_count' => 'active_school_classes#elective_class_student_count'
+    get 'active_school_classes/grade_student_count' => 'active_school_classes#grade_student_count'
     match 'families/new' => 'families#new'
     post 'instructor_assignments/destroy' => 'instructor_assignments#destroy'
     post 'instructor_assignments/select_school_class' => 'instructor_assignments#select_school_class'

@@ -1,0 +1,29 @@
+<% @title = '年級人數清單' %>
+
+<h2>千橡中文學校  <%=h @school_year.name %>學年度  年級人數清單</h2>
+
+<table class="details-table" border="1px">
+  <thead>
+  <tr>
+    <th>年級</th>
+    <th>人數</th>
+    <th>Maximum Size</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% total_student_count = 0 %>
+  <% @grade_student_counts.keys.sort.each do |grade_id| -%>
+      <% grade = Grade.find(grade_id) %>
+      <tr>
+        <td><%=h grade.name %></td>
+        <td><%= @grade_student_counts[grade_id] %></td>
+        <% total_student_count += @grade_student_counts[grade_id] %>
+        <td><%= grade.allowed_max_student_count(@school_year) %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+<br/>
+Total Student Count: <%= total_student_count %>
+<br/>
+Current Time: <%= PacificTimeDisplay.display_now_in_pacific %>

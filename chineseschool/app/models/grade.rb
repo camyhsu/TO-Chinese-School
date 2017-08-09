@@ -51,10 +51,13 @@ class Grade < ActiveRecord::Base
     school_class_types = self.active_grade_classes(school_year).collect { |active_school_class| active_school_class.school_class_type }
     school_class_types.uniq.compact.sort
   end
-  
+
+  def allowed_max_student_count(school_year)
+    self.active_grade_classes(school_year).inject(0) { |memo, grade_class| memo + grade_class.max_size }
+  end
+
   def active_grade_classes_full?(school_year)
-    allowed_max_student_count = self.active_grade_classes(school_year).inject(0) { |memo, grade_class| memo + grade_class.max_size }
-    StudentClassAssignment.count_by_sql("SELECT COUNT(1) FROM student_class_assignments WHERE grade_id = #{self.id} AND school_year_id = #{school_year.id}") >= allowed_max_student_count
+    StudentClassAssignment.count_by_sql("SELECT COUNT(1) FROM student_class_assignments WHERE grade_id = #{self.id} AND school_year_id = #{school_year.id}") >= allowed_max_student_count(school_year)
   end
   
   def random_assign_grade_class(school_year)

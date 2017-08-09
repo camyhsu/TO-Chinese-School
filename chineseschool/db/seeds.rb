@@ -101,6 +101,7 @@ activity_track_events_tocs_track_event_data = Right.create(name: 'TOCS Track Eve
 active_school_classes_index = Right.create(name: 'List Active School Classes', controller: 'registration/active_school_classes', action: 'index')
 active_school_classes_grade_class_student_count = Right.create(name: '班級人數清單', controller: 'registration/active_school_classes', action: 'grade_class_student_count')
 active_school_classes_elective_class_student_count = Right.create(name: 'Elective Class 人數清單', controller: 'registration/active_school_classes', action: 'elective_class_student_count')
+active_school_classes_grade_student_count = Right.create(name: '年級人數清單', controller: 'registration/active_school_classes', action: 'grade_student_count')
 
 people_index = Right.create(name: 'List People', controller: 'registration/people', action: 'index')
 people_show = Right.create(name: 'Show Person Details', controller: 'registration/people', action: 'show')
@@ -233,6 +234,7 @@ registration_officer.rights << school_classes_toggle_active
 registration_officer.rights << active_school_classes_index
 registration_officer.rights << active_school_classes_grade_class_student_count
 registration_officer.rights << active_school_classes_elective_class_student_count
+registration_officer.rights << active_school_classes_grade_student_count
 
 registration_officer.rights << people_index
 registration_officer.rights << people_show
