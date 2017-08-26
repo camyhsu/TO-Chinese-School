@@ -61,11 +61,10 @@ class RegistrationPayment < ActiveRecord::Base
   def send_email_notification(gateway_transaction=nil)
     ReceiptMailer.payment_confirmation(gateway_transaction, self).deliver
     school_start_date = self.school_year.start_date
-    oct_1st_of_school_start_year = Date.new(school_start_date.year, 10, 1)
     if PacificDate.tomorrow >= school_start_date
       students = self.student_fee_payments.collect { |student_fee_payment| student_fee_payment.student }
       ReceiptMailer.text_book_notification(students).deliver
-      ReceiptMailer.registration_staff_notification(students).deliver if PacificDate.today >= oct_1st_of_school_start_year
+      ReceiptMailer.registration_staff_notification(students).deliver if PacificDate.today > school_start_date
     end
   end
 
