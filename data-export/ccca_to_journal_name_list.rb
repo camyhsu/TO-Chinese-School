@@ -13,7 +13,7 @@ require 'rubygems'
 require 'sequel'
 require 'csv'
 
-CURRENT_SCHOOL_YEAR_ID = 9
+CURRENT_SCHOOL_YEAR_ID = 11
 
 DB_HOST = 'localhost'
 DB_USER = 'tocsorg_camyhsu'
