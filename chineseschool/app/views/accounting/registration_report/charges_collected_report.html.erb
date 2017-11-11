@@ -1,0 +1,34 @@
+<% @title = "Tuition and Fee Collected For #{@registration_school_year.name} School Year" %>
+
+<h3>Tuition and Fee Collected For <%= @registration_school_year.name %> School Year</h3>
+
+<table class="transaction-history-table" border="0px">
+  <thead>
+  <tr>
+    <th>Item</th>
+    <th>Total Amount Collected</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>Registration Fee</td>
+    <td><%= number_to_currency(@charges_collected[:registration_fee_in_cents] / 100.0) %></td>
+  </tr>
+  <tr>
+    <td>Tuition</td>
+    <td><%= number_to_currency(@charges_collected[:tuition_in_cents] / 100.0) %></td>
+  </tr>
+  <tr>
+    <td>Book / Material Charge</td>
+    <td><%= number_to_currency(@charges_collected[:book_charge_in_cents] / 100.0) %></td>
+  </tr>
+  <tr>
+    <td>PVA Membership Due</td>
+    <td><%= number_to_currency(@charges_collected[:pva_due_in_cents] / 100.0) %></td>
+  </tr>
+  <tr>
+    <td>CCCA Membership Due</td>
+    <td><%= number_to_currency(@charges_collected[:ccca_due_in_cents] / 100.0) %></td>
+  </tr>
+  </tbody>
+</table>

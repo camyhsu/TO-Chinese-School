@@ -15,6 +15,7 @@ Chineseschool::Application.routes.draw do
     match 'manual_transactions/new' => 'manual_transactions#new'
     get 'manual_transactions/show' => 'manual_transactions#show'
     get 'registration_report/registration_payments_by_date' => 'registration_report#registration_payments_by_date'
+    get 'registration_report/charges_collected_report' => 'registration_report#charges_collected_report'
   end
 
   namespace :activity do

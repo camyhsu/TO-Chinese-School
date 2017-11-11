@@ -39,6 +39,8 @@ principal_staff_assignments_index = Right.create(name: 'List School Years with S
 principal_staff_assignments_show = Right.create(name: 'Show Staff Assignments for School Year', controller: 'admin/staff_assignments', action: 'show')
 
 accounting_registration_report_payments_by_date = Right.create(name: 'Accounting Registration Report Payments By Date', controller: 'accounting/registration_report', action: 'registration_payments_by_date')
+accounting_charges_collected_report = Right.create(name: 'Accounting Charges Collected Report', controller: 'accounting/registration_report', action: 'charges_collected_report')
+
 accounting_manual_transactions_index = Right.create(name: 'List Manual Transaction', controller: 'accounting/manual_transactions', action: 'index')
 accounting_manual_transactions_show = Right.create(name: 'Show Manual Transaction', controller: 'accounting/manual_transactions', action: 'show')
 accounting_manual_transactions_new = Right.create(name: 'Create Manual Transaction', controller: 'accounting/manual_transactions', action: 'new')
@@ -291,6 +293,7 @@ accounting_officer.rights << active_school_classes_grade_class_student_count
 accounting_officer.rights << active_school_classes_elective_class_student_count
 accounting_officer.rights << report_daily_online_registration_summary
 accounting_officer.rights << accounting_registration_report_payments_by_date
+accounting_officer.rights << accounting_charges_collected_report
 accounting_officer.rights << student_transaction_history_show_registration_payment_for_staff
 
 accounting_officer.rights << accounting_manual_transactions_index

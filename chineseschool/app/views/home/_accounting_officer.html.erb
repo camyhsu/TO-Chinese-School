@@ -6,8 +6,10 @@
 <br/>
 <br/>
 <% @active_registration_school_years.each do |registration_year| %>
-  <%= link_to "Daily Online Registration Summary For #{registration_year.name} School Year", {controller: '/registration/report', action: 'daily_online_registration_summary', id: registration_year}, {class: 'button'} %>
-  <br/>
+    <%= link_to "Daily Online Registration Summary For #{registration_year.name} School Year", {controller: '/registration/report', action: 'daily_online_registration_summary', id: registration_year}, {class: 'button'} %>
+    <br/><br/>
+    <%= link_to "Tuition and Fee Collected For #{registration_year.name} School Year", {controller: '/accounting/registration_report', action: 'charges_collected_report', id: registration_year}, {class: 'button'} %>
+    <br/>
 <% end %>
 <br/>
 <%= link_to 'List Manual Transactions From Last Two School Years', {controller: '/accounting/manual_transactions', action: 'index'}, {class: 'button'} %>
