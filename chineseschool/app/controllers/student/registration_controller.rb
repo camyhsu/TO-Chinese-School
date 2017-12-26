@@ -58,7 +58,8 @@ class Student::RegistrationController < ApplicationController
     end
     gateway_transaction = create_and_save_initial_gateway_transaction
     begin
-      response = ::LINKPOINT_GATEWAY.purchase(gateway_transaction.amount_in_cents, @credit_card, order_id: gateway_transaction.id)
+      #response = ::LINKPOINT_GATEWAY.purchase(gateway_transaction.amount_in_cents, @credit_card, order_id: gateway_transaction.id)
+      response = ::AUTHORIZE_NET_GATEWAY.purchase(gateway_transaction.amount_in_cents, @credit_card, order_id: gateway_transaction.id)
       save_gateway_response gateway_transaction, response
     rescue => e
       gateway_transaction.error_message = e.inspect
@@ -79,6 +80,9 @@ class Student::RegistrationController < ApplicationController
       redirect_to action: :payment_confirmation, id: @registration_payment
     else
       flash.now[:notice] = "Payment DECLINED by bank.  Please use a different credit card to try again or contact #{Contacts::WEB_SITE_SUPPORT}"
+      if GatewayTransaction::APPROVAL_STATUS_ERROR == gateway_transaction.approval_status
+        send_email_to_engineering_for_unexpected_transaction_error(gateway_transaction)
+      end
       render template: '/student/registration/payment_entry'
     end
   end
@@ -244,6 +248,20 @@ class Student::RegistrationController < ApplicationController
   end
 
   def save_gateway_response(gateway_transaction, response)
+    gateway_transaction.set_approval_status_based_on_authorize_net_response(response.params['response_code'])
+    gateway_transaction.response_dump = response.inspect
+    if response.success?
+      gateway_transaction.approval_code = response.params['authorization_code']
+      gateway_transaction.reference_number = response.params['transaction_id']
+    else
+      gateway_transaction.error_message = response.message
+    end
+    gateway_transaction.save!
+  end
+
+  # this is a backup copy of linkpoint gateway response parsing - not in active use if the live gateway is Authorize.Net
+  # TODO - remove this method after TOCS disabled the old linkpoint gateway
+  def save_gateway_response_for_linkpoint(gateway_transaction, response)
     gateway_transaction.approval_status = response.params['approved']
     gateway_transaction.response_dump = response.inspect
     if response.success?
@@ -253,5 +271,13 @@ class Student::RegistrationController < ApplicationController
       gateway_transaction.error_message = response.params['error']
     end
     gateway_transaction.save!
+  end
+
+  def send_email_to_engineering_for_unexpected_transaction_error(gateway_transaction)
+    begin
+      OpsMailer.credit_card_transaction_error_alert(gateway_transaction).deliver
+    rescue => e
+      logger.error "Error sending email to engineering => #{e.inspect}"
+    end
   end
 end
