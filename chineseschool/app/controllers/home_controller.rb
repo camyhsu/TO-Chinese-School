@@ -17,6 +17,7 @@ class HomeController < ApplicationController
     #@home_templates << 'ccca_staff' if ccca_staff_resources_enabled?
     @home_templates << 'instructor' if instructor_resources_enabled?
     @active_registration_school_years = SchoolYear.find_active_registration_school_years
+    @current_and_future_school_years = SchoolYear.find_current_and_future_school_years
     if student_parent_resources_enabled?
       @home_templates << 'student_parent'
       @possible_students = find_possible_students
