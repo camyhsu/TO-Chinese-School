@@ -46,7 +46,8 @@ def family_already_processed(person_id, processed_family_id)
   if family.nil?
     family = DEV_DB["SELECT id, ccca_lifetime_member FROM families JOIN families_children ON families.id = families_children.family_id WHERE families_children.child_id = ?", person_id].first
   end
-  return true if family[:ccca_lifetime_member] # Skip CCCA lifetime member family
+  # 2018-04-07 - Stop checking CCCA lifetime member per request from Chen Li
+  #return true if family[:ccca_lifetime_member] # Skip CCCA lifetime member family
   if processed_family_id.include? family[:id]
     true
   else
