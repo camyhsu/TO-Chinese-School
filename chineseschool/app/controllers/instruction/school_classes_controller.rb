@@ -66,6 +66,22 @@ class Instruction::SchoolClassesController < ApplicationController
     end
   end
 
+  def previous_student_final_marks
+    # we only have student final marks data starting school year 2016-2017
+    # list 4 previous school years excluding the current one
+    @included_school_years = SchoolYear.where('id > 8 AND id < ?', SchoolYear.current_school_year.id).order('id DESC').limit(4)
+    included_school_year_ids = @included_school_years.collect { |school_year| school_year.id }
+    student_final_marks = StudentFinalMark.where(:school_year_id => included_school_year_ids)
+    @student_to_total_scores_map = {}
+    student_final_marks.each do |student_final_mark|
+      total_scores = @student_to_total_scores_map[student_final_mark.student]
+      if total_scores.nil?
+        total_scores = {}
+        @student_to_total_scores_map[student_final_mark.student] = total_scores
+      end
+      total_scores[student_final_mark.school_year] = student_final_mark.total_score
+    end
+  end
   
   def display_room_parent_selection
     requested_school_class_id = params[:id].to_i

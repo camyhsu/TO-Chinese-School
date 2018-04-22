@@ -1,0 +1,27 @@
+<% @title = 'View Student Final Marks From Previous School Years' %>
+
+<table border="1px">
+  <thead>
+  <tr>
+    <th>學生</th>
+    <th>Last Name</th>
+    <th>First Name</th>
+    <% @included_school_years.each do |school_year| %>
+      <th><%= school_year.name %> 總成績</th>
+    <% end %>
+  </tr>
+  </thead>
+  <tbody>
+  <% @student_to_total_scores_map.keys.each do |student| -%>
+      <tr>
+        <td><%=h student.chinese_name %></td>
+        <td><%=h student.english_last_name %></td>
+        <td><%=h student.english_first_name %></td>
+        <% total_scores = @student_to_total_scores_map[student] %>
+        <% @included_school_years.each do |school_year| %>
+          <td><%= total_scores[school_year] %></td>
+        <% end %>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

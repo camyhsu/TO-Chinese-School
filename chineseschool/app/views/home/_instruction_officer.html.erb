@@ -19,6 +19,9 @@
 <%= link_to "Download Student Final Marks CSV For #{SchoolYear.current_school_year.name}", {controller: '/instruction/school_classes', action: 'download_student_final_marks', format: 'csv'}, {class: 'button'} %>
 <br/>
 <br/>
+<%= link_to "View Student Final Marks For Previous School Years", {controller: '/instruction/school_classes', action: 'previous_student_final_marks'}, {class: 'button'} %>
+<br/>
+<br/>
 <%= link_to 'View Library Books', {controller: '/librarian/library_books', action: 'read_only_view'}, {class: 'button'} %>
 <br/>
 <br/>

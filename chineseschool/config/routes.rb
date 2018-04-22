@@ -92,6 +92,7 @@ Chineseschool::Application.routes.draw do
     match 'school_classes/enter_student_final_mark' => 'school_classes#enter_student_final_mark'
     get 'school_classes/show_student_final_mark' => 'school_classes#show_student_final_mark'
     get 'school_classes/download_student_final_marks' => 'school_classes#download_student_final_marks'
+    get 'school_classes/previous_student_final_marks' => 'school_classes#previous_student_final_marks'
   end
 
   namespace :librarian do

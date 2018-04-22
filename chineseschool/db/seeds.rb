@@ -147,6 +147,7 @@ instruction_school_classes_download_student_final_marks = Right.create(name: 'Do
 instruction_school_classes_display_room_parent_selection = Right.create(name: 'Display Room Parent Selection', controller: 'instruction/school_classes', action: 'display_room_parent_selection')
 instruction_school_classes_save_room_parent_selection = Right.create(name: 'Save Room Parent Selection', controller: 'instruction/school_classes', action: 'save_room_parent_selection')
 instruction_school_classes_cancel_room_parent_selection = Right.create(name: 'Cancel Room Parent Selection', controller: 'instruction/school_classes', action: 'cancel_room_parent_selection')
+instruction_school_classes_previous_student_final_marks = Right.create(name: 'View Last 4 Years Student Final Marks', controller: 'instruction/school_classes', action: 'previous_student_final_marks')
 instruction_active_school_classes_index = Right.create(name: 'List Active School Classes For Instruction Officer', controller: 'instruction/active_school_classes', action: 'index')
 
 
@@ -360,6 +361,7 @@ instruction_officer.rights << instruction_active_school_classes_index
 instruction_officer.rights << instruction_school_classes_show
 instruction_officer.rights << instruction_school_classes_enter_student_final_mark
 instruction_officer.rights << instruction_school_classes_download_student_final_marks
+instruction_officer.rights << instruction_school_classes_previous_student_final_marks
 instruction_officer.rights << library_book_read_only_view
 
 
