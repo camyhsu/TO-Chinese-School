@@ -1,7 +1,8 @@
 class Admin::StaffAssignmentsController < ApplicationController
 
   def index
-    @school_years = SchoolYear.all
+    # we only have staff assignment data starting school year 2016-2017
+    @school_years = SchoolYear.where('id > 8')
   end
 
   def show
