@@ -1,0 +1,15 @@
+
+#
+# This user has password 'test'
+# 
+one:
+  username: username_one
+  password_hash: 9613a0dd0b2834f4c02631d2d06f5989da029ea66ed808318310a027f93bfbfc
+  password_salt: Lc5usgqa
+  person_id: 1
+
+two:
+  username: username_two
+  password_hash: hash_two
+  password_salt: salt_two
+  person_id: 2

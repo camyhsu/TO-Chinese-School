@@ -1,0 +1,10 @@
+
+list_grades:
+  name: List Grades
+  controller: /admin/grades
+  action: index
+
+create_role:
+  name: Create Role
+  controller: /admin/roles
+  action: create

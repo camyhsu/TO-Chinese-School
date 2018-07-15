@@ -1,0 +1,25 @@
+
+family_one:
+  id: 1
+  parent_one_id: 1001
+  parent_two_id: 
+  address_id: 1
+
+family_two:
+  id: 2
+  parent_one_id: 
+  parent_two_id: 1002
+  address_id: 1
+
+family_three:
+  id: 3
+  parent_one_id: 1004
+  parent_two_id: 1005
+  address_id: 1
+
+family_ccca_lifetime_memeber:
+  id: 4
+  parent_one_id: 1010
+  parent_two_id: 1011
+  address_id: 1
+  ccca_lifetime_member: true
