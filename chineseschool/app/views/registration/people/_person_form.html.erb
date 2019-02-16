@@ -16,11 +16,19 @@
           </div>
           <div>
             <label for="birth_year">Birth Year:</label>
-            <%= person_form.text_field :birth_year, size: 4 %>
+            <% if @person.nil? or @user.has_role? Role::ROLE_NAME_REGISTRATION_OFFICER or @user.has_role? Role::ROLE_NAME_SUPER_USER %>
+              <%= person_form.text_field :birth_year, size: 4%>
+            <% else %>
+              <%= person_form.text_field :birth_year, size: 4, :readonly => true %>
+            <% end %>
           </div>
           <div>
             <label for="birth_month">Birth Month:</label>
-            <%= person_form.select :birth_month, (1..12), include_blank: true %>
+            <% if @person.nil? or @user.has_role? Role::ROLE_NAME_REGISTRATION_OFFICER or @user.has_role? Role::ROLE_NAME_SUPER_USER %>
+              <%= person_form.select :birth_month, (1..12), include_blank: true %>
+            <% else %>
+              <%= person_form.text_field :birth_month, size: 4, :readonly => true %>
+            <% end %>
           </div>
           <div>
             <label for="native_language">Native Language:</label>
