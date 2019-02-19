@@ -102,6 +102,17 @@ class Student::RegistrationController < ApplicationController
     @registration_payment.save!
   end
 
+  def withdraw_entry
+    @registration_school_year = SchoolYear.find params[:id].to_i
+    @registered_students = []
+    find_possible_students.each do |student|
+      student_status_flag = student.student_status_flag_for @registration_school_year
+      if (not student_status_flag.nil? and student_status_flag.registered?)
+        @registered_students << student
+      end
+    end
+  end
+
   private
 
   def create_registration_preferences_for_display_optioins

@@ -133,4 +133,8 @@
      <% end %>
   <% end %>
   <hr/>
+  <% @active_refund_school_years.each do |refund_year| %>
+    <%= link_to "Withdraw For #{refund_year.name} School Year", {controller: '/student/registration', action: :withdraw_entry, id: refund_year}, {class: 'button'} %>
+  <% end %>
+  <hr/>
 <% end %>
