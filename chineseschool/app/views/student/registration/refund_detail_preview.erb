@@ -1,0 +1,82 @@
+<% @title = 'Refund Preview' %>
+
+<br/>
+<div class="account-form">
+  <% if @refund_request.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@refund_request.errors.size, 'error') %> error happens from being processed:</h2>
+        <ul>
+          <% @refund_request.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li> <% end %>
+        </ul>
+      </div>
+  <% end %>
+
+  <%= form_for @refund_request, url: {action: 'submit_refund_request'} do |form| %>
+
+    <h3>Refund Preview</h3>
+
+    <% @refund_request.refund_request_details.each do |refund_request_detail| %>
+      <p>
+        For <%=h refund_request_detail.student.name %>
+        <br/>
+      </p>
+      <table class="tuition-detail" border="0px">
+        <tr>
+          <td class="label">Registration Fee:</td>
+          <td><%= number_to_currency refund_request_detail.registration_fee %></td>
+        </tr>
+        <tr>
+          <td class="label">Tuition:</td>
+          <td><%= number_to_currency refund_request_detail.tuition %></td>
+        </tr>
+        <tr>
+          <td class="label">Books / Material:</td>
+          <td><%= number_to_currency refund_request_detail.book_charge %></td>
+        </tr>
+      </table>
+      <hr/>
+    <% end %>
+
+    <table class="tuition-detail" border="0px">
+      <tr>
+        <td class="label">PVA Annual Membership:</td>
+        <td><%= number_to_currency @refund_request.pva_due %></td>
+      </tr>
+      <tr>
+        <td class="label">CCCA Annual Membership:</td>
+        <td><%= number_to_currency @refund_request.ccca_due %></td>
+      </tr>
+    </table>
+    <hr/>
+    <table class="tuition-detail" border="0px">
+      <tr>
+        <td class="label">Grand Total:</td>
+        <td><%= number_to_currency @refund_request.grand_total %></td>
+      </tr>
+    </table>
+    <br/>
+
+    <fieldset>
+        <legend>Please Verify Your Name on Check and Address</legend>
+        <span class="payment-entry">
+          <div>
+            <label for="request_by_name"><span style="color:red">*&nbsp;</span>Name:</label>
+            <%= form.text_field :request_by_name, size: 30 %>
+          </div>
+
+          <div>
+            <label for="request_by_address"><span style="color:red">*&nbsp;</span>Address:</label>
+            <%= form.text_field :request_by_address, size: 30 %>
+          </div>
+
+          <span style="color:red">*&nbsp;</span>Required Field
+          <div>
+            <%= submit_tag 'Submit', class: 'submit', disable_with: 'Processing... ' %>
+            <%= link_to 'Cancel', {controller: '/home'}, {class: 'button'} %>
+          </div>
+        </span>
+      </fieldset>
+  <% end %>
+</div>
+

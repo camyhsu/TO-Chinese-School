@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170806230724) do
+ActiveRecord::Schema.define(:version => 20190223090503) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -150,6 +150,30 @@ ActiveRecord::Schema.define(:version => 20170806230724) do
     t.integer  "address_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "refund_request_details", :force => true do |t|
+    t.integer  "refund_request_id"
+    t.integer  "student_id"
+    t.integer  "registration_fee_in_cents"
+    t.integer  "tuition_in_cents"
+    t.integer  "book_charge_in_cents"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  create_table "refund_requests", :force => true do |t|
+    t.integer  "request_by_id"
+    t.string   "request_by_name"
+    t.string   "request_by_address"
+    t.integer  "school_year_id"
+    t.integer  "pva_due_in_cents"
+    t.integer  "ccca_due_in_cents"
+    t.integer  "grand_total_in_cents"
+    t.boolean  "approved"
+    t.integer  "approved_by_id"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
   end
 
   create_table "registration_payments", :force => true do |t|

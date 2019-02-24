@@ -1,13 +1,13 @@
 <% @title = 'Withdraw' %>
 
-<% if @registered_students.empty? %>
+<% if @paid_students.empty? %>
   <p style="font-weight: bold; color: red;">
     No eligible students found - please contact registration@to-cs.org for special case.
   </p>
 <% else %>
-  <h3>Students Already Registered for <%= h @registration_school_year.name %> School Year, Please Select to
+  <h3>Students Already Paid for <%= h @registration_school_year.name %> School Year, Please Select to
     Withdraw</h3>
-  <%= form_tag action: 'show_refund_detail', id: @registration_school_year do %>
+  <%= form_tag action: 'refund_detail_preview', id: @registration_school_year do %>
     <% if @registration_school_year.school_has_started? %>
       <table class="registration-options-class-assignment-table" border="0px">
         <thead>
@@ -20,13 +20,13 @@
         </tr>
         </thead>
         <tbody>
-        <% @registered_students.each do |registered_student| -%>
-          <% student_class_assignment = registered_student.student_class_assignment_for(@registration_school_year) %>
+        <% @paid_students.each do |paid_student| -%>
+          <% student_class_assignment = paid_student.student_class_assignment_for(@registration_school_year) %>
           <tr>
             <td class="checkbox">
-              <%= check_box_tag "#{registered_student.id}_register" %>
+              <%= check_box_tag "#{paid_student.id}_withdraw" %>
             </td>
-            <td><%= h registered_student.name %></td>
+            <td><%= h paid_student.name %></td>
             <td><%= h student_class_assignment.try(:grade).try(:name) %></td>
             <td><%= h student_class_assignment.try(:school_class).try(:name) %></td>
             <td><%= h student_class_assignment.try(:elective_class).try(:name) %></td>
@@ -53,13 +53,13 @@
         </tr>
         </thead>
         <tbody>
-        <% @registered_students.each do |registered_student| -%>
-          <% registration_preference = registered_student.registration_preference_for(@registration_school_year) %>
+        <% @paid_students.each do |paid_student| -%>
+          <% registration_preference = paid_student.registration_preference_for(@registration_school_year) %>
           <tr>
             <td class="checkbox">
-              <%= check_box_tag "#{registered_student.id}_register" %>
+              <%= check_box_tag "#{paid_student.id}_withdraw" %>
             </td>
-            <td><%= h registered_student.name %></td>
+            <td><%= h paid_student.name %></td>
             <td><%= h registration_preference.try(:grade).try(:name) %></td>
             <td><%= h registration_preference.try(:school_class_type) %></td>
             <td><%= h registration_preference.try(:elective_class).try(:name) %></td>
