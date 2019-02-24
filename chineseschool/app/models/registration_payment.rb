@@ -42,7 +42,7 @@ class RegistrationPayment < ActiveRecord::Base
   end
 
   def student_names
-    self.student_fee_payments.person.collect { |fee_payment| fee_payment.student.name }
+    self.student_fee_payments.collect { |fee_payment| fee_payment.student.name }
   end
 
   def at_least_one_student_already_registered?

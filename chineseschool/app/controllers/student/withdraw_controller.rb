@@ -61,6 +61,7 @@ class Student::WithdrawController < ApplicationController
     withdraw_request.request_by_address = @user.person.address.street_address
     withdraw_request.school_year = registration_school_year
     withdraw_request.approved = false
+    withdraw_request.cancelled = false
     withdraw_request.approved_by_id = 0
     withdraw_request.refund_pva_due_in_cents = 0
     withdraw_request.refund_ccca_due_in_cents = 0

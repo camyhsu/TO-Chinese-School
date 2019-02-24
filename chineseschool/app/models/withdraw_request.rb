@@ -1,5 +1,5 @@
 class WithdrawRequest < ActiveRecord::Base
-  attr_accessible :approved, :approved_by_id, :refund_ccca_due_in_cents, :refund_grand_total_in_cents, :refund_pva_due_in_cents, :request_by_address, :request_by_id, :request_by_name, :school_year_id
+  attr_accessible :cancelled, :approved, :approved_by_id, :refund_ccca_due_in_cents, :refund_grand_total_in_cents, :refund_pva_due_in_cents, :request_by_address, :request_by_id, :request_by_name, :school_year_id
 
   has_many :withdraw_request_details, dependent: :destroy
   belongs_to :request_by, class_name: 'Person', foreign_key: 'request_by_id'
