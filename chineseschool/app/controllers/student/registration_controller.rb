@@ -102,43 +102,6 @@ class Student::RegistrationController < ApplicationController
     @registration_payment.save!
   end
 
-  def withdraw_entry
-    @registration_school_year = SchoolYear.find params[:id].to_i
-    @paid_students = []
-    find_possible_students.each do |student|
-      paid_student_fee_payment = student.find_paid_student_fee_payment_as_student_for(@registration_school_year)
-      unless paid_student_fee_payment.nil?
-        @paid_students << student
-      end
-    end
-  end
-
-  def refund_detail_preview
-    registration_school_year = SchoolYear.find params[:id].to_i
-    withdraw_student_count = 0
-    find_possible_students.each do |student|
-      selected_withdraw_student = params["#{student.id}_withdraw".to_sym]
-      if (!selected_withdraw_student.nil? && selected_withdraw_student == "1")
-        paid_student_fee_payment = student.find_paid_student_fee_payment_as_student_for(registration_school_year)
-        unless paid_student_fee_payment.nil?
-          withdraw_student_count += 1
-        end
-      end
-
-      if withdraw_student_count == 0
-        flash[:notice] = 'No student selected or no fee payment found for selected student!'
-        redirect_to(action: :withdraw_entry, id: registration_school_year) and return
-      end
-    end
-
-    @refund_request = init_refund_request
-
-    if @refund_request.grand_total == 0
-      flash[:notice] = 'No refundable record found.'
-      redirect_to(action: :withdraw_entry, id: registration_school_year) and return
-    end
-  end
-
   private
 
   def create_registration_preferences_for_display_optioins
@@ -329,64 +292,4 @@ class Student::RegistrationController < ApplicationController
     registered_students
   end
 
-  def init_refund_request
-    registration_school_year = SchoolYear.find params[:id].to_i
-    refund_request = RefundRequest.new
-    refund_request.request_by = @user.person
-    refund_request.request_by_name = @user.person.english_name
-    refund_request.request_by_address = @user.person.address.street_address
-    refund_request.school_year = registration_school_year
-    refund_request.approved = false
-    refund_request.approved_by_id = 0
-    refund_request.pva_due_in_cents = 0
-    refund_request.ccca_due_in_cents = 0
-
-    withdraw_student_count = 0
-    find_possible_students.each do |student|
-      selected_withdraw_student = params["#{student.id}_withdraw".to_sym]
-      if (!selected_withdraw_student.nil? && selected_withdraw_student == "1")
-        paid_student_fee_payment = student.find_paid_student_fee_payment_as_student_for(registration_school_year)
-        unless paid_student_fee_payment.nil?
-          withdraw_student_count += 1
-          # refund_detail
-          refund_request_detail = RefundRequestDetail.new
-          refund_request_detail.student_id = student.id
-          refund_request_detail.registration_fee_in_cents = 0
-          if registration_school_year.school_has_started?
-            refund_request_detail.book_charge_in_cents = 0
-          else
-            refund_request_detail.book_charge_in_cents = paid_student_fee_payment.book_charge_in_cents
-          end
-          refund_request_detail.tuition_in_cents = registration_school_year.tuition_in_cents_refund_due(paid_student_fee_payment)
-          refund_request.refund_request_details << refund_request_detail
-        end
-      end
-    end
-
-    earliest_registration_payment = RegistrationPayment.find_earliest_paid_payment_for @user.person.find_families_as_parent[0], registration_school_year
-    paid_student_fee_payments_in_family = find_paid_student_fee_payments_in_family_for registration_school_year
-    paid_student_count = paid_student_fee_payments_in_family.size
-    unless registration_school_year.school_has_started?
-      if paid_student_count - withdraw_student_count >= 2
-        # still have 2 or more students
-        pva_fee_refund_in_cents = 0
-        ccca_fee_refund_in_cents = 0
-      elsif paid_student_count - withdraw_student_count == 1
-        # still have 1 students
-        pva_fee_refund_in_cents = earliest_registration_payment.pva_due_in_cents > registration_school_year.pva_membership_due_in_cents ?
-                             registration_school_year.pva_membership_due_in_cents : earliest_registration_payment.pva_due_in_cents
-        ccca_fee_refund_in_cents = 0
-      elsif paid_student_count - withdraw_student_count <= 0
-        # no registered students any more
-        pva_fee_refund_in_cents = earliest_registration_payment.pva_due_in_cents * paid_student_count > registration_school_year.pva_membership_due_in_cents * 2 ?
-                             registration_school_year.pva_membership_due_in_cents * 2 : earliest_registration_payment.pva_due_in_cents * paid_student_count
-        ccca_fee_refund_in_cents = earliest_registration_payment.ccca_due
-      end
-
-      refund_request.pva_due_in_cents = pva_fee_refund_in_cents
-      refund_request.ccca_due_in_cents = ccca_fee_refund_in_cents
-    end
-    refund_request.caculate_grand_total_in_cents
-    refund_request
-  end
 end
