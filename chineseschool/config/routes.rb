@@ -137,7 +137,9 @@ Chineseschool::Application.routes.draw do
     post 'registration/submit_payment' => 'registration#submit_payment'
     get 'registration/payment_confirmation' => 'registration#payment_confirmation'
     get 'registration/request_in_person_payment' => 'registration#request_in_person_payment'
+
     get 'withdraw/withdraw_entry' => 'withdraw#withdraw_entry'
+    post 'withdraw/submit_withdraw_request' => 'withdraw#submit_withdraw_request'
 
     get 'transaction_history' => 'transaction_history#index'
   end

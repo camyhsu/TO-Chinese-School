@@ -1,8 +1,5 @@
 class Student::WithdrawController < ApplicationController
 
-  #verify :only => [:save_registration_preferences, :payment_entry, :submit_payment] , :method => :post,
-  #    :add_flash => {:notice => 'Illegal GET'}, :redirect_to => {:controller => '/signout', :action => 'index'}
-
   def withdraw_entry
     @registration_school_year = SchoolYear.find params[:id].to_i
     @paid_students = []
@@ -35,7 +32,34 @@ class Student::WithdrawController < ApplicationController
     @withdraw_request = init_withdraw_request
   end
 
+  def submit_withdraw_request
+    withdraw_request = WithdrawRequest.new(params[:withdraw_request])
+    withdraw_request.withdraw_request_details = get_withdraw_request_details_from_params
+
+    if !withdraw_request.save
+      flash[:notice] = 'Error happens when save the record. Please try again later.'
+      return
+    end
+  end
+
+
   private
+
+  def get_withdraw_request_details_from_params
+    withdraw_request_details = []
+    params[:withdraw_request_detail][:student_id].each {|student_id|
+      refund_registration_fee_in_cents = params["#{student_id}_refund_registration_fee_in_cents".to_sym]
+      refund_tuition_in_cents = params["#{student_id}_refund_tuition_in_cents".to_sym]
+      refund_book_charge_in_cents = params["#{student_id}_refund_book_charge_in_cents".to_sym]
+      withdraw_request_detail = WithdrawRequestDetail.new
+      withdraw_request_detail.student_id = student_id
+      withdraw_request_detail.refund_registration_fee_in_cents = refund_registration_fee_in_cents
+      withdraw_request_detail.refund_tuition_in_cents = refund_tuition_in_cents
+      withdraw_request_detail.refund_book_charge_in_cents = refund_book_charge_in_cents
+      withdraw_request_details << withdraw_request_detail
+    }
+    withdraw_request_details
+  end
 
   def find_paid_student_fee_payments_in_family_for(school_year)
     paid_student_fee_payments = []

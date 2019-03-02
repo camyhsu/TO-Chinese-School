@@ -1,6 +1,5 @@
 <% @title = 'Refund Preview' %>
 
-<br/>
 <div class="account-form">
   <% if @withdraw_request.errors.any? %>
       <div id="error_explanation">
@@ -16,6 +15,7 @@
 
     <h3>Refund Preview</h3>
 
+
     <% @withdraw_request.withdraw_request_details.each do |withdraw_request_detail| %>
       <p>
         For <%=h withdraw_request_detail.student.name %>
@@ -26,17 +26,25 @@
           <td class="label">Registration Fee:</td>
           <td><%= number_to_currency withdraw_request_detail.refund_registration_fee %></td>
         </tr>
+
         <tr>
           <td class="label">Tuition:</td>
           <td><%= number_to_currency withdraw_request_detail.refund_tuition %></td>
         </tr>
+
         <tr>
           <td class="label">Books / Material:</td>
           <td><%= number_to_currency withdraw_request_detail.refund_book_charge %></td>
         </tr>
       </table>
+
+      <%= hidden_field_tag "#{withdraw_request_detail.student.id}_refund_registration_fee_in_cents", withdraw_request_detail.refund_registration_fee_in_cents %>
+      <%= hidden_field_tag "#{withdraw_request_detail.student.id}_refund_tuition_in_cents", withdraw_request_detail.refund_tuition_in_cents %>
+      <%= hidden_field_tag "#{withdraw_request_detail.student.id}_refund_book_charge_in_cents", withdraw_request_detail.refund_book_charge_in_cents %>
+      <%= hidden_field_tag "withdraw_request_detail[student_id][]", withdraw_request_detail.student.id %>
       <hr/>
     <% end %>
+
 
     <table class="tuition-detail" border="0px">
       <tr>
@@ -55,6 +63,11 @@
         <td><%= number_to_currency @withdraw_request.refund_grand_total %></td>
       </tr>
     </table>
+    <%= form.hidden_field :refund_pva_due_in_cents %>
+    <%= form.hidden_field :refund_ccca_due_in_cents %>
+    <%= form.hidden_field :refund_grand_total_in_cents %>
+    <%= form.hidden_field :request_by_id %>
+    <%= form.hidden_field :school_year_id %>
     <br/>
 
     <fieldset>
@@ -62,12 +75,12 @@
         <span class="payment-entry">
           <div>
             <label for="request_by_name"><span style="color:red">*&nbsp;</span>Name:</label>
-            <%= form.text_field :request_by_name, size: 50 %>
+            <%= form.text_field :request_by_name, size: 50, required: true %>
           </div>
 
           <div>
             <label for="request_by_address"><span style="color:red">*&nbsp;</span>Address:</label>
-            <%= form.text_field :request_by_address, size: 50 %>
+            <%= form.text_field :request_by_address, size: 50, required: true %>
           </div>
 
           <div><span style="color:red">*&nbsp;</span>Required Field</div>

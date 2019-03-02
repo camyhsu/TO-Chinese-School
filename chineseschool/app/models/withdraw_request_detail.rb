@@ -4,6 +4,8 @@ class WithdrawRequestDetail < ActiveRecord::Base
   belongs_to :withdraw_request
   belongs_to :student, class_name: 'Person', foreign_key: 'student_id'
 
+  validates :student_id, presence: true
+
   def refund_total_in_cents
     self.refund_registration_fee_in_cents + self.refund_book_charge_in_cents + self.refund_tuition_in_cents
   end
