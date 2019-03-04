@@ -1,7 +1,6 @@
 <% @title = 'Withdraw' %>
 
-<% if (flash[:notice]) %>
-<% else %>
+<% unless (flash.now[:notice]) %>
   <p style="font-weight: bold; color: green;">
     Your request has been submitted, an email will be sent to you in several minutes.
   </p>

@@ -172,6 +172,10 @@ student_transaction_history_show_registration_payment = Right.create(name: 'Show
 student_transaction_history_show_registration_payment_for_staff = Right.create(name: 'Show Registration Payment Detail For Staff', controller: 'student/transaction_history', action: 'show_registration_payment_for_staff')
 student_transaction_history_show_manual_transaction = Right.create(name: 'Show Manual Transaction Detail', controller: 'student/transaction_history', action: 'show_manual_transaction')
 
+student_withdraw_withdraw_entry = Right.create(name: 'Withdraw Entry', controller: 'student/withdraw', action: 'withdraw_entry')
+student_withdraw_refund_detail_preview = Right.create(name: 'Refund Detail Preview', controller: 'student/withdraw', action: 'refund_detail_preview')
+student_withdraw_save_withdraw_request = Right.create(name: 'Save Withdraw Request', controller: 'student/withdraw', action: 'save_withdraw_request')
+
 ccca_report_active_family_home_phone_numbers = Right.create(name: 'Active Family Home Phone Numbers', controller: 'ccca/report', action: 'active_family_home_phone_numbers')
 
 library_book_index = Right.create(name: 'List Library Books', controller: 'librarian/library_books', action: 'index')
@@ -435,6 +439,10 @@ student_parent.rights << student_registration_payment_confirmation
 student_parent.rights << student_transaction_history_index
 student_parent.rights << student_transaction_history_show_registration_payment
 student_parent.rights << student_transaction_history_show_manual_transaction
+
+student_parent.rights << student_withdraw_withdraw_entry
+student_parent.rights << student_withdraw_save_withdraw_request
+student_parent.rights << student_withdraw_refund_detail_preview
 
 
 #

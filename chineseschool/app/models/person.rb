@@ -277,6 +277,13 @@ class Person < ActiveRecord::Base
     JerseyNumber.create_new_parent_number_for self
   end
 
+  def find_withdraw_request_for(school_year)
+    withdraw_request_details = WithdrawRequestDetail.all :conditions => ["student_id = ?", self.id]
+    withdraw_request_details.detect do |withdraw_request_detail|
+      withdraw_request_detail.withdraw_request.school_year == school_year && !withdraw_request_detail.withdraw_request.cancelled?
+    end
+  end
+
   private
 
   def baseline_months(year, month)

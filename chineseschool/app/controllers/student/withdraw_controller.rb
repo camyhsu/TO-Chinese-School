@@ -5,7 +5,8 @@ class Student::WithdrawController < ApplicationController
     @paid_students = []
     find_possible_students.each do |student|
       paid_student_fee_payment = student.find_paid_student_fee_payment_as_student_for(@registration_school_year)
-      unless paid_student_fee_payment.nil?
+      withdraw_request = student.find_withdraw_request_for(@registration_school_year)
+      if !paid_student_fee_payment.nil? && withdraw_request.nil?
         @paid_students << student
       end
     end
@@ -23,23 +24,22 @@ class Student::WithdrawController < ApplicationController
         end
       end
     end
-
     if withdraw_student_count == 0
       flash[:notice] = 'No student selected or no fee payment found for selected student!'
       redirect_to(action: :withdraw_entry, id: registration_school_year) and return
     end
-
     @withdraw_request = init_withdraw_request
   end
 
-  def submit_withdraw_request
+  def save_withdraw_request
     withdraw_request = WithdrawRequest.new(params[:withdraw_request])
     withdraw_request.withdraw_request_details = get_withdraw_request_details_from_params
-
-    if !withdraw_request.save
-      flash[:notice] = 'Error happens when save the record. Please try again later.'
+    unless withdraw_request.save
+      flash.now[:notice] = "Error happens when save the record. Please try again later or contact us at #{Contacts::REGISTRATION_CONTACT}."
       return
     end
+    WithdrawalMailer.student_parent_notification(withdraw_request).deliver
+    WithdrawalMailer.registration_notification(withdraw_request).deliver
   end
 
 
@@ -82,7 +82,7 @@ class Student::WithdrawController < ApplicationController
     withdraw_request = WithdrawRequest.new
     withdraw_request.request_by = @user.person
     withdraw_request.request_by_name = @user.person.english_name
-    withdraw_request.request_by_address = @user.person.address.street_address
+    withdraw_request.request_by_address =  @user.person.personal_address.nil? ? '' : @user.person.personal_address.street_address
     withdraw_request.school_year = registration_school_year
     withdraw_request.approved = false
     withdraw_request.cancelled = false
@@ -129,7 +129,7 @@ class Student::WithdrawController < ApplicationController
         # no registered students any more
         pva_fee_refund_in_cents = earliest_registration_payment.pva_due_in_cents * paid_student_count > registration_school_year.pva_membership_due_in_cents * 2 ?
                              registration_school_year.pva_membership_due_in_cents * 2 : earliest_registration_payment.pva_due_in_cents * paid_student_count
-        ccca_fee_refund_in_cents = earliest_registration_payment.ccca_due
+        ccca_fee_refund_in_cents = earliest_registration_payment.ccca_due_in_cents
       end
 
       withdraw_request.refund_pva_due_in_cents = pva_fee_refund_in_cents

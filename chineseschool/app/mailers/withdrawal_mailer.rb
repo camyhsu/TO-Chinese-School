@@ -6,4 +6,15 @@ class WithdrawalMailer < ActionMailer::Base
     @school_class = school_class
     mail to: school_class.current_primary_instructor.personal_email_address, subject: 'Thousand Oaks Chinese School - Student Withdrawal'
   end
+
+  def student_parent_notification(withdraw_request)
+    @withdraw_request = withdraw_request
+    mail to: withdraw_request.request_by.personal_email_address, subject: 'Thousand Oaks Chinese School - Student Withdrawal'
+  end
+
+  def registration_notification(withdraw_request)
+    @withdraw_request = withdraw_request
+    mail to: Contacts::REGISTRATION_CONTACT, subject: 'Thousand Oaks Chinese School - Student Withdrawal'
+  end
+
 end

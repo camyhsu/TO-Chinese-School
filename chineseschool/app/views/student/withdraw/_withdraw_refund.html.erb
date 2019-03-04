@@ -1,0 +1,58 @@
+<div class="account-form">
+  <h3>Refund Preview</h3>
+  <% @withdraw_request.withdraw_request_details.each do |withdraw_request_detail| %>
+    <p>
+      For <%= h withdraw_request_detail.student.name %>:
+      <br/>
+    </p>
+    <table class="tuition-detail" border="0px">
+      <tr>
+        <td class="label">Registration Fee:</td>
+        <td><%= number_to_currency withdraw_request_detail.refund_registration_fee %></td>
+      </tr>
+
+      <tr>
+        <td class="label">Tuition:</td>
+        <td><%= number_to_currency withdraw_request_detail.refund_tuition %></td>
+      </tr>
+
+      <tr>
+        <td class="label">Books / Material:</td>
+        <td><%= number_to_currency withdraw_request_detail.refund_book_charge %></td>
+      </tr>
+    </table>
+    <hr/>
+  <% end %>
+
+
+  <table class="tuition-detail" border="0px">
+    <tr>
+      <td class="label">PVA Annual Membership:</td>
+      <td><%= number_to_currency @withdraw_request.refund_pva_due %></td>
+    </tr>
+    <tr>
+      <td class="label">CCCA Annual Membership:</td>
+      <td><%= number_to_currency @withdraw_request.refund_ccca_due %></td>
+    </tr>
+  </table>
+  <hr/>
+  <table class="tuition-detail" border="0px">
+    <tr>
+      <td class="label">Refund Grand Total:</td>
+      <td><%= number_to_currency @withdraw_request.refund_grand_total %></td>
+    </tr>
+  </table>
+  <br/>
+
+  <fieldset>
+    <legend>Name on Check and Address</legend>
+    <span class="payment-entry">
+          <div>
+            Name: <%= @withdraw_request.request_by_name %>
+          </div>
+         <div>
+            Address: <%= @withdraw_request.request_by_address %>
+          </div>
+        </span>
+  </fieldset>
+</div>
