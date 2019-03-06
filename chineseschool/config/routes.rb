@@ -140,6 +140,7 @@ Chineseschool::Application.routes.draw do
 
     get 'withdraw/withdraw_entry' => 'withdraw#withdraw_entry'
     post 'withdraw/save_withdraw_request' => 'withdraw#save_withdraw_request'
+    get 'withdraw/cancel_withdraw_entry' => 'withdraw#cancel_withdraw_entry'
 
     get 'transaction_history' => 'transaction_history#index'
   end

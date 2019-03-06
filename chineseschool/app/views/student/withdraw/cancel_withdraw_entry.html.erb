@@ -1,0 +1,26 @@
+<% @title = 'Cancel Withdraw Request' %>
+
+<% if @withdraw_requests.nil? or @withdraw_requests.empty? %>
+  <p style="font-weight: bold; color: red;">
+    No withdraw request found.
+    <div><%= link_to 'Home', {controller: '/home'}, {class: 'button'} %></div>
+  </p>
+<% else %>
+  <% @withdraw_requests.each do |withdraw_request| %>
+    <%= render partial: '/student/withdraw/withdraw_refund', locals: {withdraw_request: withdraw_request} %>
+    <div>
+      <% unless (withdraw_request.cancelled? or withdraw_request.approved?) %>
+        <%= link_to 'Cancel Withdraw Request', {action: :submit_cancel_withdraw, id: withdraw_request.id}, {class: 'button'} %>
+      <% end %>
+      <%= link_to 'Back', {controller: '/home'}, {class: 'button'} %>
+    </div>
+    <hr/>
+  <% end %>
+<% end %>
+
+<br>
+<div>Please read
+  <a href="#" onclick="window.open('http://www.to-cs.org/tocs/');">Registraion Overview and Refund Policy</a> or contact
+  <a href="mailto:<%= Contacts::REGISTRATION_CONTACT %>"><%= Contacts::REGISTRATION_CONTACT %></a> for additional
+  questions.
+</div>

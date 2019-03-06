@@ -5,7 +5,7 @@
       <div id="error_explanation">
         <h2><%= pluralize(@refund_request.errors.size, 'error') %> error happens from being processed:</h2>
         <ul>
-          <% @refund_request.errors.full_messages.each do |msg| %>
+          <% @withdraw_request.errors.full_messages.each do |msg| %>
               <li><%= msg %></li> <% end %>
         </ul>
       </div>

@@ -14,7 +14,7 @@
 <div>Dear <%= @withdraw_request.request_by.name %>,</div>
 <div>Your withdraw request has been submitted. Following is the refund information:</div>
 
-<%= render partial: '/student/withdraw/withdraw_refund', object: @withdraw_request %>
+<%= render partial: '/student/withdraw/withdraw_refund', locals: {withdraw_request: @withdraw_request} %>
 
 <br>
 <div>Please read Registraion Overview and Refund Policy at http://www.to-cs.org/tocs or contact

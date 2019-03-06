@@ -26,4 +26,20 @@ class WithdrawRequest < ActiveRecord::Base
   def refund_pva_due
     self.refund_pva_due_in_cents / 100.0
   end
+
+  def self.find_withdraw_request_as_parent_in(school_year, person_id)
+    WithdrawRequest.all :conditions => ["school_year_id = ? and request_by_id = ? ", school_year.id, person_id], :order => 'updated_at DESC'
+  end
+
+  def self.has_withdraw_request_as_parent_in?(school_year, person_id)
+    WithdrawRequest.count(
+        :conditions => ["school_year_id = ? and request_by_id = ? ", school_year.id, person_id]) > 0
+  end
+
+  def status
+    return 'Cancelled' if self.cancelled?
+    return 'Approved' if self.approved?
+    return 'Pending for Approval'
+  end
+
 end

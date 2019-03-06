@@ -5,7 +5,7 @@ class Student::WithdrawController < ApplicationController
     @paid_students = []
     find_possible_students.each do |student|
       paid_student_fee_payment = student.find_paid_student_fee_payment_as_student_for(@registration_school_year)
-      withdraw_request = student.find_withdraw_request_for(@registration_school_year)
+      withdraw_request = student.find_withdraw_request_detail_by_student_for(@registration_school_year)
       if !paid_student_fee_payment.nil? && withdraw_request.nil?
         @paid_students << student
       end
@@ -40,6 +40,22 @@ class Student::WithdrawController < ApplicationController
     end
     WithdrawalMailer.student_parent_notification(withdraw_request).deliver
     WithdrawalMailer.registration_notification(withdraw_request).deliver
+  end
+
+  def cancel_withdraw_entry
+    @withdraw_requests = WithdrawRequest.find_withdraw_request_as_parent_in SchoolYear.current_school_year, @user.person.id
+  end
+
+  def submit_cancel_withdraw
+    withdraw_request = WithdrawRequest.find params[:id].to_i
+    if withdraw_request.nil?
+      logger.warn "Could not find withdraw request with id => #{params[:id]}"
+    else
+      withdraw_request.cancelled = true
+      withdraw_request.save
+    end
+    flash[:notice] = "Your withdraw request has been cancelled."
+    redirect_to controller: '/home'
   end
 
 
