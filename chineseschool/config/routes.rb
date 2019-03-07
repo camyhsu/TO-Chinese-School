@@ -1,6 +1,6 @@
 Chineseschool::Application.routes.draw do
 
-  #resources :products
+   #resources :products
   #get "say/hello"
   #get "say/goodbye"
 
@@ -77,7 +77,9 @@ Chineseschool::Application.routes.draw do
     get 'school_years/toggle_auto_class_assignment' => 'school_years#toggle_auto_class_assignment'
 
     get 'staff_assignments' => 'staff_assignments#index'
-    
+
+    get 'withdraw_requests' => 'withdraw_requests#index'
+
     match 'user_registration/invite' => 'user_registration#invite'
   end
 

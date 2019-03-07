@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20190224031130) do
+ActiveRecord::Schema.define(:version => 20190307114631) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -406,11 +406,10 @@ ActiveRecord::Schema.define(:version => 20190224031130) do
     t.integer  "refund_pva_due_in_cents"
     t.integer  "refund_ccca_due_in_cents"
     t.integer  "refund_grand_total_in_cents"
-    t.boolean  "approved"
-    t.integer  "approved_by_id"
+    t.string   "status_code"
+    t.integer  "status_by_id"
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
-    t.boolean  "cancelled"
   end
 
   create_table "withdrawal_records", :force => true do |t|

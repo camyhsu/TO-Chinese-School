@@ -1,5 +1,5 @@
 <div class="account-form">
-  <h4>Request#: <%= withdraw_request.id%> | Request Date: <%= PacificDate.for_utc(withdraw_request.created_at)%> | Status: <%= withdraw_request.status%></h4>
+  <h4>Request Date: <%= PacificDate.for_utc(withdraw_request.created_at)%> | Status: <%= withdraw_request.status%></h4>
   <h4>Refund Preview</h4>
   <% withdraw_request.withdraw_request_details.each do |withdraw_request_detail| %>
     <p>

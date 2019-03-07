@@ -194,7 +194,7 @@ librarian_search_students_result = Right.create(name: 'Librarian search students
 communication_forms_picture_taking_form = Right.create(name: 'Picture Taking Form', controller: 'communication/forms', action: 'picture_taking_form')
 communication_student_list_for_yearbook = Right.create(name: 'Student List For Yearbook', controller: 'communication/forms', action: 'student_list_for_yearbook')
 
-
+withdraw_requests_index = Right.create(name: 'Manage Withdraw Requests', controller: 'admin/withdraw_requests', action: 'index')
 #
 # Assign rights to Principal
 #
@@ -291,6 +291,8 @@ registration_officer.rights << accounting_in_person_registration_payment_index
 registration_officer.rights << accounting_in_person_registration_payment_entry
 registration_officer.rights << accounting_in_person_registration_payment_remove_pending
 
+registration_officer.rights << withdraw_requests_index
+
 
 #
 # Assign rights to Accounting Officer
@@ -307,6 +309,8 @@ accounting_officer.rights << accounting_manual_transactions_index
 accounting_officer.rights << accounting_manual_transactions_show
 
 accounting_officer.rights << accounting_instructors_discount
+
+accounting_officer.rights << withdraw_requests_index
 
 
 #

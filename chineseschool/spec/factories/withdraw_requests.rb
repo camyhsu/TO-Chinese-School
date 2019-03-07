@@ -7,7 +7,7 @@ FactoryGirl.define do
     refund_pva_due_in_cents 1
     refund_ccca_due_in_cents 1
     refund_grand_total_in_cents 1
-    approved false
-    approved_by_id 1
+    status_code "MyString"
+    status_by_id 1
   end
 end

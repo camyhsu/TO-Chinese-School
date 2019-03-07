@@ -51,7 +51,8 @@ class Student::WithdrawController < ApplicationController
     if withdraw_request.nil?
       logger.warn "Could not find withdraw request with id => #{params[:id]}"
     else
-      withdraw_request.cancelled = true
+      withdraw_request.status_code = WithdrawRequest::STATUS_CANCELLED
+      withdraw_request.status_by_id = @user.person.id
       withdraw_request.save
     end
     flash[:notice] = "Your withdraw request has been cancelled."
@@ -100,9 +101,8 @@ class Student::WithdrawController < ApplicationController
     withdraw_request.request_by_name = @user.person.english_name
     withdraw_request.request_by_address =  @user.person.personal_address.nil? ? '' : @user.person.personal_address.street_address
     withdraw_request.school_year = registration_school_year
-    withdraw_request.approved = false
-    withdraw_request.cancelled = false
-    withdraw_request.approved_by_id = 0
+    withdraw_request.status_code = WithdrawRequest::STATUS_PENDING_FOR_APPROVAL
+    withdraw_request.status_by = @user.person
     withdraw_request.refund_pva_due_in_cents = 0
     withdraw_request.refund_ccca_due_in_cents = 0
 

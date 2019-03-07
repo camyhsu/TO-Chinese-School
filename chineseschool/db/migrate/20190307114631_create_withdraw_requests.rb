@@ -8,8 +8,8 @@ class CreateWithdrawRequests < ActiveRecord::Migration
       t.integer :refund_pva_due_in_cents
       t.integer :refund_ccca_due_in_cents
       t.integer :refund_grand_total_in_cents
-      t.boolean :approved
-      t.integer :approved_by_id
+      t.string :status_code
+      t.integer :status_by_id
 
       t.timestamps
     end

@@ -86,7 +86,10 @@ class RegistrationPayment < ActiveRecord::Base
 
   def self.find_earliest_paid_payment_for(family, school_year)
     self.first :conditions => ['(paid_by_id = ? or paid_by_id = ?) and school_year_id = ? AND paid = true and ccca_due_in_cents > 0',
-                               family.parent_one.id,family.parent_two.id,school_year.id], :order => 'updated_at ASC'
+                               family.parent_one.nil? ? 0 : family.parent_one.id,
+                               family.parent_two.nil? ? 0 : family.parent_two.id,
+                               school_year.id],
+               :order => 'created_at ASC'
   end
 
   def self.find_pending_payments_for(paid_by, school_year)
