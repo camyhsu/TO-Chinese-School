@@ -1,0 +1,18 @@
+<% @title = 'Withdraw Request' %>
+
+<%= render partial: '/student/withdraw/withdraw_refund', locals: {withdraw_request: @withdraw_request} %>
+<br/>
+<div>
+  <% if @user.has_role? Role::ROLE_NAME_REGISTRATION_OFFICER or @user.has_role? Role::ROLE_NAME_SUPER_USER %>
+    <% if (@withdraw_request.cancelled? or @withdraw_request.approved? or @withdraw_request.declined?) %>
+      <%= link_to 'Back', {controller: '/admin/withdraw_requests'}, {class: 'button'} %>
+    <% else %>
+      <%= link_to 'Approve', {action: :approve, id: @withdraw_request.id}, {class: 'button'} %>
+      <%= link_to 'Decline', {action: :decline, id: @withdraw_request.id}, {class: 'button'} %>
+      <%= link_to 'Back', {controller: '/home'}, {class: 'button'} %>
+    <% end %>
+  <% else %>
+    <%= link_to 'Back', {controller: '/admin/withdraw_requests'}, {class: 'button'} %>
+  <% end %>
+</div>
+<br/>

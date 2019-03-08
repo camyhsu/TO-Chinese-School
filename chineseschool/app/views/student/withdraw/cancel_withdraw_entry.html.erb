@@ -9,7 +9,7 @@
   <% @withdraw_requests.each do |withdraw_request| %>
     <%= render partial: '/student/withdraw/withdraw_refund', locals: {withdraw_request: withdraw_request} %>
     <div>
-      <% unless (withdraw_request.cancelled? or withdraw_request.approved?) %>
+      <% unless (withdraw_request.cancelled? or withdraw_request.approved? or withdraw_request.declined?) %>
         <%= link_to 'Cancel Withdraw Request', {action: :submit_cancel_withdraw, id: withdraw_request.id}, {class: 'button'} %>
       <% end %>
       <%= link_to 'Back', {controller: '/home'}, {class: 'button'} %>

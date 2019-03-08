@@ -17,4 +17,9 @@ class WithdrawalMailer < ActionMailer::Base
     mail to: Contacts::REGISTRATION_CONTACT, subject: 'Thousand Oaks Chinese School - Student Withdrawal'
   end
 
+  def accounting_notification(withdraw_request)
+    @withdraw_request = withdraw_request
+    mail to: Contacts::ACCOUNTING_CONTACT, subject: 'Thousand Oaks Chinese School - Student Withdrawal'
+  end
+
 end

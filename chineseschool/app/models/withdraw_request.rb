@@ -44,10 +44,10 @@ class WithdrawRequest < ActiveRecord::Base
   end
 
   def status
-    return 'Cancelled' if self.status_code == STATUS_CANCELLED
-    return 'Approved' if self.status_code == STATUS_APPROVED
-    return 'Declined' if self.status_code == STATUS_DECLINED
-    return 'Pending for Approval'
+    return 'CANCELLED' if self.status_code == STATUS_CANCELLED
+    return 'APPROVED' if self.status_code == STATUS_APPROVED
+    return 'DECLINED' if self.status_code == STATUS_DECLINED
+    return 'PENDING FOR APPROVAL'
   end
 
   def cancelled?
@@ -56,6 +56,10 @@ class WithdrawRequest < ActiveRecord::Base
 
   def approved?
     self.status_code == STATUS_APPROVED
+  end
+
+  def declined?
+    self.status_code == STATUS_DECLINED
   end
 
 end
