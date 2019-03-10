@@ -62,4 +62,53 @@ class WithdrawRequest < ActiveRecord::Base
     self.status_code == STATUS_DECLINED
   end
 
+  def save_with_side_effects?
+    begin
+      WithdrawRequest.transaction do
+        save!
+        move_student_class_assignment_to_withdrawal_record
+      end
+      true
+    rescue => e
+      puts "Approve withdraw request failed - Exception => #{e.inspect}"
+      (errors[:base] << 'System Transaction Failed') if errors.empty?
+      false
+    end
+  end
+
+  def move_student_class_assignment_to_withdrawal_record
+    current_school_year = SchoolYear.current_school_year
+    self.withdraw_request_details.each do |withdraw_request_detail|
+      withdrawal_record = WithdrawalRecord.new
+      withdrawal_record.school_year = current_school_year
+      withdrawal_record.student = withdraw_request_detail.student
+      withdrawal_record.withdrawal_date = self.updated_at
+
+      # Grab the registration time and set the student status to NOT registered
+      student_status_flag = withdraw_request_detail.student.student_status_flag_for current_school_year
+      unless student_status_flag.nil?
+        withdrawal_record.registration_date = student_status_flag.last_status_change_date
+        student_status_flag.registered = false
+        student_status_flag.last_status_change_date = self.updated_at
+        student_status_flag.save!
+      end
+
+      # Move class assignment data to withdrawal record and destroy the class assignment
+      student_class_assignment = withdraw_request_detail.student.student_class_assignment_for current_school_year
+      unless student_class_assignment.nil?
+        withdrawal_record.grade_id = student_class_assignment.grade_id
+        withdrawal_record.school_class_id = student_class_assignment.school_class_id
+        withdrawal_record.elective_class_id = student_class_assignment.elective_class_id
+        student_class_assignment.destroy
+      end
+      withdrawal_record.save!
+
+      # Notify instructors about the withdrawal
+      if PacificDate.tomorrow >= current_school_year.start_date
+        #WithdrawalMailer.instructor_notification(self.student, withdrawal_record.school_class).deliver unless withdrawal_record.school_class.nil?
+        WithdrawalMailer.instructor_notification(withdraw_request_detail.student, withdrawal_record.elective_class).deliver unless withdrawal_record.elective_class.nil?
+      end
+    end
+  end
+
 end
