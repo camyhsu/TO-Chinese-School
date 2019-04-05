@@ -1,28 +1,30 @@
           <div>
             <label for="english_last_name"><span style="color:red">*&nbsp;</span>English Last Name:</label>
-            <%= person_dob_readonly_form.text_field :english_last_name, size: 20 %>
+            <%= person_form.text_field :english_last_name, size: 20 %>
           </div>
           <div>
             <label for="english_first_name"><span style="color:red">*&nbsp;</span>English First Name:</label>
-            <%= person_dob_readonly_form.text_field :english_first_name, size: 20 %>
+            <%= person_form.text_field :english_first_name, size: 20 %>
           </div>
           <div>
             <label for="chinese_name">Chinese Name:</label>
-            <%= person_dob_readonly_form.text_field :chinese_name, size: 8 %>
+            <%= person_form.text_field :chinese_name, size: 8 %>
           </div>
           <div>
             <label for="gender"><span style="color:red">*&nbsp;</span>Gender:</label>
-            <%= person_dob_readonly_form.select :gender, [Person::GENDER_FEMALE, Person::GENDER_MALE] %>
+            <%= person_form.select :gender, [Person::GENDER_FEMALE, Person::GENDER_MALE] %>
           </div>
           <div>
             <label for="birth_year">Birth Year:</label>
-            <%= person_dob_readonly_form.text_field :birth_year, size: 4, :readonly => true %>
+            <%= h person.birth_year %>
+            <%= person_form.hidden_field :birth_year %>
           </div>
           <div>
             <label for="birth_month">Birth Month:</label>
-            <%= person_dob_readonly_form.text_field :birth_month, size: 4, :readonly => true %>
+            <%= h person.birth_month %>
+            <%= person_form.hidden_field :birth_month %>
           </div>
           <div>
             <label for="native_language">Native Language:</label>
-            <%= person_dob_readonly_form.select :native_language, Person::AVAILABLE_NATIVE_LANGUAGE %>
+            <%= person_form.select :native_language, Person::AVAILABLE_NATIVE_LANGUAGE %>
           </div>
