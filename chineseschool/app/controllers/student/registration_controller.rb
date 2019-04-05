@@ -280,4 +280,16 @@ class Student::RegistrationController < ApplicationController
       logger.error "Error sending email to engineering => #{e.inspect}"
     end
   end
+
+  def find_registered_students(registration_school_year)
+    registered_students = []
+    find_possible_students.each do |student|
+      student_status_flag = student.student_status_flag_for registration_school_year
+      if (not student_status_flag.nil? and student_status_flag.registered?)
+        registered_students << student
+      end
+    end
+    registered_students
+  end
+
 end

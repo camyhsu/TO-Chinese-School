@@ -37,7 +37,7 @@ class Registration::ReportController < ApplicationController
     query_result = StudentClassAssignment.connection.select_all 'SELECT fc.family_id, sca.grade_id, sca.student_id FROM student_class_assignments AS sca ' +
                                                           'INNER JOIN families_children AS fc ON sca.student_id = fc.child_id ' +
                                                           'WHERE sca.school_year_id = ' + SchoolYear.current_school_year.id.to_s +
-                                                          ' ORDER BY fc.family_id, sca.grade_id'
+                                                          ' ORDER BY sca.grade_id, sca.school_class_id, fc.family_id'
     @students = []
     previous_result = {}
     query_result.each do |result|

@@ -172,6 +172,12 @@ student_transaction_history_show_registration_payment = Right.create(name: 'Show
 student_transaction_history_show_registration_payment_for_staff = Right.create(name: 'Show Registration Payment Detail For Staff', controller: 'student/transaction_history', action: 'show_registration_payment_for_staff')
 student_transaction_history_show_manual_transaction = Right.create(name: 'Show Manual Transaction Detail', controller: 'student/transaction_history', action: 'show_manual_transaction')
 
+student_withdraw_withdraw_entry = Right.create(name: 'Withdraw Entry', controller: 'student/withdraw', action: 'withdraw_entry')
+student_withdraw_refund_detail_preview = Right.create(name: 'Refund Detail Preview', controller: 'student/withdraw', action: 'refund_detail_preview')
+student_withdraw_save_withdraw_request = Right.create(name: 'Save Withdraw Request', controller: 'student/withdraw', action: 'save_withdraw_request')
+student_withdraw_cancel_withdraw_entry = Right.create(name: 'Cancel Withdraw Request Entry', controller: 'student/withdraw', action: 'cancel_withdraw_entry')
+student_withdraw_submit_cancel_withdraw = Right.create(name: 'Submit Cancel Withdraw', controller: 'student/withdraw', action: 'submit_cancel_withdraw')
+
 ccca_report_active_family_home_phone_numbers = Right.create(name: 'Active Family Home Phone Numbers', controller: 'ccca/report', action: 'active_family_home_phone_numbers')
 
 library_book_index = Right.create(name: 'List Library Books', controller: 'librarian/library_books', action: 'index')
@@ -188,7 +194,10 @@ librarian_search_students_result = Right.create(name: 'Librarian search students
 communication_forms_picture_taking_form = Right.create(name: 'Picture Taking Form', controller: 'communication/forms', action: 'picture_taking_form')
 communication_student_list_for_yearbook = Right.create(name: 'Student List For Yearbook', controller: 'communication/forms', action: 'student_list_for_yearbook')
 
-
+withdraw_requests_index = Right.create(name: 'Manage Withdraw Requests', controller: 'admin/withdraw_requests', action: 'index')
+withdraw_requests_show = Right.create(name: 'Show Withdraw Request Detail', controller: 'admin/withdraw_requests', action: 'show')
+withdraw_requests_approve = Right.create(name: 'Approve Withdraw Request', controller: 'admin/withdraw_requests', action: 'approve')
+withdraw_requests_decline = Right.create(name: 'Decline Withdraw Request', controller: 'admin/withdraw_requests', action: 'decline')
 #
 # Assign rights to Principal
 #
@@ -285,6 +294,11 @@ registration_officer.rights << accounting_in_person_registration_payment_index
 registration_officer.rights << accounting_in_person_registration_payment_entry
 registration_officer.rights << accounting_in_person_registration_payment_remove_pending
 
+registration_officer.rights << withdraw_requests_index
+registration_officer.rights << withdraw_requests_show
+registration_officer.rights << withdraw_requests_approve
+registration_officer.rights << withdraw_requests_decline
+
 
 #
 # Assign rights to Accounting Officer
@@ -301,6 +315,9 @@ accounting_officer.rights << accounting_manual_transactions_index
 accounting_officer.rights << accounting_manual_transactions_show
 
 accounting_officer.rights << accounting_instructors_discount
+
+accounting_officer.rights << withdraw_requests_index
+accounting_officer.rights << withdraw_requests_show
 
 
 #
@@ -435,6 +452,12 @@ student_parent.rights << student_registration_payment_confirmation
 student_parent.rights << student_transaction_history_index
 student_parent.rights << student_transaction_history_show_registration_payment
 student_parent.rights << student_transaction_history_show_manual_transaction
+
+student_parent.rights << student_withdraw_withdraw_entry
+student_parent.rights << student_withdraw_save_withdraw_request
+student_parent.rights << student_withdraw_refund_detail_preview
+student_parent.rights << student_withdraw_cancel_withdraw_entry
+student_parent.rights << student_withdraw_submit_cancel_withdraw
 
 
 #

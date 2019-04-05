@@ -1,0 +1,10 @@
+<% @title = 'Withdraw' %>
+
+<% unless (flash.now[:notice]) %>
+  <p style="font-weight: bold; color: green;">
+    Your request has been submitted, an email will be sent to you in several minutes.
+  </p>
+<% end %>
+
+<br>
+<div><%= link_to 'Home', {controller: '/home'}, {class: 'button'} %></div>

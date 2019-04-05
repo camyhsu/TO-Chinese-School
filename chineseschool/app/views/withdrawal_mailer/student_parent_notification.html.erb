@@ -1,0 +1,58 @@
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+  <link href="https://www.to-cs.org/chineseschool/stylesheets/layout.css" rel="stylesheet" type="text/css"/>
+  <style type="text/css">
+    .account-form div {
+      margin: 0.5em 0;
+    }
+
+    .tuition-detail td {
+      width: 5em;
+      float: left;
+      text-align: right;
+    }
+
+    .tuition-detail .label {
+      width: 25em;
+      float: left;
+      font-weight: bold;
+      text-align: right;
+      margin-right: 0.5em;
+    }
+
+    .account-form fieldset {
+      background: #efe;
+    }
+
+    .account-form legend {
+      color: #dfd;
+      background: #00853f;
+      font-family: sans-serif;
+      padding: 0.2em 1em;
+    }
+  </style>
+</head>
+<body>
+<div>Dear <%= @withdraw_request.request_by.name %>,</div>
+<% if @withdraw_request.approved? %>
+  <div>Your following withdraw request has been APPROVED. We will send you the refund by check as soon as possible.</div>
+<% elsif @withdraw_request.declined? %>
+  <div>Your following withdraw request has been DECLINED.</div>
+<% else %>
+  <div>Your following withdraw request has been SUBMITTED. We will review your request as soon as possible.</div>
+<% end %>
+
+<%= render partial: '/student/withdraw/withdraw_refund', locals: {withdraw_request: @withdraw_request} %>
+
+<br>
+<div>Please read Registraion Overview and Refund Policy at http://www.to-cs.org/tocs or contact
+  <a href="mailto:<%= Contacts::REGISTRATION_CONTACT %>"><%= Contacts::REGISTRATION_CONTACT %></a> for additional
+  questions.
+</div>
+<br>
+Regards,
+Thousand Oaks Chinese School
+</body>
+</html>
+

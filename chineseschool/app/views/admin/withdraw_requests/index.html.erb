@@ -1,0 +1,32 @@
+<% @title = 'Withdraw Requests' %>
+
+<table border="1px">
+  <thead>
+  <tr>
+    <th>School Year</th>
+    <th>Request Date</th>
+    <th>Request By</th>
+    <th>Refund Grand Total</th>
+    <th>Status</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @withdraw_requests.each do |withdraw_request| -%>
+    <tr>
+      <td><%=h withdraw_request.school_year.name %></td>
+      <td><%=h PacificDate.for_utc withdraw_request.created_at %></td>
+      <td><%=h withdraw_request.request_by.name %></td>
+      <td><%=h number_to_currency withdraw_request.refund_grand_total %></td>
+      <td><%=h withdraw_request.status %></td>
+      <td>
+        <%= link_to 'Details', {action: 'show', id: withdraw_request}, {class: 'button'} %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br/>
+<%= link_to 'Back', {controller: '/home'}, {class: 'button'} %>
+<br/>

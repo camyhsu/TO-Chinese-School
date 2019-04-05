@@ -109,6 +109,25 @@ class SchoolYear < ActiveRecord::Base
     self.previous_school_year = SchoolYear.first :conditions => ["end_date <= ?", self.start_date], :order => 'end_date DESC'
   end
 
+  def tuition_in_cents_refund_due(paid_student_fee_payment)
+    if !self.school_has_started?
+      tuition_in_cents_refund = paid_student_fee_payment.tuition_in_cents
+    elsif !self.refund_end_date && PacificDate.today > self.refund_end_date
+      tuition_in_cents_refund = 0
+    elsif !self.refund_25_percent_date.nil? && PacificDate.today > self.refund_25_percent_date
+      tuition_in_cents_refund = paid_student_fee_payment.tuition_in_cents * 0.25
+    elsif !self.refund_50_percent_date.nil? && PacificDate.today > self.refund_50_percent_date
+      tuition_in_cents_refund = paid_student_fee_payment.tuition_in_cents * 0.5
+    elsif !self.refund_75_percent_date.nil? && PacificDate.today > self.refund_75_percent_date
+      tuition_in_cents_refund = paid_student_fee_payment.tuition_in_cents * 0.75
+    elsif !self.refund_90_percent_date.nil? && PacificDate.today > self.refund_90_percent_date
+      tuition_in_cents_refund = paid_student_fee_payment.tuition_in_cents * 0.9
+    else
+      tuition_in_cents_refund = paid_student_fee_payment.tuition_in_cents
+    end
+    tuition_in_cents_refund
+  end
+
   def self.current_school_year
     self.find_current_and_future_school_years[0]
   end
@@ -123,6 +142,10 @@ class SchoolYear < ActiveRecord::Base
 
   def self.find_active_registration_school_years
     self.all :conditions => ['early_registration_start_date <= ? AND registration_end_date >= ?', PacificDate.today, PacificDate.today], :order => 'start_date ASC'
+  end
+
+  def self.find_active_refund_school_years
+    self.all :conditions => ['refund_end_date > ?', PacificDate.today], :order => 'start_date ASC'
   end
   
   def school_has_started?

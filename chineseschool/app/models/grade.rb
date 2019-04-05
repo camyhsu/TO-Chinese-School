@@ -64,20 +64,26 @@ class Grade < ActiveRecord::Base
     puts "#{Time.now} - Random assign grade class for Grade #{self.name}"
     class_type_to_classes = Hash.new { |hash, key| hash[key] = [] }
     self.active_grade_classes.each { |grade_class| class_type_to_classes[grade_class.school_class_type] << grade_class }
-    
+
+    # assign twins to same grade class first
+    family_sibings = family_sibling_in_same_grade(self.id, school_year.id)
+    family_sibings.each_value do |students|
+      student = students[0]
+      class_assignment = student.student_class_assignment_for(school_year)
+      assign_class_for_single_student(class_assignment, class_type_to_classes, school_year)
+
+      # assign sibings to same class
+      students[1,students.size].each do |student2|
+        class_assignment2 = student2.student_class_assignment_for(school_year)
+        class_assignment2.school_class = class_assignment.school_class
+        puts "ERROR - could not save school class assignment => #{class_assignment2.id}" unless class_assignment2.save
+      end
+    end
+
+    # assign other students
     class_assignments = self.student_class_assignments.all :conditions => ['school_year_id = ? AND school_class_id IS NULL', school_year.id]
     class_assignments.each do |class_assignment|
-      student = class_assignment.student
-      desired_class_type = student.registration_preference_for(school_year).school_class_type
-      assignable_classes = class_type_to_classes[desired_class_type]
-      if assignable_classes.empty?
-        puts "ERROR - could not find assignable classes for student id => #{student.id} for class type <<#{desired_class_type}>>"
-      else
-        class_picked = pick_school_class_with_lowest_head_count_from assignable_classes, student.gender
-        puts "Class picked for student id => #{student.id} is #{class_picked.name}"
-        class_assignment.school_class = class_picked
-        puts "ERROR - could not save school class assignment => #{class_assignment.id}" unless class_assignment.save
-      end
+      assign_class_for_single_student(class_assignment, class_type_to_classes, school_year)
     end
   end
 
@@ -112,7 +118,20 @@ class Grade < ActiveRecord::Base
 
 
   private
-  
+  def assign_class_for_single_student(class_assignment, class_type_to_classes, school_year)
+    student = class_assignment.student
+    desired_class_type = student.registration_preference_for(school_year).try(:school_class_type)
+    assignable_classes = class_type_to_classes[desired_class_type]
+    if assignable_classes.empty?
+      puts "ERROR - could not find assignable classes for student id => #{student.id} for class type <<#{desired_class_type}>>"
+    else
+      class_picked = pick_school_class_with_lowest_head_count_from assignable_classes, student.gender
+      puts "Class picked for student id => #{student.id} is #{class_picked.name}"
+      class_assignment.school_class = class_picked
+      puts "ERROR - could not save school class assignment => #{class_assignment.id}" unless class_assignment.save
+    end
+  end
+
   def pick_school_class_with_lowest_head_count_from(school_classes, gender)
     return school_classes[0] if school_classes.size == 1
     current_school_class_picked = school_classes[0]
@@ -125,5 +144,26 @@ class Grade < ActiveRecord::Base
       end
     end
     current_school_class_picked
+  end
+
+
+  def family_sibling_in_same_grade(grade_id, school_year_id)
+    query_result = StudentClassAssignment.connection.select_all 'SELECT fc.family_id, sca.grade_id, sca.student_id FROM student_class_assignments AS sca ' +
+                                                                    'INNER JOIN families_children AS fc ON sca.student_id = fc.child_id ' +
+                                                                    'WHERE sca.school_year_id = ' + school_year_id.to_s +
+                                                                    'AND sca.grade_id = ' + grade_id.to_s +
+                                                                    ' ORDER BY fc.family_id, sca.grade_id'
+    family_sibings = Hash.new { |hash, key| hash[key] = [] }
+    previous_result = {}
+    query_result.each do |result|
+      if (result['family_id'] == previous_result['family_id']) && (result['grade_id'] == previous_result['grade_id'])
+        family_sibings[result['family_id']] << Person.find(result['student_id'].to_i)
+        previous_student = Person.find(previous_result['student_id'].to_i)
+        family_sibings[result['family_id']] << previous_student unless family_sibings[result['family_id']].include?(previous_student)
+      else
+        previous_result = result
+      end
+    end
+    family_sibings
   end
 end
