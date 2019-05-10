@@ -12,9 +12,8 @@
 </head>
 <body>
 <div>Dear Registration Staff,</div>
-<div>A withdraw request has been made by <%= @withdraw_request.request_by.name %>. Following is the refund information:</div>
+<div>A withdraw request has been made by <%= @withdraw_request.request_by.name %>, please login system to check details.</div>
 
-<%= render partial: '/student/withdraw/withdraw_refund', locals: {withdraw_request: @withdraw_request} %>
 
 <br>
 Regards,

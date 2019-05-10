@@ -12,10 +12,7 @@
 </head>
 <body>
 <div>Dear Accounting Staff,</div>
-<div>A withdraw request has been made by <%= @withdraw_request.request_by.name %> and approved by <%= @withdraw_request.status_by.name %>, following is the refund information:</div>
-
-<%= render partial: '/student/withdraw/withdraw_refund', locals: {withdraw_request: @withdraw_request} %>
-
+<div>A withdraw request has been made by <%= @withdraw_request.request_by.name %> and approved by <%= @withdraw_request.status_by.name %>, please login system to check details.</div>
 <br>
 Regards,
 Thousand Oaks Chinese School

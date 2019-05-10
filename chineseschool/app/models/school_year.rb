@@ -5,7 +5,7 @@ class SchoolYear < ActiveRecord::Base
   TRACK_EVENT_SIGN_UP_START_DATE = Date.parse('2018-01-27')
   TRACK_EVENT_SIGN_UP_END_DATE = Date.parse('2018-03-04')
 
-  STUDENT_FINAL_MARK_DEADLINE = Date.parse('2017-05-25')
+  STUDENT_FINAL_MARK_DEADLINE = Date.parse('2019-05-25')
 
   # as of 2017-2018 school year
   # :registration_50_percent_date, :refund_75_percent_date, :refund_25_percent_date are no longer used
