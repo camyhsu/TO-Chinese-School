@@ -1,6 +1,6 @@
 Chineseschool::Application.routes.draw do
 
-  #resources :products
+   #resources :products
   #get "say/hello"
   #get "say/goodbye"
 
@@ -77,7 +77,9 @@ Chineseschool::Application.routes.draw do
     get 'school_years/toggle_auto_class_assignment' => 'school_years#toggle_auto_class_assignment'
 
     get 'staff_assignments' => 'staff_assignments#index'
-    
+
+    get 'withdraw_requests' => 'withdraw_requests#index'
+
     match 'user_registration/invite' => 'user_registration#invite'
   end
 
@@ -137,6 +139,10 @@ Chineseschool::Application.routes.draw do
     post 'registration/submit_payment' => 'registration#submit_payment'
     get 'registration/payment_confirmation' => 'registration#payment_confirmation'
     get 'registration/request_in_person_payment' => 'registration#request_in_person_payment'
+
+    get 'withdraw/withdraw_entry' => 'withdraw#withdraw_entry'
+    post 'withdraw/save_withdraw_request' => 'withdraw#save_withdraw_request'
+    get 'withdraw/cancel_withdraw_entry' => 'withdraw#cancel_withdraw_entry'
 
     get 'transaction_history' => 'transaction_history#index'
   end

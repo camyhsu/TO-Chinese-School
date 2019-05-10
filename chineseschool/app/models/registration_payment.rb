@@ -80,6 +80,18 @@ class RegistrationPayment < ActiveRecord::Base
     self.all :conditions => ['paid = true AND updated_at >= ? AND updated_at < ?', PacificDate.start_time_utc_for(date), PacificDate.start_time_utc_for(date + 1)], :order => 'updated_at DESC'
   end
 
+  def self.find_paid_payments_for(paid_by, school_year)
+    self.all :conditions => ['paid_by_id = ? and school_year_id = ? AND paid = true', paid_by.id, school_year.id], :order => 'updated_at DESC'
+  end
+
+  def self.find_earliest_paid_payment_for(family, school_year)
+    self.first :conditions => ['(paid_by_id = ? or paid_by_id = ?) and school_year_id = ? AND paid = true and ccca_due_in_cents > 0',
+                               family.parent_one.nil? ? 0 : family.parent_one.id,
+                               family.parent_two.nil? ? 0 : family.parent_two.id,
+                               school_year.id],
+               :order => 'created_at ASC'
+  end
+
   def self.find_pending_payments_for(paid_by, school_year)
     self.all :conditions => ['paid_by_id = ? AND school_year_id = ? AND paid = false', paid_by.id, school_year.id], :order => 'updated_at DESC'
   end

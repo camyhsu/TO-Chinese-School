@@ -41,10 +41,10 @@ class ManualTransaction < ActiveRecord::Base
   
   def find_available_transaction_types
     available_transaction_types = []
-    student_status_flag = self.student.student_status_flag_for SchoolYear.current_school_year
-    if student_status_flag && student_status_flag.registered?
-      available_transaction_types << TRANSACTION_TYPE_WITHDRAWAL
-    end
+    #student_status_flag = self.student.student_status_flag_for SchoolYear.current_school_year
+    #if student_status_flag && student_status_flag.registered?
+    #  available_transaction_types << TRANSACTION_TYPE_WITHDRAWAL
+    #end
     available_transaction_types << TRANSACTION_TYPE_TEXTBOOK_PURCHASE
     available_transaction_types << TRANSACTION_TYPE_OTHER_PAYMENT
     available_transaction_types << TRANSACTION_TYPE_OTHER_REFUND

@@ -13,9 +13,13 @@
 
   <%= form_for @person, url: { action: :edit } do |form| %>
     <fieldset>
-        <legend>Edit Person</legend>
-        <span class="person-edit">
-          <%= render partial: '/registration/people/person_form', object: form %>
+      <legend>Edit Person</legend>
+      <span class="person-edit">
+          <% if @person.nil? or @user.has_role? Role::ROLE_NAME_REGISTRATION_OFFICER or @user.has_role? Role::ROLE_NAME_SUPER_USER or (!@person.is_a_child?)  %>
+            <%= render partial: '/registration/people/person_form', object: form %>
+          <% else %>
+            <%= render partial: '/registration/people/person_dob_readonly_form', locals: {person: @person, person_form: form} %>
+          <% end %>
           <span style="color:red">*&nbsp;</span>Required Field
           <div>
             <%= submit_tag 'Save', class: 'submit' %>

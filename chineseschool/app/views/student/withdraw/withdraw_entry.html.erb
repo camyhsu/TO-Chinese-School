@@ -1,0 +1,82 @@
+<% @title = 'Withdraw' %>
+
+<% if @paid_students.empty? %>
+  <p style="font-weight: bold; color: red;">
+    No eligible students found - please contact registration@to-cs.org for special case.
+  </p>
+<% else %>
+  <h3>Students Already Paid for <%= h @registration_school_year.name %> School Year, Please Select to
+    Withdraw</h3>
+  <%= form_tag action: 'refund_detail_preview', id: @registration_school_year do %>
+    <% if @registration_school_year.school_has_started? %>
+      <table class="registration-options-class-assignment-table" border="0px">
+        <thead>
+        <tr>
+          <th width="1%"></th>
+          <th>Name</th>
+          <th><%= h @registration_school_year.name %> Grade</th>
+          <th>School Class</th>
+          <th>Elective Class</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @paid_students.each do |paid_student| -%>
+          <% student_class_assignment = paid_student.student_class_assignment_for(@registration_school_year) %>
+          <tr>
+            <td class="checkbox">
+              <%= check_box_tag "#{paid_student.id}_withdraw" %>
+            </td>
+            <td><%= h paid_student.name %></td>
+            <td><%= h student_class_assignment.try(:grade).try(:name) %></td>
+            <td><%= h student_class_assignment.try(:school_class).try(:name) %></td>
+            <td><%= h student_class_assignment.try(:elective_class).try(:name) %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td></td>
+          <td colspan="4" style="padding-top: 1em; text-align: left;">
+            <%= submit_tag 'Continue', class: 'button' %>
+            <%= link_to 'Back', {controller: '/home'}, {class: 'button'} %>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    <% else %>
+      <table class="registration-options-table" border="0px">
+        <thead>
+        <tr>
+          <th width="1%"></th>
+          <th>Name</th>
+          <th><%= h @registration_school_year.name %> Grade</th>
+          <th>Preferred School Class Type</th>
+          <th>Preferred Elective Class</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @paid_students.each do |paid_student| -%>
+          <% registration_preference = paid_student.registration_preference_for(@registration_school_year) %>
+          <tr>
+            <td class="checkbox">
+              <%= check_box_tag "#{paid_student.id}_withdraw" %>
+            </td>
+            <td><%= h paid_student.name %></td>
+            <td><%= h registration_preference.try(:grade).try(:name) %></td>
+            <td><%= h registration_preference.try(:school_class_type) %></td>
+            <td><%= h registration_preference.try(:elective_class).try(:name) %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td></td>
+          <td colspan="4" style="padding-top: 1em; text-align: left;">
+            <%= submit_tag 'Continue', class: 'button' %>
+            <%= link_to 'Back', {controller: '/home'}, {class: 'button'} %>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    <% end %>
+  <% end %>
+<% end %>
+<br>
+<div>Please read <a href="#" onclick="window.open('http://www.to-cs.org/tocs/');">Registraion Overview and Refund Policy</a> or contact <a href="mailto:<%= Contacts::REGISTRATION_CONTACT %>"><%= Contacts::REGISTRATION_CONTACT %></a> for additional questions.
+</div>
