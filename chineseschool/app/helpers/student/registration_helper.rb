@@ -5,6 +5,7 @@ module Student::RegistrationHelper
     return 'S(簡)' if school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_SIMPLIFIED
     return 'T(繁)' if school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_TRADITIONAL
     return 'SE(雙語)' if school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION
+    return 'EC(實用中文)' if school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE
     school_class_type
   end
 
