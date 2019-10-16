@@ -4,41 +4,33 @@
 
 <ul>
   <li>
-    Grade is determined by the follow rules:
+    School Grade Placement:
     <ol>
       <li>
-        If a student attended school in <%=h @previous_school_year.name %>,
-        the grade for <%=h @registration_school_year.name %> would be the following grade in natural order.
+        A new student would enroll in the age-appropriate grade.
       </li>
       <li>
-        If the following grade is not available, the grade would be the highest grade available.
+        A returning student is automatically assigned to one grade higher than their previous grade at Chinese School.
       </li>
       <li>
-        If a student did not attend school in <%=h @previous_school_year.name %>,
-        the grade for <%=h @registration_school_year.name %> would be assigned based on school age.
-      </li>
-      <li>
-        If the age based grade is not available, the grade would be the highest grade available.
-      </li>
-      <li>
-        Children in the family not within school age and did not attend school in <%=h @previous_school_year.name %> are not eligible for registration.
+        A new student must be at age 5 or beyond to be eligible for registration.
       </li>
     </ol>
   </li>
   <li>
-    Please select the desired language class type (available types may vary by grade):
+    School/Language class type (available types may vary by grade):
     <ul>
-      <li><b>S</b> - 簡體中文(Simplified Chinese)</li>
-      <li><b>T</b> - 繁體中文(Traditional Chinese)</li>
-      <li><b>SE</b> - 雙語(Simplified Chinese with English Instructions)</li>
+      <li><b>S</b> - Simplified Chinese (簡體中文)</li>
+      <li><b>T</b> - Traditional Chinese (繁體中文)</li>
+      <li><b>SE</b> - Simplified Chinese with English Instructions (雙語)</li>
+      <li><b>EC</b> - Everyday Chinese (<a href="https://www.to-cs.org/tocs/?p=4091" target="_blank">實用中文</a>)</li>
     </ul>
   </li>
   <li>
-    Elective class is only available for 1st grade or above.  Selections are First Come, First Serve,
-    until a class is full.
+    Elective class is only available for 1st grade or above. Seats are limited. Availability for selection is on a first-come, first served basis.
   </li>
   <li>
-    Please read <a href="http://www.to-cs.org/tocs/">Registraion Overview and Refund Policy</a> or contact registration@to-cs.org for additional questions.
+    For additional information, please read <a href="http://www.to-cs.org/tocs/" target="_blank">Registraion Overview and Refund Policy</a> or contact registration@to-cs.org for any questions.
   </li>
   <% if @registration_preferences.any? {|registration_preference|  (Grade.grade_preschool == registration_preference.grade) || (Grade.grade_preschool.next_grade == registration_preference.grade)} %>
       <li>
@@ -52,18 +44,6 @@
         <br/><span style="color: blue">Please email to <%= Contacts::REGISTRATION_CONTACT %> if there are questions.</span></br>
       </li>
   <% end %>
-  <li>
-    千橡中文学校将于2019-2020 学年开始对非华語背景学生的双语教学做出全新整合，班级改名为实用中文班，教材以生活实用内容为主轴，招生学生对象为：<br>年满5岁及以上，
-    來自非华语家庭，且已熟悉英文字母和拼读的孩子。 实用中文班共有三个阶段，三个阶段完成后将获颁“实用中文”结业证明一份，并可依程度转入普通中文班就讀。
-    <br>
-    TOCS will be offering a new bilingual program for the beginning of the 2019-2020 school year. The new program will
-    be entitled "Everyday Chinese" <br>and will provide the students at a young age with the ability to acquire the basic
-    skills of speaking, listening, reading, simple writing and communication in Mandarin. <br>This program is designed for
-    students from non-native Mandarin-speaking families. Students must have a basic phonics foundation and know their
-    alphabet. <br>The program consists of three levels and a certificate will be given to the student completing all three
-    levels. Upon completion the program the students may be <br>admitted to the regular Chinese school classes if they pass
-    the placement test.
-  </li>
 </ul>
 <% if @registration_preferences.any? {|registration_preference| registration_preference.grade_full?} %>
 <p style="color: red;">
