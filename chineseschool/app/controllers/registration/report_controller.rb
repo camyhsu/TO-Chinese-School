@@ -9,10 +9,22 @@ class Registration::ReportController < ApplicationController
       add_payment_to summary_entry, paid_payment
     end
     @registration_summaries = registration_summary_hash.sort { |a, b| b[0] <=> a[0]}
+
     @student_count_total = 0
+    @payment_total_registration_in_cents = 0
+    @payment_total_tuition_in_cents = 0
+    @payment_total_book_charge_in_cents = 0
+    @payment_total_pva_due_in_cents = 0
+    @payment_total_ccca_due_in_cents = 0
     @payment_total_in_cents = 0
+
     @registration_summaries.each do |summary|
       @student_count_total += summary[1][:student_count]
+      @payment_total_registration_in_cents += summary[1][:total_registration_in_cents]
+      @payment_total_tuition_in_cents += summary[1][:total_tuition_in_cents]
+      @payment_total_book_charge_in_cents += summary[1][:total_book_charge_in_cents]
+      @payment_total_pva_due_in_cents += summary[1][:total_pva_due_in_cents]
+      @payment_total_ccca_due_in_cents += summary[1][:total_ccca_due_in_cents]
       @payment_total_in_cents += summary[1][:total_amount_in_cents]
     end
   end
@@ -56,14 +68,25 @@ class Registration::ReportController < ApplicationController
   def find_or_create_summary_entry(payment_date, registration_summary_hash)
     summary_entry = registration_summary_hash[payment_date]
     if summary_entry.nil?
-      summary_entry = {student_count: 0, total_amount_in_cents: 0}
+      summary_entry = {student_count: 0, total_registration_in_cents: 0, total_tuition_in_cents: 0,
+                       total_book_charge_in_cents: 0, total_pva_due_in_cents: 0, total_ccca_due_in_cents: 0,
+                       total_amount_in_cents: 0}
       registration_summary_hash[payment_date] = summary_entry
     end
     summary_entry
   end
 
   def add_payment_to(summary_entry, paid_payment)
+    if not paid_payment.student_fee_payments.nil?
+      paid_payment.student_fee_payments.each do |student_fee_payment|
+        summary_entry[:total_registration_in_cents] += student_fee_payment.registration_fee_in_cents
+        summary_entry[:total_tuition_in_cents] += student_fee_payment.tuition_in_cents
+        summary_entry[:total_book_charge_in_cents] += student_fee_payment.book_charge_in_cents
+      end
+    end
     summary_entry[:total_amount_in_cents] += paid_payment.grand_total_in_cents
+    summary_entry[:total_pva_due_in_cents] += paid_payment.pva_due_in_cents
+    summary_entry[:total_ccca_due_in_cents] += paid_payment.ccca_due_in_cents
     # This assumes that there are no mixed pay / refund payments
     if paid_payment.grand_total_in_cents < 0
       summary_entry[:student_count] -= paid_payment.student_fee_payments.size
