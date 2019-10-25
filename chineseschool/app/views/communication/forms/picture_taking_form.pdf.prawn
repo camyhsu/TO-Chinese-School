@@ -3,7 +3,7 @@
 prawn_document(filename: 'picture_taking_form.pdf') do |pdf|
   pdf.font "#{Rails.root}/lib/data/fonts/ArialUnicode.ttf"
 
-  header = [ 'No', 'Student Name', 'Gender', 'Picture ID', 'Notes' ]
+  header = [ 'No', 'Student Name', 'Gender', 'Student ID', 'Notes' ]
 
   @sorted_school_classes.each do |school_class|
     pdf.font_size 16 do
@@ -32,7 +32,7 @@ prawn_document(filename: 'picture_taking_form.pdf') do |pdf|
       row << (i + 1)
       row << student.name
       row << student.gender
-      row << ''
+      row << student.id
       row << one_twenty_spaces
       data << row
     end
