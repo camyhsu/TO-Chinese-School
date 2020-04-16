@@ -18,10 +18,10 @@ require 'csv'
 CURRENT_SCHOOL_YEAR_ID = 12
 
 DB_HOST = 'localhost'
-DB_USER = 'tocsorg_camyhsu'
+DB_USER = 'tocsorg_registration'
 DB_PASSWORD = ''
 
-DEV_DB = Sequel.connect "postgres://#{DB_USER}:#{DB_PASSWORD}@#{DB_HOST}/chineseschool_development"
+DEV_DB = Sequel.connect "postgres://#{DB_USER}:#{DB_PASSWORD}@#{DB_HOST}/registration"
 
 student_sql_statement =<<EOSQL
 SELECT people.id
