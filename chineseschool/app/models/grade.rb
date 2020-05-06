@@ -49,7 +49,9 @@ class Grade < ActiveRecord::Base
   
   def find_available_school_class_types(school_year)
     school_class_types = self.active_grade_classes(school_year).collect { |active_school_class| active_school_class.school_class_type }
-    school_class_types.uniq.compact.sort
+    school_class_types_1 = school_class_types.uniq.compact.sort
+    # MOVE EC TO LAST POSITION
+    school_class_types_1.include?('EC') ? school_class_types_1 - ['EC'] + ['EC'] : school_class_types_1
   end
 
   def allowed_max_student_count(school_year)
@@ -149,7 +151,7 @@ class Grade < ActiveRecord::Base
 
   def family_sibling_in_same_grade(grade_id, school_year_id)
     query_result = StudentClassAssignment.connection.select_all 'SELECT fc.family_id, sca.grade_id, sca.student_id FROM student_class_assignments AS sca ' +
-                                                                    'INNER JOIN families_children AS fc ON sca.student_id = fc.child_id ' +
+                                                                    'INNER JOIN families_children AS fc ON sca.student_id = fc.child_id and sca.school_class_id IS NULL ' +
                                                                     'WHERE sca.school_year_id = ' + school_year_id.to_s +
                                                                     'AND sca.grade_id = ' + grade_id.to_s +
                                                                     ' ORDER BY fc.family_id, sca.grade_id'
