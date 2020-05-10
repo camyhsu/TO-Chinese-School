@@ -113,9 +113,15 @@ become available.
               <% else %>
                 <% available_school_class_types = registration_preference.grade.find_available_school_class_types(registration_preference.school_year) %>
                 <% previous_school_year_class_assignment = student.student_class_assignment_for @registration_school_year.previous_school_year %>
-                <% if !previous_school_year_class_assignment.nil? && previous_school_year_class_assignment.school_class.grade_id == 2 && previous_school_year_class_assignment.school_class.school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>
-                  <% available_school_class_types.clear %>
-                  <% available_school_class_types << SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>
+                <!--if previous grade is EC1, then only EC2 can be selected this year.-->
+                <!--if previous grade is not EC1, then EC2 is not avaliable this year-->
+                <% if !previous_school_year_class_assignment.nil? && previous_school_year_class_assignment.school_class.grade_id == 2 %>
+                  <% if previous_school_year_class_assignment.school_class.school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>
+                    <% available_school_class_types.clear %>
+                    <% available_school_class_types << SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>
+                  <% else %>
+                    <% available_school_class_types.delete('EC') %>
+                  <% end %>
                 <% end %>
 
                 <% if available_school_class_types.empty? %>
