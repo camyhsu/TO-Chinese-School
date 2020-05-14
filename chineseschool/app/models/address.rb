@@ -8,6 +8,8 @@ class Address < ActiveRecord::Base
   validates :street, :city, :state, :zipcode, :home_phone, :email, presence: true
 
   validates :zipcode, numericality: {only_integer: true, less_than: 100000}
+  # saved phone format is (xxx) xxx-xxxx, so here the length validation should be 14
+  validates_length_of :home_phone, :is => 14, :wrong_length => '- length must be 10'
 
 
   def home_phone

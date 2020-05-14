@@ -112,6 +112,18 @@ become available.
                 <span style="font-weight: bold; color: red;"><%= registration_preference.grade.name %> is FULL</span>
               <% else %>
                 <% available_school_class_types = registration_preference.grade.find_available_school_class_types(registration_preference.school_year) %>
+                <% previous_school_year_class_assignment = student.student_class_assignment_for @registration_school_year.previous_school_year %>
+                <!--if previous grade is EC1, then only EC2 can be selected this year.-->
+                <!--if previous grade is not EC1, then EC2 is not avaliable this year-->
+                <% if !previous_school_year_class_assignment.nil? && previous_school_year_class_assignment.school_class.grade_id == 2 %>
+                  <% if previous_school_year_class_assignment.school_class.school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>
+                    <% available_school_class_types.clear %>
+                    <% available_school_class_types << SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>
+                  <% else %>
+                    <% available_school_class_types.delete('EC') %>
+                  <% end %>
+                <% end %>
+
                 <% if available_school_class_types.empty? %>
                   <!-- No available school class type -->
                 <% elsif available_school_class_types.size == 1 %>
@@ -123,6 +135,14 @@ become available.
                   <% end %>
                   <%= hidden_field_tag "#{student.id}_school_class_type", school_class_type %>
                 <% else %>
+                  <!-- For K, EC only allow school year 5 to 8 -->
+                  <% if registration_preference.grade_id == 2 %>
+                    <% school_age = student.school_age_for(@registration_school_year) %>
+                    <% if school_age < 5 or school_age > 8 %>
+                      <% available_school_class_types.delete('EC') %>
+                    <% end %>
+                   <% end %>
+
                   <select name="<%= student.id %>_school_class_type">
                     <% available_school_class_types.each do |school_class_type| %>
                       <% if registration_preference.full_for? school_class_type %>
