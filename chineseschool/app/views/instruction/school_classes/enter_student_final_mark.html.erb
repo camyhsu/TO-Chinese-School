@@ -34,8 +34,8 @@
         <th>Last Name</th>
         <th>First Name</th>
         <th>前三名</th>
-        <th>進步獎</th>
         <th>精神獎</th>
+        <th>進步獎</th>
         <th>全勤獎</th>
         <th>總成績</th>
       </tr>
@@ -48,8 +48,8 @@
             <td><%= h student.english_first_name %></td>
             <% mark = @student_to_mark_map[student] %>
             <td align="center"><%= text_field_tag "top_three_#{student.id}", "#{mark.top_three}", size: 3, align: :right %></td>
-            <td align="center"><%= check_box_tag "progress_award_#{student.id}", 'true', mark.progress_award %></td>
             <td align="center"><%= check_box_tag "spirit_award_#{student.id}", 'true', mark.spirit_award %></td>
+            <td align="center"><%= check_box_tag "progress_award_#{student.id}", 'true', mark.progress_award %></td>
             <td align="center"><%= check_box_tag "attendance_award_#{student.id}", 'true', mark.attendance_award %></td>
             <td align="center"><%= text_field_tag "total_score_#{student.id}", "#{mark.total_score}", size: 6, align: :right %></td>
           </tr>

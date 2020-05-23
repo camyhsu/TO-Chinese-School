@@ -19,8 +19,8 @@
     <th>Last Name</th>
     <th>First Name</th>
     <th>前三名</th>
-    <th>進步獎</th>
     <th>精神獎</th>
+    <th>進步獎</th>
     <th>全勤獎</th>
     <th>總成績</th>
   </tr>
@@ -33,8 +33,8 @@
         <td><%= h student.english_first_name %></td>
         <% mark = @student_to_mark_map[student] %>
         <td><%= h mark.top_three %></td>
-        <td><%= convert_to_yes_blank mark.progress_award %></td>
         <td><%= convert_to_yes_blank mark.spirit_award %></td>
+        <td><%= convert_to_yes_blank mark.progress_award %></td>
         <td><%= convert_to_yes_blank mark.attendance_award %></td>
         <td><%= h mark.total_score %></td>
       </tr>
