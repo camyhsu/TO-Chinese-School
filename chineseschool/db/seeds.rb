@@ -374,6 +374,7 @@ communication_officer.rights << communication_student_list_for_yearbook
 instruction_officer = Role.find_by_name(Role::ROLE_NAME_INSTRUCTION_OFFICER)
 instruction_officer.rights << active_school_classes_grade_class_student_count
 instruction_officer.rights << active_school_classes_elective_class_student_count
+instruction_officer.rights << active_school_classes_grade_student_count
 instruction_officer.rights << instruction_active_school_classes_index
 instruction_officer.rights << instruction_school_classes_show
 instruction_officer.rights << instruction_school_classes_enter_student_final_mark

@@ -4,6 +4,7 @@
 <br/>
 <%= link_to "#{SchoolYear.current_school_year.name} 班級人數清單", {controller: '/registration/active_school_classes', action: 'grade_class_student_count', id: SchoolYear.current_school_year.id}, {class: 'button'} %>
 <%= link_to "#{SchoolYear.current_school_year.name} Elective Class 人數清單", {controller: '/registration/active_school_classes', action: 'elective_class_student_count', id: SchoolYear.current_school_year.id}, {class: 'button'} %>
+<%= link_to "#{SchoolYear.current_school_year.name} 年級人數清單", {controller: '/registration/active_school_classes', action: 'grade_student_count', id: SchoolYear.current_school_year.id}, {class: 'button'} %>
 <br/>
 <br/>
 <%= link_to 'List Active School Classes', {controller: '/instruction/active_school_classes', action: 'index'}, {class: 'button'} %>
@@ -13,6 +14,7 @@
     <br/>
     <%= link_to "#{SchoolYear.next_school_year.name} 班級人數清單", {controller: '/registration/active_school_classes', action: 'grade_class_student_count', id: SchoolYear.next_school_year.id}, {class: 'button'} %>
     <%= link_to "#{SchoolYear.next_school_year.name} Elective Class 人數清單", {controller: '/registration/active_school_classes', action: 'elective_class_student_count', id: SchoolYear.next_school_year.id}, {class: 'button'} %>
+    <%= link_to "#{SchoolYear.next_school_year.name} 年級人數清單", {controller: '/registration/active_school_classes', action: 'grade_student_count', id: SchoolYear.next_school_year.id}, {class: 'button'} %>
     <br/>
 <% end %>
 <br/>
