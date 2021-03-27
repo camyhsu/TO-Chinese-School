@@ -104,11 +104,14 @@ class RegistrationPayment < ActiveRecord::Base
   private
   
   def calculate_pva_due_in_cents(completed_registration_count_in_family)
-    # PVA membership due is up to 2 parents per family per school year
-    return 0 if completed_registration_count_in_family > 1
-    return self.school_year.pva_membership_due_in_cents if completed_registration_count_in_family == 1
-    return self.school_year.pva_membership_due_in_cents if self.student_fee_payments.size < 2
-    self.school_year.pva_membership_due_in_cents * 2
+    # # PVA membership due is up to 2 parents per family per school year
+    # return 0 if completed_registration_count_in_family > 1
+    # return self.school_year.pva_membership_due_in_cents if completed_registration_count_in_family == 1
+    # return self.school_year.pva_membership_due_in_cents if self.student_fee_payments.size < 2
+    # self.school_year.pva_membership_due_in_cents * 2
+
+    # 2021/03 changes: Get PVA FEE by student count
+    self.school_year.pva_membership_due_in_cents * self.student_fee_payments.size
   end
   
   def calculate_ccca_due_in_cents(completed_registration_count_in_family)

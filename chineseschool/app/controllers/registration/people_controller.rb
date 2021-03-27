@@ -5,6 +5,7 @@ class Registration::PeopleController < ApplicationController
 
 
   def index
+    session[:is_registration_officer] = params[:is_registration_officer].to_i
     @people = Person.all
     render layout: 'jquery_datatable'
   end

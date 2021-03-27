@@ -134,23 +134,24 @@ class Student::WithdrawController < ApplicationController
     unless registration_school_year.school_has_started?
       if paid_student_count - withdraw_student_count >= 2
         # still have 2 or more students
-        pva_fee_refund_in_cents = 0
+        # pva_fee_refund_in_cents = 0
         ccca_fee_refund_in_cents = 0
       elsif paid_student_count - withdraw_student_count == 1
         # still have 1 students
-        pva_fee_refund_in_cents = earliest_registration_payment.pva_due_in_cents > registration_school_year.pva_membership_due_in_cents ?
-                             registration_school_year.pva_membership_due_in_cents : earliest_registration_payment.pva_due_in_cents
+        # pva_fee_refund_in_cents = earliest_registration_payment.pva_due_in_cents > registration_school_year.pva_membership_due_in_cents ?
+        #                      registration_school_year.pva_membership_due_in_cents : earliest_registration_payment.pva_due_in_cents
         ccca_fee_refund_in_cents = 0
       elsif paid_student_count - withdraw_student_count <= 0
         # no registered students any more
-        pva_fee_refund_in_cents = earliest_registration_payment.pva_due_in_cents * paid_student_count > registration_school_year.pva_membership_due_in_cents * 2 ?
-                             registration_school_year.pva_membership_due_in_cents * 2 : earliest_registration_payment.pva_due_in_cents * paid_student_count
+        # pva_fee_refund_in_cents = earliest_registration_payment.pva_due_in_cents * paid_student_count > registration_school_year.pva_membership_due_in_cents * 2 ?
+        #                      registration_school_year.pva_membership_due_in_cents * 2 : earliest_registration_payment.pva_due_in_cents * paid_student_count
         ccca_fee_refund_in_cents = earliest_registration_payment.ccca_due_in_cents
       end
-
-      withdraw_request.refund_pva_due_in_cents = pva_fee_refund_in_cents
       withdraw_request.refund_ccca_due_in_cents = ccca_fee_refund_in_cents
     end
+    # 2021/03 changes, pva fee refund by withdraw count
+    pva_fee_refund_in_cents = registration_school_year.pva_in_cents_refund_due registration_school_year.pva_membership_due_in_cents * withdraw_student_count
+    withdraw_request.refund_pva_due_in_cents = pva_fee_refund_in_cents
     withdraw_request.caculate_refund_grand_total_in_cents
     withdraw_request
   end
