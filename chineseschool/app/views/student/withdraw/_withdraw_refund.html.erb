@@ -1,12 +1,42 @@
+<style type="text/css">
+  .account-form div {margin: 0.5em 0;}
+  .tuition-detail td {width: 15em;float: left;text-align: right;}
+  .tuition-detail .label {width: 15em;float: left;font-weight: bold;text-align: right;margin-right: 0.5em;}
+</style>
+
 <div class="account-form">
   <h4>Request Date: <%= PacificDate.for_utc(withdraw_request.created_at)%> | Status: <%= withdraw_request.status%></h4>
   <h4>Refund Preview</h4>
   <% withdraw_request.withdraw_request_details.each do |withdraw_request_detail| %>
+    <!--For approved withdraw, the student_class_assignment already has been deleted, so need to get the grade and school class from withdrawal_record-->
+    <% student_class_assignment = withdraw_request_detail.student.student_class_assignment_for withdraw_request.school_year %>
+    <% withdrawal_record = WithdrawalRecord.find_withdraw_record_by_student_and_school_year(withdraw_request_detail.student, withdraw_request.school_year) %>
     <p>
       For <%= h withdraw_request_detail.student.name %>:
       <br/>
     </p>
     <table class="tuition-detail" border="0px">
+      <% if student_class_assignment.nil? %>
+        <tr>
+          <td class="label">Grade:</td>
+          <td><%= h withdrawal_record.try(:grade).try(:name) %></td>
+        </tr>
+        <tr>
+          <td class="label">School Class:</td>
+          <td><%= h withdrawal_record.try(:school_class).try(:name) %></td>
+        </tr>
+      <% else %>
+        <tr>
+          <td class="label">Grade:</td>
+          <td><%= h student_class_assignment.try(:grade).try(:name) %></td>
+        </tr>
+
+        <tr>
+          <td class="label">School Class:</td>
+          <td><%= h student_class_assignment.try(:school_class).try(:name) %></td>
+        </tr>
+      <% end %>
+
       <tr>
         <td class="label">Registration Fee:</td>
         <td><%= number_to_currency withdraw_request_detail.refund_registration_fee %></td>

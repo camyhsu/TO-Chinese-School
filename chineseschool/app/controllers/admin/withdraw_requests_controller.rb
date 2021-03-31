@@ -19,6 +19,11 @@ class Admin::WithdrawRequestsController < ApplicationController
 
     WithdrawalMailer.student_parent_notification(withdraw_request).deliver
     WithdrawalMailer.accounting_notification(withdraw_request).deliver
+
+    withdraw_request.withdraw_request_details.each do |withdraw_request_detail|
+      WithdrawalMailer.pva_notification(withdraw_request_detail.student);
+    end
+
     redirect_to action: :index
   end
 

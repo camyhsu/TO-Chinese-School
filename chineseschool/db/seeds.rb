@@ -28,6 +28,7 @@ create_role(Role::ROLE_NAME_ROOM_PARENT)
 create_role(Role::ROLE_NAME_STUDENT_PARENT)
 
 create_role(Role::ROLE_NAME_CCCA_STAFF)
+create_role(Role::ROLE_NAME_PVA)
 
 
 #
@@ -466,3 +467,11 @@ student_parent.rights << student_withdraw_submit_cancel_withdraw
 #
 ccca_staff = Role.find_by_name(Role::ROLE_NAME_CCCA_STAFF)
 ccca_staff.rights << ccca_report_active_family_home_phone_numbers
+
+
+#
+# Assign rights to PVA
+#
+pva = Role.find_by_name(Role::ROLE_NAME_PVA)
+pva.rights << withdraw_requests_index
+pva.rights << withdraw_requests_show
