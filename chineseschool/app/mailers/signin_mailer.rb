@@ -24,7 +24,7 @@ class SigninMailer < ActionMailer::Base
     timed_token.person = person
     timed_token.expiration = Time.now.advance :days => 3
     timed_token.save!
-    "https://www.to-cs.org/chineseschool/signin/register_with_invitation/#{timed_token.token}"
+    "https://register.to-cs.org/signin/register_with_invitation/#{timed_token.token}"
   end
 
   def forgot_password_url_for(person)
@@ -33,6 +33,6 @@ class SigninMailer < ActionMailer::Base
     timed_token.person = person
     timed_token.expiration = Time.now.advance :hours => 6
     timed_token.save!
-    "https://www.to-cs.org/chineseschool/signin/reset_password/#{timed_token.token}"
+    "https://register.to-cs.org/signin/reset_password/#{timed_token.token}"
   end
 end
