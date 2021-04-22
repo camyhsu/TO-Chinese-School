@@ -22,4 +22,9 @@ class WithdrawalMailer < ActionMailer::Base
     mail to: Contacts::ACCOUNTING_CONTACT, subject: 'Thousand Oaks Chinese School - Student Withdrawal'
   end
 
+  def pva_notification(student)
+    @student = student
+    mail to: Contacts::PVA_CONTACT, subject: 'Thousand Oaks Chinese School - Student Withdrawal'
+  end
+
 end

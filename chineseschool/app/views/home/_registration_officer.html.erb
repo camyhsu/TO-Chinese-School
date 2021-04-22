@@ -7,7 +7,7 @@
 <%= link_to 'Manage Withdraw Requests', {controller: '/admin/withdraw_requests'}, {class: 'button'} %>
 <br/>
 <br/>
-<%= link_to 'List All People', {controller: '/registration/people'}, {class: 'button'} %>
+<%= link_to 'List All People', {controller: '/registration/people', is_registration_officer: 1}, {class: 'button'} %>
 <br/>
 <br/>
 <%= link_to 'List All Grades', {controller: '/admin/grades'}, {class: 'button'} %>

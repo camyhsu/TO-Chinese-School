@@ -22,21 +22,29 @@
     <td class="label">Native Language:</td>
     <td><%=h @person.native_language %></td>
   </tr>
+
+  <% if session[:is_registration_officer] == 1 %>
   <tr>
     <td></td>
     <td><%= link_to 'Edit Person Details', {action: :edit, id: @person}, {class: 'button'} %></td>
   </tr>
+  <% end %>
+
   <% if @person.address.nil? %>
-  <tr>
-    <td></td>
-    <td><%= link_to 'Create Personal Address', {action: :new_address, id: @person}, {class: 'button'} %></td>
-  </tr>
+    <% if session[:is_registration_officer] == 1 %>
+      <tr>
+        <td></td>
+        <td><%= link_to 'Create Personal Address', {action: :new_address, id: @person}, {class: 'button'} %></td>
+      </tr>
+    <% end %>
   <% else %>
-  <%= render partial: '/registration/addresses/address', object: @person.address %>
-  <tr>
-    <td></td>
-    <td><%= link_to 'Edit Personal Address', {action: :edit_address, id: @person}, {class: 'button'} %></td>
-  </tr>
+    <%= render partial: '/registration/addresses/address', object: @person.address %>
+    <% if session[:is_registration_officer] == 1 %>
+      <tr>
+        <td></td>
+        <td><%= link_to 'Edit Personal Address', {action: :edit_address, id: @person}, {class: 'button'} %></td>
+      </tr>
+    <% end %>
   <% end %>
 </table>
 <hr/>
@@ -66,10 +74,12 @@
     <td><%=h family.children_names %></td>
   </tr>
   <%= render partial: '/registration/addresses/address', object: family.address %>
-  <tr>
-    <td></td>
-    <td><%= link_to 'Edit Family Data', {controller: 'registration/families', action: :show, id: family.id}, {class: 'button'} %></td>
-  </tr>
+  <% if session[:is_registration_officer] == 1 %>
+    <tr>
+      <td></td>
+      <td><%= link_to 'Edit Family Data', {controller: 'registration/families', action: :show, id: family.id}, {class: 'button'} %></td>
+    </tr>
+  <% end %>
 </table>
 <% end %>
 <hr/>
@@ -134,9 +144,11 @@
     </tbody>
   </table>
 <% end %>
-<br/>
-<%= link_to 'Enter Manual Transaction', {controller: '/accounting/manual_transactions', action: 'new', student_id: @person}, {class: 'button'} %>
-        
+<% if session[:is_registration_officer] == 1 %>
+  <br/>
+  <%= link_to 'Enter Manual Transaction', {controller: '/accounting/manual_transactions', action: 'new', student_id: @person}, {class: 'button'} %>
+<% end %>
+
 <hr/>
 <h3>Instructor Assignments for <%=h @person.name %></h3>
 <% @person.instructor_assignments_for(SchoolYear.current_school_year).each do |instructor_assignment| %>
@@ -151,9 +163,11 @@
       </table>
   <% end %>
 <% end %>
-<div id="add-instructor-assignment">
-   <%= link_to 'Add Instructor Assignment', {action: :add_instructor_assignment, id: @person}, {class: 'button'} %>
-</div>
+<% if session[:is_registration_officer] == 1 %>
+  <div id="add-instructor-assignment">
+    <%= link_to 'Add Instructor Assignment', {action: :add_instructor_assignment, id: @person}, {class: 'button'} %>
+  </div>
+<% end %>
 
 
 

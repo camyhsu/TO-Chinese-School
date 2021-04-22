@@ -128,6 +128,26 @@ class SchoolYear < ActiveRecord::Base
     tuition_in_cents_refund
   end
 
+
+  def pva_in_cents_refund_due(pva_fee_refund_in_cents)
+    if !self.school_has_started?
+      pva_in_cents_refund = pva_fee_refund_in_cents
+    elsif !self.refund_end_date && PacificDate.today > self.refund_end_date
+      pva_in_cents_refund = 0
+    elsif !self.refund_25_percent_date.nil? && PacificDate.today > self.refund_25_percent_date
+      pva_in_cents_refund = pva_fee_refund_in_cents * 0.25
+    elsif !self.refund_50_percent_date.nil? && PacificDate.today > self.refund_50_percent_date
+      pva_in_cents_refund = pva_fee_refund_in_cents * 0.5
+    elsif !self.refund_75_percent_date.nil? && PacificDate.today > self.refund_75_percent_date
+      pva_in_cents_refund = pva_fee_refund_in_cents * 0.75
+    elsif !self.refund_90_percent_date.nil? && PacificDate.today > self.refund_90_percent_date
+      pva_in_cents_refund = pva_fee_refund_in_cents * 0.9
+    else
+      pva_in_cents_refund = pva_fee_refund_in_cents
+    end
+    pva_in_cents_refund
+  end
+
   def self.current_school_year
     self.find_current_and_future_school_years[0]
   end

@@ -15,6 +15,7 @@ class Role < ActiveRecord::Base
   ROLE_NAME_STUDENT_PARENT = 'Student Parent'
   
   ROLE_NAME_CCCA_STAFF = 'CCCA Staff'
+  ROLE_NAME_PVA = 'PVA'
 
   attr_accessible :name
 

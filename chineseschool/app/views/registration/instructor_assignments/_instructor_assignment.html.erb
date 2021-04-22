@@ -1,10 +1,13 @@
-<tr>
-    <td></td>
-    <td>
-      <input type="button" value="Remove This Instructor Assignment" class="button" 
-             onclick="removeInstructorAssignment(this, '<%= url_for controller: 'registration/instructor_assignments', action: :destroy, id: instructor_assignment %>')"/>
-    </td>
-  </tr>
+  <% if session[:is_registration_officer] == 1 %>
+    <tr>
+      <td></td>
+      <td>
+        <input type="button" value="Remove This Instructor Assignment" class="button"
+               onclick="removeInstructorAssignment(this, '<%= url_for controller: 'registration/instructor_assignments', action: :destroy, id: instructor_assignment %>')"/>
+      </td>
+    </tr>
+  <% end %>
+
   <tr>
     <td></td>
     <td>
@@ -27,15 +30,19 @@
     <td class="label">School Class:</td>
     <td><%=h instructor_assignment.school_class.try(:chinese_name) %></td>
   </tr>
-  <tr>
-    <td class="label">Select New School Class:</td>
-    <td>
-      <% select_school_class_handler = "registrationSelectClass(this, '#{url_for controller: 'registration/instructor_assignments',
-          action: :select_school_class, id: instructor_assignment}')" %>
-      <%= collection_select :instructor_assignment, :school_class, SchoolClass.find_all_active_school_classes_in_current_and_future_school_years, :id, :chinese_name,
-          {selected: instructor_assignment.try(:school_class).try(:id)}, {onchange: select_school_class_handler} %>
-    </td>
-  </tr>
+
+  <% if session[:is_registration_officer] == 1 %>
+    <tr>
+      <td class="label">Select New School Class:</td>
+      <td>
+        <% select_school_class_handler = "registrationSelectClass(this, '#{url_for controller: 'registration/instructor_assignments',
+                                                                                   action: :select_school_class, id: instructor_assignment}')" %>
+        <%= collection_select :instructor_assignment, :school_class, SchoolClass.find_all_active_school_classes_in_current_and_future_school_years, :id, :chinese_name,
+                              {selected: instructor_assignment.try(:school_class).try(:id)}, {onchange: select_school_class_handler} %>
+      </td>
+    </tr>
+  <% end %>
+
   <tr>
     <td class="label">Start Date:</td>
     <td><%=h instructor_assignment.start_date_string %></td>
@@ -64,15 +71,18 @@
     <td class="label">Role:</td>
     <td><%=h instructor_assignment.role %></td>
   </tr>
-  <tr>
-    <td class="label">Select New Role:</td>
-    <td>
-      <% select_role_handler = "selectInstructorRole(this, '#{url_for controller: 'registration/instructor_assignments',
-          action: :select_role, id: instructor_assignment}')" %>
-      <%= select :instructor_assignment, :role, InstructorAssignment::ROLES,
-          {selected: instructor_assignment.role}, {onchange: select_role_handler} %>
-    </td>
-  </tr>
+
+  <% if session[:is_registration_officer] == 1 %>
+    <tr>
+      <td class="label">Select New Role:</td>
+      <td>
+        <% select_role_handler = "selectInstructorRole(this, '#{url_for controller: 'registration/instructor_assignments',
+                                                                        action: :select_role, id: instructor_assignment}')" %>
+        <%= select :instructor_assignment, :role, InstructorAssignment::ROLES,
+                   {selected: instructor_assignment.role}, {onchange: select_role_handler} %>
+      </td>
+    </tr>
+  <% end %>
   <tr>
     <td></td>
     <td><hr/></td>

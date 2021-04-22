@@ -16,6 +16,7 @@ class HomeController < ApplicationController
     @home_templates << 'librarian' if librarian_resources_enabled?
     #@home_templates << 'ccca_staff' if ccca_staff_resources_enabled?
     @home_templates << 'instructor' if instructor_resources_enabled?
+    @home_templates << 'pva' if pva_resources_enabled?
     @active_registration_school_years = SchoolYear.find_active_registration_school_years
     @current_and_future_school_years = SchoolYear.find_current_and_future_school_years
     @active_refund_school_years = SchoolYear.find_active_refund_school_years
@@ -110,6 +111,12 @@ class HomeController < ApplicationController
   def student_parent_resources_enabled?
     return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
     return true if @user.has_role? Role::ROLE_NAME_STUDENT_PARENT
+    false
+  end
+
+  def pva_resources_enabled?
+    return true if @user.has_role? Role::ROLE_NAME_SUPER_USER
+    return true if @user.has_role? Role::ROLE_NAME_PVA
     false
   end
 end
