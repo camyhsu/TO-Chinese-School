@@ -29,7 +29,7 @@
     Elective class is only available for 1st grade or above. Seats are limited. Availability for selection is on a first-come, first served basis.
   </li>
   <li>
-    For additional information, please read <a href="http://www.to-cs.org/tocs/" target="_blank">Registraion Overview and Refund Policy</a> or contact registration@to-cs.org for any questions.
+    For additional information, please read <a href="https://www.to-cs.org/tocs/?page_id=1043" target="_blank">Registraion Overview and Refund Policy</a> or contact registration@to-cs.org for any questions.
   </li>
   <% if @registration_preferences.any? {|registration_preference|  (Grade.grade_preschool == registration_preference.grade) || (Grade.grade_preschool.next_grade == registration_preference.grade)} %>
       <li>
