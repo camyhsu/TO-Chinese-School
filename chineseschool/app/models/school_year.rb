@@ -165,7 +165,7 @@ class SchoolYear < ActiveRecord::Base
   end
 
   def self.find_active_refund_school_years
-    self.all :conditions => ['refund_end_date > ?', PacificDate.today], :order => 'start_date ASC'
+    self.all :conditions => ['refund_end_date >= ?', PacificDate.today], :order => 'start_date ASC'
   end
   
   def school_has_started?
