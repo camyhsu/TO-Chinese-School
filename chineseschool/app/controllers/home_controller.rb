@@ -26,6 +26,14 @@ class HomeController < ApplicationController
       @possible_students = find_possible_students
     end
     @person = @user.person
+    @paid_students = []
+    find_possible_students.each do |student|
+      paid_student_fee_payment = student.find_paid_student_fee_payment_as_student_for(SchoolYear.current_school_year)
+      withdraw_request = student.find_withdraw_request_detail_by_student_for(SchoolYear.current_school_year)
+      if !paid_student_fee_payment.nil? && withdraw_request.nil?
+        @paid_students << student
+      end
+    end
   end
 
   def change_password
