@@ -139,6 +139,15 @@ class Student::RegistrationController < ApplicationController
   def save_registration_preferences_from_params
     registration_preferences = []
     find_possible_students.each do |student|
+      student_register_elective_class_flag = params["#{student.id}_register_elective".to_sym]
+      if (!student_register_elective_class_flag.nil?) && (student_register_elective_class_flag == "true")
+        registration_preference = find_or_create_registration_preference_for student
+        registration_preference.re_register_elective_class_id = extract_elective_class_id_from_params student.id
+        if !registration_preference.re_register_elective_class_id.nil? && registration_preference.re_register_elective_class_id > 0 && registration_preference.save
+          registration_preferences << registration_preference
+        end
+      end
+
       student_register_flag = params["#{student.id}_register".to_sym]
       if (!student_register_flag.nil?) && (student_register_flag == "true")
         registration_preference = find_or_create_registration_preference_for student
@@ -197,7 +206,7 @@ class Student::RegistrationController < ApplicationController
       registration_preference = RegistrationPreference.find registration_preference_id
       student_fee_payment = StudentFeePayment.new
       student_fee_payment.student = registration_preference.student
-      student_fee_payment.fill_in_tuition_and_fee registration_school_year, registration_preference.grade, (paid_student_fee_payments_in_family + registration_payment.student_fee_payments)
+      student_fee_payment.fill_in_tuition_and_fee registration_school_year, registration_preference.grade, registration_preference.elective_class, (paid_student_fee_payments_in_family + registration_payment.student_fee_payments)
       student_fee_payment.registration_payment = registration_payment
       registration_payment.student_fee_payments << student_fee_payment
     end

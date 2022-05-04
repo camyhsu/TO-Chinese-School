@@ -12,7 +12,7 @@
     <% student_class_assignment = withdraw_request_detail.student.student_class_assignment_for withdraw_request.school_year %>
     <% withdrawal_record = WithdrawalRecord.find_withdraw_record_by_student_and_school_year(withdraw_request_detail.student, withdraw_request.school_year) %>
     <p>
-      For <%= h withdraw_request_detail.student.name %>:
+      For <%= h withdraw_request_detail.student.name %> <%= h (withdraw_request_detail.elective_class_only == 'Y' ? ' - Withdraw Elective Class Only' : '')%>:
       <br/>
     </p>
     <table class="tuition-detail" border="0px">
@@ -45,6 +45,11 @@
       <tr>
         <td class="label">Tuition:</td>
         <td><%= number_to_currency withdraw_request_detail.refund_tuition %></td>
+      </tr>
+
+      <tr>
+        <td class="label">Elective Class Fee:</td>
+        <td><%= number_to_currency withdraw_request_detail.elective_class_fee %></td>
       </tr>
 
       <tr>

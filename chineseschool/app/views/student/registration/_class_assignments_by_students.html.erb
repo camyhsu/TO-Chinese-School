@@ -14,7 +14,16 @@
           <td><%=h registered_student.name %></td>
           <td><%=h student_class_assignment.try(:grade).try(:name) %></td>
           <td><%=h student_class_assignment.try(:school_class).try(:name) %></td>
-          <td><%=h student_class_assignment.try(:elective_class).try(:name) %></td>
+          <td>
+            <% if student_class_assignment.elective_class.nil? %>
+              <% unless student_class_assignment.grade.below_first_grade? %>
+                <%= collection_select "#{registered_student.id}_elective", :elective_class,
+                                      SchoolClass.find_available_elective_classes_for_registration(registered_student.school_age_for(@registration_school_year), @registration_school_year, student_class_assignment.grade), :id, :name, {include_blank: true} %>
+              <% end %>
+            <% else %>
+              <%= h student_class_assignment.try(:elective_class).try(:name) %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>

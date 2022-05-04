@@ -43,7 +43,11 @@
             <%= school_year_form.text_field :tuition_discount_for_instructor, size: 20 %>
           </div>
           <div>
-            <label for="pva_membership_due"><span style="color:red">*&nbsp;</span>PVA Activities Fee:</label>
+            <label for="elective_class_fee"><span style="color:red">*&nbsp;</span>Elective Class Fee:</label>
+            <%= school_year_form.text_field :elective_class_fee, size: 20 %>
+          </div>
+          <div>
+            <label for="pva_membership_due"><span style="color:red">*&nbsp;</span>PVA Membership Due:</label>
             <%= school_year_form.text_field :pva_membership_due, size: 20 %>
           </div>
           <div>

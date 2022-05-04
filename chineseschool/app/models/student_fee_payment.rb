@@ -3,11 +3,12 @@ class StudentFeePayment < ActiveRecord::Base
   belongs_to :registration_payment
   belongs_to :student, class_name: 'Person', foreign_key: 'student_id'
 
-  validates :registration_payment, :student, :registration_fee_in_cents, :tuition_in_cents, :book_charge_in_cents, presence: true
+  validates :registration_payment, :student, :registration_fee_in_cents, :tuition_in_cents, :book_charge_in_cents, :elective_class_fee_in_cents, presence: true
 
   validates :registration_fee_in_cents, numericality: {only_integer: true, allow_nil: false}
   validates :tuition_in_cents, numericality: {only_integer: true, allow_nil: false}
   validates :book_charge_in_cents, numericality: {only_integer: true, allow_nil: false}
+  validates :elective_class_fee_in_cents, numericality: {only_integer: true, allow_nil: false}
 
 
   def registration_fee
@@ -21,13 +22,22 @@ class StudentFeePayment < ActiveRecord::Base
   def tuition
     self.tuition_in_cents / 100.0
   end
-  
-  def total_in_cents
-    self.registration_fee_in_cents + self.book_charge_in_cents + self.tuition_in_cents
+
+  def elective_class_fee
+    self.elective_class_fee_in_cents / 100.0
   end
   
-  def fill_in_tuition_and_fee(school_year, grade, paid_and_pending_student_fee_payments)
+  def total_in_cents
+    self.registration_fee_in_cents + self.book_charge_in_cents + self.tuition_in_cents + self.elective_class_fee_in_cents
+  end
+  
+  def fill_in_tuition_and_fee(school_year, grade, elective_class, paid_and_pending_student_fee_payments)
     self.registration_fee_in_cents = school_year.registration_fee_in_cents
+    if elective_class.nil?
+      self.elective_class_fee_in_cents = 0
+    else
+      self.elective_class_fee_in_cents = school_year.elective_class_fee_in_cents
+    end
     self.book_charge_in_cents = BookCharge.book_charge_in_cents_for school_year, grade
     calculate_tuition school_year, grade, paid_and_pending_student_fee_payments
   end

@@ -16,7 +16,7 @@ class SchoolYear < ActiveRecord::Base
                   :tuition_discount_for_pre_k, :tuition_discount_for_instructor, :pva_membership_due, :ccca_membership_due,
                   :early_registration_start_date, :early_registration_end_date, :registration_start_date,
                   :registration_75_percent_date, :registration_end_date,
-                  :refund_90_percent_date, :refund_50_percent_date, :refund_end_date
+                  :refund_90_percent_date, :refund_50_percent_date, :refund_end_date, :elective_class_fee
 
   belongs_to :previous_school_year, class_name: 'SchoolYear', foreign_key: 'previous_school_year_id'
 
@@ -27,12 +27,13 @@ class SchoolYear < ActiveRecord::Base
             :registration_fee_in_cents, :early_registration_tuition_in_cents, :tuition_in_cents,
             :tuition_discount_for_three_or_more_child_in_cents, :tuition_discount_for_pre_k_in_cents,
             :tuition_discount_for_instructor_in_cents,
-            :pva_membership_due_in_cents, :ccca_membership_due_in_cents, :previous_school_year,
-            presence: true
+            :pva_membership_due_in_cents, :ccca_membership_due_in_cents, :previous_school_year, :elective_class_fee_in_cents,
+  presence: true
 
   validates :registration_fee_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
   validates :early_registration_tuition_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
   validates :tuition_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
+  validates :elective_class_fee_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
   validates :tuition_discount_for_three_or_more_child_in_cents, numericality: {only_integer: true, greater_than: 0, allow_nil: false}
   validates :tuition_discount_for_pre_k_in_cents, numericality: {only_integer: true, greater_than_or_equal_to: 0, allow_nil: false}
   validates :tuition_discount_for_instructor_in_cents, numericality: {only_integer: true, greater_than_or_equal_to: 0, allow_nil: false}
@@ -63,6 +64,14 @@ class SchoolYear < ActiveRecord::Base
 
   def tuition=(tuition)
     self.tuition_in_cents = (tuition * 100).to_i
+  end
+
+  def elective_class_fee
+    self.elective_class_fee_in_cents / 100.0
+  end
+
+  def elective_class_fee=(elective_class_fee)
+    self.elective_class_fee_in_cents = (elective_class_fee * 100).to_i
   end
 
   def tuition_discount_for_three_or_more_child

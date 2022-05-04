@@ -31,159 +31,159 @@
   <li>
     For additional information, please read <a href="https://www.to-cs.org/tocs/?page_id=1043" target="_blank">Registraion Overview and Refund Policy</a> or contact registration@to-cs.org for any questions.
   </li>
-  <% if @registration_preferences.any? {|registration_preference|  (Grade.grade_preschool == registration_preference.grade) || (Grade.grade_preschool.next_grade == registration_preference.grade)} %>
-      <li>
-        <span style="font-weight: bold">Attention Preschool and Kindergarden new students: please bring a valid proof of birth date on the first day of school to verify age.</span>
-        <br/><span style="color: blue">Please email to <%= Contacts::REGISTRATION_CONTACT %> if there are questions.</span></br>
-      </li>
+  <% if @registration_preferences.any? {|registration_preference| (Grade.grade_preschool == registration_preference.grade) || (Grade.grade_preschool.next_grade == registration_preference.grade)} %>
+    <li>
+      <span style="font-weight: bold">Attention Preschool and Kindergarden new students: please bring a valid proof of birth date on the first day of school to verify age.</span>
+      <br/><span style="color: blue">Please email to <%= Contacts::REGISTRATION_CONTACT %>
+      if there are questions.</span></br>
+    </li>
   <% end %>
-  <% if @registration_preferences.any? {|registration_preference|  Grade.grades_with_ap_class.include? registration_preference.grade} %>
-      <li>
-        <span style="font-weight: bold">Chinese AP Class Announcement: 9th and 10th grade students will be automatically enrolled in 3rd period AP class if no other 3rd period class was selected.</span>
-        <br/><span style="color: blue">Please email to <%= Contacts::REGISTRATION_CONTACT %> if there are questions.</span></br>
-      </li>
+  <% if @registration_preferences.any? {|registration_preference| Grade.grades_with_ap_class.include? registration_preference.grade} %>
+    <li>
+      <span style="font-weight: bold">Chinese AP Class Announcement: 9th and 10th grade students will be automatically enrolled in 3rd period AP class if no other 3rd period class was selected.</span>
+      <br/><span style="color: blue">Please email to <%= Contacts::REGISTRATION_CONTACT %>
+      if there are questions.</span></br>
+    </li>
   <% end %>
 </ul>
 <% if @registration_preferences.any? {|registration_preference| registration_preference.grade_full?} %>
-<p style="color: red;">
-One or more of your child has designated grade that is already full.  Unfortunately, we are not able to process
-registration for full grade.  If you would like to be on the waiting list, please send an email to
-<span style="font-weight: bold;">waiting-list@to-cs.org</span>
-with the name of the child, designated grade, and contact information.  We will contact you if additional openings
-become available.
-</p>
+  <p style="color: red;">
+    One or more of your child has designated grade that is already full. Unfortunately, we are not able to process
+    registration for full grade. If you would like to be on the waiting list, please send an email to
+    <span style="font-weight: bold;">waiting-list@to-cs.org</span>
+    with the name of the child, designated grade, and contact information. We will contact you if additional openings
+    become available.
+  </p>
 <% end %>
 <br/>
-<% unless @registered_students.empty? %>
-  <h3>Students Already Registered For <%=h @registration_school_year.name %> School Year</h3>
-  <% if @registration_school_year.school_has_started? %>
-    <%= render partial: 'class_assignments_by_students' %>
-  <% else %>
-    <%= render partial: 'registration_preferences_by_students' %>
+<%= form_tag action: 'save_registration_preferences', id: @registration_school_year do %>
+  <% unless @registered_students.empty? %>
+    <h3>Students Already Registered For <%= h @registration_school_year.name %> School Year</h3>
+    <h5>(You can re-register Elective Class if you don't select Elective Class before)</h5>
+    <% if @registration_school_year.school_has_started? %>
+      <%= render partial: 'class_assignments_by_students' %>
+    <% else %>
+      <%= render partial: 'registration_preferences_by_students' %>
+    <% end %>
+    <br/>
   <% end %>
-  <br/>
-<% end %>
 
-<% if @registration_preferences.empty? %>
-  <% if @registered_students.empty? %>
-    <p style="font-weight: bold; color: red;">
-      No eligible students to register - please contact registration@to-cs.org for special case registration
-    </p>
-  <% end %>
-<% else %>
-  <h3>Select Students To Register</h3>
-  <table class="registration-options-table" border="0px">
-    <thead>
+  <% if @registration_preferences.empty? %>
+    <% if @registered_students.empty? %>
+      <p style="font-weight: bold; color: red;">
+        No eligible students to register - please contact registration@to-cs.org for special case registration
+      </p>
+    <% end %>
+  <% else %>
+    <h3>Select Students To Register</h3>
+    <table class="registration-options-table" border="0px">
+      <thead>
       <tr>
-        <th></th>
-        <th></th>
-        <th><%=h @previous_school_year.name %> Grade</th>
-        <th><%=h @registration_school_year.name %> Grade</th>
-        <th>Select School Class Type</th>
-        <th>Select Elective Class</th>
+        <th width="3%"></th>
+        <th width="20%"></th>
+        <th width="15%"><%= h @previous_school_year.name %> Grade</th>
+        <th width="15%"><%= h @registration_school_year.name %> Grade</th>
+        <th width="15%">Select School Class Type</th>
+        <th width="30%">Select Elective Class</th>
       </tr>
-    </thead>
-    <tbody>
-      <%= form_tag action: 'save_registration_preferences', id: @registration_school_year do %>
-        <% @registration_preferences.each do |registration_preference| -%>
-          <% student = registration_preference.student %>
-          <tr>
-            <td class="checkbox">
-              <% unless registration_preference.grade_full? %>
-                <%= check_box_tag "#{student.id}_register", true %>
+      </thead>
+      <tbody>
+
+      <% @registration_preferences.each do |registration_preference| -%>
+        <% student = registration_preference.student %>
+        <tr>
+          <td class="checkbox">
+            <% unless registration_preference.grade_full? %>
+              <%= check_box_tag "#{student.id}_register", true %>
+            <% end %>
+          </td>
+          <td><%= h student.name %></td>
+          <td>
+            <% if registration_preference.previous_grade.nil? -%>
+              Not In Record
+            <% else %>
+              <%= h registration_preference.previous_grade.name %>
+              <%= hidden_field_tag "#{student.id}_previous_grade", registration_preference.previous_grade.id %>
+            <% end %>
+          </td>
+          <td>
+            <%= h registration_preference.grade.name %>
+            <%= hidden_field_tag "#{student.id}_grade", registration_preference.grade.id %>
+          </td>
+          <td>
+            <% if registration_preference.grade_full? %>
+              <span style="font-weight: bold; color: red;"><%= registration_preference.grade.name %> is FULL</span>
+            <% else %>
+              <% available_school_class_types = registration_preference.grade.find_available_school_class_types(registration_preference.school_year) %>
+              <% previous_school_year_class_assignment = student.student_class_assignment_for @registration_school_year.previous_school_year %>
+              <!--if previous grade is EC1, then only EC2 can be selected this year.-->
+              <!--if previous grade is not EC1, then EC2 is not avaliable this year-->
+              <!--if previous grade is EC2, then only EC3 can be selected this year.-->
+              <!--if previous grade is not EC2, then EC3 is not avaliable this year-->
+              <% if !previous_school_year_class_assignment.nil? &&
+                  (previous_school_year_class_assignment.school_class.grade_id == 2 || previous_school_year_class_assignment.school_class.grade_id == 3) %>
+                <% if previous_school_year_class_assignment.school_class.school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>
+                  <% available_school_class_types.clear %>
+                  <% available_school_class_types << SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>
+                <% else %>
+                  <% available_school_class_types.delete('EC') %>
+                <% end %>
               <% end %>
-            </td>
-            <td><%=h student.name %></td>
-            <td>
-              <% if registration_preference.previous_grade.nil? -%>
-                Not In Record
+
+
+              <% if available_school_class_types.empty? %>
+                <!-- No available school class type -->
+              <% elsif available_school_class_types.size == 1 %>
+                <!-- Show the only choice as text instead of a dropdown -->
+                <% school_class_type = available_school_class_types[0] %>
+                <% unless school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_MIXED %>
+                  <!-- do not display the mixed type if it is the only type available -->
+                  <%= display_string_for school_class_type %>
+                <% end %>
+                <%= hidden_field_tag "#{student.id}_school_class_type", school_class_type %>
               <% else %>
-                <%=h registration_preference.previous_grade.name %>
-                <%= hidden_field_tag "#{student.id}_previous_grade", registration_preference.previous_grade.id %>
-              <% end %>
-            </td>
-            <td>
-              <%=h registration_preference.grade.name %>
-              <%= hidden_field_tag "#{student.id}_grade", registration_preference.grade.id %>
-            </td>
-            <td>
-              <% if registration_preference.grade_full? %>
-                <span style="font-weight: bold; color: red;"><%= registration_preference.grade.name %> is FULL</span>
-              <% else %>
-                <% available_school_class_types = registration_preference.grade.find_available_school_class_types(registration_preference.school_year) %>
-                <% previous_school_year_class_assignment = student.student_class_assignment_for @registration_school_year.previous_school_year %>
-                <!--if previous grade is EC1, then only EC2 can be selected this year.-->
-                <!--if previous grade is not EC1, then EC2 is not avaliable this year-->
-                <!--if previous grade is EC2, then only EC3 can be selected this year.-->
-                <!--if previous grade is not EC2, then EC3 is not avaliable this year-->
-                <% if !previous_school_year_class_assignment.nil? &&
-                    (previous_school_year_class_assignment.school_class.grade_id == 2 || previous_school_year_class_assignment.school_class.grade_id == 3) %>
-                  <% if previous_school_year_class_assignment.school_class.school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>
-                    <% available_school_class_types.clear %>
-                    <% available_school_class_types << SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>
-                  <% else %>
+                <!-- For K, EC only allow school year 5 to 8 -->
+                <% if registration_preference.grade_id == 2 %>
+                  <% school_age = student.school_age_for(@registration_school_year) %>
+                  <% if school_age < 5 or school_age > 8 %>
                     <% available_school_class_types.delete('EC') %>
                   <% end %>
                 <% end %>
 
-
-                <% if available_school_class_types.empty? %>
-                  <!-- No available school class type -->
-                <% elsif available_school_class_types.size == 1 %>
-                  <!-- Show the only choice as text instead of a dropdown -->
-                  <% school_class_type = available_school_class_types[0] %>
-                  <% unless school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_MIXED %>
-                    <!-- do not display the mixed type if it is the only type available -->
-                    <%= display_string_for school_class_type %>
-                  <% end %>
-                  <%= hidden_field_tag "#{student.id}_school_class_type", school_class_type %>
-                <% else %>
-                  <!-- For K, EC only allow school year 5 to 8 -->
-                  <% if registration_preference.grade_id == 2 %>
-                    <% school_age = student.school_age_for(@registration_school_year) %>
-                    <% if school_age < 5 or school_age > 8 %>
-                      <% available_school_class_types.delete('EC') %>
+                <select name="<%= student.id %>_school_class_type">
+                  <% available_school_class_types.each do |school_class_type| %>
+                    <% if registration_preference.full_for? school_class_type %>
+                      <option value="" disabled><%= display_string_for school_class_type %>&nbsp;(FULL)</option>
+                    <% else %>
+                      <option value="<%= school_class_type %>"><%= display_string_for school_class_type %></option>
                     <% end %>
-                   <% end %>
-
-                  <select name="<%= student.id %>_school_class_type">
-                    <% available_school_class_types.each do |school_class_type| %>
-                      <% if registration_preference.full_for? school_class_type %>
-                        <option value="" disabled><%= display_string_for school_class_type %>&nbsp;(FULL)</option>
-                      <% else %>
-                        <option value="<%= school_class_type %>"><%= display_string_for school_class_type %></option>
-                      <% end %>
                   <% end %>
-                  </select>
-                <% end %>
+                </select>
               <% end %>
-            </td>
-            <td>
-              <% unless registration_preference.grade.below_first_grade? %>
-                <%= collection_select "#{student.id}_elective", :elective_class,
-                    SchoolClass.find_available_elective_classes_for_registration(student.school_age_for(@registration_school_year), @registration_school_year), :id, :name, {include_blank: true} %>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-        <tr>
-          <td class="checkbox"></td>
-          <td style="padding-top: 1em;">
-            <%= submit_tag 'Continue', class: 'button'  %>
+            <% end %>
           </td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>
+            <% unless registration_preference.grade.below_first_grade? %>
+              <%= collection_select "#{student.id}_elective", :elective_class,
+                                    SchoolClass.find_available_elective_classes_for_registration(student.school_age_for(@registration_school_year), @registration_school_year, registration_preference.grade), :id, :name, {include_blank: (!Grade.grades_with_ap_class.include? registration_preference.grade)} %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
       <tr>
         <td class="checkbox"></td>
-        <td colspan="2" style="padding-top: 0.5em; text-align: left;">
-          <%= link_to 'Cancel Registration', {controller: '/home'}, {class: 'button'} %>
+        <td style="padding-top: 1em;">
+          <%= submit_tag 'Continue', class: 'button' %>
         </td>
-        <td></td>
-        <td></td>
+        <td colspan="4"></td>
       </tr>
-    </tbody>
+  <% end %>
+  <tr>
+    <td class="checkbox"></td>
+    <td colspan="5" style="padding-top: 0.5em; text-align: left;">
+      <%= link_to 'Cancel Registration', {controller: '/home'}, {class: 'button'} %>
+    </td>
+  </tr>
+  </tbody>
   </table>
 <% end %>
