@@ -6,6 +6,7 @@ class RegistrationPreference < ActiveRecord::Base
   belongs_to :previous_grade, class_name: 'Grade', foreign_key: 'previous_grade_id'
   belongs_to :grade
   belongs_to :elective_class, class_name: 'SchoolClass', foreign_key: 'elective_class_id'
+  belongs_to :re_register_elective_class, class_name: 'SchoolClass', foreign_key: 're_register_elective_class_id'
 
   validates :school_year, :student, :entered_by, presence: true
   

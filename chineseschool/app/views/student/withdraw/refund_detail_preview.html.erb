@@ -22,7 +22,7 @@
 
     <% @withdraw_request.withdraw_request_details.each do |withdraw_request_detail| %>
       <p>
-        For <%=h withdraw_request_detail.student.name %>
+        For <%=h withdraw_request_detail.student.name %> <%=h (withdraw_request_detail.elective_class_only == 'Y' ? ' - Withdraw Elective Class Only' : '')%>
         <br/>
       </p>
       <% student_class_assignment = withdraw_request_detail.student.student_class_assignment_for SchoolYear.current_school_year %>
@@ -48,6 +48,11 @@
         </tr>
 
         <tr>
+          <td class="label">Elective Class Fee:</td>
+          <td><%= number_to_currency withdraw_request_detail.elective_class_fee %></td>
+        </tr>
+
+        <tr>
           <td class="label">Books / Material:</td>
           <td><%= number_to_currency withdraw_request_detail.refund_book_charge %></td>
         </tr>
@@ -56,6 +61,8 @@
       <%= hidden_field_tag "#{withdraw_request_detail.student.id}_refund_registration_fee_in_cents", withdraw_request_detail.refund_registration_fee_in_cents %>
       <%= hidden_field_tag "#{withdraw_request_detail.student.id}_refund_tuition_in_cents", withdraw_request_detail.refund_tuition_in_cents %>
       <%= hidden_field_tag "#{withdraw_request_detail.student.id}_refund_book_charge_in_cents", withdraw_request_detail.refund_book_charge_in_cents %>
+      <%= hidden_field_tag "#{withdraw_request_detail.student.id}_elective_class_fee_in_cents", withdraw_request_detail.elective_class_fee_in_cents %>
+      <%= hidden_field_tag "#{withdraw_request_detail.student.id}_elective_class_only", withdraw_request_detail.elective_class_only %>
       <%= hidden_field_tag "withdraw_request_detail[student_id][]", withdraw_request_detail.student.id %>
       <hr/>
     <% end %>

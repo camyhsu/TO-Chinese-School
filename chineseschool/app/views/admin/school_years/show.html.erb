@@ -47,6 +47,10 @@
     <td><%=number_to_currency @school_year.tuition_discount_for_instructor %></td>
   </tr>
   <tr>
+    <td class="label">Elective Class Fee:</td>
+    <td><%=number_to_currency @school_year.elective_class_fee %></td>
+  </tr>
+  <tr>
     <td class="label">Book / Material Charge:</td>
     <td>
       <%= link_to 'Edit Book Charge', {controller: '/admin/school_years', action: 'edit_book_charge', id: @school_year}, {class: 'button'} %>
