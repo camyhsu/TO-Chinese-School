@@ -1,35 +1,52 @@
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-        <link href="https://www.to-cs.org/chineseschool/stylesheets/layout.css" rel="stylesheet" type="text/css" />
-        <style type="text/css">
-            .tuition-detail td {width: 5em;float: left;text-align: right;}
-            .tuition-detail .label {width: 25em;float: left;font-weight: bold;text-align: right;margin-right: 0.5em;}
-        </style>
-    </head>
-    <body>
-    <% if @gateway_transaction.nil? %>
-        <% transaction = @registration_payment.in_person_registration_transaction %>
-        <p>
-          Your TOCS registration payment was processed in-person with <%=h transaction.recorded_by.name %><br/>
-          on <%= PacificTimeDisplay.display_utc_time_in_pacific(transaction.updated_at) %><br/>
-          <% if transaction.payment_method == InPersonRegistrationTransaction::PAYMENT_METHOD_CASH %>
-              Payment was made in CASH.
-          <% else %>
-              Payment was made with CHECK # <%=h transaction.check_number %>
-          <% end %>
-        </p>
-    <% else %>
-        <p>
-        Your TOCS registration payment has been processed on <%= PacificTimeDisplay.display_utc_time_in_pacific(@gateway_transaction.updated_at) %><br/>
-        <%= number_to_currency(@gateway_transaction.amount_in_cents / 100.0) %>  has been charged to
-        <%= @gateway_transaction.credit_card_type.capitalize %> Card ending <%= @gateway_transaction.credit_card_last_digits %><br/>
-        Payment Reference Number is
-        <span style="font-weight: bold;"><%=h @gateway_transaction.reference_number %></span><br/>
-        </p>
-    <% end %>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+  <link href="https://www.to-cs.org/chineseschool/stylesheets/layout.css" rel="stylesheet" type="text/css"/>
+  <style type="text/css">
+    .tuition-detail td {
+      width: 5em;
+      float: left;
+      text-align: right;
+    }
 
-        <%= render partial: '/student/registration/registration_payment', object: @registration_payment %>
-        <br/>
-    </body>
+    .tuition-detail .label {
+      width: 25em;
+      float: left;
+      font-weight: bold;
+      text-align: right;
+      margin-right: 0.5em;
+    }
+  </style>
+</head>
+<body>
+<% if @gateway_transaction.nil? %>
+  <% transaction = @registration_payment.in_person_registration_transaction %>
+  <p>
+    Your TOCS registration payment was processed in-person with <%= h transaction.recorded_by.name %><br/>
+    on <%= PacificTimeDisplay.display_utc_time_in_pacific(transaction.updated_at) %><br/>
+    <% if transaction.payment_method == InPersonRegistrationTransaction::PAYMENT_METHOD_CASH %>
+      Payment was made in CASH.
+    <% else %>
+      Payment was made with CHECK # <%= h transaction.check_number %>
+    <% end %>
+  </p>
+<% else %>
+  <p>
+    Your TOCS registration payment has been processed
+    on <%= PacificTimeDisplay.display_utc_time_in_pacific(@gateway_transaction.updated_at) %><br/>
+    <%= number_to_currency(@gateway_transaction.amount_in_cents / 100.0) %>  has been charged to
+    <%= @gateway_transaction.credit_card_type.capitalize %> Card
+    ending <%= @gateway_transaction.credit_card_last_digits %><br/>
+    Payment Reference Number is
+    <span style="font-weight: bold;"><%= h @gateway_transaction.reference_number %></span><br/>
+  </p>
+<% end %>
+
+<% if @register_elective_class_only == 'Y' %>
+  <%= render partial: '/student/registration/registration_payment_elective_class_only' %>
+<% else %>
+  <%= render partial: '/student/registration/registration_payment', object: @registration_payment %>
+<% end %>
+<br/>
+</body>
 </html>

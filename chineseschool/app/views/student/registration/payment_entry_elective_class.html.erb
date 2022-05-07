@@ -1,0 +1,53 @@
+<% @title = 'Elective Class Fee' %>
+<% elective_class_fee_grand_total = 0 %>
+<%= render partial: 'registration_payment_elective_class_only' %>
+<br/>
+<div class="account-form">
+  <% if @credit_card.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@credit_card.errors.size, 'error') %> prohibited this credit card from being processed:</h2>
+      <ul>
+        <% @credit_card.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_for :credit_card, url: {action: 'submit_payment',
+                                   register_elective_class_only: @register_elective_class_only, registration_school_year: @registration_school_year} do |form| %>
+    <% @registration_preference_ids.each_with_index do |registration_preference_id, index| %>
+      <%= hidden_field_tag "registration_preference_ids[#{index}]", registration_preference_id %>
+    <% end %>
+    <fieldset>
+      <legend>Enter Credit Card Information</legend>
+      <span class="payment-entry">
+          <p>
+            Chinese School does not save credit card information<br/>
+            <b>Only Visa or MasterCard Credit Cards are accepted</b>
+          </p>
+          <div>
+            <label for="number"><span style="color:red">*&nbsp;</span>Card Number:</label>
+            <%= form.text_field :number, size: 25 %>
+          </div>
+          <div>
+            <label><span style="color:red">*&nbsp;</span>Valid Through:</label>
+            <%= form.select :month, (1..12) %>
+            &nbsp;/
+            <%= form.select :year, (PacificDate.today.year..(PacificDate.today.year + 10)) %>
+          </div>
+          <div>
+            <label for="verification_value"><span style="color:red">*&nbsp;</span>Card Code:</label>
+            <%= form.text_field :verification_value, size: 3 %>
+          </div>
+          <span style="color:red">*&nbsp;</span>Required Field
+          <div>
+            <%= submit_tag 'Submit Payment', class: 'submit', disable_with: 'Processing Payment... Please Wait' %>
+          </div>
+        </span>
+    </fieldset>
+  <% end %>
+</div>
+
+<%= link_to 'Cancel Registration', {controller: '/home', action: 'index'}, {class: 'button'} %>
+

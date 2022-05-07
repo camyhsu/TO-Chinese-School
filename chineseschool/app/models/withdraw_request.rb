@@ -102,16 +102,20 @@ class WithdrawRequest < ActiveRecord::Base
       if withdraw_request_detail.elective_class_only == 'Y'
         withdrawal_record.grade_id = 0
         withdrawal_record.school_class_id = 0
-        withdrawal_record.elective_class_id = student_class_assignment.elective_class_id
-        student_class_assignment.elective_class_id = 0
-        student_class_assignment.save!
-
         # Set elective_class_id = 0 for registration_preference
         registration_preference = withdraw_request_detail.student.registration_preference_for(current_school_year)
         unless registration_preference.nil?
+          withdrawal_record.elective_class_id = registration_preference.elective_class_id
           registration_preference.elective_class_id = 0
           registration_preference.save!
         end
+        unless student_class_assignment.nil?
+          withdrawal_record.elective_class_id = student_class_assignment.elective_class_id
+          student_class_assignment.elective_class_id = 0
+          student_class_assignment.save!
+        end
+
+
       else
         unless student_class_assignment.nil?
           withdrawal_record.grade_id = student_class_assignment.grade_id

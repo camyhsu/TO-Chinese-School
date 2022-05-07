@@ -1,30 +1,42 @@
-  <table class="registration-options-class-assignment-table" border="0px">
-    <thead>
+<table class="registration-options-class-assignment-table" border="0px">
+  <thead>
+  <tr>
+    <th width="3%"></th>
+    <th></th>
+    <th><%= h @registration_school_year.name %> Grade</th>
+    <th>School Class</th>
+    <th>Elective Class</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @registered_students.each do |registered_student| -%>
+    <% student_class_assignment = registered_student.student_class_assignment_for(@registration_school_year) %>
+    <% if not student_class_assignment.elective_class.nil? and @register_elective_class_only == 'Y' %>
+      <!--Skip student that already select elective class when register elective class only-->
+    <% else %>
       <tr>
-        <th></th>
-        <th><%=h @registration_school_year.name %> Grade</th>
-        <th>School Class</th>
-        <th>Elective Class</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @registered_students.each do |registered_student| -%>
-        <% student_class_assignment = registered_student.student_class_assignment_for(@registration_school_year) %>
-        <tr>
-          <td><%=h registered_student.name %></td>
-          <td><%=h student_class_assignment.try(:grade).try(:name) %></td>
-          <td><%=h student_class_assignment.try(:school_class).try(:name) %></td>
-          <td>
-            <% if student_class_assignment.elective_class.nil? %>
-              <% unless student_class_assignment.grade.below_first_grade? %>
-                <%= collection_select "#{registered_student.id}_elective", :elective_class,
-                                      SchoolClass.find_available_elective_classes_for_registration(registered_student.school_age_for(@registration_school_year), @registration_school_year, student_class_assignment.grade), :id, :name, {include_blank: true} %>
-              <% end %>
-            <% else %>
-              <%= h student_class_assignment.try(:elective_class).try(:name) %>
+        <td>
+          <% if student_class_assignment.elective_class.nil? and @register_elective_class_only == 'Y' %>
+            <% unless student_class_assignment.grade.below_first_grade? %>
+              <%= check_box_tag "#{registered_student.id}_register_elective", true %>
             <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+          <% end %>
+        </td>
+        <td><%= h registered_student.name %></td>
+        <td><%= h student_class_assignment.try(:grade).try(:name) %></td>
+        <td><%= h student_class_assignment.try(:school_class).try(:name) %></td>
+        <td>
+          <% if student_class_assignment.elective_class.nil? and @register_elective_class_only == 'Y' %>
+            <% unless student_class_assignment.grade.below_first_grade? %>
+              <%= collection_select "#{registered_student.id}_elective", :elective_class,
+                                    SchoolClass.find_available_elective_classes_for_registration(registered_student.school_age_for(@registration_school_year), @registration_school_year, student_class_assignment.grade), :id, :name, {include_blank: true} %>
+            <% end %>
+          <% else %>
+            <%= h student_class_assignment.try(:elective_class).try(:name) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>

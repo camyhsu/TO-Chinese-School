@@ -2,9 +2,13 @@ class ReceiptMailer < ActionMailer::Base
   add_template_helper Student::RegistrationHelper
   default from: Contacts::REGISTRATION_CONTACT
 
-  def payment_confirmation(gateway_transaction, registration_payment)
+  def payment_confirmation(gateway_transaction, registration_payment, register_elective_class_only, registration_preference_id)
     @registration_payment = registration_payment
     @gateway_transaction = gateway_transaction
+    @registration_school_year = registration_payment.school_year
+    @register_elective_class_only = register_elective_class_only
+    @registration_preference_ids = []
+    @registration_preference_ids << registration_preference_id
     mail to: registration_payment.paid_by.personal_email_address, subject: 'Thousand Oaks Chinese School - Payment Confirmation'
   end
 

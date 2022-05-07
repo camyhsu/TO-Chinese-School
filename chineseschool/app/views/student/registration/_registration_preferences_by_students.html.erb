@@ -1,46 +1,50 @@
-  <table class="registration-options-table" border="0px">
-    <thead>
+<table class="registration-options-table" border="0px">
+  <thead>
+  <tr>
+    <th width="3%"></th>
+    <th width="20%"></th>
+    <th width="15%"><%= h @previous_school_year.name %> Grade</th>
+    <th width="15%"><%= h @registration_school_year.name %> Grade</th>
+    <th width="15%">Preferred School Class Type</th>
+    <th width="30%">Preferred Elective Class</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @registered_students.each do |registered_student| -%>
+    <% registration_preference = registered_student.registration_preference_for(@registration_school_year) %>
+    <% if not registration_preference.elective_class.nil? and @register_elective_class_only == 'Y' %>
+      <!--Skip student that already select elective class when register elective class only-->
+    <% else %>
       <tr>
-        <th width="3%"></th>
-        <th width="20%"></th>
-        <th width="15%"><%=h @previous_school_year.name %> Grade</th>
-        <th width="15%"><%=h @registration_school_year.name %> Grade</th>
-        <th width="15%">Preferred School Class Type</th>
-        <th width="30%">Preferred Elective Class</th>
+        <td>
+          <% if registration_preference.elective_class.nil? and @register_elective_class_only == 'Y' %>
+            <% unless registration_preference.grade.below_first_grade? %>
+              <%= check_box_tag "#{registered_student.id}_register_elective", true %>
+            <% end %>
+          <% end %>
+        </td>
+        <td><%= h registered_student.name %></td>
+        <td>
+          <% if registration_preference.try(:previous_grade).nil? -%>
+            Not In Record
+          <% else %>
+            <%= h registration_preference.try(:previous_grade).name %>
+          <% end %>
+        </td>
+        <td><%= h registration_preference.try(:grade).try(:name) %></td>
+        <td><%= h registration_preference.try(:school_class_type) %></td>
+        <td>
+          <% if registration_preference.elective_class.nil? and @register_elective_class_only == 'Y' %>
+            <% unless registration_preference.grade.below_first_grade? %>
+              <%= collection_select "#{registered_student.id}_elective", :elective_class,
+                                    SchoolClass.find_available_elective_classes_for_registration(registered_student.school_age_for(@registration_school_year), @registration_school_year, registration_preference.grade), :id, :name, {include_blank: true} %>
+            <% end %>
+          <% else %>
+            <%= h registration_preference.try(:elective_class).try(:name) %>
+          <% end %>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-      <% @registered_students.each do |registered_student| -%>
-        <% registration_preference = registered_student.registration_preference_for(@registration_school_year) %>
-        <tr>
-          <td>
-            <% if registration_preference.elective_class.nil? %>
-              <% unless registration_preference.grade.below_first_grade? %>
-                <%= check_box_tag "#{registered_student.id}_register_elective", true %>
-              <% end %>
-            <% end %>
-          </td>
-          <td><%=h registered_student.name %></td>
-          <td>
-            <% if registration_preference.try(:previous_grade).nil? -%>
-              Not In Record
-            <% else %>
-              <%=h registration_preference.try(:previous_grade).name %>
-            <% end %>
-          </td>
-          <td><%=h registration_preference.try(:grade).try(:name) %></td>
-          <td><%=h registration_preference.try(:school_class_type) %></td>
-          <td>
-            <% if registration_preference.elective_class.nil? %>
-              <% unless registration_preference.grade.below_first_grade? %>
-                <%= collection_select "#{registered_student.id}_elective", :elective_class,
-                                      SchoolClass.find_available_elective_classes_for_registration(registered_student.school_age_for(@registration_school_year), @registration_school_year, registration_preference.grade), :id, :name, {include_blank: true} %>
-              <% end %>
-            <% else %>
-              <%= h registration_preference.try(:elective_class).try(:name) %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>

@@ -128,10 +128,19 @@
   <% end %>
   <% @active_registration_school_years.each do |registration_year| %>
     <% if (registration_year.early_registration_end_date >= PacificDate.today) || (registration_year.registration_start_date <= PacificDate.today) %>
-      <%= link_to "Register For #{registration_year.name} School Year", {controller: '/student/registration', action: :display_options, id: registration_year}, {class: 'button'} %><br/>
-      <span style="color: red; font-weight: bold; font-size: 108%;">Please confirm your children's Chinese and English names.<br/>These will be used as-is in yearbook.</span><br/>
+      <%= link_to "Register For #{registration_year.name} School Year",
+                  {controller: '/student/registration', action: :display_options, id: registration_year, register_elective_class_only: 'N'}, {class: 'button'} %><br/>
      <% end %>
   <% end %>
+
+  <% if @paid_students.size > 0 %>
+    <br/>
+    <% @active_registration_school_years.each do |registration_year| %>
+      <%= link_to "Register Elective Class For #{registration_year.name} School Year",
+                  {controller: '/student/registration', action: :display_options, id: registration_year, register_elective_class_only: 'Y'}, {class: 'button'} %><br/>
+    <% end %>
+  <% end %>
+  <span style="color: red; font-weight: bold; font-size: 108%;">Please confirm your children's Chinese and English names.<br/>These will be used as-is in yearbook.</span><br/>
 
   <% if @paid_students.size > 0 %>
     <hr/>
