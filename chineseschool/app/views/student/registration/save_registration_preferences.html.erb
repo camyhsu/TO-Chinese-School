@@ -77,7 +77,7 @@
     Student and Parent Handbook.</a>
 </p>
 
-<%= form_tag action: 'payment_entry', id: @registration_school_year do %>
+<%= form_tag action: 'payment_entry', id: @registration_school_year, register_elective_class_only: @register_elective_class_only do %>
   <% @registration_preferences.each_with_index do |registration_preference, index| %>
     <%= hidden_field_tag "registration_preferences[#{index}]", registration_preference.id %>
   <% end %>
