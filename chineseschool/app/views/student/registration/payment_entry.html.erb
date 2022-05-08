@@ -45,9 +45,4 @@
 </div>
 <br/>
 <br/>
-<% if PacificDate.today >= @registration_payment.school_year.start_date %>
-    <%= link_to 'Pay by Check', {action: :request_in_person_payment, id: @registration_payment}, {class: 'button'} %>
-    <br/>
-    <br/>
-<% end %>
 <%= link_to 'Cancel Registration', {action: :remove_pending_registration_payment, id: @registration_payment}, {class: 'button'} %>

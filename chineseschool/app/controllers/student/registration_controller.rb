@@ -110,9 +110,10 @@ class Student::RegistrationController < ApplicationController
             registration_preference.save!
 
             # update student_class_assignment.elective_class to selected elective class
-            student_class_assignment = student_class_assignment_for @registration_school_year
+            student_class_assignment = registration_preference.student.student_class_assignment_for @registration_school_year
             unless student_class_assignment.nil?
               student_class_assignment.elective_class = registration_preference.elective_class
+              student_class_assignment.save!
             end
             registration_payment.send_email_notification(gateway_transaction, 'Y', registration_preference_id)
             @gateway_transactions << gateway_transaction

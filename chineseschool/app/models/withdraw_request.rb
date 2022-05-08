@@ -114,8 +114,6 @@ class WithdrawRequest < ActiveRecord::Base
           student_class_assignment.elective_class_id = 0
           student_class_assignment.save!
         end
-
-
       else
         unless student_class_assignment.nil?
           withdrawal_record.grade_id = student_class_assignment.grade_id
@@ -128,8 +126,12 @@ class WithdrawRequest < ActiveRecord::Base
 
       # Notify instructors about the withdrawal
       if PacificDate.tomorrow >= current_school_year.start_date
-        #WithdrawalMailer.instructor_notification(self.student, withdrawal_record.school_class).deliver unless withdrawal_record.school_class.nil?
-        WithdrawalMailer.instructor_notification(withdraw_request_detail.student, withdrawal_record.elective_class).deliver unless withdrawal_record.elective_class.nil?
+        if withdraw_request_detail.elective_class_only == 'Y'
+          WithdrawalMailer.instructor_notification(withdraw_request_detail.student, withdrawal_record.elective_class).deliver unless withdrawal_record.elective_class.nil?
+        else
+          WithdrawalMailer.instructor_notification(self.student, withdrawal_record.school_class).deliver unless withdrawal_record.school_class.nil?
+          WithdrawalMailer.instructor_notification(withdraw_request_detail.student, withdrawal_record.elective_class).deliver unless withdrawal_record.elective_class.nil?
+        end
       end
     end
   end
