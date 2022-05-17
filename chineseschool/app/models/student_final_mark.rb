@@ -1,5 +1,5 @@
 class StudentFinalMark < ActiveRecord::Base
-  attr_accessible :attendance_award, :progress_award, :school_class_id, :school_year_id, :spirit_award, :student_id, :top_three, :total_score
+  attr_accessible :attendance_award, :progress_award, :talent_award, :school_class_id, :school_year_id, :spirit_award, :student_id, :top_three, :total_score
   attr_accessible :school_class, :school_year, :student
 
   belongs_to :school_year

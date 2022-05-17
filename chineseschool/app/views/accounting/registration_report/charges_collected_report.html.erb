@@ -19,6 +19,10 @@
     <td><%= number_to_currency(@charges_collected[:tuition_in_cents] / 100.0) %></td>
   </tr>
   <tr>
+    <td>Elective Class Fee</td>
+    <td><%= number_to_currency(@charges_collected[:elective_class_fee_in_cents] / 100.0) %></td>
+  </tr>
+  <tr>
     <td>Book / Material Charge</td>
     <td><%= number_to_currency(@charges_collected[:book_charge_in_cents] / 100.0) %></td>
   </tr>
