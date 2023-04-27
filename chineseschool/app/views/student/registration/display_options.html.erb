@@ -136,7 +136,7 @@
                 <!--if previous grade is EC2, then only EC3 can be selected this year.-->
                 <!--if previous grade is not EC2, then EC3 is not avaliable this year-->
                 <% if !previous_school_year_class_assignment.nil? &&
-                    (previous_school_year_class_assignment.school_class.grade_id == 2 || previous_school_year_class_assignment.school_class.grade_id == 3) %>
+                    (previous_school_year_class_assignment.school_class.grade_id >= 2 && previous_school_year_class_assignment.school_class.grade_id <= 4) %>
                   <% if previous_school_year_class_assignment.school_class.school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>
                     <% available_school_class_types.clear %>
                     <% available_school_class_types << SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>

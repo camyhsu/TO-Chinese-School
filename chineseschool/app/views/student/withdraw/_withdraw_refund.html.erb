@@ -25,6 +25,10 @@
           <td class="label">School Class:</td>
           <td><%= h withdrawal_record.try(:school_class).try(:name) %></td>
         </tr>
+        <tr>
+          <td class="label">Elective Class:</td>
+          <td><%= h withdrawal_record.try(:elective_class).try(:name) %></td>
+        </tr>
       <% else %>
         <tr>
           <td class="label">Grade:</td>
@@ -34,6 +38,18 @@
         <tr>
           <td class="label">School Class:</td>
           <td><%= h student_class_assignment.try(:school_class).try(:name) %></td>
+        </tr>
+
+        <tr>
+          <td class="label">Elective Class:</td>
+          <!-- For withdrawal elective_class_only, if approved, student_class_assignment.elective_class will be set to 0, so
+        we need to get it from withdrawal_record -->
+          <% if withdraw_request_detail.elective_class_only == 'Y' && withdraw_request.approved? %>
+            <td><%= h withdrawal_record.try(:elective_class).try(:name) %></td>
+          <% else %>
+            <td><%= h student_class_assignment.try(:elective_class).try(:name) %></td>
+          <% end %>
+
         </tr>
       <% end %>
 

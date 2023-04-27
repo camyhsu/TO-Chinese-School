@@ -38,6 +38,11 @@
         </tr>
 
         <tr>
+          <td class="label">Elective Class:</td>
+          <td><%=h student_class_assignment.try(:elective_class).try(:name) unless student_class_assignment.nil? %></td>
+        </tr>
+
+        <tr>
           <td class="label">Registration Fee:</td>
           <td><%= number_to_currency withdraw_request_detail.refund_registration_fee %></td>
         </tr>

@@ -137,9 +137,17 @@ class Grade < ActiveRecord::Base
   def pick_school_class_with_lowest_head_count_from(school_classes, gender)
     return school_classes[0] if school_classes.size == 1
     current_school_class_picked = school_classes[0]
+    school_has_started = SchoolYear.current_school_year.school_has_started?
+    # If school year started, then assign class base on total student count.
     current_lowest_head_count = current_school_class_picked.current_year_gender_based_class_size gender
+    if school_has_started
+      current_lowest_head_count = current_school_class_picked.class_size
+    end
     school_classes.each do |school_class|
       school_class_size = school_class.current_year_gender_based_class_size(gender)
+      if school_has_started
+        school_class_size = school_class.class_size
+      end
       if school_class_size < current_lowest_head_count
         current_school_class_picked = school_class
         current_lowest_head_count = school_class_size
