@@ -34,8 +34,9 @@ class Grade < ActiveRecord::Base
 
   def below_first_grade?
     # Assuming only PreK and K are below first grade without checking the whole chain
-    return true if Grade.grade_preschool == self or Grade.grade_preschool.next_grade == self
-    false
+    # return true if Grade.grade_preschool == self or Grade.grade_preschool.next_grade == self
+    # false
+    return false
   end
 
   def find_next_assignable_school_class(school_class_type, school_year, gender)
