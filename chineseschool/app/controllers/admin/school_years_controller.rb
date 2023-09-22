@@ -121,6 +121,7 @@ class Admin::SchoolYearsController < ApplicationController
     @school_year.tuition_discount_for_three_or_more_child = params[:school_year][:tuition_discount_for_three_or_more_child].to_f
     @school_year.tuition_discount_for_pre_k = params[:school_year][:tuition_discount_for_pre_k].to_f
     @school_year.tuition_discount_for_instructor = params[:school_year][:tuition_discount_for_instructor].to_f
+    @school_year.elective_class_fee = params[:school_year][:elective_class_fee].to_f
     @school_year.pva_membership_due = params[:school_year][:pva_membership_due].to_f
     @school_year.ccca_membership_due = params[:school_year][:ccca_membership_due].to_f
   end

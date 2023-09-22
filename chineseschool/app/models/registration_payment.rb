@@ -58,13 +58,15 @@ class RegistrationPayment < ActiveRecord::Base
     end
   end
 
-  def send_email_notification(gateway_transaction=nil)
-    ReceiptMailer.payment_confirmation(gateway_transaction, self).deliver
+  def send_email_notification(gateway_transaction = nil, register_elective_class_only, registration_preference_id)
+    ReceiptMailer.payment_confirmation(gateway_transaction, self, register_elective_class_only, registration_preference_id).deliver
     school_start_date = self.school_year.start_date
-    if PacificDate.tomorrow >= school_start_date
-      students = self.student_fee_payments.collect { |student_fee_payment| student_fee_payment.student }
-      ReceiptMailer.text_book_notification(students).deliver
-      ReceiptMailer.registration_staff_notification(students).deliver if PacificDate.today > school_start_date
+    unless register_elective_class_only == 'Y'
+      if PacificDate.tomorrow >= school_start_date
+        students = self.student_fee_payments.collect {|student_fee_payment| student_fee_payment.student}
+        ReceiptMailer.text_book_notification(students).deliver
+        ReceiptMailer.registration_staff_notification(students).deliver if PacificDate.today > school_start_date
+      end
     end
   end
 

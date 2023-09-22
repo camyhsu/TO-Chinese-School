@@ -14,6 +14,7 @@ class Registration::ReportController < ApplicationController
     @payment_total_registration_in_cents = 0
     @payment_total_tuition_in_cents = 0
     @payment_total_book_charge_in_cents = 0
+    @payment_total_elective_in_cents = 0
     @payment_total_pva_due_in_cents = 0
     @payment_total_ccca_due_in_cents = 0
     @payment_total_in_cents = 0
@@ -23,6 +24,7 @@ class Registration::ReportController < ApplicationController
       @payment_total_registration_in_cents += summary[1][:total_registration_in_cents]
       @payment_total_tuition_in_cents += summary[1][:total_tuition_in_cents]
       @payment_total_book_charge_in_cents += summary[1][:total_book_charge_in_cents]
+      @payment_total_elective_in_cents += summary[1][:total_elective_in_cents]
       @payment_total_pva_due_in_cents += summary[1][:total_pva_due_in_cents]
       @payment_total_ccca_due_in_cents += summary[1][:total_ccca_due_in_cents]
       @payment_total_in_cents += summary[1][:total_amount_in_cents]
@@ -68,7 +70,7 @@ class Registration::ReportController < ApplicationController
   def find_or_create_summary_entry(payment_date, registration_summary_hash)
     summary_entry = registration_summary_hash[payment_date]
     if summary_entry.nil?
-      summary_entry = {student_count: 0, total_registration_in_cents: 0, total_tuition_in_cents: 0,
+      summary_entry = {student_count: 0, total_registration_in_cents: 0, total_tuition_in_cents: 0, total_elective_in_cents: 0,
                        total_book_charge_in_cents: 0, total_pva_due_in_cents: 0, total_ccca_due_in_cents: 0,
                        total_amount_in_cents: 0}
       registration_summary_hash[payment_date] = summary_entry
@@ -81,6 +83,7 @@ class Registration::ReportController < ApplicationController
       paid_payment.student_fee_payments.each do |student_fee_payment|
         summary_entry[:total_registration_in_cents] += student_fee_payment.registration_fee_in_cents
         summary_entry[:total_tuition_in_cents] += student_fee_payment.tuition_in_cents
+        summary_entry[:total_elective_in_cents] += student_fee_payment.elective_class_fee_in_cents
         summary_entry[:total_book_charge_in_cents] += student_fee_payment.book_charge_in_cents
       end
     end

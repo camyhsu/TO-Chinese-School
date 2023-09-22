@@ -12,6 +12,7 @@
         <th>Registered Student Count</th>
         <th>Registration</th>
         <th>Tuition</th>
+        <th>Elective Class</th>
         <th>Book Charge</th>
         <th>PVA</th>
         <th>CCCA</th>
@@ -31,18 +32,20 @@
           <td><%= summary[1][:student_count] %></td>
           <td><%=number_to_currency(summary[1][:total_registration_in_cents] / 100.0) %></td>
           <td><%=number_to_currency(summary[1][:total_tuition_in_cents] / 100.0) %></td>
+          <td><%=number_to_currency(summary[1][:total_elective_in_cents] / 100.0) %></td>
           <td><%=number_to_currency(summary[1][:total_book_charge_in_cents] / 100.0) %></td>
           <td><%=number_to_currency(summary[1][:total_pva_due_in_cents] / 100.0) %></td>
           <td><%=number_to_currency(summary[1][:total_ccca_due_in_cents] / 100.0) %></td>
           <td><%=number_to_currency(summary[1][:total_amount_in_cents] / 100.0) %></td>
         </tr>
       <% end %>
-        <tr><td colspan="8"><hr/></td></tr>
+        <tr><td colspan="9"><hr/></td></tr>
         <tr>
           <td>Total</td>
           <td><%= @student_count_total %></td>
           <td><%=number_to_currency(@payment_total_registration_in_cents / 100.0) %></td>
           <td><%=number_to_currency(@payment_total_tuition_in_cents / 100.0) %></td>
+          <td><%=number_to_currency(@payment_total_elective_in_cents / 100.0) %></td>
           <td><%=number_to_currency(@payment_total_book_charge_in_cents / 100.0) %></td>
           <td><%=number_to_currency(@payment_total_pva_due_in_cents / 100.0) %></td>
           <td><%=number_to_currency(@payment_total_ccca_due_in_cents / 100.0) %></td>
