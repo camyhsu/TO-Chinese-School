@@ -13,10 +13,13 @@
         <thead>
         <tr>
           <th width="1%"></th>
-          <th>Name</th>
-          <th><%= h @registration_school_year.name %> Grade</th>
-          <th>School Class</th>
+          <th width="15%">Name</th>
+          <th width="15%"><%= h @registration_school_year.name %> Grade</th>
+          <th width="20%">School Class</th>
           <th>Elective Class</th>
+          <% if (PacificDate.current_month < 10) %>
+            <th>Withdraw Elective Class Only</th>
+          <% end %>
         </tr>
         </thead>
         <tbody>
@@ -30,6 +33,23 @@
             <td><%= h student_class_assignment.try(:grade).try(:name) %></td>
             <td><%= h student_class_assignment.try(:school_class).try(:name) %></td>
             <td><%= h student_class_assignment.try(:elective_class).try(:name) %></td>
+            <% if (PacificDate.current_month < 10) %>
+              <td>
+                <% if student_class_assignment.elective_class.nil? %>
+                  No Elective Class
+                <% elsif Grade.grades_with_ap_class.include? student_class_assignment.try(:grade) %>
+                  <select name="<%= paid_student.id %>_withdraw_elective_class_only" disabled>
+                    <option value="N">N</option>
+                  </select>
+                  <%= hidden_field_tag "#{paid_student.id}_withdraw_elective_class_only", "N" %>
+                <% else %>
+                  <select name="<%= paid_student.id %>_withdraw_elective_class_only">
+                    <option value="N">N</option>
+                    <option value="Y">Y</option>
+                  </select>
+                <% end %>
+              </td>
+            <% end %>
           </tr>
         <% end %>
         <tr>
@@ -50,6 +70,9 @@
           <th><%= h @registration_school_year.name %> Grade</th>
           <th>Preferred School Class Type</th>
           <th>Preferred Elective Class</th>
+          <% if (PacificDate.current_month < 10) %>
+            <th>Withdraw Elective Class Only</th>
+          <% end %>
         </tr>
         </thead>
         <tbody>
@@ -63,6 +86,23 @@
             <td><%= h registration_preference.try(:grade).try(:name) %></td>
             <td><%= h registration_preference.try(:school_class_type) %></td>
             <td><%= h registration_preference.try(:elective_class).try(:name) %></td>
+            <% if (PacificDate.current_month < 10) %>
+              <td>
+                <% if registration_preference.elective_class.nil? %>
+                  No Elective Class
+                <% elsif Grade.grades_with_ap_class.include? registration_preference.try(:grade) %>
+                  <select name="<%= paid_student.id %>_withdraw_elective_class_only" disabled>
+                    <option value="N">N</option>
+                  </select>
+                  <%= hidden_field_tag "#{paid_student.id}_withdraw_elective_class_only", "N" %>
+                <% else %>
+                  <select name="<%= paid_student.id %>_withdraw_elective_class_only">
+                    <option value="N">N</option>
+                    <option value="Y">Y</option>
+                  </select>
+                <% end %>
+              </td>
+            <% end %>
           </tr>
         <% end %>
         <tr>

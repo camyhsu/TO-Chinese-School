@@ -20,12 +20,20 @@ class HomeController < ApplicationController
     @active_registration_school_years = SchoolYear.find_active_registration_school_years
     @current_and_future_school_years = SchoolYear.find_current_and_future_school_years
     @active_refund_school_years = SchoolYear.find_active_refund_school_years
-    @has_withdraw_request_as_parent = WithdrawRequest.has_withdraw_request_as_parent_in? SchoolYear.current_school_year, @user.person.id
+    @has_withdraw_request_as_parent = WithdrawRequest.has_withdraw_request_as_parent_in? SchoolYear.newest_school_year, @user.person.id
     if student_parent_resources_enabled?
       @home_templates << 'student_parent'
       @possible_students = find_possible_students
     end
     @person = @user.person
+    @paid_students = []
+    find_possible_students.each do |student|
+      paid_student_fee_payment = student.find_paid_student_fee_payment_as_student_for(SchoolYear.newest_school_year)
+      withdraw_request = student.find_withdraw_request_detail_by_student_for(SchoolYear.newest_school_year)
+      if !paid_student_fee_payment.nil? && withdraw_request.nil?
+        @paid_students << student
+      end
+    end
   end
 
   def change_password

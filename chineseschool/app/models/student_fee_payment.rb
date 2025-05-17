@@ -3,11 +3,12 @@ class StudentFeePayment < ActiveRecord::Base
   belongs_to :registration_payment
   belongs_to :student, class_name: 'Person', foreign_key: 'student_id'
 
-  validates :registration_payment, :student, :registration_fee_in_cents, :tuition_in_cents, :book_charge_in_cents, presence: true
+  validates :registration_payment, :student, :registration_fee_in_cents, :tuition_in_cents, :book_charge_in_cents, :elective_class_fee_in_cents, presence: true
 
   validates :registration_fee_in_cents, numericality: {only_integer: true, allow_nil: false}
   validates :tuition_in_cents, numericality: {only_integer: true, allow_nil: false}
   validates :book_charge_in_cents, numericality: {only_integer: true, allow_nil: false}
+  validates :elective_class_fee_in_cents, numericality: {only_integer: true, allow_nil: false}
 
 
   def registration_fee
@@ -21,24 +22,34 @@ class StudentFeePayment < ActiveRecord::Base
   def tuition
     self.tuition_in_cents / 100.0
   end
+
+  def elective_class_fee
+    self.elective_class_fee_in_cents / 100.0
+  end
   
   def total_in_cents
-    self.registration_fee_in_cents + self.book_charge_in_cents + self.tuition_in_cents
+    self.registration_fee_in_cents + self.book_charge_in_cents + self.tuition_in_cents + self.elective_class_fee_in_cents
   end
   
-  def fill_in_tuition_and_fee(school_year, grade, paid_and_pending_student_fee_payments)
+  def fill_in_tuition_and_fee(school_year, grade, elective_class, school_class_type, paid_and_pending_student_fee_payments)
     self.registration_fee_in_cents = school_year.registration_fee_in_cents
+    if elective_class.nil?
+      self.elective_class_fee_in_cents = 0
+    else
+      self.elective_class_fee_in_cents = school_year.elective_class_fee_in_cents
+    end
     self.book_charge_in_cents = BookCharge.book_charge_in_cents_for school_year, grade
-    calculate_tuition school_year, grade, paid_and_pending_student_fee_payments
+    calculate_tuition school_year, grade, school_class_type, paid_and_pending_student_fee_payments
   end
 
-  def calculate_tuition(school_year, grade, paid_and_pending_student_fee_payments)
-    if PacificDate.today <= school_year.early_registration_end_date
+  def calculate_tuition(school_year, grade, school_class_type, paid_and_pending_student_fee_payments)
+    if PacificDate.today <= school_year.early_registration_end_date && school_year.early_registration_tuition_in_cents > 0
       self.early_registration = true
       self.tuition_in_cents = school_year.early_registration_tuition_in_cents
     else
       self.tuition_in_cents = school_year.tuition_in_cents
     end
+    apply_parent_and_student_class_fee school_year, school_class_type
     apply_pre_k_discount school_year, grade
     apply_multiple_child_discount school_year, paid_and_pending_student_fee_payments.size
     apply_late_registration_prorate school_year
@@ -46,14 +57,14 @@ class StudentFeePayment < ActiveRecord::Base
   end
 
   def apply_pre_k_discount(school_year, grade)
-    if Grade.grade_preschool == grade
+    if Grade.grade_preschool == grade && school_year.tuition_discount_for_pre_k_in_cents > 0
       self.pre_k_discount = true
       self.tuition_in_cents -= school_year.tuition_discount_for_pre_k_in_cents
     end
   end
 
   def apply_multiple_child_discount(school_year, registration_count_before_this_student)
-    if registration_count_before_this_student >= 2
+    if registration_count_before_this_student >= 2 && school_year.tuition_discount_for_three_or_more_child_in_cents > 0
       self.multiple_child_discount = true
       self.tuition_in_cents -= school_year.tuition_discount_for_three_or_more_child_in_cents
     end
@@ -83,10 +94,20 @@ class StudentFeePayment < ActiveRecord::Base
         paid_and_pending_student_fee_payments.each do |student_fee_payment|
           number_of_instructor_discount_already_applied += 1 if student_fee_payment.instructor_discount?
         end
-        if number_of_instructor_discount_already_applied < 2
+        if number_of_instructor_discount_already_applied < 2 && school_year.tuition_discount_for_instructor_in_cents > 0
           self.instructor_discount = true
           self.tuition_in_cents -= school_year.tuition_discount_for_instructor_in_cents
         end
+      end
+    end
+  end
+
+  def apply_parent_and_student_class_fee(school_year, school_class_type)
+    if school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE_PARENT_AND_STUDENT
+      if PacificDate.today <= school_year.early_registration_end_date
+        self.tuition_in_cents += school_year.early_registration_parent_and_student_class_fee_in_cents
+      else
+        self.tuition_in_cents += school_year.parent_and_student_class_fee_in_cents
       end
     end
   end

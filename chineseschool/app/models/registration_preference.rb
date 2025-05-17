@@ -6,14 +6,19 @@ class RegistrationPreference < ActiveRecord::Base
   belongs_to :previous_grade, class_name: 'Grade', foreign_key: 'previous_grade_id'
   belongs_to :grade
   belongs_to :elective_class, class_name: 'SchoolClass', foreign_key: 'elective_class_id'
+  belongs_to :re_register_elective_class, class_name: 'SchoolClass', foreign_key: 're_register_elective_class_id'
 
   validates :school_year, :student, :entered_by, presence: true
   
   def grade_full?
     self.grade.active_grade_classes_full?(self.school_year)
   end
-  
+
   def full_for?(school_class_type)
+    # EC doesn't tie to grade from 2025, so cannot check full or not, always return not full
+    if school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE
+      return false
+    end
     active_grade_classes = self.grade.active_grade_classes(self.school_year)
     allowed_max_student_count = 0
     school_class_type_class_ids = []
@@ -23,10 +28,10 @@ class RegistrationPreference < ActiveRecord::Base
         school_class_type_class_ids << grade_class.id
       end
     end
-    
+
     class_assigned_student_count = StudentClassAssignment.count_by_sql("SELECT COUNT(1) FROM student_class_assignments WHERE school_year_id = #{self.school_year.id} AND school_class_id IN (#{school_class_type_class_ids.join(',')})")
     unassigned_student_count = StudentClassAssignment.count_by_sql("SELECT COUNT(1) FROM student_class_assignments sca, registration_preferences rp WHERE sca.school_year_id = #{self.school_year.id} AND sca.grade_id = #{self.grade_id} AND sca.school_class_id IS NULL AND sca.student_id = rp.student_id AND rp.school_year_id = #{self.school_year.id} AND rp.school_class_type = '#{school_class_type}'")
-    
+
     (class_assigned_student_count + unassigned_student_count) >= allowed_max_student_count
   end
 end

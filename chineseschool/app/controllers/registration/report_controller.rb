@@ -4,9 +4,9 @@ class Registration::ReportController < ApplicationController
     @registration_school_year = SchoolYear.find params[:id].to_i
     registration_summary_hash = {}
     RegistrationPayment.find_paid_payments_for_school_year(@registration_school_year).each do |paid_payment|
-      payment_date = PacificDate.for_utc(paid_payment.updated_at)
-      summary_entry = find_or_create_summary_entry payment_date, registration_summary_hash
-      add_payment_to summary_entry, paid_payment
+      payment_created_date = PacificDate.for_utc(paid_payment.created_at)
+      summary_entry = find_or_create_summary_entry payment_created_date, registration_summary_hash
+      add_payment_to summary_entry, paid_payment, payment_created_date, registration_summary_hash
     end
     @registration_summaries = registration_summary_hash.sort { |a, b| b[0] <=> a[0]}
 
@@ -14,6 +14,7 @@ class Registration::ReportController < ApplicationController
     @payment_total_registration_in_cents = 0
     @payment_total_tuition_in_cents = 0
     @payment_total_book_charge_in_cents = 0
+    @payment_total_elective_in_cents = 0
     @payment_total_pva_due_in_cents = 0
     @payment_total_ccca_due_in_cents = 0
     @payment_total_in_cents = 0
@@ -23,6 +24,7 @@ class Registration::ReportController < ApplicationController
       @payment_total_registration_in_cents += summary[1][:total_registration_in_cents]
       @payment_total_tuition_in_cents += summary[1][:total_tuition_in_cents]
       @payment_total_book_charge_in_cents += summary[1][:total_book_charge_in_cents]
+      @payment_total_elective_in_cents += summary[1][:total_elective_in_cents]
       @payment_total_pva_due_in_cents += summary[1][:total_pva_due_in_cents]
       @payment_total_ccca_due_in_cents += summary[1][:total_ccca_due_in_cents]
       @payment_total_in_cents += summary[1][:total_amount_in_cents]
@@ -65,22 +67,42 @@ class Registration::ReportController < ApplicationController
 
   private
 
-  def find_or_create_summary_entry(payment_date, registration_summary_hash)
-    summary_entry = registration_summary_hash[payment_date]
+  def find_or_create_summary_entry(payment_created_date, registration_summary_hash)
+    summary_entry = registration_summary_hash[payment_created_date]
     if summary_entry.nil?
-      summary_entry = {student_count: 0, total_registration_in_cents: 0, total_tuition_in_cents: 0,
+      summary_entry = {student_count: 0, total_registration_in_cents: 0, total_tuition_in_cents: 0, total_elective_in_cents: 0,
                        total_book_charge_in_cents: 0, total_pva_due_in_cents: 0, total_ccca_due_in_cents: 0,
                        total_amount_in_cents: 0}
-      registration_summary_hash[payment_date] = summary_entry
+      registration_summary_hash[payment_created_date] = summary_entry
     end
     summary_entry
   end
 
-  def add_payment_to(summary_entry, paid_payment)
+  def add_payment_to(summary_entry, paid_payment, payment_created_date, registration_summary_hash)
     if not paid_payment.student_fee_payments.nil?
       paid_payment.student_fee_payments.each do |student_fee_payment|
+        payment_updated_date = PacificDate.for_utc(student_fee_payment.updated_at)
         summary_entry[:total_registration_in_cents] += student_fee_payment.registration_fee_in_cents
         summary_entry[:total_tuition_in_cents] += student_fee_payment.tuition_in_cents
+        if payment_created_date == payment_updated_date
+          summary_entry[:total_elective_in_cents] += student_fee_payment.elective_class_fee_in_cents
+        else
+          # if create date is not equals student fee update date, then indicate user pay 2 times, one for normal class
+          # the other one is elective class payment.
+          # For elective class payment, we should sum it as elective class payment date.
+          # For normal class payement, we sum it to normal class payement date.
+          # Minus from create_date payment, add back to update_date payment.
+          summary_entry[:total_amount_in_cents] -= student_fee_payment.elective_class_fee_in_cents
+          summary_entry_by_updated_date = registration_summary_hash[payment_updated_date]
+          if summary_entry_by_updated_date.nil?
+            summary_entry_by_updated_date = {student_count: 0, total_registration_in_cents: 0, total_tuition_in_cents: 0, total_elective_in_cents: 0,
+                             total_book_charge_in_cents: 0, total_pva_due_in_cents: 0, total_ccca_due_in_cents: 0,
+                             total_amount_in_cents: 0}
+            registration_summary_hash[payment_updated_date] = summary_entry_by_updated_date
+          end
+          summary_entry_by_updated_date[:total_elective_in_cents] += student_fee_payment.elective_class_fee_in_cents
+          summary_entry_by_updated_date[:total_amount_in_cents] += student_fee_payment.elective_class_fee_in_cents
+        end
         summary_entry[:total_book_charge_in_cents] += student_fee_payment.book_charge_in_cents
       end
     end

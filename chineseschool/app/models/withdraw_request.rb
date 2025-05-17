@@ -5,7 +5,9 @@ class WithdrawRequest < ActiveRecord::Base
   STATUS_CANCELLED = 'C'
   STATUS_PENDING_FOR_APPROVAL = 'P'
 
-  attr_accessible :refund_ccca_due_in_cents, :refund_grand_total_in_cents, :refund_pva_due_in_cents, :request_by_address, :request_by_id, :request_by_name, :school_year_id, :status_by_id, :status_code
+  attr_accessible :refund_ccca_due_in_cents, :refund_grand_total_in_cents, :refund_pva_due_in_cents,
+                  :request_by_address, :request_by_id, :request_by_name, :request_by_home_phone,
+                  :school_year_id, :status_by_id, :status_code
 
   has_many :withdraw_request_details, dependent: :destroy
 
@@ -13,13 +15,26 @@ class WithdrawRequest < ActiveRecord::Base
   belongs_to :status_by, class_name: 'Person', foreign_key: 'status_by_id'
   belongs_to :school_year, class_name: 'SchoolYear', foreign_key: 'school_year_id'
 
-  validates :request_by_address, :request_by_name, presence: true
+  validates :request_by_address, :request_by_name, :request_by_home_phone, presence: true
 
   def caculate_refund_grand_total_in_cents
     self.refund_grand_total_in_cents = self.refund_pva_due_in_cents + self.refund_ccca_due_in_cents
     self.withdraw_request_details.each do |withdraw_request_detail|
       self.refund_grand_total_in_cents = self.refund_grand_total_in_cents + withdraw_request_detail.refund_total_in_cents
     end
+  end
+
+  def request_by_home_phone
+    format_phone_number(read_attribute(:request_by_home_phone))
+  end
+
+  def request_by_home_phone=(request_by_home_phone)
+    write_attribute(:request_by_home_phone, Address.clean_phone_number(request_by_home_phone))
+  end
+
+  def format_phone_number(phone_number)
+    return '' if phone_number.blank?
+    "(#{phone_number[0..2]}) #{phone_number[3..5]}-#{phone_number[6..-1]}"
   end
 
   def refund_grand_total
@@ -88,25 +103,50 @@ class WithdrawRequest < ActiveRecord::Base
       student_status_flag = withdraw_request_detail.student.student_status_flag_for current_school_year
       unless student_status_flag.nil?
         withdrawal_record.registration_date = student_status_flag.last_status_change_date
-        student_status_flag.registered = false
+        # If only withdraw elective class, then not update registered = false
+        unless withdraw_request_detail.elective_class_only == 'Y'
+          student_status_flag.registered = false
+        end
         student_status_flag.last_status_change_date = self.updated_at
         student_status_flag.save!
       end
 
       # Move class assignment data to withdrawal record and destroy the class assignment
       student_class_assignment = withdraw_request_detail.student.student_class_assignment_for current_school_year
-      unless student_class_assignment.nil?
-        withdrawal_record.grade_id = student_class_assignment.grade_id
-        withdrawal_record.school_class_id = student_class_assignment.school_class_id
-        withdrawal_record.elective_class_id = student_class_assignment.elective_class_id
-        student_class_assignment.destroy
+      # If only withdraw elective class, then not destroy student_class_assignment, just update student_class_assignment.elective_class_id = 0
+      if withdraw_request_detail.elective_class_only == 'Y'
+        withdrawal_record.grade_id = 0
+        withdrawal_record.school_class_id = 0
+        # Set elective_class_id = 0 for registration_preference
+        registration_preference = withdraw_request_detail.student.registration_preference_for(current_school_year)
+        unless registration_preference.nil?
+          withdrawal_record.elective_class_id = registration_preference.elective_class_id
+          registration_preference.elective_class_id = 0
+          registration_preference.save!
+        end
+        unless student_class_assignment.nil?
+          withdrawal_record.elective_class_id = student_class_assignment.elective_class_id
+          student_class_assignment.elective_class_id = 0
+          student_class_assignment.save!
+        end
+      else
+        unless student_class_assignment.nil?
+          withdrawal_record.grade_id = student_class_assignment.grade_id
+          withdrawal_record.school_class_id = student_class_assignment.school_class_id
+          withdrawal_record.elective_class_id = student_class_assignment.elective_class_id
+          student_class_assignment.destroy
+        end
       end
       withdrawal_record.save!
 
       # Notify instructors about the withdrawal
       if PacificDate.tomorrow >= current_school_year.start_date
-        #WithdrawalMailer.instructor_notification(self.student, withdrawal_record.school_class).deliver unless withdrawal_record.school_class.nil?
-        WithdrawalMailer.instructor_notification(withdraw_request_detail.student, withdrawal_record.elective_class).deliver unless withdrawal_record.elective_class.nil?
+        if withdraw_request_detail.elective_class_only == 'Y'
+          WithdrawalMailer.instructor_notification(withdraw_request_detail.student, withdrawal_record.elective_class).deliver unless withdrawal_record.elective_class.nil?
+        else
+          WithdrawalMailer.instructor_notification(self.student, withdrawal_record.school_class).deliver unless withdrawal_record.school_class.nil?
+          WithdrawalMailer.instructor_notification(withdraw_request_detail.student, withdrawal_record.elective_class).deliver unless withdrawal_record.elective_class.nil?
+        end
       end
     end
   end

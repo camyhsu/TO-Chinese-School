@@ -1,0 +1,20 @@
+<% @title = 'Payment Confirmation' %>
+
+<% @gateway_transactions.each do |gateway_transaction| -%>
+  <p>
+    Your payment has been processed
+    on <%= PacificTimeDisplay.display_utc_time_in_pacific(gateway_transaction.updated_at) %><br/>
+    <%= number_to_currency(gateway_transaction.amount_in_cents / 100.0) %>  has been charged to
+    <%= gateway_transaction.credit_card_type.capitalize %> Card
+    ending <%= gateway_transaction.credit_card_last_digits %><br/>
+    Payment Reference Number is
+    <span style="font-weight: bold;"><%= h gateway_transaction.reference_number %></span><br/>
+<% end %>
+</p>
+
+<p style="color: red;">
+  Please print this page for your record.
+</p>
+<%= render :partial => 'registration_payment_elective_class_only' %>
+<br/>
+<%= link_to 'Return to Home Page', {:controller => '/home', :action => :index}, {:class => 'button'} %>

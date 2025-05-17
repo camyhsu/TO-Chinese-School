@@ -43,6 +43,10 @@
             <%= school_year_form.text_field :tuition_discount_for_instructor, size: 20 %>
           </div>
           <div>
+            <label for="elective_class_fee"><span style="color:red">*&nbsp;</span>Elective Class Fee:</label>
+            <%= school_year_form.text_field :elective_class_fee, size: 20 %>
+          </div>
+          <div>
             <label for="pva_membership_due"><span style="color:red">*&nbsp;</span>PVA Activities Fee:</label>
             <%= school_year_form.text_field :pva_membership_due, size: 20 %>
           </div>
@@ -50,6 +54,15 @@
             <label for="ccca_membership_due"><span style="color:red">*&nbsp;</span>CCCA Membership Due:</label>
             <%= school_year_form.text_field :ccca_membership_due, size: 20 %>
           </div>
+          <!--<div>-->
+            <!--<label for="early_registration_parent_and_student_class_fee">-->
+              <!--<span style="color:red">*&nbsp;</span>Early Registration Parent and Student Class Fee:</label>-->
+            <!--<%= school_year_form.text_field :early_registration_parent_and_student_class_fee, size: 20 %>-->
+          <!--</div>-->
+          <!--<div>-->
+            <!--<label for="parent_and_student_class_fee"><span style="color:red">*&nbsp;</span>Parent and Student Class Fee:</label>-->
+            <!--<%= school_year_form.text_field :parent_and_student_class_fee, size: 20 %>-->
+          <!--</div>-->
           <div>
             <label for="early_registration_start_date"><span style="color:red">*&nbsp;</span>Early Registration Start Date:</label>
             <%= school_year_form.text_field :early_registration_start_date, future_date_html_options(@school_year.early_registration_start_date) %>

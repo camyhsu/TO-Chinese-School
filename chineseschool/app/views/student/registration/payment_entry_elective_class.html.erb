@@ -1,22 +1,27 @@
-<% @title = 'Tuition and Fee' %>
-
-<%= render partial: 'registration_payment', object: @registration_payment %>
+<% @title = 'Elective Class Fee' %>
+<% elective_class_fee_grand_total = 0 %>
+<%= render partial: 'registration_payment_elective_class_only' %>
 <br/>
 <div class="account-form">
   <% if @credit_card.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@credit_card.errors.size, 'error') %> prohibited this credit card from being processed:</h2>
-        <ul>
-          <% @credit_card.errors.full_messages.each do |msg| %>
-              <li><%= msg %></li> <% end %>
-        </ul>
-      </div>
+    <div id="error_explanation">
+      <h2><%= pluralize(@credit_card.errors.size, 'error') %> prohibited this credit card from being processed:</h2>
+      <ul>
+        <% @credit_card.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
 
-  <%= form_for :credit_card, url: {action: 'submit_payment', id: @registration_payment} do |form| %>
-      <fieldset>
-        <legend>Enter Credit Card Information</legend>
-        <span class="payment-entry">
+  <%= form_for :credit_card, url: {action: 'submit_payment',
+                                   register_elective_class_only: @register_elective_class_only, registration_school_year: @registration_school_year} do |form| %>
+    <% @registration_preference_ids.each_with_index do |registration_preference_id, index| %>
+      <%= hidden_field_tag "registration_preference_ids[#{index}]", registration_preference_id %>
+    <% end %>
+    <fieldset>
+      <legend>Enter Credit Card Information</legend>
+      <span class="payment-entry">
           <p>
             Chinese School does not save credit card information<br/>
             <b>Only Visa or MasterCard Credit Cards are accepted</b>
@@ -40,9 +45,9 @@
             <%= submit_tag 'Submit Payment', class: 'submit', disable_with: 'Processing Payment... Please Wait' %>
           </div>
         </span>
-      </fieldset>
+    </fieldset>
   <% end %>
 </div>
-<br/>
-<br/>
-<%= link_to 'Cancel Registration', {action: :remove_pending_registration_payment, id: @registration_payment}, {class: 'button'} %>
+
+<%= link_to 'Cancel Registration', {controller: '/home', action: 'index'}, {class: 'button'} %>
+

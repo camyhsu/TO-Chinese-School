@@ -6,9 +6,13 @@ class SchoolClass < ActiveRecord::Base
   SCHOOL_CLASS_TYPE_SIMPLIFIED = 'S'
   SCHOOL_CLASS_TYPE_TRADITIONAL = 'T'
   SCHOOL_CLASS_TYPE_EVERYDAYCHINESE = 'EC'
-  
-  SCHOOL_CLASS_TYPES = [SCHOOL_CLASS_TYPE_SIMPLIFIED, SCHOOL_CLASS_TYPE_TRADITIONAL, 
-    SCHOOL_CLASS_TYPE_MIXED, SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION, SCHOOL_CLASS_TYPE_ELECTIVE, SCHOOL_CLASS_TYPE_EVERYDAYCHINESE]
+  SCHOOL_CLASS_CHINESE_AP = 'Chinese AP'
+  SCHOOL_CLASS_TYPE_EVERYDAYCHINESE_PARENT_AND_STUDENT = 'ECPS'
+
+  SCHOOL_CLASS_TYPES = [SCHOOL_CLASS_TYPE_SIMPLIFIED, SCHOOL_CLASS_TYPE_TRADITIONAL,
+                        SCHOOL_CLASS_TYPE_MIXED, SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION,
+                        SCHOOL_CLASS_TYPE_ELECTIVE, SCHOOL_CLASS_TYPE_EVERYDAYCHINESE,
+                        SCHOOL_CLASS_TYPE_EVERYDAYCHINESE_PARENT_AND_STUDENT]
 
   attr_accessible :english_name, :chinese_name, :short_name, :description, :location,
                   :school_class_type, :max_size, :min_age, :max_age
@@ -31,6 +35,10 @@ class SchoolClass < ActiveRecord::Base
 
   def elective?
     self.school_class_type == SCHOOL_CLASS_TYPE_ELECTIVE
+  end
+
+  def ecps?
+    self.school_class_type == SCHOOL_CLASS_TYPE_EVERYDAYCHINESE_PARENT_AND_STUDENT
   end
 
   def active_in?(school_year)
@@ -170,11 +178,25 @@ class SchoolClass < ActiveRecord::Base
     self.all(:conditions => ['school_class_type = ?', SCHOOL_CLASS_TYPE_ELECTIVE]).reject { |elective_class| !elective_class.active_in?(school_year) }
   end
 
-  def self.find_available_elective_classes_for_registration(scchool_age, school_year)
-    self.all(:conditions => ['school_class_type = ?', SCHOOL_CLASS_TYPE_ELECTIVE]).reject do |elective_class|
-      !elective_class.active_in?(school_year) or
-          !elective_class.allow_school_age?(scchool_age) or
-          elective_class.elective_is_full_for?(school_year)
+  def self.find_active_ec_classes(school_year=SchoolYear.current_school_year)
+    self.all(:conditions => ['school_class_type = ?', SCHOOL_CLASS_TYPE_EVERYDAYCHINESE]).reject { |ec_class| !ec_class.active_in?(school_year) }
+  end
+
+  def self.find_available_elective_classes_for_registration(school_age, school_year, grade)
+    # 9th and above grade can only select ChineseAP, other grades cannot select ChineseAP.
+    if Grade.grades_with_ap_class.include? grade
+      self.all(:conditions => ['school_class_type = ? and english_name = ?', SCHOOL_CLASS_TYPE_ELECTIVE, SCHOOL_CLASS_CHINESE_AP]).reject do |elective_class|
+        !elective_class.active_in?(school_year) or
+            !elective_class.allow_school_age?(school_age) or
+            elective_class.elective_is_full_for?(school_year)
+      end
+    else
+      self.all(:conditions => ['school_class_type = ?', SCHOOL_CLASS_TYPE_ELECTIVE]).reject do |elective_class|
+        !elective_class.active_in?(school_year) or
+            !elective_class.allow_school_age?(school_age) or
+            elective_class.elective_is_full_for?(school_year) or
+            elective_class.english_name == SCHOOL_CLASS_CHINESE_AP
+      end
     end
   end
 

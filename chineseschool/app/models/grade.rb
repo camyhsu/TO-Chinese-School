@@ -34,8 +34,9 @@ class Grade < ActiveRecord::Base
 
   def below_first_grade?
     # Assuming only PreK and K are below first grade without checking the whole chain
-    return true if Grade.grade_preschool == self or Grade.grade_preschool.next_grade == self
-    false
+    # return true if Grade.grade_preschool == self or Grade.grade_preschool.next_grade == self
+    # false
+    return false
   end
 
   def find_next_assignable_school_class(school_class_type, school_year, gender)
@@ -50,8 +51,17 @@ class Grade < ActiveRecord::Base
   def find_available_school_class_types(school_year)
     school_class_types = self.active_grade_classes(school_year).collect { |active_school_class| active_school_class.school_class_type }
     school_class_types_1 = school_class_types.uniq.compact.sort
-    # MOVE EC TO LAST POSITION
-    school_class_types_1.include?('EC') ? school_class_types_1 - ['EC'] + ['EC'] : school_class_types_1
+    if school_class_types_1.include?('EC')
+      # MOVE EC TO LAST POSITION
+      school_class_types_1 = school_class_types_1 - ['EC'] + ['EC']
+    else
+      # find ec class without grade criteria since EC is not tied to grade from 2025
+      ec_school_class_types = SchoolClass.find_active_ec_classes(school_year).collect {|active_ec_class| active_ec_class.school_class_type }
+      if ec_school_class_types.size >= 1
+        school_class_types_1 = school_class_types_1 + ['EC']
+      end
+    end
+    school_class_types_1
   end
 
   def allowed_max_student_count(school_year)
@@ -137,9 +147,17 @@ class Grade < ActiveRecord::Base
   def pick_school_class_with_lowest_head_count_from(school_classes, gender)
     return school_classes[0] if school_classes.size == 1
     current_school_class_picked = school_classes[0]
+    school_has_started = SchoolYear.current_school_year.school_has_started?
+    # If school year started, then assign class base on total student count.
     current_lowest_head_count = current_school_class_picked.current_year_gender_based_class_size gender
+    if school_has_started
+      current_lowest_head_count = current_school_class_picked.class_size
+    end
     school_classes.each do |school_class|
       school_class_size = school_class.current_year_gender_based_class_size(gender)
+      if school_has_started
+        school_class_size = school_class.class_size
+      end
       if school_class_size < current_lowest_head_count
         current_school_class_picked = school_class
         current_lowest_head_count = school_class_size

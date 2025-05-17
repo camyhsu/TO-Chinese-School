@@ -1,0 +1,27 @@
+<h3>Elective Class Fee For <%=h @registration_school_year.name %> School Year</h3>
+<% @registration_preference_ids.each do |registration_preference_id| %>
+  <p>
+    <% registration_preference = RegistrationPreference.find_by_id registration_preference_id %>
+    For <%= h registration_preference.student.name %>
+    <br/>
+    <% unless registration_preference.re_register_elective_class.nil? -%>
+      selecting elective class <%= h registration_preference.re_register_elective_class.name %>
+    <% end %>
+  </p>
+  <table class="tuition-detail" border="0px">
+    <% unless registration_preference.re_register_elective_class.nil? -%>
+      <tr>
+        <td class="label">Elective Class Fee:</td>
+        <td><%= number_to_currency @registration_school_year.elective_class_fee %></td>
+      </tr>
+    <% end %>
+  </table>
+  <hr/>
+<% end %>
+<table class="tuition-detail" border="0px">
+  <tr>
+    <td class="label">Grand Total:</td>
+    <td><%= number_to_currency @registration_school_year.elective_class_fee * @registration_preference_ids.size %></td>
+  </tr>
+</table>
+<br/>

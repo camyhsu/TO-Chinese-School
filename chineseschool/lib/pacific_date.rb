@@ -21,4 +21,8 @@ class PacificDate
   def self.yesterday
     self.today - 1
   end
+
+  def self.current_month
+    self.today.month
+  end
 end

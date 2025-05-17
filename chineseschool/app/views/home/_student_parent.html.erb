@@ -128,16 +128,29 @@
   <% end %>
   <% @active_registration_school_years.each do |registration_year| %>
     <% if (registration_year.early_registration_end_date >= PacificDate.today) || (registration_year.registration_start_date <= PacificDate.today) %>
-      <%= link_to "Register For #{registration_year.name} School Year", {controller: '/student/registration', action: :display_options, id: registration_year}, {class: 'button'} %><br/>
-      <span style="color: red; font-weight: bold; font-size: 108%;">Please confirm your children's Chinese and English names.<br/>These will be used as-is in yearbook.</span><br/>
+      <%= link_to "Register For #{registration_year.name} School Year",
+                  {controller: '/student/registration', action: :display_options, id: registration_year, register_elective_class_only: 'N'}, {class: 'button'} %><br/>
      <% end %>
   <% end %>
-  <hr/>
-  <% @active_refund_school_years.each do |refund_year| %>
-    <%= link_to "Withdraw For #{refund_year.name} School Year", {controller: '/student/withdraw', action: :withdraw_entry, id: refund_year}, {class: 'button'} %>
+
+  <% if @paid_students.size > 0 %>
+    <br/>
+    <% @active_registration_school_years.each do |registration_year| %>
+      <%= link_to "Register Elective Class For #{registration_year.name} School Year",
+                  {controller: '/student/registration', action: :display_options, id: registration_year, register_elective_class_only: 'Y'}, {class: 'button'} %><br/>
+    <% end %>
   <% end %>
-  <hr/>
+  <span style="color: red; font-weight: bold; font-size: 108%;">Please confirm your children's Chinese and English names.<br/>These will be used as-is in yearbook.</span><br/>
+
+  <% if @paid_students.size > 0 %>
+    <hr/>
+    <% @active_refund_school_years.each do |refund_year| %>
+      <%= link_to "Withdraw For #{refund_year.name} School Year", {controller: '/student/withdraw', action: :withdraw_entry, id: refund_year}, {class: 'button'} %>
+    <% end %>
+  <% end %>
+
   <% if @has_withdraw_request_as_parent %>
+    <hr/>
     <%= link_to "View/Cancel Withdraw Request", {controller: '/student/withdraw', action: :cancel_withdraw_entry}, {class: 'button'} %>
   <% end %>
 <% end %>

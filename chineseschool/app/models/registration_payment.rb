@@ -58,13 +58,15 @@ class RegistrationPayment < ActiveRecord::Base
     end
   end
 
-  def send_email_notification(gateway_transaction=nil)
-    ReceiptMailer.payment_confirmation(gateway_transaction, self).deliver
+  def send_email_notification(gateway_transaction = nil, register_elective_class_only, registration_preference_id)
+    ReceiptMailer.payment_confirmation(gateway_transaction, self, register_elective_class_only, registration_preference_id).deliver
     school_start_date = self.school_year.start_date
-    if PacificDate.tomorrow >= school_start_date
-      students = self.student_fee_payments.collect { |student_fee_payment| student_fee_payment.student }
-      ReceiptMailer.text_book_notification(students).deliver
-      ReceiptMailer.registration_staff_notification(students).deliver if PacificDate.today > school_start_date
+    unless register_elective_class_only == 'Y'
+      if PacificDate.tomorrow >= school_start_date
+        students = self.student_fee_payments.collect {|student_fee_payment| student_fee_payment.student}
+        ReceiptMailer.text_book_notification(students).deliver
+        ReceiptMailer.registration_staff_notification(students).deliver if PacificDate.today > school_start_date
+      end
     end
   end
 
@@ -73,7 +75,7 @@ class RegistrationPayment < ActiveRecord::Base
   end
 
   def self.find_paid_payments_for_school_year(school_year)
-    self.all :conditions => ['school_year_id = ? AND paid = true', school_year.id], :order => 'updated_at DESC'
+    self.all :conditions => ['school_year_id = ? AND paid = true', school_year.id], :order => 'created_at DESC'
   end
   
   def self.find_paid_payments_for_date(date)
@@ -111,7 +113,11 @@ class RegistrationPayment < ActiveRecord::Base
     # self.school_year.pva_membership_due_in_cents * 2
 
     # 2021/03 changes: Get PVA FEE by student count
-    self.school_year.pva_membership_due_in_cents * self.student_fee_payments.size
+    # self.school_year.pva_membership_due_in_cents * self.student_fee_payments.size
+
+    # 2024/04 changes: GET PVA FEE same as CCCA, charge one per family
+    return 0 if completed_registration_count_in_family > 0
+    self.school_year.pva_membership_due_in_cents
   end
   
   def calculate_ccca_due_in_cents(completed_registration_count_in_family)

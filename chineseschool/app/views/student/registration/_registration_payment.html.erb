@@ -20,6 +20,13 @@
     <td class="label">Tuition<%= label_for_tuition_discount_applied(student_fee_payment) %>:</td>
     <td><%= number_to_currency student_fee_payment.tuition %></td>
   </tr>
+  <% unless registration_preference.elective_class.nil? -%>
+    <tr>
+      <td class="label">Elective Class Fee:</td>
+      <td><%= number_to_currency student_fee_payment.elective_class_fee %></td>
+    </tr>
+  <% end %>
+
   <tr>
     <td class="label">Books / Material:</td>
     <td><%= number_to_currency student_fee_payment.book_charge %></td>
