@@ -58,9 +58,9 @@ class Grade < ActiveRecord::Base
       # MOVE EC TO LAST POSITION
       school_class_types_1 = school_class_types_1 - ['EC'] + ['EC']
     else
-      # find ec class without grade criteria since EC is not tied to grade from 2025
+      # find ec class without grade criteria since EC is not tied to grade from 2025, but keep the logic that EC is only open to Kindergarten and up.
       ec_school_class_types = SchoolClass.find_active_ec_classes(school_year).collect {|active_ec_class| active_ec_class.school_class_type }
-      if ec_school_class_types.size >= 1
+      if ec_school_class_types.size >= 1 and self.id > 1
         school_class_types_1 = school_class_types_1 + ['EC']
       end
     end
