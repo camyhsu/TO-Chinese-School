@@ -205,7 +205,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     ttfunk (1.0.3)
-    tzinfo (0.3.52)
+    tzinfo (0.3.61)
     uglifier (3.0.4)
       execjs (>= 0.3.0, < 3)
     xpath (2.0.0)
