@@ -23,6 +23,32 @@
   <% end %>
   </tbody>
 </table>
+
+<% if @ec_class_student_counts.any? %>
+<br/>
+<h3>EC 每日中文班</h3>
+<table class="details-table" border="1px">
+  <thead>
+  <tr>
+    <th>班級</th>
+    <th>人數</th>
+    <th>Maximum Size</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @ec_class_student_counts.keys.sort.each do |school_class_id| -%>
+      <% ec_class = SchoolClass.find(school_class_id) %>
+      <tr>
+        <td><%=h ec_class.name %></td>
+        <td><%= @ec_class_student_counts[school_class_id] %></td>
+        <% total_student_count += @ec_class_student_counts[school_class_id] %>
+        <td><%= ec_class.max_size %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+<% end %>
+
 <br/>
 Total Student Count: <%= total_student_count %>
 <br/>

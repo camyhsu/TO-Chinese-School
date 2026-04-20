@@ -46,6 +46,13 @@
       if there are questions.</span></br>
     </li>
   <% end %>
+  <% if @registration_preferences.any? {|rp| rp.previous_grade.nil? && rp.grade.first_grade_or_above?} %>
+    <li>
+      <span style="font-weight: bold">Attention New Students in 1st Grade or Above (excluding EC classes):</span>
+      <br/>Please complete the evaluation form at <a href="https://docs.google.com/forms/d/e/1FAIpQLSf5al9yGyBJCWLdezVzIUqe8uZwQVCemjJT2zdiUb0TIbdOjQ/viewform" target="_blank">Evaluation Form Link</a> before registration.
+      <br/><span style="color: red">You must check the confirmation box for each eligible student to proceed.</span></br>
+    </li>
+  <% end %>
 </ul>
 <% if @registration_preferences.any? {|registration_preference| registration_preference.grade_full?} %>
   <p style="color: red;">
@@ -96,21 +103,28 @@
         <thead>
         <tr>
           <th width="3%"></th>
-          <th width="20%"></th>
+          <th width="5%">Eval Form</th>
+          <th width="18%"></th>
           <th width="15%"><%= h @previous_school_year.name %> Grade</th>
           <th width="15%"><%= h @registration_school_year.name %> Grade</th>
           <th width="15%">Select School Class Type</th>
-          <th width="30%">Select Elective Class</th>
+          <th width="28%">Select Elective Class</th>
         </tr>
         </thead>
         <tbody>
 
         <% @registration_preferences.each do |registration_preference| -%>
           <% student = registration_preference.student %>
+          <% is_new_student_first_grade_or_above = registration_preference.previous_grade.nil? && registration_preference.grade.first_grade_or_above? %>
           <tr>
             <td class="checkbox">
               <% unless registration_preference.grade_full? %>
-                <%= check_box_tag "#{student.id}_register", true %>
+                <%= check_box_tag "#{student.id}_register", true, false, class: 'register-checkbox' %>
+              <% end %>
+            </td>
+            <td class="checkbox">
+              <% if is_new_student_first_grade_or_above && !registration_preference.grade_full? %>
+                <%= check_box_tag "#{student.id}_eval_form_confirmed", true, false, class: 'eval-form-checkbox' %>
               <% end %>
             </td>
             <td><%= h student.name %></td>
@@ -183,8 +197,9 @@
         <% end %>
         <tr>
           <td class="checkbox"></td>
+          <td></td>
           <td style="padding-top: 1em;">
-            <%= submit_tag 'Continue', class: 'button' %>
+            <%= submit_tag 'Continue', class: 'button', id: 'continue-button' %>
           </td>
           <td colspan="4"></td>
         </tr>
@@ -192,6 +207,7 @@
   <% end %>
   <tr>
     <td class="checkbox"></td>
+    <td></td>
     <td colspan="5" style="padding-top: 0.5em; text-align: left;">
       <%= link_to 'Cancel Registration', {controller: '/home'}, {class: 'button'} %>
     </td>

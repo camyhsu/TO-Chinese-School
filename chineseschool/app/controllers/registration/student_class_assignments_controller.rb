@@ -29,6 +29,13 @@ class Registration::StudentClassAssignmentsController < ApplicationController
         last_name_order
       end
     end
+
+    # Preload registration preferences to avoid N+1 queries
+    student_ids = @active_student_class_assignments.map(&:student_id).uniq
+    @registration_preferences = RegistrationPreference.all(
+      conditions: ['school_year_id = ? AND student_id IN (?)', @current_school_year.id, student_ids]
+    ).index_by(&:student_id)
+
     respond_to do |format|
       format.html
       format.pdf {render layout: false}

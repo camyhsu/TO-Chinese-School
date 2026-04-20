@@ -39,6 +39,12 @@ class Grade < ActiveRecord::Base
     return false
   end
 
+  def first_grade_or_above?
+    preschool = Grade.grade_preschool
+    kindergarten = preschool.next_grade
+    self != preschool && self != kindergarten
+  end
+
   def find_next_assignable_school_class(school_class_type, school_year, gender)
     assignable_school_classes = self.active_grade_classes(school_year).select { |active_school_class| active_school_class.school_class_type == school_class_type }
     return nil if assignable_school_classes.empty?

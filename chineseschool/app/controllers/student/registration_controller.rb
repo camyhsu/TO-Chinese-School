@@ -13,6 +13,15 @@ class Student::RegistrationController < ApplicationController
   def save_registration_preferences
     @registration_school_year = SchoolYear.find params[:id].to_i
     @register_elective_class_only = params[:register_elective_class_only]
+
+    # Validate evaluation form confirmation for new students in 1st grade or above (non-EC)
+    eval_form_errors = validate_eval_form_confirmation
+    if eval_form_errors.any?
+      flash[:notice] = "Please confirm evaluation form completion for: #{eval_form_errors.join(', ')}. " +
+                        "<a href='https://docs.google.com/forms/d/e/1FAIpQLSf5al9yGyBJCWLdezVzIUqe8uZwQVCemjJT2zdiUb0TIbdOjQ/viewform' target='_blank'>Evaluation Form Link</a>"
+      redirect_to action: :display_options, id: @registration_school_year, register_elective_class_only: @register_elective_class_only and return
+    end
+
     @registration_preferences = save_registration_preferences_from_params
     if @registration_preferences.empty?
       if @register_elective_class_only == 'Y'
@@ -393,6 +402,35 @@ class Student::RegistrationController < ApplicationController
       end
     end
     registered_students
+  end
+
+  def validate_eval_form_confirmation
+    errors = []
+    find_possible_students.each do |student|
+      student_register_flag = params["#{student.id}_register".to_sym]
+      next unless student_register_flag == "true"
+
+      # Check if this is a new student (no previous grade)
+      previous_grade_id = params["#{student.id}_previous_grade".to_sym]
+      next unless previous_grade_id.blank?
+
+      # Check if grade is 1st or above
+      grade_id = params["#{student.id}_grade".to_sym]
+      next if grade_id.blank?
+      grade = Grade.find_by_id(grade_id.to_i)
+      next if grade.nil? || !grade.first_grade_or_above?
+
+      # Check if class type is NOT EC
+      school_class_type = params["#{student.id}_school_class_type".to_sym]
+      next if school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE
+
+      # Check if eval form checkbox is confirmed
+      eval_form_confirmed = params["#{student.id}_eval_form_confirmed".to_sym]
+      if eval_form_confirmed != "true"
+        errors << student.name
+      end
+    end
+    errors
   end
 
 end

@@ -3,7 +3,7 @@
 prawn_document(filename: 'tocs_active_students.pdf') do |pdf|
   pdf.font "#{Rails.root}/lib/data/fonts/ArialUnicode.ttf"
 
-  header = [ 'Last Name', 'First Name', '姓名', '班級', '教室', '第三堂選修課' ]
+  header = [ 'Last Name', 'First Name', '姓名', 'Preference', '班級', '教室', '第三堂選修課' ]
 
   data = [ header ]
   @active_student_class_assignments.each do |student_class_assignment|
@@ -11,6 +11,7 @@ prawn_document(filename: 'tocs_active_students.pdf') do |pdf|
     row << student_class_assignment.student.english_last_name
     row << student_class_assignment.student.english_first_name
     row << student_class_assignment.student.chinese_name
+    row << @registration_preferences[student_class_assignment.student_id].try(:school_class_type) || ''
     row << student_class_assignment.school_class.short_name
     row << student_class_assignment.school_class.location
     if student_class_assignment.elective_class.nil?

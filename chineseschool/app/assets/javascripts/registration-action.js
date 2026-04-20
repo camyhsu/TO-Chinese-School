@@ -1,5 +1,42 @@
 $(function() {
     $('.jquery-datepicker').datepicker({dateFormat: 'yy-mm-dd'});
+
+    // Evaluation form validation for new students in 1st grade or above (non-EC classes)
+    $('#continue-button').click(function(e) {
+        var hasError = false;
+        var errorStudents = [];
+
+        $('.register-checkbox:checked').each(function() {
+            var studentId = $(this).attr('id').replace('_register', '');
+            var evalCheckbox = $('#' + studentId + '_eval_form_confirmed');
+
+            // If there's an eval checkbox for this student, check if class type is EC
+            if (evalCheckbox.length) {
+                // Check the selected class type (could be dropdown or hidden field)
+                var classTypeSelect = $('select[name="' + studentId + '_school_class_type"]');
+                var classTypeHidden = $('input[name="' + studentId + '_school_class_type"]');
+                var selectedClassType = '';
+
+                if (classTypeSelect.length) {
+                    selectedClassType = classTypeSelect.val();
+                } else if (classTypeHidden.length) {
+                    selectedClassType = classTypeHidden.val();
+                }
+
+                // Only require checkbox if class type is NOT EC
+                if (selectedClassType !== 'EC' && !evalCheckbox.is(':checked')) {
+                    hasError = true;
+                    var studentName = $(this).closest('tr').find('td:nth-child(3)').text().trim();
+                    errorStudents.push(studentName);
+                }
+            }
+        });
+
+        if (hasError) {
+            e.preventDefault();
+            alert('Please confirm that the following students have completed the evaluation form:\n\n' + errorStudents.join('\n') + '\n\nEvaluation form link: https://docs.google.com/forms/d/e/1FAIpQLSf5al9yGyBJCWLdezVzIUqe8uZwQVCemjJT2zdiUb0TIbdOjQ/viewform');
+        }
+    });
 });
 
 function registrationSelectGrade(selectElement, url, studentId, schoolYearId) {
